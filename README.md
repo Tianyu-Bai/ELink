@@ -57,13 +57,12 @@ The system is optimized for Rats/Non-Human Primates, focusing on minimizing impl
 | KiCad        | 8.0.0   | Legacy/Open-source PCB design files. |
 
 ## Developers
-
-* [Your Lab Name], Dartmouth College, Hanover, NH
-* [Collaborator Name], [Institution]
+*  Main developers: Tianyu Bai, Dr. Gen Li, Dr. Hui Fang
+*  Multifunctional Integrated NeuroElectronics (MINE) Lab, Dartmouth College, Hanover, NH
 
 ## License
 
-Copyright [Your Name] 2025.
+Copyright Tianyu Bai 2025.
 
 This source describes Open Hardware and is licensed under CERN-OHL-P v2.
 
