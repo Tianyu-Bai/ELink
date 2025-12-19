@@ -8,7 +8,7 @@
 
 This repository contains the mechanical and electrical design files for a high-density **Pedestal Connector** customized for chronic neural recording applications. The design serves as the interface between implanted neural probes and external headstages.
 
-The system is optimized for **[Select: Rats / Mice / Non-Human Primates]**, focusing on minimizing implant weight and maximizing structural integrity during behavioral experiments.
+The system is optimized for **[Mice / Non-Human Primates]**, focusing on minimizing implant weight and maximizing structural integrity during behavioral experiments.
 
 <p align="center">
   <img src="Images/render_iso.png" alt="Connector Isometric View" width="600">
@@ -18,9 +18,9 @@ The system is optimized for **[Select: Rats / Mice / Non-Human Primates]**, focu
 
 ## ✨ Key Features
 
-* **High Channel Density:** Supports up to **[e.g., 64 / 128 / 256]** channels in a compact footprint.
-* **Headstage Compatibility:** Designed to mate perfectly with **[e.g., Intan RHD / Omnetics]** standard headstages.
-* **Lightweight Construction:** Total assembly weight is approximately **[X.X] g**, minimizing torque on the skull.
+* **High Channel Density:** Supports up to 256 channels in a compact footprint.
+* **Headstage Compatibility:** Designed to mate perfectly with Intan RHD standard controllers.
+* **Lightweight Construction:** Total assembly weight is approximately **6.4 g**, minimizing torque on the skull.
 * **Surgical Integration:** Features textured sidewalls and anchor points for secure adhesion with dental cement or UV-curable resin.
 * **Modular Design:** Separates the PCB interposer from the structural housing for easier testing and replacement.
 
