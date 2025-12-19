@@ -8,7 +8,7 @@
 
 This repository contains the mechanical and electrical design files for a high-density **Pedestal Connector** customized for chronic neural recording applications. The design serves as the interface between implanted neural probes and external headstages.
 
-The system is optimized for **[Mice / Non-Human Primates]**, focusing on minimizing implant weight and maximizing structural integrity during behavioral experiments.
+The system is optimized for Rats/Non-Human Primates, focusing on minimizing implant weight and maximizing structural integrity during behavioral experiments.
 
 <p align="center">
   <img src="Images/render_iso.png" alt="Connector Isometric View" width="600">
