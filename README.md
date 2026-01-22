@@ -27,10 +27,10 @@
 
 | Specification | Value |
 | :--- | :--- |
-| **Channel Count** | 256 Channels |
-| **Total Mass** | ~6.4 g |
+| **Channel Count** | 128 or 256 Channels (Single/Dual SPI Port support) |
+| **Total Mass** | ~6.6 g (with housing)<br>~2.8 g (without housing) |
 | **Interconnect Type** | Solderless Anisotropic Elastomer |
-| **Compatibility** | Intan RHD / Omnetics / Thin-film Probes |
+| **Compatible Acquisition System** | Intan Recording Controller (512ch or 1024ch)<br>Open-Ephys acquisition box<br>NeuroNexus Smartbox |
 | **Housing Material** | 3D-Printed PEEK / Surgical Grade Resin |
 
 ---
@@ -42,7 +42,7 @@
 * **🔌 Solderless Elastomeric Interconnect**
     Uses anisotropic conductive elastomer for repeatable, alignment-tolerant electrical contact.
 * **🐭 Optimized for In-Vivo Research**
-    Minimal mass (6.4g) designed to reduce skull torque in rats and non-human primates.
+   Minimal Implant Footprint Core components weigh only 2.8g (with housing removed), reducing head-heavy behavior and improving animal welfare during long-term recording sessions.
 * **🛠️ Modular & Scalable**
     Separable housing, PCB, and protective cap for rapid iteration and troubleshooting.
 * **🧪 Surgical-Grade Design**
@@ -58,26 +58,14 @@
 
 | Component | Description |
 | :--- | :--- |
-| **Housing** | 3D-printed/machined PEEK pedestal for mechanical protection. |
-| **Interposer PCB** | High-density routing connecting thin-film probes to headstage. |
-| **Surgical Cap** | Protective cap preserving connector integrity between sessions. |
-
+| **Housing** | 3D-printed/machined pedestal providing structural support and cranial fixation. |
+| **Customized Headstage** | Form-factor optimized recording interface for high-density 128/256-channel signal acquisition. |
+| **Foam Washer** | Provides compliant compression to ensure uniform electrical contact across the elastomeric interface. |
+| **Adapter PCB** | High-density interposer PCB for routing signals from thin-film probes to standardized connector arrays. |
+| **Surgical Cap** | Protective enclosure preserving electrical and mechanical integrity throughout chronic experiments. |
 ---
 
-## 📂 Repository Structure
-
-```bash
-├── CAD/                  # Mechanical design files
-│   ├── SolidWorks/       # Native .SLDPRT / .SLDASM (2024)
-│   └── STEP/             # Universal STEP exports
-├── PCB/                  # Electrical design files
-│   ├── Altium_Designer/  # Source PCB projects (v24.0)
-│   ├── KiCad/            # Open-source PCB equivalents (v8.0)
-│   └── Manufacturing/    # Gerbers & BOM
-├── Docs/                 # Instructions & Data
-
-
-👥 Developers & Lab
+##👥 Developers & Lab
 This project is developed by the Multifunctional Integrated NeuroElectronics (MINE) Lab at Dartmouth College.
 
 Tianyu Bai - Lead Designer
@@ -104,9 +92,14 @@ The hardware designs and visual assets in this repository correspond directly to
 * **Full Citation:** Will be updated here immediately upon formal acceptance.
 * **Inquiries:** For access to the full manuscript or questions regarding the design, please contact **Tianyu Bai** or **Prof. Hui Fang**.
 - **Full Paper:** *Coming Soon.*
+---
 
-📜 License
+## 🤝 Acknowledgments
+
+The developers gratefully acknowledge support from the **NIH (R01MH139342)** and the **Dartmouth PhD Innovation Fellowship**. 
+
+Special thanks to the members of the **MINE Lab** and the **Thayer School of Engineering** for their technical support and feedback throughout the development of the PEDAL-256 system.
+
+## 📜 License
 Copyright © 2026 Tianyu Bai. Licensed under the CERN Open Hardware Licence Version 2 – Permissive (CERN-OHL-P v2).
-│   ├── Assembly_Guide/   # Step-by-step assembly
-│   └── Datasheets/       # Components specifications
-└── Images/               # Renders and photography
+
