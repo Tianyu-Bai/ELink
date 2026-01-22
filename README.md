@@ -2,7 +2,7 @@
 ### An Open-Source, Solderless, High-Density Pedestal Connector for Neural Interfaces
 
 <p align="center">
-  <img src="Images/01.png" alt="PEDAL-256 Isometric View" width="750">
+  <img src="Images/01.PNG" alt="PEDAL-256 Isometric View" width="750">
   <br>
   <b>Figure 1 · Isometric render of the assembled PEDAL-256 pedestal connector.</b>
 </p>
