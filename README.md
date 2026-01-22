@@ -1,12 +1,10 @@
 # 🚀 PEDAL-256
-### An Open-Source, Solderless, High-Density Pedestal Connector for Neural Interfaces
-
-<p align="center">
+<div align="center">
+  <h3>An Open-Source, Solderless, High-Density Pedestal Connector for Neural Interfaces</h3>
   <img src="Images/01.PNG" alt="PEDAL-256 Isometric View" width="750">
   <br>
   <b>Figure 1 · Isometric render of the assembled PEDAL-256 pedestal connector.</b>
-</p>
-
+</div>
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-CERN--OHL--P_v2-blue.svg?style=for-the-badge"></a>
   <img src="https://img.shields.io/badge/Hardware-Verified-brightgreen.svg?style=for-the-badge">
