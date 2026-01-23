@@ -4,7 +4,7 @@
 
   <br />
 
-  <img src="Videos/DEMO new.gif" 
+  <img src="Videos/DEMO new new.gif" 
        alt="PEDAL-256 Assembly Demo" 
        width="750" 
        style="border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); display: block;">
