@@ -7,8 +7,6 @@
     <b> Mating Dynamics and Structural Breakdown of the PEDAL-256 </b>
   </p>
 </div>
----
-
 
 ## 📖 Overview
 
