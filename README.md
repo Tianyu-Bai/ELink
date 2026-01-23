@@ -4,12 +4,18 @@
 
   <img src="Images/001.PNG" alt="Exploded-view schematic of the PEDAL-256" width="750">
 
-  <video src="Videos/DEMO.mp4" muted autoplay loop playsinline width="750" style="margin-top: 20px;">
+  <video src="https://github.com/user-attachments/assets/241eccd0-93b3-4fb7-8e3f-9a8841d4254b" 
+         muted 
+         autoplay 
+         loop 
+         playsinline 
+         width="750" 
+         style="margin-top: 20px; border-radius: 4px;">
     Your browser does not support the video tag.
   </video>
 
-  <p style="margin-top: 10px;">
-    <b>  Mating Dynamics and Structural Breakdown of the PEDAL-256</b>
+  <p style="margin-top: 15px;">
+    <b>Figure 1 · Mating Dynamics and Structural Breakdown of the PEDAL-256 (256-Channel)</b>
   </p>
 </div>
 
