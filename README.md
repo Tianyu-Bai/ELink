@@ -2,10 +2,21 @@
   <h1 style="border-bottom: none; margin-bottom: 5px;">🚀 PEDAL-256</h1>
   <h3 style="font-weight: normal; margin-top: 0; color: #555;">An Open-Source, Solderless, High-Density Pedestal Connector for Neural Interfaces</h3>
 
-  <br />
+  <p style="margin-top: 15px;">
+    <a href="https://engineering.dartmouth.edu/research/labs/multifunctional-integrated-neuroelectronics-lab">
+      <img src="https://img.shields.io/badge/Dartmouth-MINE--Lab-00693E?style=flat-square" alt="MINE Lab">
+    </a>
+    <img src="https://img.shields.io/badge/Copyright-%C2%A9%20Tianyu%20Bai-blue?style=flat-square" alt="Copyright">
+    <img src="https://img.shields.io/badge/Verified-128%20%2F%20256ch%20Tested-brightgreen?style=flat-square" alt="Verified">
+    <img src="https://img.shields.io/badge/License-CERN--OHL--W-red?style=flat-square" alt="License">
+  </p>
 
+</div>
+
+  <br />
+<div align="center">
   <img src="Videos/Demo new new.gif" 
-       alt="PEDAL-256 Assembly Demo" 
+       alt="PEDAL-256 Assembly Demo GIF" 
        width="750" 
        style="border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); display: block;">
        
@@ -16,7 +27,7 @@
 
 **PEDAL-256** (Pedestal Elastomeric Dense Array Link) is an open-source, solderless, and scalable pedestal connector system designed for high-density chronic neural recording. It provides a mechanically robust and electrically reliable interface between thin-film implanted neural probes and external headstages, with a form factor optimized for freely moving animal studies.
 
-> [!TIP]
+> [!Note]
 > **Key Innovation:** The system integrates a high-density interposer PCB, an anisotropic elastomeric contact interface, and a lightweight pedestal housing into a fully integrated, headstage-ready solution.
 
 ### 📊 Quick Specifications
@@ -46,7 +57,7 @@
 <div align="center">
   <br />
   <img src="Videos/Animation latest.gif" 
-       alt="PEDAL-256 Explosive Demo" 
+       alt="PEDAL-256 Animation GIF" 
        width="500" 
        style="border-radius: 6px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); display: block;">
 </div>
@@ -82,7 +93,11 @@ Yongli Qi, Ph.D.
 
 Hui Fang, Ph.D. - Principal Investigator
 
-<p align="left"> <a href="https://www.google.com/search?q=https://engineering.dartmouth.edu/research/labs/multifunctional-integrated-neuroelectronics-lab"> <img src="https://www.google.com/search?q=https://img.shields.io/badge/Dartmouth-MINE--Lab-00693E%3Fstyle%3Dflat-square" alt="MINE Lab"> </a> </p>
+<p align="left">
+  <a href="https://engineering.dartmouth.edu/research/labs/multifunctional-integrated-neuroelectronics-lab">
+    <img src="https://img.shields.io/badge/Dartmouth-MINE--Lab-00693E?style=flat-square" alt="MINE Lab">
+  </a>
+</p>
 
 ## 📑 Citation & Feedback
 
