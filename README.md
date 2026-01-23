@@ -1,7 +1,7 @@
 <div align="center">
   <h1 style="margin-bottom: 0px; border-bottom: none;">🚀 PEDAL-256:An Open-Source, Solderless, High-Density Pedestal Connector for Neural Interfaces </h3>
 
-  <img src="Images/01.PNG" alt="Exploded-view schematic illustrating the assembly components of the modular 256-channel pedestal connector" width="750">
+  <img src="Images/001.PNG" alt="Exploded-view schematic illustrating the assembly components of the modular 256-channel pedestal connector" width="750">
   
   <p style="margin-top: 10px;">
     <b> Mating Dynamics and Structural Breakdown of the PEDAL-256 </b>
