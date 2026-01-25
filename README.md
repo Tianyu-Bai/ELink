@@ -34,12 +34,12 @@
 <div align="center">
 <p align="center">
   
-| Specification | PEDAL-256_V1.1 |
+| Specification | PEDAL-256_V1.0 |
 | :---: | :---: |
 | **Channel Count** | 128 or 256 Channels (Single/Dual SPI Port support) |
 | **Total Mass** | ~6.6 g (with housing)<br>~2.8 g (without housing) |
 | **Interconnect Type** | Solderless Anisotropic Elastomer |
-| **Compatible Acquisition System** | Intan Recording Controller(512ch/1024ch)<br>Open-Ephys DAQ box<br>NeuroNexus Smartbox |
+| **Compatible Acquisition System** | Intan Recording Controller (512ch/1024ch)<br>Open-Ephys DAQ box<br>NeuroNexus Smartbox |
 | **Housing Material** | 3D-Printed PEEK / Surgical Grade Resin |
  </p>
 </div>
