@@ -10,8 +10,7 @@
    <a href="https://sites.dartmouth.edu/fang-group/"><img src="https://img.shields.io/badge/Dartmouth-MINE--Lab-00693E?style=flat-square" alt="MINE Lab"></a>
    <img src="https://img.shields.io/badge/Verified-256ch-FFA500?style=flat-square" alt="Verified" />
    <a href="https://tianyu-bai.github.io/"><img src="https://img.shields.io/badge/Website-Tianyu%20Bai-0077B5?style=flat-square&logo=github&logoColor=white" alt="Website"></a>
-   <a href="https://www.linkedin.com/in/tianyubai/"><img src="https://img.shields.io/badge/LinkedIn-Profile-0A66C2?style=flat-square&logo=linkedin&logoColor=white" alt="LinkedIn">
-  </a>
+   <a href="https://www.linkedin.com/in/tianyubai/"><img src="https://img.shields.io/badge/LinkedIn-Profile-0A66C2?style=flat-square&logo=linkedin&logoColor=white" alt="LinkedIn"></a>
  </p>
 
 </div>
@@ -101,15 +100,15 @@
 
 ## 👥 Developers & Lab
 This project is developed by the Multifunctional Integrated NeuroElectronics (MINE) Lab at Dartmouth College <a href="[https://engineering.dartmouth.edu/research/labs/multifunctional-integrated-neuroelectronics-lab](https://sites.dartmouth.edu/fang-group/)">
-    <img src="https://img.shields.io/badge/MINE--Lab-00693E?style=flat-square" alt="MINE Lab">
+     <a href="https://sites.dartmouth.edu/fang-group/"><img src="https://img.shields.io/badge/MINE--Lab-00693E?style=flat-square" alt="MINE Lab"></a>
 
-<p><strong>Tianyu Bai</strong> <img src="https://img.shields.io/badge/Lead%20Designer-FFD700?style=flat-square&logo=adobelightroom&logoColor=black" /></p>
+<p><strong>Tianyu Bai</strong> <a href="https://tianyu-bai.github.io/"><img src="https://img.shields.io/badge/Lead%20Designer-FFD700?style=flat-square&logo=adobelightroom&logoColor=black" /></a></p>
 
 <p>Gen Li, Ph.D.
 
 <p>Yongli Qi, Ph.D.
 
-<p><strong>Hui Fang, Ph.D.</strong> <img src="https://img.shields.io/badge/Principal%20Investigator-444444?style=flat-square&logoColor=white" /></p>
+<p><strong>Hui Fang, Ph.D.</strong> <a href="https://engineering.dartmouth.edu/community/faculty/hui-fang"><img src="https://img.shields.io/badge/Principal%20Investigator-444444?style=flat-square&logoColor=white" /></p>
 
 ---
 
