@@ -28,7 +28,7 @@
 **PEDAL-256** (Pedestal Elastomeric Dense Array Link) is an open-source, solderless, and scalable pedestal connector system designed for high-density chronic neural recording. It provides a mechanically robust and electrically reliable interface between thin-film implanted neural probes and external headstages, with a form factor optimized for freely moving animal studies.
 
 > [!Note]
-> **Key Innovation:** The system integrates a high-density interposer PCB, an anisotropic elastomeric contact interface, and a lightweight pedestal housing into a fully integrated, headstage-ready solution.
+> **Key Innovation:** The system integrates two high-density PCBs, an anisotropic elastomeric contact interface, and a lightweight pedestal housing into a fully integrated, headstage-ready solution.
 
 ### 📊 Quick Specifications
 <div align="center">
@@ -55,7 +55,7 @@
 * **🐭 Optimized for In-Vivo Research**
    Minimal Implant Footprint Core components weigh only 2.8g (with housing removed), reducing head-heavy behavior and improving animal welfare during long-term recording sessions.
 * **🛠️ Modular & Scalable**
-    Separable housing, PCB, and protective cap for rapid iteration and troubleshooting.
+    Separable housing, PCBs, and protective cap for rapid iteration and troubleshooting.
 * **🧪 Surgical-Grade Design**
     Textured sidewalls for superior adhesion with dental cement or UV-curable resin.
 <div align="center">
@@ -77,7 +77,7 @@
 | **Pedestal Housing** | 3D-printed/machined pedestal providing structural support and cranial fixation |
 | **Customized 256Ch Headstage** | Form-factor optimized recording interface for high-density 128/256-channel signal acquisition |
 | **Foam Washer** | Provides compliant compression to ensure uniform electrical contact across the elastomeric interface |
-| **Adapter PCB** | High-density interposer PCB for routing signals from thin-film probes to standardized connector arrays |
+| **Adapter PCB** | High-density 4-layer PCB for routing signals from thin-film probes to headstage ball array pattern |
 | **Surgical Cap** | Protective enclosure preserving electrical and mechanical integrity throughout chronic experiments |
 
   <img src="Images/001.PNG" alt="PEDAL-256 Exploded View" width="750">
@@ -122,7 +122,7 @@ This project is developed by the Multifunctional Integrated NeuroElectronics (MI
 
 For academic use, please cite this repository until our formal publication is released. We also welcome feedback and collaboration from the neuroengineering community!
 
-- **Current Reference:** PEDAL-256 Open Source Hardware (v1.0), MINE Lab, Dartmouth College.
+- **Current Reference:** PEDAL-256 Open Source Hardware (V1.0), MINE Lab, Dartmouth College.
 
 ## 📄 Publication
 
@@ -144,7 +144,7 @@ Special thanks to the members of the **MINE Lab** and the **Thayer School of Eng
 
 Copyright © 2026 **<font color="#00693E">Tianyu Bai</font>**.
 
-This project is open-source and available under the **MIT License**. Click the badge for full license details.
+This project is open-source and available under the **MIT License**. Click the badge below for full license details.
 <div align="center">
 <p align="center">
   
