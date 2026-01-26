@@ -124,6 +124,8 @@ For academic use, please cite this repository until our formal publication is re
 
 - **Current Reference:** PEDAL-256 Open Source Hardware (V1.0), MINE Lab, Dartmouth College.
 
+---
+
 ## 📄 Publication
 
 This work is currently **under review**. 
