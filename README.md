@@ -1,10 +1,9 @@
 
 <div align="center">
   <h1 style="border-bottom: none; margin-bottom: 5px;">🚀 PEDAL-256</h1>
-  
+
   <p align="center">
     <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=24&pause=1000&color=00693E&center=true&vCenter=true&width=750&lines=An+Open-Source,+Solderless,+High-Density;Pedestal+Connector+for+Neural+Interfaces" />
-  </p>
 
 
 <p align="center" style="margin-top: 15px;">
@@ -30,7 +29,7 @@
        style="border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); display: block;">
 </div>
 
-<br>
+---
 
 ## 📖 Overview
 
@@ -56,7 +55,7 @@
       </tr>
       <tr>
         <td style="padding: 8px; border: 1px solid #e1e4e8;"><b>Total Mass</b></td>
-        <td style="padding: 8px; border: 1px solid #e1e4e8;">~6.6 g (with housing)<br>~2.8 g (without housing)</td>
+        <td style="padding: 8px; border: 1px solid #e1e4e8;">6.6 g (with housing)<br>2.8 g (without housing)</td>
       </tr>
       <tr>
         <td style="padding: 8px; border: 1px solid #e1e4e8;"><b>Interconnect Type</b></td>
@@ -199,21 +198,19 @@
 
 ## 👥 Developers & Lab
 
-This project is developed by the **Multifunctional Integrated NeuroElectronics (MINE) Lab** at Dartmouth College. <a href="https://sites.dartmouth.edu/fang-group/">
-  <img src="https://img.shields.io/badge/MINE--Lab-00693E?style=flat-square" alt="MINE Lab">
+This project is developed by the **Multifunctional Integrated NeuroElectronics Lab** at Dartmouth College. <a href="https://sites.dartmouth.edu/fang-group/">
+  <img src="https://img.shields.io/badge/VISIT_WEBSITE_%E2%86%97-MINE_Lab-00693E?style=flat-square" alt="MINE Lab">
 </a>
 
-* **Tianyu Bai** (Lead Designer)
-  <a href="https://tianyu-bai.github.io/">
-    <img src="https://img.shields.io/badge/Portfolio-Tianyu%20Bai-FFD700?style=flat-square&logo=adobelightroom&logoColor=black" />
-  </a>
+* **Tianyu Bai** (Lead Designer) <a href="https://tianyu-bai.github.io/">
+  <img src="https://img.shields.io/badge/VISIT_PORTFOLIO_%E2%86%97-Tianyu_Bai-FFD700?style=flat-square&logo=adobelightroom&logoColor=black" alt="Visit Portfolio" />
+</a>
 
 * **Gen Li, Ph.D.**
 
-* **Hui Fang, Ph.D.** 
-  <a href="https://engineering.dartmouth.edu/community/faculty/hui-fang">
-    <img src="https://img.shields.io/badge/Principal%20Investigator-444444?style=flat-square&logoColor=white" />
-  </a>
+* **Hui Fang, Ph.D.** <a href="https://engineering.dartmouth.edu/community/faculty/hui-fang">
+  <img src="https://img.shields.io/badge/VISIT_WEBSITE_%E2%86%97-Principal_Investigator-444444?style=flat-square" alt="Principal Investigator">
+</a>
 
 ---
 
@@ -242,9 +239,13 @@ The developers gratefully acknowledge support from the **NIH (R01MH139342)** and
 
 Special thanks to the members of the **MINE Lab** and the **Thayer School of Engineering** for their technical support and feedback throughout the development of the PEDAL-256 system.
 
+---
+
 ## 📜 License
 
-Copyright © 2026 <font color="#00693E">Tianyu Bai</font>.
+Copyright © 2026 <font color="#00693E">Tianyu Bai</font>. <a href="https://tianyu-bai.github.io/">
+  <img src="https://img.shields.io/badge/VISIT_PORTFOLIO_%E2%86%97-Tianyu_Bai-FFD700?style=flat-square&logo=adobelightroom&logoColor=black" alt="Visit Portfolio" />
+</a>
 
 This project is open-source and available under the **MIT License**. Click the badge below for full license details.
 
