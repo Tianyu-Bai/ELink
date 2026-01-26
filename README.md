@@ -165,14 +165,14 @@
         <td style="padding: 8px; border: 1px solid #e1e4e8; text-align: center;">Standard SMD</td>
         <td style="padding: 8px; border: 1px solid #e1e4e8; text-align: center;">7</td>
         <td style="padding: 8px; border: 1px solid #e1e4e8; text-align: center;">0402</td>
-        <td style="padding: 8px; border: 1px solid #e1e4e8; text-align: center;">-</td>
+        <td style="padding: 8px; border: 1px solid #e1e4e8; text-align: center;">LVDS Configuration</td>
       </tr>
       <tr>
         <td style="padding: 8px; border: 1px solid #e1e4e8; text-align: center;"><b>Capacitors</b></td>
         <td style="padding: 8px; border: 1px solid #e1e4e8; text-align: center;">Standard SMD</td>
         <td style="padding: 8px; border: 1px solid #e1e4e8; text-align: center;">8</td>
         <td style="padding: 8px; border: 1px solid #e1e4e8; text-align: center;">0603</td>
-        <td style="padding: 8px; border: 1px solid #e1e4e8; text-align: center;">-</td>
+        <td style="padding: 8px; border: 1px solid #e1e4e8; text-align: center;">LVDS Configuration</td>
       </tr>
       <tr>
         <td style="padding: 8px; border: 1px solid #e1e4e8; text-align: center;"><b>Power LED</b></td>
@@ -204,14 +204,6 @@ This project is developed by the **Multifunctional Integrated NeuroElectronics L
 
 ---
 
-## 📑 Citation & Feedback
-
-For academic use, please cite this repository until our formal publication is released. We also welcome feedback and collaboration from the neuroengineering community!
-
-* **Current Reference:** PEDAL-256 Open Source Hardware (V1.0), MINE Lab, Dartmouth College.
-
----
-
 ## 📄 Publication
 
 This work is currently **under review**. 
@@ -220,6 +212,29 @@ The hardware designs and visual assets in this repository correspond directly to
 * **Full Citation:** Will be updated here upon formal acceptance.
 * **Inquiries:** For access to the full manuscript or questions regarding the design, please contact **Tianyu Bai** or **Prof. Hui Fang**.
 * **Full Paper:** *Coming Soon.*
+
+---
+
+## 📑 Citation & Feedback
+
+For academic use, please cite this repository until our formal publication is released. We also welcome feedback and collaboration from the neuroengineering community!
+
+* **Current Reference:** PEDAL-256 Open Source Hardware (V1.0), MINE Lab, Dartmouth College.
+
+---
+
+## 🔗 Repository & Downloads
+
+This project is fully open-source. Upon acceptance of the associated paper, the complete dataset comprising **PCB fabrication files (Gerber/NC Drill)**, **BOM**, and **Mechanical CAD** will be accessible via the link below.
+
+<div align="center">
+  <p><b>👇 Bookmark the repository for future downloads:</b></p>
+
+<div align="center">
+  <a href="https://github.com/Tianyu-Bai/PEDAL-256"><img src="https://img.shields.io/badge/GitHub-View_Source_Repository-181717?style=for-the-badge&logo=github&logoColor=white" alt="View on GitHub"></a>
+  <img src="https://img.shields.io/badge/Status-Locked_until_Publication-A31F34?style=for-the-badge&logo=private" alt="Status Locked">
+</div>
+</div>
 
 ---
 
