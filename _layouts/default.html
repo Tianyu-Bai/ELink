@@ -24,94 +24,62 @@
 
     <script>
       window.MathJax = {
-        tex: {
-          inlineMath: [['$', '$'], ['\\(', '\\)']],
-          processEscapes: true,
-          tags: 'ams'
-        },
+        tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], processEscapes: true, tags: 'ams' },
         options: { renderActions: { addMenu: [] } }
       };
     </script>
     <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" id="MathJax-script" async></script>
 
     <style>
-      /* --- 0. 全局设置 --- */
+      /* --- 全局与特效样式 --- */
       body { 
-        margin: 0; padding: 0; color: #475569; 
-        font-family: 'Inter', -apple-system, sans-serif; 
-        line-height: 1.6; overflow-x: hidden; 
-        cursor: none; 
+        margin: 0; padding: 0; color: #475569; font-family: 'Inter', -apple-system, sans-serif; 
+        line-height: 1.6; overflow-x: hidden; cursor: none;
         scrollbar-width: thin; scrollbar-color: #d8b4fe transparent;
       }
       @media (pointer: coarse) { body { cursor: auto; } }
 
-      ::-webkit-scrollbar { width: 6px; }
-      ::-webkit-scrollbar-track { background: transparent; }
-      ::-webkit-scrollbar-thumb { background: rgba(168, 85, 247, 0.3); border-radius: 10px; }
-      ::-webkit-scrollbar-thumb:hover { background: rgba(168, 85, 247, 0.6); }
-      ::selection { background: #a855f7; color: #ffffff; text-shadow: 0 0 8px rgba(255, 255, 255, 0.8); }
-
-      /* --- 1. 自定义光标 --- */
-      .cursor-dot, .cursor-outline {
-        position: fixed; top: 0; left: 0; 
-        transform: translate(-50%, -50%); border-radius: 50%; z-index: 99999; pointer-events: none;
-      }
+      /* 自定义光标 */
+      .cursor-dot, .cursor-outline { position: fixed; top: 0; left: 0; transform: translate(-50%, -50%); border-radius: 50%; z-index: 99999; pointer-events: none; }
       .cursor-dot { width: 8px; height: 8px; background-color: #a855f7; }
-      .cursor-outline { 
-        width: 40px; height: 40px; border: 1px solid rgba(168, 85, 247, 0.5); 
-        transition: width 0.2s, height 0.2s, background-color 0.2s;
-      }
+      .cursor-outline { width: 40px; height: 40px; border: 1px solid rgba(168, 85, 247, 0.5); transition: width 0.2s, height 0.2s, background-color 0.2s; }
       body.hovering .cursor-outline { width: 60px; height: 60px; background-color: rgba(168, 85, 247, 0.1); border-color: transparent; }
-      @media (max-width: 768px) { .cursor-dot, .cursor-outline { display: none; } }
 
-      /* --- 2. 进度条与背景 --- */
-      #progress-bar { position: fixed; top: 0; left: 0; height: 3px; background: linear-gradient(90deg, #a855f7, #3b82f6); width: 0%; z-index: 99999; transition: width 0.1s; }
-      #vanta-bg { position: fixed; z-index: -5; top: 0; left: 0; width: 100%; height: 100%; background: #f3e8ff; }
+      /* 背景与进度条 */
+      #progress-bar { position: fixed; top: 0; left: 0; height: 3px; background: linear-gradient(90deg, #a855f7, #3b82f6); width: 0%; z-index: 99999; }
+      #vanta-bg { position: fixed; z-index: -5; top: 0; left: 0; width: 100%; height: 100%; background: #fdf4ff; }
 
-      /* --- 3. 布局与机器人 (保留全部特效) --- */
+      /* 玻璃容器 */
       .layout-wrapper { position: relative; max-width: 860px; margin: 80px auto 60px; z-index: 10; perspective: 1000px; }
-      #bot-container {
-        position: absolute; top: -45px; left: 50%; transform: translateX(-50%);
-        width: 120px; height: 70px; z-index: 9999; cursor: pointer;
-        opacity: 0; animation: botEnter 0.8s ease-out 0.8s forwards; transition: transform 0.3s ease;
-      }
-      #bot-container.dizzy .bot-head { animation: spin-happy 1s ease-in-out; }
-      .bot-head { width: 100px; height: 50px; background: #ffffff; border: 2px solid #e9d5ff; border-bottom: none; border-radius: 50px 50px 20px 20px; margin: 0 auto; position: relative; box-shadow: 0 -5px 15px rgba(168, 85, 247, 0.15); display: flex; justify-content: center; align-items: center; gap: 10px; padding-top: 5px; animation: float-bot 3s ease-in-out infinite; }
-      .bot-eye { width: 28px; height: 28px; background: #f3e8ff; border-radius: 50%; border: 1px solid #d8b4fe; position: relative; overflow: hidden; box-shadow: inset 0 2px 5px rgba(0,0,0,0.05); }
-      .bot-pupil { width: 14px; height: 14px; background: #7e22ce; border-radius: 50%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); box-shadow: 0 0 4px rgba(126, 34, 206, 0.6); }
-      .bot-lid { position: absolute; top: 0; left: 0; width: 100%; height: 0%; background: #ffffff; z-index: 10; animation: blink 4s infinite; }
-      .bot-antenna { position: absolute; top: -15px; left: 50%; transform: translateX(-50%); width: 2px; height: 15px; background: #e9d5ff; }
-      .bot-antenna::after { content: ''; position: absolute; top: -6px; left: -3px; width: 8px; height: 8px; background: #a855f7; border-radius: 50%; animation: pulse-antenna 2s infinite; }
-
-      /* --- 4. 玻璃容器 --- */
       .container { 
-        position: relative; padding: 60px 80px; 
-        background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-        border-radius: 20px; box-shadow: 0 20px 50px rgba(168, 85, 247, 0.15);
-        border: 1px solid rgba(255, 255, 255, 0.8); border-top: 4px solid #a855f7; 
-        opacity: 0; animation: fadeUp 0.8s ease-out 0.3s forwards; 
-        transform-style: preserve-3d; transition: transform 0.1s ease-out; 
+        position: relative; padding: 60px 80px; background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+        border-radius: 20px; box-shadow: 0 20px 50px rgba(168, 85, 247, 0.15); border: 1px solid rgba(255, 255, 255, 0.8); border-top: 4px solid #a855f7; 
+        opacity: 0; animation: fadeUp 0.8s ease-out 0.3s forwards; transform-style: preserve-3d; transition: transform 0.1s ease-out; 
       }
-      .container::before {
-        content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; 
-        background: radial-gradient(800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(168, 85, 247, 0.08), transparent 40%);
-        opacity: 0; transition: opacity 0.5s ease; pointer-events: none;
-      }
-      .container:hover::before { opacity: 1; }
 
-      /* --- 5. 动画库 --- */
-      @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-      @keyframes float-bot { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
-      @keyframes blink { 0%, 48%, 52%, 100% { height: 0%; } 50% { height: 100%; } }
-      @keyframes botEnter { from { opacity: 0; transform: translateX(-50%) translateY(20px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
-      @keyframes spin-happy { 0% { transform: rotate(0deg); } 50% { transform: rotate(10deg) scale(1.1); } 100% { transform: rotate(0deg); } }
+      /* 机器人核心样式 */
+      #bot-container { position: absolute; top: -45px; left: 50%; transform: translateX(-50%); width: 120px; height: 70px; z-index: 9999; cursor: pointer; opacity: 0; animation: botEnter 0.8s ease-out 0.8s forwards; transition: transform 0.3s ease; }
+      .bot-head { width: 100px; height: 50px; background: #ffffff; border: 2px solid #e9d5ff; border-bottom: none; border-radius: 50px 50px 20px 20px; margin: 0 auto; position: relative; display: flex; justify-content: center; align-items: center; gap: 10px; animation: float-bot 3s ease-in-out infinite; }
+      .bot-eye { width: 28px; height: 28px; background: #f3e8ff; border-radius: 50%; position: relative; overflow: hidden; }
+      .bot-pupil { width: 14px; height: 14px; background: #7e22ce; border-radius: 50%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+      .bot-antenna { position: absolute; top: -15px; left: 50%; transform: translateX(-50%); width: 2px; height: 15px; background: #e9d5ff; }
+      .bot-antenna::after { content: ''; position: absolute; top: -6px; left: -3px; width: 8px; height: 8px; background: #a855f7; border-radius: 50%; animation: pulse-antenna 2s infinite; transition: background 0.3s ease; }
+
+      /* 🚀 神经超载模式：悬停在导航项时天线变绿变快 */
+      #bot-container.overload .bot-antenna::after { 
+        background: #22c55e !important; 
+        animation: pulse-antenna-fast 0.5s infinite !important; 
+        box-shadow: 0 0 10px #22c55e;
+      }
+
+      /* 动画库 */
       @keyframes pulse-antenna { 0% { box-shadow: 0 0 0 0 rgba(168, 85, 247, 0.7); } 70% { box-shadow: 0 0 0 5px rgba(168, 85, 247, 0); } 100% { box-shadow: 0 0 0 0 rgba(168, 85, 247, 0); } }
+      @keyframes pulse-antenna-fast { 0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); } 70% { box-shadow: 0 0 0 8px rgba(34, 197, 94, 0); } 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); } }
+      @keyframes float-bot { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+      @keyframes botEnter { from { opacity: 0; transform: translateX(-50%) translateY(20px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
+      @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-      /* 图片融合 */
-      img { max-width: 100%; height: auto; border-radius: 8px; mix-blend-mode: multiply; filter: contrast(1); }
-      .nav-badges img { mix-blend-mode: normal !important; height: 28px !important; border-radius: 50px; border: 1.5px solid white; }
-      .gif-blend { mix-blend-mode: multiply !important; filter: contrast(1.15) brightness(1.05) !important; display: block; margin: 0 auto; border-radius: 12px; }
-
+      /* 适配 */
       @media screen and (max-width: 768px) { .layout-wrapper { margin: 15px; perspective: none; } .container { padding: 30px 15px; transform: none !important; } #bot-container { display: none; } }
     </style>
   </head>
@@ -123,67 +91,67 @@
     <div id="vanta-bg"></div>
 
     <div class="layout-wrapper">
-      <div id="bot-container" title="Click me!">
+      <div id="bot-container" title="System Online">
         <div class="bot-antenna"></div>
         <div class="bot-head">
-          <div class="bot-eye"><div class="bot-pupil"></div><div class="bot-lid"></div></div>
-          <div class="bot-eye"><div class="bot-pupil"></div><div class="bot-lid"></div></div>
+          <div class="bot-eye"><div class="bot-pupil"></div></div>
+          <div class="bot-eye"><div class="bot-pupil"></div></div>
         </div>
       </div>
 
       <div class="container">
-        <section id="main_content">
-          {{ content }}
-        </section>
+        <section id="main_content">{{ content }}</section>
 
         <footer style="margin-top: 60px; padding: 30px 0; border-top: 1px solid rgba(168, 85, 247, 0.2); text-align: center; font-family: 'JetBrains Mono', monospace;">
-          <p style="color: #94a3b8; font-size: 0.85rem; margin-bottom: 12px;">
-            PEDAL-256 • &copy; 2026 Tianyu Bai. All Rights Reserved.
-          </p>
-          <div style="display: inline-flex; align-items: center; gap: 8px; font-size: 0.8rem; opacity: 0.8; background: rgba(168, 85, 247, 0.05); padding: 6px 15px; border-radius: 20px;">
-            <span style="color: #a855f7;">[SYS_MONITOR]</span> 
-            <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Ftianyu-bai.github.io&count_bg=%237E22CE00&title_bg=%2355555500&icon=&icon_color=%23E7E7E7&title=%20&edge_flat=true" style="height: 18px; mix-blend-mode: multiply; filter: contrast(1.2) hue-rotate(280deg);">
-            <span style="color: #3fb950; font-weight: bold; animation: pulse-dot 2s infinite;">● LIVE</span>
-          </div>
+          <p style="color: #94a3b8; font-size: 0.85rem;">PEDAL-256 • &copy; 2026 Tianyu Bai</p>
+          <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Ftianyu-bai.github.io&count_bg=%237E22CE00&title_bg=%2355555500&icon_color=%23E7E7E7&title=%20&edge_flat=true" style="height: 18px; mix-blend-mode: multiply; filter: contrast(1.2) hue-rotate(280deg);">
         </footer>
       </div>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js" defer></script>
+    
     <script>
-      // 1. 核心逻辑：先渲染内容，后加载重型背景
       window.onload = function() {
-        const loadJS = (src) => new Promise(resolve => {
-          const s = document.createElement('script');
-          s.src = src; s.onload = resolve; document.body.appendChild(s);
-        });
-
-        // 异步链式加载背景库，彻底解决“打转”
+        const loadJS = (src) => new Promise(resolve => { const s = document.createElement('script'); s.src = src; s.onload = resolve; document.body.appendChild(s); });
         Promise.all([
           loadJS("https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"),
           loadJS("https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js")
         ]).then(() => {
           if (typeof VANTA !== 'undefined') {
-            VANTA.NET({
-              el: "#vanta-bg", mouseControls: true, touchControls: true, scale: 1.00,
-              color: 0xa855f7, backgroundColor: 0xfdf4ff, points: 11.0, maxDistance: 23.0, spacing: 17.0
-            });
+            VANTA.NET({ el: "#vanta-bg", mouseControls: true, touchControls: true, scale: 1.00, color: 0xa855f7, backgroundColor: 0xfdf4ff, points: 11.0 });
           }
         });
       };
 
-      // 2. 交互逻辑 (保留原汁原味)
       document.addEventListener("DOMContentLoaded", function() {
-        const cursorDot = document.querySelector('.cursor-dot');
-        const cursorOutline = document.querySelector('.cursor-outline');
+        const botContainer = document.getElementById('bot-container');
         const container = document.querySelector('.container');
         const pupils = document.querySelectorAll('.bot-pupil');
         const eyes = document.querySelectorAll('.bot-eye');
-        const botContainer = document.getElementById('bot-container');
 
+        // 🚀 核心改动：监听所有导航链接（Badges, Overview, BOM, Spec 等）
+        // 只要是 nav-badges 里的链接，或者包含这几个关键词的链接，都会触发超载
+        const interactiveLinks = document.querySelectorAll('.nav-badges a, a[href*="BOM"], a[href*="Spec"], a[href*="Overview"]');
+        
+        interactiveLinks.forEach(link => {
+          link.addEventListener('mouseenter', () => {
+            botContainer.classList.add('overload');
+            document.body.classList.add('hovering');
+          });
+          link.addEventListener('mouseleave', () => {
+            botContainer.classList.remove('overload');
+            document.body.classList.remove('hovering');
+          });
+        });
+
+        // 鼠标追踪逻辑
         window.addEventListener('mousemove', (e) => {
           const { clientX: x, clientY: y } = e;
-          cursorDot.style.left = `${x}px`; cursorDot.style.top = `${y}px`;
-          cursorOutline.animate({ left: `${x}px`, top: `${y}px` }, { duration: 500, fill: "forwards" });
+          document.querySelector('.cursor-dot').style.left = `${x}px`;
+          document.querySelector('.cursor-dot').style.top = `${y}px`;
+          document.querySelector('.cursor-outline').animate({ left: `${x}px`, top: `${y}px` }, { duration: 500, fill: "forwards" });
 
           if (window.innerWidth > 768 && container) {
             const rotY = (window.innerWidth / 2 - x) / 50;
@@ -201,18 +169,6 @@
             p.style.transform = `translate(calc(-50% + ${Math.cos(angle)*d}px), calc(-50% + ${Math.sin(angle)*d}px))`;
           });
         });
-
-        document.querySelectorAll('a, button, .nav-badges img, #bot-container').forEach(el => {
-          el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
-          el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
-        });
-
-        if(botContainer) {
-          botContainer.addEventListener('click', () => {
-            botContainer.classList.add('dizzy');
-            setTimeout(() => botContainer.classList.remove('dizzy'), 1000);
-          });
-        }
 
         window.addEventListener('scroll', () => {
           const scrolled = (document.documentElement.scrollTop / (document.documentElement.scrollHeight - document.documentElement.clientHeight)) * 100;
