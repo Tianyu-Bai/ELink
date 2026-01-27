@@ -60,23 +60,34 @@
       }
       
       /* --- 导航徽章特效 --- */
-      .nav-badges { margin: 2rem 0; }
-      .nav-badges a { border-bottom: none !important; }
-      .nav-badges img { transition: transform 0.2s ease; }
-      .nav-badges a:hover img { transform: translateY(-2px); }
+      .nav-badges {
+        margin: 2.5rem 0;          /* 上下留白更多 */
+        display: flex;             /* 使用弹性布局 */
+        flex-wrap: wrap;           /* 手机上自动换行 */
+        justify-content: center;   /* 居中对齐 */
+        gap: 12px;                 /* 按钮之间的间距 */
+      }
 
-      /* --- 代码块 --- */
-      pre { background: #f1f5f9; padding: 15px; border-radius: 8px; overflow-x: auto; border: 1px solid #e2e8f0; font-size: 0.9rem; }
-      code { font-family: 'JetBrains Mono', monospace; background: rgba(0,0,0,0.05); padding: 2px 4px; border-radius: 4px; color: #0369a1; }
-      pre code { background: none; padding: 0; color: inherit; }
-    </style>
+      .nav-badges a {
+        border-bottom: none !important; 
+        text-decoration: none !important;
+        line-height: 0;            /* 消除链接自带的行高干扰 */
+      }
 
-    <link rel="stylesheet" href="assets/css/academicons.css"/>
-    <script type="text/x-mathjax-config"> MathJax.Hub.Config({ TeX: { equationNumbers: { autoNumber: "all" } } }); </script>
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({ tex2jax: { inlineMath: [ ['$','$'], ["\\(","\\)"] ], processEscapes: true } });
-    </script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-MML-AM_CHTML' async></script>
+      .nav-badges img {
+        height: 36px !important;   /* 🔥 关键：强制变大！(默认只有20px) */
+        width: auto;               /* 宽度自动保持比例 */
+        border-radius: 6px;        /* 稍微圆润一点 */
+        box-shadow: 0 4px 6px rgba(59, 130, 246, 0.15); /* 加点蓝色投影 */
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* 🚀 弹性果冻动画效果 */
+      }
+
+      /* 🖱️ 鼠标悬停时的特效 */
+      .nav-badges a:hover img {
+        transform: scale(1.15) translateY(-3px); /* 放大 1.15 倍 + 上浮 */
+        box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3); /* 投影变大变深 */
+        z-index: 10; /* 保证放大的时候压在别人上面 */
+      }
 
   </head>
 
