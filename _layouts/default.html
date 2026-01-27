@@ -33,32 +33,35 @@
 
       /* --- 背景层 (Vanta) --- */
       #vanta-bg {
-        position: fixed; z-index: -2; /* 放在最底层 */
+        position: fixed; z-index: -2; 
         top: 0; left: 0; width: 100%; height: 100%;
         background: #f3e8ff; 
       }
 
-      /* --- 🌠 流星层 (Shooting Stars) --- */
+      /* --- 🌠 流星层 (显著增强版) --- */
       #stars-container {
         position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-        z-index: -1; /* 在Vanta之上，在内容之下 */
+        z-index: -1; 
         pointer-events: none; overflow: hidden;
       }
       .star {
         position: absolute;
-        /* 流星本体：一个淡淡的紫色渐变长条 */
-        width: 150px; height: 2px;
-        background: linear-gradient(90deg, rgba(255,255,255,0), rgba(168, 85, 247, 0.6));
-        transform: rotate(-45deg); /* 倾斜角度 */
-        opacity: 0; /* 默认不可见 */
+        width: 120px; height: 3px; /* 稍微加粗 */
+        /* 🔥 核心修改：改为深色渐变，在浅背景下才看得清 */
+        background: linear-gradient(90deg, rgba(255,255,255,0) 0%, #a855f7 50%, #db2777 100%);
+        /* 加一点光晕 */
+        box-shadow: 0 0 10px rgba(219, 39, 119, 0.5);
+        transform: rotate(-45deg); opacity: 0;
       }
-      /* 分别定义三颗流星的轨道和时间，制造随机感 */
-      .star:nth-child(1) { top: 20%; left: -20%; animation: shooting 12s linear infinite 3s; }
-      .star:nth-child(2) { top: 50%; left: -30%; animation: shooting 18s linear infinite 8s; }
-      .star:nth-child(3) { top: -10%; left: 40%; animation: shooting 15s linear infinite 1s; }
+      
+      /* 调整轨道和速度：让它们飞得快一点，不用等那么久 */
+      .star:nth-child(1) { top: 10%; left: -10%; animation: shooting 4s linear infinite 0s; } /* 立刻出现 */
+      .star:nth-child(2) { top: 40%; left: -20%; animation: shooting 6s linear infinite 2s; }
+      .star:nth-child(3) { top: 70%; left: -10%; animation: shooting 5s linear infinite 1s; }
+      .star:nth-child(4) { top: -10%; left: 30%; animation: shooting 7s linear infinite 3.5s; }
 
       
-      /* --- 容器 (带鼠标追光) --- */
+      /* --- 容器 (鼠标追光) --- */
       .container { 
         position: relative; max-width: 860px; margin: 60px auto; padding: 60px 80px; 
         background: rgba(255, 255, 255, 0.75); 
@@ -70,7 +73,6 @@
         opacity: 0; animation: fadeUp 0.8s ease-out 0.3s forwards; 
         overflow: hidden; 
       }
-      /* 鼠标追光层 */
       .container::before {
         content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
         background: radial-gradient(800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(168, 85, 247, 0.06), transparent 40%);
@@ -142,12 +144,12 @@
       @keyframes float-hover { 0% { transform: scale(1.15) translateY(-2px); } 50% { transform: scale(1.15) translateY(-6px); } 100% { transform: scale(1.15) translateY(-2px); } }
       @keyframes ripple-wave { 0% { transform: scale(1) translateY(0); } 30% { transform: scale(1.12) translateY(-5px); box-shadow: 0 12px 24px rgba(168, 85, 247, 0.4); } 100% { transform: scale(1) translateY(0); } }
       
-      /* 🌠 新增：流星划过动画 */
+      /* 🌠 流星划过 (不透明度设为1) */
       @keyframes shooting {
-        0% { transform: rotate(-45deg) translateX(0); opacity: 0; } /* 起点：不可见 */
-        10% { opacity: 0.4; } /* 划过途中：微微发亮（关键：透明度不要太高，0.4足够微妙） */
-        80% { opacity: 0; }
-        100% { transform: rotate(-45deg) translateX(1200px); opacity: 0; } /* 终点：划出屏幕并消失 */
+        0% { transform: rotate(-45deg) translateX(0); opacity: 0; }
+        10% { opacity: 0.9; } /* 改为 1，完全可见 */
+        80% { opacity: 1; }
+        100% { transform: rotate(-45deg) translateX(1200px); opacity: 0; }
       }
     </style>
 
@@ -162,6 +164,7 @@
     <div id="progress-bar"></div>
     
     <div id="stars-container">
+      <div class="star"></div>
       <div class="star"></div>
       <div class="star"></div>
       <div class="star"></div>
