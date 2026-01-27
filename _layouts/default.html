@@ -104,24 +104,39 @@
       }
       .container:hover::before { opacity: 1; }
 
-      /* --- 适配 --- */
+      /* --- 适配 (这里修改了手机端字体大小) --- */
       @media screen and (max-width: 768px) { 
         .layout-wrapper { margin: 15px; perspective: none; }
         .container { padding: 30px 15px; border-radius: 12px; transform: none !important; } 
         #bot-container { display: none; } 
-        h1 { font-size: 1.45rem !important; line-height: 1.3; } 
+        /* 修改: 手机端字体加大到 2.5rem */
+        h1 { font-size: 2.5rem !important; line-height: 1.2; } 
       }
       
       /* --- 内容排版 --- */
       h1 { 
-        font-size: 2.25rem; font-weight: 700; margin-bottom: 1.5rem; letter-spacing: -0.02em; 
+        font-size: 2.25rem; 
+        font-weight: 700; 
+        margin-bottom: 0.5rem; 
+        letter-spacing: -0.02em; 
+        text-align: center;
         background: linear-gradient(45deg, #7e22ce, #3b82f6, #db2777);
         background-size: 200% 200%; -webkit-background-clip: text; background-clip: text; color: transparent; 
-        animation: gradientMove 6s ease infinite, fadeUp 0.8s ease-out forwards; opacity: 0; 
+        animation: gradientMove 6s ease infinite; 
+        opacity: 1; 
       }
+      /* 打字机光标效果 */
+      .typing-cursor::after { 
+        content: '|'; 
+        animation: blink-text 1s step-end infinite; 
+        color: #a855f7; 
+        margin-left: 4px;
+        vertical-align: middle;
+      }
+
       h2 { color: #581c87; margin-top: 2rem; font-weight: 600; }
       h3 { color: #6b21a8; margin-top: 1.5rem; font-weight: 600; }
-      a { color: #9333ea; text-decoration: none; font-weight: 500; transition: color 0.2s; cursor: none; /* 确保链接也没有默认光标 */ }
+      a { color: #9333ea; text-decoration: none; font-weight: 500; transition: color 0.2s; cursor: none; }
       a:hover { color: #d8b4fe; }
       img { max-width: 100%; height: auto; border-radius: 8px; display: inline-block; vertical-align: middle; }
       pre { background: #faf5ff; padding: 15px; border-radius: 8px; overflow-x: auto; border: 1px solid #e9d5ff; font-size: 0.9rem; color: #475569; }
@@ -155,8 +170,8 @@
       @keyframes blink { 0%, 48%, 52%, 100% { height: 0%; } 50% { height: 100%; } }
       @keyframes pulse-antenna { 0% { box-shadow: 0 0 0 0 rgba(168, 85, 247, 0.7); } 70% { box-shadow: 0 0 0 5px rgba(168, 85, 247, 0); } 100% { box-shadow: 0 0 0 0 rgba(168, 85, 247, 0); } }
       @keyframes botEnter { from { opacity: 0; transform: translateX(-50%) translateY(20px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
-      /* 机器人开心的动画 */
       @keyframes spin-happy { 0% { transform: rotate(0deg) scale(1); } 50% { transform: rotate(10deg) scale(1.1); } 75% { transform: rotate(-10deg) scale(1.1); } 100% { transform: rotate(0deg) scale(1); } }
+      @keyframes blink-text { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
     </style>
 
     <link rel="stylesheet" href="assets/css/academicons.css"/>
@@ -185,6 +200,7 @@
 
       <div class="container">
         <section id="main_content">
+          <h1 id="typewriter-title" class="typing-cursor" data-text="PEDAL"></h1>
           {{ content }}
         </section>
         <footer style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #e9d5ff; text-align: center; color: #94a3b8; font-size: 0.85rem;">
@@ -207,13 +223,30 @@
     </script>
     <script>
       document.addEventListener("DOMContentLoaded", function() {
+        // --- 打字机特效 ---
+        const titleEl = document.getElementById('typewriter-title');
+        if(titleEl) {
+            const text = titleEl.getAttribute('data-text') || "PEDAL";
+            let i = 0;
+            titleEl.textContent = "";
+            function typeWriter() {
+                if (i < text.length) {
+                    titleEl.textContent += text.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, 200); 
+                } else {
+                    titleEl.classList.remove('typing-cursor');
+                }
+            }
+            setTimeout(typeWriter, 500); 
+        }
+
         // 1. 光标逻辑
         const cursorDot = document.querySelector('.cursor-dot');
         const cursorOutline = document.querySelector('.cursor-outline');
         
-        // 2. 3D Tilt 逻辑变量
+        // 2. 3D Tilt 逻辑
         const container = document.querySelector('.container');
-        const wrapper = document.querySelector('.layout-wrapper');
         
         // 3. 机器人眼球逻辑
         const pupils = document.querySelectorAll('.bot-pupil');
@@ -225,29 +258,24 @@
            const posX = e.clientX;
            const posY = e.clientY;
 
-           // A. 光标跟随 (带一点延迟的平滑感)
            cursorDot.style.left = `${posX}px`;
            cursorDot.style.top = `${posY}px`;
            
-           // Outline 使用 animate 避免延迟太大
            cursorOutline.animate({
              left: `${posX}px`,
              top: `${posY}px`
            }, { duration: 500, fill: "forwards" });
 
-           // B. 3D 悬浮卡片效果 (仅在桌面端)
            if (window.innerWidth > 768 && container) {
-             const x = (window.innerWidth / 2 - posX) / 50; // 除数越大，倾斜越小
+             const x = (window.innerWidth / 2 - posX) / 50; 
              const y = (window.innerHeight / 2 - posY) / 50;
              container.style.transform = `rotateY(${x * -1}deg) rotateX(${y}deg)`;
              
-             // 内部光晕逻辑
              const rect = container.getBoundingClientRect();
              container.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
              container.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
            }
 
-           // C. 机器人眼球追踪
            pupils.forEach((pupil, index) => {
              const eye = eyes[index];
              const rect = eye.getBoundingClientRect();
