@@ -6,95 +6,122 @@
     <title>{{ page.title }}</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
     
     <style>
-      /* --- 核心样式开始 --- */
-      
-      /* 全局背景：银灰色渐变，模拟无菌环境 */
+      /* --- 1. 全局设置 --- */
       body {
         margin: 0;
         padding: 0;
-        background-color: #f8fafc; /* 非常浅的蓝灰色 */
-        background-image: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
-        color: #334155; /* 深蓝灰色文字，阅读舒适 */
-        font-family: 'Inter', sans-serif;
-        line-height: 1.6;
+        background-color: #f8fafc; /* 极浅的蓝灰底色，护眼 */
+        color: #334155; /* 深灰字，比纯黑更优雅 */
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        line-height: 1.7; /* 增加行高，阅读更透气 */
       }
 
-      /* 链接样式 - 科技深蓝 */
-      a { color: #0284c7; text-decoration: none; transition: 0.3s; font-weight: 500; }
-      a:hover { color: #0ea5e9; text-decoration: underline; }
+      /* --- 2. 布局容器 (白纸效果) --- */
+      .container {
+        max-width: 860px; /* 最佳阅读宽度 */
+        margin: 60px auto; /* 上下留白 */
+        padding: 60px 80px; /* 内部留白 */
+        background: #ffffff; /* 纯白背景 */
+        border-radius: 12px; /* 圆角 */
+        box-shadow: 
+          0 1px 3px 0 rgba(0, 0, 0, 0.05), 
+          0 10px 30px -5px rgba(0, 0, 0, 0.05); /* 漂浮感阴影 */
+        border-top: 4px solid #3b82f6; /* 顶部一道科技蓝条，点睛之笔 */
+        position: relative;
+        z-index: 10;
+      }
 
-      /* 粒子背景层 */
+      /* --- 3. 粒子背景层 --- */
       #particles-js {
         position: fixed;
         width: 100%;
         height: 100%;
         top: 0;
         left: 0;
-        z-index: -1;
+        z-index: 0; /* 在白纸下面 */
       }
 
-      /* 主容器：像一张悬浮的实验报告 */
-      .container {
-        max-width: 900px;
-        margin: 60px auto;
-        padding: 50px;
-        background: rgba(255, 255, 255, 0.85); /* 半透明白色 */
-        backdrop-filter: blur(20px); /* 磨砂玻璃感 */
-        -webkit-backdrop-filter: blur(20px);
-        border: 1px solid #ffffff;
-        border-radius: 12px;
-        box-shadow: 
-          0 4px 6px -1px rgba(0, 0, 0, 0.05), 
-          0 10px 15px -3px rgba(0, 0, 0, 0.05),
-          0 0 0 1px rgba(0,0,0,0.02); /* 极其细腻的阴影 */
-      }
-
-      /* 标题优化 */
+      /* --- 4. 标题排版 --- */
       h1 {
-        color: #0f172a; /* 接近纯黑的深蓝 */
+        font-size: 2.25rem;
         font-weight: 700;
+        color: #0f172a;
         letter-spacing: -0.025em;
-        border-bottom: 2px solid #e2e8f0;
-        padding-bottom: 15px;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #e2e8f0;
       }
       
-      h2, h3 {
+      h2 {
+        font-size: 1.5rem;
+        font-weight: 600;
         color: #1e293b;
-        margin-top: 1.5em;
+        margin-top: 2.5rem;
+        margin-bottom: 1rem;
       }
 
-      /* 代码块优化 */
-      pre, code {
-        font-family: 'JetBrains Mono', monospace;
-        background: #f1f5f9; /* 浅灰底色 */
-        padding: 3px 6px;
-        border-radius: 6px;
-        color: #0369a1; /* 深蓝色代码文字 */
+      h3 {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #334155;
+        margin-top: 2rem;
+      }
+
+      /* --- 5. 链接与交互 --- */
+      a {
+        color: #2563eb; /* 经典的链接蓝 */
+        text-decoration: none;
+        border-bottom: 1px solid transparent;
+        transition: border-color 0.2s;
+      }
+      a:hover {
+        border-bottom: 1px solid #2563eb; /* 鼠标悬停出现下划线 */
+      }
+
+      /* --- 6. 代码块 (像 Notion 一样干净) --- */
+      pre {
+        background: #f1f5f9; /* 浅灰底 */
+        padding: 1rem;
+        border-radius: 8px;
+        overflow-x: auto;
         border: 1px solid #e2e8f0;
       }
-
-      /* 引用块 */
-      blockquote {
-        border-left: 4px solid #0ea5e9;
-        background: #f0f9ff;
-        margin: 0;
-        padding: 10px 20px;
-        color: #0c4a6e;
+      code {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.9em;
+        background: rgba(0,0,0,0.05);
+        padding: 0.2em 0.4em;
+        border-radius: 4px;
+        color: #0f172a;
       }
-      
-      /* 图片样式 */
+      pre code {
+        background: none;
+        padding: 0;
+      }
+
+      /* --- 7. 图片优化 --- */
       img {
         max-width: 100%;
+        height: auto;
         border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1); /* 给图片加一点立体感 */
         display: block;
-        margin: 20px auto;
+        margin: 2rem auto;
+        /* 给图片加一点淡淡的影子，让它从白纸上浮起来 */
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); 
       }
       
-      /* --- 核心样式结束 --- */
+      /* 引用块 */
+      blockquote {
+        border-left: 4px solid #cbd5e1;
+        margin: 1.5rem 0;
+        padding-left: 1rem;
+        font-style: italic;
+        color: #64748b;
+      }
+
     </style>
   </head>
 
@@ -103,30 +130,29 @@
     <div id="particles-js"></div>
 
     <div class="container">
-      
       <section id="main_content">
         {{ content }}
       </section>
       
-      <footer style="margin-top: 60px; padding-top: 20px; border-top: 1px solid #e2e8f0; text-align: center; font-size: 0.85rem; color: #94a3b8;">
-        <p>Neural Interfaces & High-Density Electronics • Dartmouth College</p>
+      <footer style="margin-top: 60px; padding-top: 20px; border-top: 1px solid #f1f5f9; text-align: center; font-size: 0.875rem; color: #94a3b8;">
+        <p>PEDAL-256 • Open Source Neural Interfaces</p>
       </footer>
     </div>
 
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
-      /* 这里的粒子颜色改成了灰色和蓝色，适应浅色背景 */
+      /* 配置：极其细腻的浅灰色粒子 */
       particlesJS("particles-js", {
         "particles": {
-          "number": { "value": 50 },
-          "color": { "value": "#64748b" }, /* 粒子颜色：深灰色 */
+          "number": { "value": 40 }, /* 粒子少一点，更干净 */
+          "color": { "value": "#94a3b8" }, /* 浅灰色粒子 */
           "shape": { "type": "circle" },
-          "opacity": { "value": 0.5, "random": false },
+          "opacity": { "value": 0.4, "random": false },
           "size": { "value": 3, "random": true },
           "line_linked": {
             "enable": true,
             "distance": 150,
-            "color": "#94a3b8", /* 连线颜色：浅灰色 */
+            "color": "#cbd5e1", /* 极淡的连线 */
             "opacity": 0.4,
             "width": 1
           },
@@ -135,4 +161,18 @@
         "interactivity": {
           "detect_on": "canvas",
           "events": {
-            "onhover": { "
+            "onhover": { "enable": true, "mode": "grab" }, /* 鼠标靠近会吸附连线 */
+            "onclick": { "enable": true, "mode": "push" }
+          },
+          "modes": {
+            "grab": {
+              "distance": 140,
+              "line_linked": { "opacity": 0.6, "color": "#3b82f6" } /* 互动时变蓝色！ */
+            }
+          }
+        },
+        "retina_detect": true
+      });
+    </script>
+  </body>
+</html>
