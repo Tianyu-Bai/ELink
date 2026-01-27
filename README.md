@@ -10,9 +10,9 @@
 <div align="center">
   <h1 style="border-bottom: none; margin-bottom: 5px;">🚀 PEDAL-256</h1>
 
-  <div align="center">
-    <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=24&pause=1000&color=00693E&center=true&vCenter=true&width=750&lines=An+Open-Source,+Solderless,+High-Density;Pedestal+Connector+for+Neural+Interfaces" />
-  </div>
+<div align="center">
+    <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=36&pause=1000&color=00693E&center=true&vCenter=true&width=1100&lines=An+Open-Source,+Solderless,+High-Density;Pedestal+Connector+for+Neural+Interfaces" />
+</div>
 
   <div  align="center" style="margin-top: 15px;">
     <a href="https://sites.dartmouth.edu/fang-group/"><img src="https://img.shields.io/badge/Dartmouth-MINE--Lab-00693E?style=flat-square" alt="MINE Lab"></a>
