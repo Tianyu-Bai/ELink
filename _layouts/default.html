@@ -15,18 +15,20 @@
         margin: 0; padding: 0; color: #475569; 
         font-family: 'Inter', -apple-system, sans-serif; 
         line-height: 1.6; overflow-x: hidden; 
+        /* 隐藏默认光标，使用自定义光标 (仅限桌面端) */
         cursor: none;
         scrollbar-width: thin; scrollbar-color: #d8b4fe transparent;
       }
+      /* 手机端恢复默认光标 */
       @media (pointer: coarse) { body { cursor: auto; } }
 
       ::-webkit-scrollbar { width: 6px; }
       ::-webkit-scrollbar-track { background: transparent; }
       ::-webkit-scrollbar-thumb { background: rgba(168, 85, 247, 0.3); border-radius: 10px; }
       ::-webkit-scrollbar-thumb:hover { background: rgba(168, 85, 247, 0.6); }
-      ::selection { background: #a855f7; color: #ffffff; text-shadow: 0 0 8px rgba(255, 255, 255, 0.8); }
+      ::-selection { background: #a855f7; color: #ffffff; text-shadow: 0 0 8px rgba(255, 255, 255, 0.8); }
 
-      /* --- 1. 自定义光标 --- */
+      /* --- 1. 自定义光标 (Fancy 核心) --- */
       .cursor-dot, .cursor-outline {
         position: fixed; top: 0; left: 0; 
         transform: translate(-50%, -50%); border-radius: 50%; z-index: 99999; pointer-events: none;
@@ -36,6 +38,7 @@
         width: 40px; height: 40px; border: 1px solid rgba(168, 85, 247, 0.5); 
         transition: width 0.2s, height 0.2s, background-color 0.2s;
       }
+      /* 鼠标悬停时的状态 */
       body.hovering .cursor-outline { width: 60px; height: 60px; background-color: rgba(168, 85, 247, 0.1); border-color: transparent; }
       @media (max-width: 768px) { .cursor-dot, .cursor-outline { display: none; } }
 
@@ -49,17 +52,20 @@
       /* --- 3. 背景 --- */
       #vanta-bg { position: fixed; z-index: -5; top: 0; left: 0; width: 100%; height: 100%; background: #f3e8ff; }
 
-      /* --- 4. 布局包裹器 --- */
+      /* --- 4. 布局包裹器 (3D 效果容器) --- */
       .layout-wrapper {
         position: relative; max-width: 860px; margin: 80px auto 60px; z-index: 10;
+        /* 开启 3D 透视 */
         perspective: 1000px;
       }
 
-      /* --- 5. 机器人 --- */
+      /* --- 5. 机器人 (点击交互升级) --- */
       #bot-container {
         position: absolute; top: -45px; left: 50%; transform: translateX(-50%);
         width: 120px; height: 70px; z-index: 9999; 
-        cursor: pointer; opacity: 0; animation: botEnter 0.8s ease-out 0.8s forwards;
+        cursor: pointer; /* 提示可点击 */
+        /* 初始动画 */
+        opacity: 0; animation: botEnter 0.8s ease-out 0.8s forwards;
         transition: transform 0.3s ease;
       }
       #bot-container:hover { transform: translateX(-50%) translateY(-5px) scale(1.05); }
@@ -73,18 +79,23 @@
       .bot-antenna { position: absolute; top: -15px; left: 50%; transform: translateX(-50%); width: 2px; height: 15px; background: #e9d5ff; }
       .bot-antenna::after { content: ''; position: absolute; top: -6px; left: -3px; width: 8px; height: 8px; background: #a855f7; border-radius: 50%; animation: pulse-antenna 2s infinite; }
 
-      /* --- 6. 玻璃容器 --- */
+      /* --- 6. 玻璃容器 (增加 3D 旋转属性) --- */
       .container { 
-        position: relative; padding: 60px 80px; 
+        position: relative;
+        padding: 60px 80px; 
         background: rgba(255, 255, 255, 0.75); 
         backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
         border-radius: 20px; 
-        box-shadow: 0 20px 50px rgba(168, 85, 247, 0.15); 
+        box-shadow: 0 20px 50px rgba(168, 85, 247, 0.15); /* 阴影加深，增加悬浮感 */
         border: 1px solid rgba(255, 255, 255, 0.8); 
         border-top: 4px solid #a855f7; 
         opacity: 0; animation: fadeUp 0.8s ease-out 0.3s forwards; 
-        z-index: 1; transform-style: preserve-3d; transition: transform 0.1s ease-out; 
+        z-index: 1;
+        /* 3D 变换过渡 */
+        transform-style: preserve-3d;
+        transition: transform 0.1s ease-out; 
       }
+      
       .container::before {
         content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; 
         border-radius: 20px; overflow: hidden;
@@ -93,80 +104,53 @@
       }
       .container:hover::before { opacity: 1; }
 
-      /* --- 适配 (手机端大字体) --- */
+      /* --- 适配 --- */
       @media screen and (max-width: 768px) { 
         .layout-wrapper { margin: 15px; perspective: none; }
         .container { padding: 30px 15px; border-radius: 12px; transform: none !important; } 
         #bot-container { display: none; } 
-        h1 { font-size: 2.5rem !important; line-height: 1.2; } 
-        /* 手机端稍微缩小一点神经元图标 */
-        .nav-badges img { width: 38px !important; height: 38px !important; }
+        h1 { font-size: 1.45rem !important; line-height: 1.3; } 
       }
       
       /* --- 内容排版 --- */
       h1 { 
-        font-size: 2.25rem; font-weight: 700; margin-bottom: 0.5rem; letter-spacing: -0.02em; text-align: center;
+        font-size: 2.25rem; font-weight: 700; margin-bottom: 1.5rem; letter-spacing: -0.02em; 
         background: linear-gradient(45deg, #7e22ce, #3b82f6, #db2777);
         background-size: 200% 200%; -webkit-background-clip: text; background-clip: text; color: transparent; 
-        animation: gradientMove 6s ease infinite; opacity: 1; 
+        animation: gradientMove 6s ease infinite, fadeUp 0.8s ease-out forwards; opacity: 0; 
       }
-      .typing-cursor::after { content: '|'; animation: blink-text 1s step-end infinite; color: #a855f7; margin-left: 4px; vertical-align: middle; }
       h2 { color: #581c87; margin-top: 2rem; font-weight: 600; }
       h3 { color: #6b21a8; margin-top: 1.5rem; font-weight: 600; }
-      a { color: #9333ea; text-decoration: none; font-weight: 500; transition: color 0.2s; cursor: none; }
+      a { color: #9333ea; text-decoration: none; font-weight: 500; transition: color 0.2s; cursor: none; /* 确保链接也没有默认光标 */ }
       a:hover { color: #d8b4fe; }
-      /* 这里的 img 是内容里的图片，不影响导航 */
-      #main_content img:not(.nav-badges img) { max-width: 100%; height: auto; border-radius: 8px; display: inline-block; vertical-align: middle; }
+      
+      /* --- 修正：图片融合与去除黑框 --- */
+      img { 
+        max-width: 100%; height: auto; border-radius: 8px; display: inline-block; vertical-align: middle; 
+        /* 核心修改：正片叠底模式让白色背景透明，同时强制移除任何边框和阴影 */
+        mix-blend-mode: multiply; 
+        filter: contrast(1.02);
+        border: none !important; 
+        box-shadow: none !important;
+        background-color: transparent !important;
+      }
+      
       pre { background: #faf5ff; padding: 15px; border-radius: 8px; overflow-x: auto; border: 1px solid #e9d5ff; font-size: 0.9rem; color: #475569; }
       code { font-family: 'JetBrains Mono', monospace; background: rgba(168, 85, 247, 0.1); padding: 2px 4px; border-radius: 4px; color: #7e22ce; }
       pre code { background: none; padding: 0; color: inherit; }
 
-      /* --- 导航: 神经元节点风格 (核心修改) --- */
-      .nav-badges { margin: 2rem 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; } /* 增加一点间距 */
-      .nav-badges a { 
-        opacity: 0; animation: fadeUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; 
-        text-decoration: none !important; border:none!important; display: block;
-      }
+      /* --- 导航 --- */
+      .nav-badges { margin: 2rem 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+      .nav-badges a { opacity: 0; animation: fadeUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; text-decoration: none !important; border:none!important; }
       .nav-badges a:nth-child(1) { animation-delay: 0.20s; }
       .nav-badges a:nth-child(2) { animation-delay: 0.25s; }
       .nav-badges a:nth-child(3) { animation-delay: 0.30s; }
       .nav-badges a:nth-child(4) { animation-delay: 0.35s; }
-      
-      .nav-badges img { 
-        /* 神经元样式核心 */
-        height: 44px !important; 
-        width: 44px !important; 
-        border-radius: 50% !important; /* 绝对圆形 */
-        
-        /* 细胞膜构造 */
-        border: 2px solid rgba(168, 85, 247, 0.3); 
-        padding: 3px; /* 膜与核的间距 */
-        background: rgba(255, 255, 255, 0.8);
-        
-        /* 初始状态：微弱的静息电位 */
-        box-shadow: 0 4px 10px rgba(168, 85, 247, 0.15);
-        
-        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-        margin: 0 !important; cursor: none; 
-        animation-delay: var(--ripple-delay, 0s); 
-        object-fit: cover; /* 确保图标在圆形内不拉伸 */
-      }
-
-      /* 激活/悬停状态：动作电位爆发 */
-      .nav-badges a:hover img { 
-        transform: scale(1.15) translateY(-3px); 
-        border-color: #a855f7; /* 膜颜色变深 */
-        background: #ffffff;
-        /* 强烈的发光效果 */
-        box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.2), 0 0 25px rgba(168, 85, 247, 0.6);
-        z-index: 10; 
-      }
-
-      /* 点击时的波纹 */
-      .nav-badges img.rippling { 
-        animation: ripple-wave 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; 
-        border-color: #3b82f6; /* 点击时变蓝，模拟信号传递 */
-      }
+      .nav-badges a:nth-child(5) { animation-delay: 0.40s; }
+      .nav-badges a:nth-child(6) { animation-delay: 0.45s; }
+      .nav-badges img { height: 28px !important; width: auto; border-radius: 50px; box-shadow: 0 2px 6px rgba(168, 85, 247, 0.15); border: 1.5px solid white; transition: all 0.3s; margin: 0 !important; cursor: none; animation-delay: var(--ripple-delay, 0s); mix-blend-mode: normal !important; /* 导航图标不需要融合 */ }
+      .nav-badges a:hover img { animation: float-hover 2s ease-in-out infinite; box-shadow: 0 8px 20px rgba(168, 85, 247, 0.35); z-index: 10; }
+      .nav-badges img.rippling { animation: ripple-wave 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; }
 
       /* --- 表格 --- */
       table { display: block; width: 100%; overflow-x: auto; border-collapse: collapse; margin: 1rem 0; background-color: #ffffff; border-radius: 8px; border: 1px solid #f3e8ff; }
@@ -176,13 +160,14 @@
       /* --- 动画 --- */
       @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
       @keyframes gradientMove { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-      @keyframes ripple-wave { 0% { transform: scale(1); border-color: #a855f7; } 50% { transform: scale(0.9); border-color: #3b82f6; } 100% { transform: scale(1); border-color: #a855f7; } }
+      @keyframes float-hover { 0% { transform: scale(1.15) translateY(-2px); } 50% { transform: scale(1.15) translateY(-6px); } 100% { transform: scale(1.15) translateY(-2px); } }
+      @keyframes ripple-wave { 0% { transform: scale(1) translateY(0); } 30% { transform: scale(1.12) translateY(-5px); box-shadow: 0 12px 24px rgba(168, 85, 247, 0.4); } 100% { transform: scale(1) translateY(0); } }
       @keyframes float-bot { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
       @keyframes blink { 0%, 48%, 52%, 100% { height: 0%; } 50% { height: 100%; } }
       @keyframes pulse-antenna { 0% { box-shadow: 0 0 0 0 rgba(168, 85, 247, 0.7); } 70% { box-shadow: 0 0 0 5px rgba(168, 85, 247, 0); } 100% { box-shadow: 0 0 0 0 rgba(168, 85, 247, 0); } }
       @keyframes botEnter { from { opacity: 0; transform: translateX(-50%) translateY(20px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
+      /* 机器人开心的动画 */
       @keyframes spin-happy { 0% { transform: rotate(0deg) scale(1); } 50% { transform: rotate(10deg) scale(1.1); } 75% { transform: rotate(-10deg) scale(1.1); } 100% { transform: rotate(0deg) scale(1); } }
-      @keyframes blink-text { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
     </style>
 
     <link rel="stylesheet" href="assets/css/academicons.css"/>
@@ -211,7 +196,6 @@
 
       <div class="container">
         <section id="main_content">
-          <h1 id="typewriter-title" class="typing-cursor" data-text="PEDAL"></h1>
           {{ content }}
         </section>
         <footer style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #e9d5ff; text-align: center; color: #94a3b8; font-size: 0.85rem;">
@@ -234,30 +218,13 @@
     </script>
     <script>
       document.addEventListener("DOMContentLoaded", function() {
-        // --- 打字机特效 ---
-        const titleEl = document.getElementById('typewriter-title');
-        if(titleEl) {
-            const text = titleEl.getAttribute('data-text') || "PEDAL";
-            let i = 0;
-            titleEl.textContent = "";
-            function typeWriter() {
-                if (i < text.length) {
-                    titleEl.textContent += text.charAt(i);
-                    i++;
-                    setTimeout(typeWriter, 200); 
-                } else {
-                    titleEl.classList.remove('typing-cursor');
-                }
-            }
-            setTimeout(typeWriter, 500); 
-        }
-
         // 1. 光标逻辑
         const cursorDot = document.querySelector('.cursor-dot');
         const cursorOutline = document.querySelector('.cursor-outline');
         
-        // 2. 3D Tilt 逻辑
+        // 2. 3D Tilt 逻辑变量
         const container = document.querySelector('.container');
+        const wrapper = document.querySelector('.layout-wrapper');
         
         // 3. 机器人眼球逻辑
         const pupils = document.querySelectorAll('.bot-pupil');
@@ -269,24 +236,29 @@
            const posX = e.clientX;
            const posY = e.clientY;
 
+           // A. 光标跟随 (带一点延迟的平滑感)
            cursorDot.style.left = `${posX}px`;
            cursorDot.style.top = `${posY}px`;
            
+           // Outline 使用 animate 避免延迟太大
            cursorOutline.animate({
              left: `${posX}px`,
              top: `${posY}px`
            }, { duration: 500, fill: "forwards" });
 
+           // B. 3D 悬浮卡片效果 (仅在桌面端)
            if (window.innerWidth > 768 && container) {
-             const x = (window.innerWidth / 2 - posX) / 50; 
+             const x = (window.innerWidth / 2 - posX) / 50; // 除数越大，倾斜越小
              const y = (window.innerHeight / 2 - posY) / 50;
              container.style.transform = `rotateY(${x * -1}deg) rotateX(${y}deg)`;
              
+             // 内部光晕逻辑
              const rect = container.getBoundingClientRect();
              container.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
              container.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
            }
 
+           // C. 机器人眼球追踪
            pupils.forEach((pupil, index) => {
              const eye = eyes[index];
              const rect = eye.getBoundingClientRect();
