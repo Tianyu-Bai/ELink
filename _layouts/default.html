@@ -41,6 +41,29 @@
       
       /* --- 背景层 --- */
       #particles-js { position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: 0; }
+
+      /* --- 导航徽章的优化 --- */
+      .nav-badges {
+        margin: 2rem 0; /* 上下多留点空隙，更有呼吸感 */
+      }
+
+      .nav-badges a {
+        border-bottom: none !important; /* 🈲 禁止鼠标悬停时出现蓝色下划线 */
+        text-decoration: none !important;
+      }
+
+      .nav-badges img {
+        margin: 4px 6px !important;     /* ↔️ 增加左右间距，别挤在一起 */
+        transition: transform 0.2s ease; /* 🎬 添加平滑动画 */
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05); /* ☁️ 加一点点阴影，更像按钮 */
+      }
+
+      /* 🖱️ 鼠标悬停特效：微微放大 + 阴影加深 */
+      .nav-badges a:hover img {
+        transform: translateY(-2px); /* 👆 向上浮动一点点 */
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      }
+    
     </style>
 
     <link rel="apple-touch-icon" sizes="180x180" href="Images/icon/apple-touch-icon.png">
