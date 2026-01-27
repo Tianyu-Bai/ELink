@@ -5,42 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
     <title>{{ page.title }}</title>
-
-    <link rel="shortcut icon" type="image/x-icon" href="{{ '/Images/icon/favicon.ico' | relative_url }}">
+      <link rel="shortcut icon" type="image/x-icon" href="{{ '/Images/icon/favicon.ico' | relative_url }}">
     <link rel="icon" type="image/png" sizes="32x32" href="{{ '/Images/icon/favicon-32x32.png' | relative_url }}">
     <link rel="icon" type="image/png" sizes="16x16" href="{{ '/Images/icon/favicon-16x16.png' | relative_url }}">
     <link rel="apple-touch-icon" sizes="180x180" href="{{ '/Images/icon/apple-touch-icon.png' | relative_url }}">
-    <link rel="manifest" href="{{ '/Images/icon/site.webmanifest' | relative_url }}">
-
-    <meta name="msapplication-TileColor" content="#000000">
-    <meta name="msapplication-TileImage" content="{{ 'Images/icon/mstile-144x144.png?v=M44lzPylqQ' | relative_url }}">
-    <meta name="msapplication-config" content="{{ 'Images/icon/browserconfig.xml?v=M44lzPylqQ' | relative_url }}">
-    <meta name="theme-color" content="#ffffff">
+<link rel="manifest" href="{{ '/Images/icon/site.webmanifest' | relative_url }}">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ 'assets/css/academicons.css' | relative_url }}"/>
-
+    
     <style>
       /* --- 0. 全局设置 --- */
       body { 
         margin: 0; padding: 0; color: #475569; 
         font-family: 'Inter', -apple-system, sans-serif; 
         line-height: 1.6; overflow-x: hidden; 
-        cursor: none; /* 隐藏默认光标 */
+        /* 隐藏默认光标，使用自定义光标 (仅限桌面端) */
+        cursor: none;
         scrollbar-width: thin; scrollbar-color: #d8b4fe transparent;
       }
-      /* 移动端恢复默认光标 */
+      /* 手机端恢复默认光标 */
       @media (pointer: coarse) { body { cursor: auto; } }
 
       ::-webkit-scrollbar { width: 6px; }
       ::-webkit-scrollbar-track { background: transparent; }
       ::-webkit-scrollbar-thumb { background: rgba(168, 85, 247, 0.3); border-radius: 10px; }
       ::-webkit-scrollbar-thumb:hover { background: rgba(168, 85, 247, 0.6); }
-      ::selection { background: #a855f7; color: #ffffff; text-shadow: 0 0 8px rgba(255, 255, 255, 0.8); }
+      ::-selection { background: #a855f7; color: #ffffff; text-shadow: 0 0 8px rgba(255, 255, 255, 0.8); }
 
-      /* --- 1. 自定义光标 --- */
+      /* --- 1. 自定义光标 (Fancy 核心) --- */
       .cursor-dot, .cursor-outline {
         position: fixed; top: 0; left: 0; 
         transform: translate(-50%, -50%); border-radius: 50%; z-index: 99999; pointer-events: none;
@@ -50,91 +43,154 @@
         width: 40px; height: 40px; border: 1px solid rgba(168, 85, 247, 0.5); 
         transition: width 0.2s, height 0.2s, background-color 0.2s;
       }
+      /* 鼠标悬停时的状态 */
       body.hovering .cursor-outline { width: 60px; height: 60px; background-color: rgba(168, 85, 247, 0.1); border-color: transparent; }
       @media (max-width: 768px) { .cursor-dot, .cursor-outline { display: none; } }
 
-      /* --- 2. 进度条与背景 --- */
+      /* --- 2. 进度条 --- */
       #progress-bar {
         position: fixed; top: 0; left: 0; height: 3px;
         background: linear-gradient(90deg, #a855f7, #3b82f6); 
         width: 0%; z-index: 99999; transition: width 0.1s;
       }
+
+      /* --- 3. 背景 --- */
       #vanta-bg { position: fixed; z-index: -5; top: 0; left: 0; width: 100%; height: 100%; background: #f3e8ff; }
 
-      /* --- 3. 布局与 3D 效果 --- */
-      .layout-wrapper { position: relative; max-width: 860px; margin: 80px auto 60px; z-index: 10; perspective: 1000px; }
-      
-      .container { 
-        position: relative; padding: 60px 80px; 
-        background: rgba(255, 255, 255, 0.75); 
-        backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-        border-radius: 20px; box-shadow: 0 20px 50px rgba(168, 85, 247, 0.15);
-        border: 1px solid rgba(255, 255, 255, 0.8); border-top: 4px solid #a855f7; 
-        opacity: 0; animation: fadeUp 0.8s ease-out 0.3s forwards; 
-        z-index: 1; transform-style: preserve-3d; transition: transform 0.1s ease-out; 
+      /* --- 4. 布局包裹器 (3D 效果容器) --- */
+      .layout-wrapper {
+        position: relative; max-width: 860px; margin: 80px auto 60px; z-index: 10;
+        /* 开启 3D 透视 */
+        perspective: 1000px;
       }
-      .container::before {
-        content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; 
-        border-radius: 20px; background: radial-gradient(800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(168, 85, 247, 0.08), transparent 40%);
-        opacity: 0; transition: opacity 0.5s ease; pointer-events: none;
-      }
-      .container:hover::before { opacity: 1; }
 
-      /* --- 4. 机器人 UI --- */
+      /* --- 5. 机器人 (点击交互升级) --- */
       #bot-container {
         position: absolute; top: -45px; left: 50%; transform: translateX(-50%);
-        width: 120px; height: 70px; z-index: 9999; cursor: pointer;
-        opacity: 0; animation: botEnter 0.8s ease-out 0.8s forwards; transition: transform 0.3s ease;
+        width: 120px; height: 70px; z-index: 9999; 
+        cursor: pointer; /* 提示可点击 */
+        /* 初始动画 */
+        opacity: 0; animation: botEnter 0.8s ease-out 0.8s forwards;
+        transition: transform 0.3s ease;
       }
       #bot-container:hover { transform: translateX(-50%) translateY(-5px) scale(1.05); }
       #bot-container.dizzy .bot-head { animation: spin-happy 1s ease-in-out; }
 
       .bot-head { width: 100px; height: 50px; background: #ffffff; border: 2px solid #e9d5ff; border-bottom: none; border-radius: 50px 50px 20px 20px; margin: 0 auto; position: relative; box-shadow: 0 -5px 15px rgba(168, 85, 247, 0.15); display: flex; justify-content: center; align-items: center; gap: 10px; padding-top: 5px; animation: float-bot 3s ease-in-out infinite; }
-      .bot-eye { width: 28px; height: 28px; background: #f3e8ff; border-radius: 50%; border: 1px solid #d8b4fe; position: relative; overflow: hidden; }
-      .bot-pupil { width: 14px; height: 14px; background: #7e22ce; border-radius: 50%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+      .bot-eye { width: 28px; height: 28px; background: #f3e8ff; border-radius: 50%; border: 1px solid #d8b4fe; position: relative; overflow: hidden; box-shadow: inset 0 2px 5px rgba(0,0,0,0.05); }
+      .bot-pupil { width: 14px; height: 14px; background: #7e22ce; border-radius: 50%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); box-shadow: 0 0 4px rgba(126, 34, 206, 0.6); }
+      .bot-pupil::after { content: ''; position: absolute; top: 3px; left: 3px; width: 4px; height: 4px; background: white; border-radius: 50%; opacity: 0.8; }
       .bot-lid { position: absolute; top: 0; left: 0; width: 100%; height: 0%; background: #ffffff; z-index: 10; animation: blink 4s infinite; }
       .bot-antenna { position: absolute; top: -15px; left: 50%; transform: translateX(-50%); width: 2px; height: 15px; background: #e9d5ff; }
       .bot-antenna::after { content: ''; position: absolute; top: -6px; left: -3px; width: 8px; height: 8px; background: #a855f7; border-radius: 50%; animation: pulse-antenna 2s infinite; }
 
-      /* --- 5. 排版与融合 --- */
-      h1 { 
-        font-size: 2.25rem; font-weight: 700; margin-bottom: 1.5rem; letter-spacing: -0.02em; 
-        background: linear-gradient(45deg, #7e22ce, #3b82f6, #db2777); background-size: 200% 200%; 
-        -webkit-background-clip: text; background-clip: text; color: transparent; 
-        animation: gradientMove 6s ease infinite, fadeUp 0.8s ease-out forwards; opacity: 0; 
+      /* --- 6. 玻璃容器 (增加 3D 旋转属性) --- */
+      .container { 
+        position: relative;
+        padding: 60px 80px; 
+        background: rgba(255, 255, 255, 0.75); 
+        backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+        border-radius: 20px; 
+        box-shadow: 0 20px 50px rgba(168, 85, 247, 0.15); /* 阴影加深，增加悬浮感 */
+        border: 1px solid rgba(255, 255, 255, 0.8); 
+        border-top: 4px solid #a855f7; 
+        opacity: 0; animation: fadeUp 0.8s ease-out 0.3s forwards; 
+        z-index: 1;
+        /* 3D 变换过渡 */
+        transform-style: preserve-3d;
+        transition: transform 0.1s ease-out; 
       }
-      img { 
-        max-width: 100%; height: auto; border-radius: 8px; 
-        mix-blend-mode: multiply; filter: contrast(1);
+      
+      .container::before {
+        content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; 
+        border-radius: 20px; overflow: hidden;
+        background: radial-gradient(800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(168, 85, 247, 0.08), transparent 40%);
+        opacity: 0; transition: opacity 0.5s ease; pointer-events: none;
       }
-      .nav-badges img { mix-blend-mode: normal !important; height: 28px !important; border-radius: 50px; border: 1.5px solid white; }
+      .container:hover::before { opacity: 1; }
 
-      /* --- 6. 动画库 --- */
-      @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-      @keyframes gradientMove { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-      @keyframes float-bot { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
-      @keyframes blink { 0%, 48%, 52%, 100% { height: 0%; } 50% { height: 100%; } }
-      @keyframes pulse-dot { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(0.95); } }
-      @keyframes spin-happy { 0% { transform: rotate(0deg); } 50% { transform: rotate(15deg) scale(1.1); } 100% { transform: rotate(0deg); } }
-      @keyframes botEnter { from { opacity: 0; transform: translateX(-50%) translateY(20px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
-      @keyframes pulse-antenna { 0% { box-shadow: 0 0 0 0 rgba(168, 85, 247, 0.7); } 70% { box-shadow: 0 0 0 5px rgba(168, 85, 247, 0); } 100% { box-shadow: 0 0 0 0 rgba(168, 85, 247, 0); } }
-
+      /* --- 适配 --- */
       @media screen and (max-width: 768px) { 
         .layout-wrapper { margin: 15px; perspective: none; }
         .container { padding: 30px 15px; border-radius: 12px; transform: none !important; } 
         #bot-container { display: none; } 
-        h1 { font-size: 1.45rem !important; } 
+        h1 { font-size: 1.45rem !important; line-height: 1.3; } 
       }
+      
+      /* --- 内容排版 --- */
+      h1 { 
+        font-size: 2.25rem; font-weight: 700; margin-bottom: 1.5rem; letter-spacing: -0.02em; 
+        background: linear-gradient(45deg, #7e22ce, #3b82f6, #db2777);
+        background-size: 200% 200%; -webkit-background-clip: text; background-clip: text; color: transparent; 
+        animation: gradientMove 6s ease infinite, fadeUp 0.8s ease-out forwards; opacity: 0; 
+      }
+      h2 { color: #581c87; margin-top: 2rem; font-weight: 600; }
+      h3 { color: #6b21a8; margin-top: 1.5rem; font-weight: 600; }
+      a { color: #9333ea; text-decoration: none; font-weight: 500; transition: color 0.2s; cursor: none; /* 确保链接也没有默认光标 */ }
+      a:hover { color: #d8b4fe; }
+      
+      /* --- 修正：图片融合与去除黑框 --- */
+      img { 
+        max-width: 100%; height: auto; border-radius: 8px; display: inline-block; vertical-align: middle; 
+        /* 核心修改：正片叠底模式让白色背景透明，同时强制移除任何边框和阴影 */
+        mix-blend-mode: multiply; 
+        filter: contrast(1.02);
+        border: none !important; 
+        box-shadow: none !important;
+        background-color: transparent !important;
+      }
+      
+      pre { background: #faf5ff; padding: 15px; border-radius: 8px; overflow-x: auto; border: 1px solid #e9d5ff; font-size: 0.9rem; color: #475569; }
+      code { font-family: 'JetBrains Mono', monospace; background: rgba(168, 85, 247, 0.1); padding: 2px 4px; border-radius: 4px; color: #7e22ce; }
+      pre code { background: none; padding: 0; color: inherit; }
+
+      /* --- 导航 --- */
+      .nav-badges { margin: 2rem 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+      .nav-badges a { opacity: 0; animation: fadeUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; text-decoration: none !important; border:none!important; }
+      .nav-badges a:nth-child(1) { animation-delay: 0.20s; }
+      .nav-badges a:nth-child(2) { animation-delay: 0.25s; }
+      .nav-badges a:nth-child(3) { animation-delay: 0.30s; }
+      .nav-badges a:nth-child(4) { animation-delay: 0.35s; }
+      .nav-badges a:nth-child(5) { animation-delay: 0.40s; }
+      .nav-badges a:nth-child(6) { animation-delay: 0.45s; }
+      .nav-badges img { height: 28px !important; width: auto; border-radius: 50px; box-shadow: 0 2px 6px rgba(168, 85, 247, 0.15); border: 1.5px solid white; transition: all 0.3s; margin: 0 !important; cursor: none; animation-delay: var(--ripple-delay, 0s); mix-blend-mode: normal !important; /* 导航图标不需要融合 */ }
+      .nav-badges a:hover img { animation: float-hover 2s ease-in-out infinite; box-shadow: 0 8px 20px rgba(168, 85, 247, 0.35); z-index: 10; }
+      .nav-badges img.rippling { animation: ripple-wave 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; }
+
+      /* --- 表格 --- */
+      table { display: block; width: 100%; overflow-x: auto; border-collapse: collapse; margin: 1rem 0; background-color: #ffffff; border-radius: 8px; border: 1px solid #f3e8ff; }
+      th, td { padding: 12px 15px; border: 1px solid #f3e8ff; background-color: #ffffff; white-space: nowrap; }
+      th { background-color: #faf5ff; font-weight: 600; color: #581c87; }
+
+      /* --- 动画 --- */
+      @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+      @keyframes gradientMove { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+      @keyframes float-hover { 0% { transform: scale(1.15) translateY(-2px); } 50% { transform: scale(1.15) translateY(-6px); } 100% { transform: scale(1.15) translateY(-2px); } }
+      @keyframes ripple-wave { 0% { transform: scale(1) translateY(0); } 30% { transform: scale(1.12) translateY(-5px); box-shadow: 0 12px 24px rgba(168, 85, 247, 0.4); } 100% { transform: scale(1) translateY(0); } }
+      @keyframes float-bot { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+      @keyframes blink { 0%, 48%, 52%, 100% { height: 0%; } 50% { height: 100%; } }
+      @keyframes pulse-antenna { 0% { box-shadow: 0 0 0 0 rgba(168, 85, 247, 0.7); } 70% { box-shadow: 0 0 0 5px rgba(168, 85, 247, 0); } 100% { box-shadow: 0 0 0 0 rgba(168, 85, 247, 0); } }
+      @keyframes botEnter { from { opacity: 0; transform: translateX(-50%) translateY(20px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
+      /* 机器人开心的动画 */
+      @keyframes spin-happy { 0% { transform: rotate(0deg) scale(1); } 50% { transform: rotate(10deg) scale(1.1); } 75% { transform: rotate(-10deg) scale(1.1); } 100% { transform: rotate(0deg) scale(1); } }
     </style>
+
+    <link rel="stylesheet" href="assets/css/academicons.css"/>
+    <script type="text/x-mathjax-config"> MathJax.Hub.Config({ TeX: { equationNumbers: { autoNumber: "all" } } }); </script>
+    <script type="text/x-mathjax-config"> MathJax.Hub.Config({ tex2jax: { inlineMath: [ ['$','$'], ["\\(","\\)"] ], processEscapes: true } }); </script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
   </head>
 
   <body>
     <div class="cursor-dot"></div>
     <div class="cursor-outline"></div>
+
     <div id="progress-bar"></div>
     <div id="vanta-bg"></div>
 
     <div class="layout-wrapper">
+      
       <div id="bot-container" title="Click me!">
         <div class="bot-antenna"></div>
         <div class="bot-head">
@@ -147,102 +203,119 @@
         <section id="main_content">
           {{ content }}
         </section>
-
-        <footer style="margin-top: 60px; padding: 30px 0; border-top: 1px solid rgba(168, 85, 247, 0.2); text-align: center; font-family: 'JetBrains Mono', monospace;">
-          <p style="color: #94a3b8; font-size: 0.85rem; margin-bottom: 12px; letter-spacing: 0.5px;">
-            PEDAL-256 • &copy; 2026 Tianyu Bai. All Rights Reserved.
-          </p>
-          <div style="display: inline-flex; align-items: center; gap: 8px; font-size: 0.8rem; opacity: 0.8; background: rgba(168, 85, 247, 0.05); padding: 6px 15px; border-radius: 20px;">
-            <span style="color: #a855f7;">[SYS_MONITOR]</span> 
-            <span style="color: #64748b;">Traffic:</span> 
-            <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Ftianyu-bai.github.io&count_bg=%237E22CE00&title_bg=%2355555500&icon=&icon_color=%23E7E7E7&title=%20&edge_flat=true" 
-                 style="height: 18px; vertical-align: middle; mix-blend-mode: multiply; filter: contrast(1.2) hue-rotate(280deg);">
-            <span style="animation: pulse-dot 2s infinite ease-in-out; display: inline-block; color: #3fb950; font-weight: bold; margin-left: 2px;">● LIVE</span>
-          </div>
+        <footer style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #e9d5ff; text-align: center; color: #94a3b8; font-size: 0.85rem;">
+          <p>PEDAL-256 • Open Source Neural Interfaces</p>
         </footer>
       </div>
+
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
-    
     <script>
-      window.MathJax = {
-        tex: {
-          inlineMath: [['$', '$'], ['\\(', '\\)']],
-          processEscapes: true,
-          tags: 'ams'
-        }
-      };
+      VANTA.NET({
+        el: "#vanta-bg",
+        mouseControls: true, touchControls: true, gyroControls: false,
+        minHeight: 200.00, minWidth: 200.00, scale: 1.00, scaleMobile: 1.00,
+        color: 0xa855f7, backgroundColor: 0xfdf4ff, 
+        points: 11.00, maxDistance: 23.00, spacing: 17.00, showDots: true
+      })
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" id="MathJax-script" async></script>
-
     <script>
       document.addEventListener("DOMContentLoaded", function() {
-        // Vanta 初始化
-        if (typeof VANTA !== 'undefined') {
-          VANTA.NET({
-            el: "#vanta-bg",
-            mouseControls: true, touchControls: true, scale: 1.00, scaleMobile: 1.00,
-            color: 0xa855f7, backgroundColor: 0xfdf4ff, 
-            points: 11.00, maxDistance: 23.00, spacing: 17.00, showDots: true
-          });
-        }
-
+        // 1. 光标逻辑
         const cursorDot = document.querySelector('.cursor-dot');
         const cursorOutline = document.querySelector('.cursor-outline');
+        
+        // 2. 3D Tilt 逻辑变量
         const container = document.querySelector('.container');
+        const wrapper = document.querySelector('.layout-wrapper');
+        
+        // 3. 机器人眼球逻辑
         const pupils = document.querySelectorAll('.bot-pupil');
         const eyes = document.querySelectorAll('.bot-eye');
         const botContainer = document.getElementById('bot-container');
 
-        // 鼠标移动逻辑 (光标、3D 倾斜、眼球追踪)
+        // --- 全局鼠标移动事件 ---
         window.addEventListener('mousemove', (e) => {
-          const { clientX: posX, clientY: posY } = e;
-          
-          // 光标
-          cursorDot.style.left = `${posX}px`;
-          cursorDot.style.top = `${posY}px`;
-          cursorOutline.animate({ left: `${posX}px`, top: `${posY}px` }, { duration: 500, fill: "forwards" });
+           const posX = e.clientX;
+           const posY = e.clientY;
 
-          // 3D 倾斜
-          if (window.innerWidth > 768 && container) {
-            const x = (window.innerWidth / 2 - posX) / 50;
-            const y = (window.innerHeight / 2 - posY) / 50;
-            container.style.transform = `rotateY(${x * -1}deg) rotateX(${y}deg)`;
-            const rect = container.getBoundingClientRect();
-            container.style.setProperty('--mouse-x', `${posX - rect.left}px`);
-            container.style.setProperty('--mouse-y', `${posY - rect.top}px`);
-          }
+           // A. 光标跟随 (带一点延迟的平滑感)
+           cursorDot.style.left = `${posX}px`;
+           cursorDot.style.top = `${posY}px`;
+           
+           // Outline 使用 animate 避免延迟太大
+           cursorOutline.animate({
+             left: `${posX}px`,
+             top: `${posY}px`
+           }, { duration: 500, fill: "forwards" });
 
-          // 眼球
-          pupils.forEach((pupil, i) => {
-            const rect = eyes[i].getBoundingClientRect();
-            const angle = Math.atan2(posY - (rect.top + rect.height / 2), posX - (rect.left + rect.width / 2));
-            const dist = Math.min(6, Math.hypot(posX - (rect.left + rect.width / 2), posY - (rect.top + rect.height / 2)));
-            pupil.style.transform = `translate(calc(-50% + ${Math.cos(angle) * dist}px), calc(-50% + ${Math.sin(angle) * dist}px))`;
-          });
+           // B. 3D 悬浮卡片效果 (仅在桌面端)
+           if (window.innerWidth > 768 && container) {
+             const x = (window.innerWidth / 2 - posX) / 50; // 除数越大，倾斜越小
+             const y = (window.innerHeight / 2 - posY) / 50;
+             container.style.transform = `rotateY(${x * -1}deg) rotateX(${y}deg)`;
+             
+             // 内部光晕逻辑
+             const rect = container.getBoundingClientRect();
+             container.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
+             container.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
+           }
+
+           // C. 机器人眼球追踪
+           pupils.forEach((pupil, index) => {
+             const eye = eyes[index];
+             const rect = eye.getBoundingClientRect();
+             const eyeCenterX = rect.left + rect.width / 2;
+             const eyeCenterY = rect.top + rect.height / 2;
+             const angle = Math.atan2(e.clientY - eyeCenterY, e.clientX - eyeCenterX);
+             const distance = Math.min(6, Math.hypot(e.clientX - eyeCenterX, e.clientY - eyeCenterY));
+             pupil.style.transform = `translate(calc(-50% + ${Math.cos(angle) * distance}px), calc(-50% + ${Math.sin(angle) * distance}px))`;
+           });
         });
 
-        // 交互反馈
-        const items = document.querySelectorAll('a, button, .nav-badges img, #bot-container');
-        items.forEach(el => {
+        // --- 交互: 光标悬停放大 ---
+        const interactiveElements = document.querySelectorAll('a, button, .nav-badges img, #bot-container');
+        interactiveElements.forEach(el => {
           el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
           el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
         });
 
-        if(botContainer) {
+        // --- 交互: 点击机器人 ---
+        if(botContainer){
           botContainer.addEventListener('click', () => {
             botContainer.classList.add('dizzy');
-            setTimeout(() => botContainer.classList.remove('dizzy'), 1000);
+            setTimeout(() => { botContainer.classList.remove('dizzy'); }, 1000);
           });
         }
 
-        // 滚动进度
+        // --- 导航栏波浪 ---
+        const links = Array.from(document.querySelectorAll('.nav-badges a'));
+        links.forEach((link, clickedIndex) => {
+          link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetUrl = this.href;
+            const clickedElement = this;
+            links.forEach((sibling, siblingIndex) => {
+                const img = sibling.querySelector('img');
+                const distance = Math.abs(clickedIndex - siblingIndex);
+                const delay = distance * 0.06;
+                img.style.setProperty('--ripple-delay', `${delay}s`);
+                img.classList.add('rippling');
+                setTimeout(() => { img.classList.remove('rippling'); }, 600 + (delay * 1000)); 
+            });
+            setTimeout(() => { clickedElement.classList.add('clicked'); }, 50);
+            setTimeout(() => { clickedElement.classList.remove('clicked'); }, 350);
+            setTimeout(() => { window.location.href = targetUrl; }, 500); 
+          });
+        });
+        window.addEventListener('pageshow', function(event) { links.forEach(link => { link.classList.remove('clicked'); }); });
         window.addEventListener('scroll', () => {
-          const winScroll = document.documentElement.scrollTop;
+          const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
           const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-          document.getElementById("progress-bar").style.width = (winScroll / height) * 100 + "%";
+          const scrolled = (winScroll / height) * 100;
+          document.getElementById("progress-bar").style.width = scrolled + "%";
         });
       });
     </script>
