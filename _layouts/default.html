@@ -14,13 +14,13 @@
       body { 
         margin: 0; 
         padding: 0; 
-        color: #334155; 
+        color: #475569; /* 蓝灰色文字，搭配紫色很舒服 */
         font-family: 'Inter', -apple-system, sans-serif; 
         line-height: 1.6; 
         overflow-x: hidden; 
       }
 
-      /* --- 动画背景层 --- */
+      /* --- 🔮 背景层 --- */
       #vanta-bg {
         position: fixed;
         z-index: -1; 
@@ -28,70 +28,74 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background: #f0f9ff; 
+        background: #f3e8ff; /* 浅紫底色 */
       }
       
-      /* --- 内容容器 --- */
+      /* --- 容器 (白水晶玻璃) --- */
       .container { 
         max-width: 860px; 
         margin: 60px auto; 
         padding: 60px 80px; 
-        background: rgba(255, 255, 255, 0.9);
-        backdrop-filter: blur(12px); 
-        -webkit-backdrop-filter: blur(12px);
-        border-radius: 16px; 
-        box-shadow: 0 10px 40px rgba(59, 130, 246, 0.1); 
-        border: 1px solid rgba(255, 255, 255, 0.6); 
-        border-top: 4px solid #3b82f6; 
-      }
-      
-      /* --- 📱 手机适配 (这里改了标题大小) --- */
-      @media screen and (max-width: 768px) { 
-        .container { 
-          width: auto; 
-          margin: 15px; 
-          padding: 30px 15px; /* 左右边距稍微调窄一点 */
-          border-radius: 12px; 
-        } 
-        body { font-size: 16px; } 
         
-        /* 🔥 关键修改：手机上标题变小 */
-        h1 { 
-          font-size: 1.45rem !important; /* 电脑是 2.25rem，这里强制改为 1.45rem */
-          line-height: 1.3;               /* 行高也稍微紧凑一点 */
-        } 
+        /* 晶莹剔透的白色磨砂 */
+        background: rgba(255, 255, 255, 0.75); 
+        backdrop-filter: blur(15px); 
+        -webkit-backdrop-filter: blur(15px);
+        
+        border-radius: 20px; 
+        /* 紫色系的微光边框和阴影 */
+        box-shadow: 0 10px 40px rgba(168, 85, 247, 0.15); 
+        border: 1px solid rgba(255, 255, 255, 0.8); 
+        border-top: 4px solid #a855f7; /* 顶部紫色条 */
       }
       
-      /* --- 电脑端排版 --- */
-      h1 { font-size: 2.25rem; font-weight: 700; color: #0f172a; margin-bottom: 1.5rem; letter-spacing: -0.02em; }
-      h2 { color: #1e293b; margin-top: 2rem; font-weight: 600; }
-      h3 { color: #334155; margin-top: 1.5rem; font-weight: 600; }
-      a { color: #2563eb; text-decoration: none; font-weight: 500; transition: color 0.2s; }
-      a:hover { color: #1d4ed8; }
+      /* --- 手机适配 --- */
+      @media screen and (max-width: 768px) { 
+        .container { width: auto; margin: 15px; padding: 30px 15px; border-radius: 12px; } 
+        body { font-size: 16px; } 
+        h1 { font-size: 1.45rem !important; line-height: 1.3; } 
+      }
+      
+      /* --- 排版细节 --- */
+      h1 { font-size: 2.25rem; font-weight: 700; color: #3b0764; /* 深紫色标题 */ margin-bottom: 1.5rem; letter-spacing: -0.02em; }
+      h2 { color: #581c87; margin-top: 2rem; font-weight: 600; }
+      h3 { color: #6b21a8; margin-top: 1.5rem; font-weight: 600; }
+      a { color: #9333ea; text-decoration: none; font-weight: 500; transition: color 0.2s; }
+      a:hover { color: #d8b4fe; }
       img { max-width: 100%; height: auto; border-radius: 8px; display: inline-block; vertical-align: middle; }
       
       /* --- 代码块 --- */
-      pre { background: #f1f5f9; padding: 15px; border-radius: 8px; overflow-x: auto; border: 1px solid #e2e8f0; font-size: 0.9rem; color: #334155; }
-      code { font-family: 'JetBrains Mono', monospace; background: rgba(0,0,0,0.05); padding: 2px 4px; border-radius: 4px; color: #0284c7; }
+      pre { background: #faf5ff; /* 极浅紫色背景 */ padding: 15px; border-radius: 8px; overflow-x: auto; border: 1px solid #e9d5ff; font-size: 0.9rem; color: #475569; }
+      code { font-family: 'JetBrains Mono', monospace; background: rgba(168, 85, 247, 0.1); padding: 2px 4px; border-radius: 4px; color: #7e22ce; }
       pre code { background: none; padding: 0; color: inherit; }
 
-      /* --- 🌟 徽章导航 (大按钮) --- */
-      .nav-badges { margin: 2.5rem 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+      /* --- 🪐 水晶胶囊导航 (改造徽章) --- */
+      .nav-badges { margin: 2.5rem 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; }
       .nav-badges a { border-bottom: none !important; text-decoration: none !important; line-height: 0; }
-      .nav-badges img { height: 36px !important; width: auto; border-radius: 6px; box-shadow: 0 4px 6px rgba(59, 130, 246, 0.2); transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); margin: 0 !important; }
-      .nav-badges a:hover img { transform: scale(1.15) translateY(-3px); box-shadow: 0 12px 24px rgba(59, 130, 246, 0.35); z-index: 10; }
+      
+      .nav-badges img { 
+        height: 38px !important; 
+        width: auto; 
+        border-radius: 50px; /* 变成圆润的胶囊形 */
+        /* 浅紫色的投影 */
+        box-shadow: 0 4px 10px rgba(168, 85, 247, 0.2); 
+        border: 2px solid white; /* 加个白边，像贴纸一样 */
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+        margin: 0 !important; 
+      }
+      
+      /* 悬停特效 */
+      .nav-badges a:hover img { 
+        transform: scale(1.15) translateY(-3px); 
+        /* 发光变强 */
+        box-shadow: 0 10px 25px rgba(168, 85, 247, 0.4); 
+        z-index: 10; 
+      }
 
-      /* --- 🛠️ 表格优化 (左右滑动 + 白底) --- */
-      table {
-        display: block; width: 100%; overflow-x: auto; 
-        border-collapse: collapse; margin: 1rem 0; 
-        background-color: #ffffff; border-radius: 8px;
-      }
-      th, td {
-        padding: 12px 15px; border: 1px solid #e2e8f0; 
-        background-color: #ffffff; white-space: nowrap;
-      }
-      th { background-color: #f8fafc; font-weight: 600; color: #1e293b; }
+      /* --- 🛠️ 表格优化 --- */
+      table { display: block; width: 100%; overflow-x: auto; border-collapse: collapse; margin: 1rem 0; background-color: #ffffff; border-radius: 8px; border: 1px solid #f3e8ff; }
+      th, td { padding: 12px 15px; border: 1px solid #f3e8ff; background-color: #ffffff; white-space: nowrap; }
+      th { background-color: #faf5ff; font-weight: 600; color: #581c87; }
     </style>
 
     <link rel="stylesheet" href="assets/css/academicons.css"/>
@@ -109,7 +113,7 @@
         {{ content }}
       </section>
       
-      <footer style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #e2e8f0; text-align: center; color: #94a3b8; font-size: 0.85rem;">
+      <footer style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #e9d5ff; text-align: center; color: #94a3b8; font-size: 0.85rem;">
         <p>PEDAL-256 • Open Source Neural Interfaces</p>
       </footer>
     </div>
@@ -126,8 +130,14 @@
         minWidth: 200.00,
         scale: 1.00,
         scaleMobile: 1.00,
-        color: 0x3b82f6, backgroundColor: 0xf0f9ff, 
-        points: 10.00, maxDistance: 22.00, spacing: 18.00, showDots: true
+        
+        /* --- 💜 梦幻调色板 --- */
+        color: 0xa855f7,         /* 连接线颜色 (亮紫色) */
+        backgroundColor: 0xfdf4ff, /* 背景底色 (极浅的粉紫色，非常通透) */
+        points: 11.00,           /* 节点数量 */
+        maxDistance: 23.00,      /* 连接距离，形成星座感 */
+        spacing: 17.00,
+        showDots: true           /* 显示节点圆点 */
       })
     </script>
   </body>
