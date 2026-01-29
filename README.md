@@ -8,7 +8,7 @@
 </div>
   
 <div align="center">
-  <h1 style="border-bottom: none; margin-bottom: 5px;">🚀 PEDAL-256</h1>
+  <h1 style="border-bottom: none; margin-bottom: 5px;">🚀 Elink-256</h1>
 
 <div align="center">
     <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=36&pause=1000&color=00693E&center=true&vCenter=true&width=1100&lines=An+Open-Source,+Solderless,+High-Density;Pedestal+Connector+for+Neural+Interfaces" />
@@ -24,7 +24,7 @@
 
   <br />
   <img src="Videos/Demo%20new%20new.gif" 
-       alt="PEDAL-256 Assembly Demo GIF" 
+       alt="ELINK-256 Assembly Demo GIF" 
        width="750" 
        class="gif-blend" 
        style="border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); display: block;">
@@ -34,7 +34,7 @@
 
 ## 📖 Overview
 
-**PEDAL-256** (Pedestal Elastomeric Dense Array Link) is an open-source, solderless, and scalable pedestal connector system designed for high-density chronic neural recording. It provides a mechanically robust and electrically reliable interface between thin-film implanted neural probes and external headstages, with a form factor optimized for freely moving animal studies.
+**Elink-256** (Pedestal Elastomeric Dense Array Link) is an open-source, solderless, and scalable pedestal connector system designed for high-density chronic neural recording. It provides a mechanically robust and electrically reliable interface between thin-film implanted neural probes and external headstages, with a form factor optimized for freely moving animal studies.
 
 > [!NOTE]
 > **Key Innovation:** The system integrates two high-density PCBs, an anisotropic elastomeric contact interface, and a lightweight pedestal housing into a fully integrated, headstage-ready solution.
@@ -244,7 +244,7 @@ This project is fully open-source. Upon acceptance of the associated paper, the 
   <p><b>👇 Bookmark the repository for future downloads:</b></p>
 
 <div align="center">
-  <a href="https://github.com/Tianyu-Bai/PEDAL-256"><img src="https://img.shields.io/badge/GitHub-View_Source_Repository-181717?style=for-the-badge&logo=github&logoColor=white" alt="View on GitHub"></a>
+  <a href="https://github.com/Tianyu-Bai/ELINK"><img src="https://img.shields.io/badge/GitHub-View_Source_Repository-181717?style=for-the-badge&logo=github&logoColor=white" alt="View on GitHub"></a>
   <img src="https://img.shields.io/badge/Status-Locked_until_Publication-A31F34?style=for-the-badge&logo=private" alt="Status Locked">
 </div>
 </div>
