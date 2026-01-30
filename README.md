@@ -8,7 +8,7 @@
 </div>
   
 <div align="center">
-  <h1 style="border-bottom: none; margin-bottom: 5px;">🚀 ELink-256</h1>
+  <h1 style="border-bottom: none; margin-bottom: 5px;">🚀 E-Link(256)</h1>
 
 <div align="center">
     <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=36&pause=1000&color=00693E&center=true&vCenter=true&width=1100&lines=An+Open-Source,+Solderless,+High-Density;Pedestal+Connector+for+Neural+Interfaces" />
@@ -19,7 +19,7 @@
     <img src="https://img.shields.io/badge/Verified-256ch-FFA500?style=flat-square" alt="Verified" />
     <a href="https://tianyu-bai.github.io/"><img src="https://img.shields.io/badge/Website-Tianyu%20Bai-0077B5?style=flat-square&logo=github&logoColor=white" alt="Website"></a>
     <a href="https://www.linkedin.com/in/tianyubai/"><img src="https://img.shields.io/badge/LinkedIn-Profile-0A66C2?style=flat-square&logo=linkedin&logoColor=white" alt="LinkedIn"></a>
-     <a href="https://github.com/tianyu-bai/Elink-256/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-A31F34?style=flat-square&logo=opensourceinitiative&logoColor=white" alt="License"></a>
+     <a href="https://github.com/tianyu-bai/E-Link/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-A31F34?style=flat-square&logo=opensourceinitiative&logoColor=white" alt="License"></a>
   </div>
 
   <br />
