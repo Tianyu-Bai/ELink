@@ -219,21 +219,25 @@ This project is developed by the **MINE Lab** at Dartmouth College. <a href="htt
 
 ## 📄 Publication
 
-This work is currently **under review**. 
+This work is currently **under review** at the *IEEE Journal on Flexible Electronics (JFLEX)*.
 
-The hardware designs and visual assets in this repository correspond directly to the system described in our submitted manuscript. To maintain the integrity of the peer-review process:
-* **Full Citation:** Will be updated here upon formal acceptance.
-* **Inquiries:** For access to the full manuscript or technical design files, please contact **Tianyu Bai(Tianyu.Bai.TH@Dartmouth.edu)**
-  or **Prof. Hui Fang(Hui.Fang@Dartmouth.edu)**.
-* **Full Paper:** *Coming Soon.*
+The hardware designs and visual assets in this repository correspond directly to the system described in the submitted manuscript. To maintain the integrity of the peer-review process:
 
+* **Full Citation**: A permanent link to the final paper will be updated here immediately upon formal acceptance.
+* **Preprint/Full Paper**: *Coming Soon.*
+  
+* **We also welcome feedback and collaboration from the neuroengineering community!**
+* **Inquiries**: For access to the technical design files or questions, please contact:
+    * **Tianyu Bai** ([Tianyu.Bai.TH@Dartmouth.edu](mailto:Tianyu.Bai.TH@Dartmouth.edu))
+    * **Prof. Hui Fang** ([Hui.Fang@Dartmouth.edu](mailto:Hui.Fang@Dartmouth.edu))
 ---
 
 ## 📑 Citation & DOI
 
-If you utilize these designs or assets in your research, please cite this repository using the following Digital Object Identifier (DOI) provided by Zenodo:
-* **Current Reference:** T. Bai, et al., "E-Link," v1.0, MINE Lab, Dartmouth College, 2026. DOI:10.5281/zenodo.18440105
-* We also welcome feedback and collaboration from the neuroengineering community!
+If you utilize these designs, code, or assets in your research, please cite this repository using the persistent DOI provided by Zenodo:
+
+**Current Reference:**
+> T. Bai, et al., "E-Link GitHub Repository," v1.0, MINE Lab, Dartmouth College, 2026. [![DOI](https://zenodo.org/badge/1119765398.svg)](https://doi.org/10.5281/zenodo.18440104)
 
 ---
 
