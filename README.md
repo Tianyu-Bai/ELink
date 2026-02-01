@@ -8,10 +8,10 @@
 </div>
   
 <div align="center">
-  <h1 style="border-bottom: none; margin-bottom: 5px;">🚀 E-Link(256)</h1>
-
+  <h1 style="border-bottom: none; margin-bottom: 5px;color: #60a5fa;">🚀 E-Link(256)</h1>
+  
 <div align="center">
-    <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=36&pause=1000&color=00693E&center=true&vCenter=true&width=1100&lines=An+Open-Source,+Solderless,+High-Density;Pedestal+Connector+for+Neural+Interfaces" />
+    <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=36&pause=1000&color=60a5fa&center=true&vCenter=true&width=1100&lines=An+Open-Source,+Solderless,+High-Density;Pedestal+Connector+for+Neural+Interfaces" />
 </div>
 
   <div  align="center" style="margin-top: 15px;">
@@ -273,7 +273,7 @@ Copyright © 2026 <font color="#00693E">Tianyu Bai</font>   <a href="https://tia
 This project is open-source and available under the **MIT License**. Click the badge below for full license details.
 
 <div align="center">
-  <a href="https://github.com/tianyu-bai/PEDAL-256/blob/main/LICENSE">
+  <a href="https://github.com/tianyu-bai/E-Link/blob/main/LICENSE">
     <img src="https://img.shields.io/badge/License-MIT-A31F34?style=flat-square&logo=opensourceinitiative&logoColor=white" alt="License">
   </a>
 </div>
