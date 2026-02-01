@@ -8,7 +8,7 @@
 </div>
   
 <div align="center">
-  <h1 style="border-bottom: none; margin-bottom: 5px; color: #60a5fa; font-size: 3em;">🚀 E-Link(256)</h1>
+  <h1 style="border-bottom: none; margin-bottom: 5px; color: #60a5fa; font-size: 2em;">🚀 E-Link(256)</h1>
   
 <div align="center">
     <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=36&pause=1000&color=60a5fa&center=true&vCenter=true&width=1100&lines=An+Open-Source,+Solderless,+High-Density;Pedestal+Connector+for+Neural+Interfaces" />
