@@ -85,16 +85,42 @@
      .bot-antenna { position: absolute; top: -15px; left: 50%; transform: translateX(-50%); width: 2px; height: 15px; background: #e0e7ff; }
      .bot-antenna::after { content: ''; position: absolute; top: -6px; left: -3px; width: 8px; height: 8px; background: #3b82f6; border-radius: 50%; animation: pulse-antenna 2s infinite; }
 
-     /* --- 6. 容器 & 打字机 --- */
-     .container { 
-       position: relative; padding: 60px 80px; 
-       background: rgba(255, 255, 255, 0.05); 
-       backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%); 
-       border-radius: 20px; box-shadow: 0 20px 50px rgba(59, 130, 246, 0.15); 
-       border: 1px solid rgba(255, 255, 255, 0.1); border-top: 4px solid #3b82f6; 
-       opacity: 0; animation: fadeUp 0.8s ease-out 0.3s forwards; z-index: 1;
-       transform-style: preserve-3d; transition: transform 0.1s ease-out; 
-     }
+/* --- 6. 容器 & 打字机 --- */
+.container { 
+  position: relative; padding: 60px 80px; 
+  background: rgba(255, 255, 255, 0.05); 
+  backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%); 
+  border-radius: 20px; box-shadow: 0 20px 50px rgba(59, 130, 246, 0.15); 
+  border: 1px solid rgba(255, 255, 255, 0.1); border-top: 4px solid #3b82f6; 
+  opacity: 0; animation: fadeUp 0.8s ease-out 0.3s forwards; z-index: 1;
+  transform-style: preserve-3d; transition: transform 0.1s ease-out;
+  
+  /* 确保容器内的行内元素（如打字机文本）水平居中 */
+  text-align: center; 
+}
+
+.typewriter-container {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.1rem; color: #93c5fd; min-height: 1.6em; margin-bottom: 2rem;
+  /* 显式声明居中，防止继承问题 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#typewriter-text {
+  /* 确保文本生长时保持在中心线 */
+  white-space: pre-wrap; 
+}
+
+.typewriter-cursor { 
+  animation: blink-cursor 0.8s infinite; 
+  border-left: 3px solid #3b82f6; 
+  margin-left: 2px;
+  display: inline-block;
+  height: 1.2em;
+  vertical-align: middle;
+}
 
      /* 表格精准修复：只改第一行标题，不碰第二行数据 */
      #main_content table {
@@ -186,7 +212,7 @@
        color: 0x3b82f6, backgroundColor: 0x0a0a0f, points: 18.00, maxDistance: 28.00, spacing: 16.00, showDots: true
      });
  
-     const texts = ["PhD Innovation Fellow @ Dartmouth", "Neurotechnology R&D", "Building PEDAL-256", "Hardware & Neural Interfaces"];
+     const texts = ["E-Link(256)", "Dartmouth MINE Lab"];
      let textIdx = 0, charIdx = 0, isDeleting = false;
      function type() {
        const currentText = texts[textIdx];
