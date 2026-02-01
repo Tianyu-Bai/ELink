@@ -86,33 +86,40 @@
      .bot-antenna::after { content: ''; position: absolute; top: -6px; left: -3px; width: 8px; height: 8px; background: #3b82f6; border-radius: 50%; animation: pulse-antenna 2s infinite; }
 
 /* --- 6. 容器 & 打字机 --- */
-     .container { 
-       position: relative; padding: 60px 80px; 
-       background: rgba(255, 255, 255, 0.05); 
-       backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%); 
-       border-radius: 20px; box-shadow: 0 20px 50px rgba(59, 130, 246, 0.15); 
-       border: 1px solid rgba(255, 255, 255, 0.1); border-top: 4px solid #3b82f6; 
-       opacity: 0; animation: fadeUp 0.8s ease-out 0.3s forwards; z-index: 1;
-       transform-style: preserve-3d; transition: transform 0.1s ease-out; 
+.container { 
+  position: relative; padding: 60px 80px; 
+  background: rgba(255, 255, 255, 0.05); 
+  backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%); 
+  border-radius: 20px; box-shadow: 0 20px 50px rgba(59, 130, 246, 0.15); 
+  border: 1px solid rgba(255, 255, 255, 0.1); border-top: 4px solid #3b82f6; 
+  opacity: 0; animation: fadeUp 0.8s ease-out 0.3s forwards; z-index: 1;
+  transform-style: preserve-3d; transition: transform 0.1s ease-out; 
+}
 
-     }
+#main_content table {
+  width: 100% !important; border-collapse: collapse; margin: 20px 0;
+  background: rgba(10, 10, 15, 0.3); border-radius: 8px; overflow: hidden;
+}
 
-     /* 表格精准修复：只改第一行标题，不碰第二行数据 */
-     #main_content table {
-       width: 100% !important; border-collapse: collapse; margin: 20px 0;
-       background: rgba(10, 10, 15, 0.3); border-radius: 8px; overflow: hidden;
-     }
-     #main_content th, #main_content td {
-       padding: 12px; border: 1px solid rgba(255, 255, 255, 0.1);
-     }
-     /* 仅针对表格第一行：增加深色背景解决“白吃白” */
-     #main_content tr:first-child, #main_content thead tr {
-       background: rgba(30, 41, 59, 0.8) !important;
-     }
-     #main_content th { color: #60a5fa; font-weight: 600; }
+#main_content th, #main_content td {
+  padding: 12px; border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #e0e7ff; 
+}
 
-     .typewriter-container { font-family: 'JetBrains Mono', monospace; font-size: 1.1rem; color: #93c5fd; min-height: 1.6em; margin-bottom: 2rem; }
-     .typewriter-cursor { animation: blink-cursor 0.8s infinite; border-left: 3px solid #3b82f6; margin-left: 2px; }
+/* 只针对真正的表头行 (thead tr) 或者表格的最第一行进行加深 */
+#main_content thead tr, 
+#main_content table > tr:first-child, 
+#main_content table > tbody > tr:first-child:only-child {
+  background: rgba(30, 41, 59, 0.8) !important;
+}
+
+/* 强制第二行及以后的数据行背景透明，防止被误伤 */
+#main_content tbody tr:not(:first-child),
+#main_content tr:nth-child(n+2) {
+  background: transparent !important;
+}
+
+#main_content th { color: #60a5fa !important; font-weight: 600; }
 
      /* --- 7. Badge 样式 (完全还原到你最原始的状态) --- */
      .nav-badges { margin: 2rem 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
