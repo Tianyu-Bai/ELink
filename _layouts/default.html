@@ -17,48 +17,47 @@
     <style>
       /* --- 0. 全局设置 --- */
       body { 
-        margin: 0; padding: 0; color: #e0e7ff; /* 整体文字颜色改为亮色 */
+        margin: 0; padding: 0; color: #e0e7ff; 
         font-family: 'Inter', -apple-system, sans-serif; 
         line-height: 1.6; overflow-x: hidden; 
         cursor: none;
-        scrollbar-width: thin; scrollbar-color: #3b82f6 transparent; /* 滚动条颜色改为蓝色 */
+        scrollbar-width: thin; scrollbar-color: #3b82f6 transparent; 
       }
       @media (pointer: coarse) { body { cursor: auto; } }
 
       ::-webkit-scrollbar { width: 6px; }
       ::-webkit-scrollbar-track { background: transparent; }
-      ::-webkit-scrollbar-thumb { background: rgba(59, 130, 246, 0.5); border-radius: 10px; } /* 滚动条颜色改为蓝色 */
-      ::-webkit-scrollbar-thumb:hover { background: rgba(59, 130, 246, 0.8); } /* 滚动条颜色改为蓝色 */
-      ::selection { background: #3b82f6; color: #ffffff; text-shadow: 0 0 8px rgba(255, 255, 255, 0.8); } /* 选中颜色改为蓝色 */
+      ::-webkit-scrollbar-thumb { background: rgba(59, 130, 246, 0.5); border-radius: 10px; } 
+      ::-webkit-scrollbar-thumb:hover { background: rgba(59, 130, 246, 0.8); } 
+      ::selection { background: #3b82f6; color: #ffffff; text-shadow: 0 0 8px rgba(255, 255, 255, 0.8); } 
 
       /* --- 1. 自定义光标 --- */
       .cursor-dot, .cursor-outline {
         position: fixed; top: 0; left: 0; 
         transform: translate(-50%, -50%); border-radius: 50%; z-index: 99999; pointer-events: none;
       }
-      .cursor-dot { width: 8px; height: 8px; background-color: #3b82f6; } /* 光标点改为蓝色 */
+      .cursor-dot { width: 8px; height: 8px; background-color: #3b82f6; } 
       .cursor-outline { 
-        width: 40px; height: 40px; border: 1px solid rgba(59, 130, 246, 0.5); /* 光标边框改为蓝色 */
+        width: 40px; height: 40px; border: 1px solid rgba(59, 130, 246, 0.5); 
         transition: width 0.2s, height 0.2s, background-color 0.2s;
       }
-      body.hovering .cursor-outline { width: 60px; height: 60px; background-color: rgba(59, 130, 246, 0.1); border-color: transparent; } /* 悬停光标改为蓝色 */
+      body.hovering .cursor-outline { width: 60px; height: 60px; background-color: rgba(59, 130, 246, 0.1); border-color: transparent; } 
       @media (max-width: 768px) { .cursor-dot, .cursor-outline { display: none; } }
 
       /* --- 2. 进度条 --- */
       #progress-bar {
         position: fixed; top: 0; left: 0; height: 3px;
-        background: linear-gradient(90deg, #3b82f6, #60a5fa); /* 进度条改为蓝色渐变 */
+        background: linear-gradient(90deg, #3b82f6, #60a5fa); 
         width: 0%; z-index: 99999; transition: width 0.1s;
       }
 
       /* --- 3. 背景 --- */
       #vanta-bg { 
         position: fixed; z-index: -5; top: 0; left: 0; width: 100%; height: 100%; 
-        background: #0a0a0f; /* 初始深色背景 */
-        animation: pulse-bg 8s infinite ease-in-out; /* 新增背景脉冲动画 */
-        filter: contrast(1.2) brightness(1.1); /* 增加对比度和亮度 */
+        background: #0a0a0f; 
+        animation: pulse-bg 8s infinite ease-in-out; 
+        filter: contrast(1.2) brightness(1.1); 
       }
-      /* 模拟神经脉冲微光叠加层 */
       #vanta-bg::after {
         content: '';
         position: absolute;
@@ -66,7 +65,6 @@
         background: radial-gradient(circle at center, transparent 0%, rgba(10, 10, 15, 0.4) 100%);
         pointer-events: none;
       }
-
 
       /* --- 4. 布局包裹器 --- */
       .layout-wrapper {
@@ -88,7 +86,7 @@
       .bot-head { 
         width: 100px; height: 50px; background: #ffffff; border: 2px solid #e0e7ff; border-bottom: none; 
         border-radius: 50px 50px 20px 20px; margin: 0 auto; position: relative; 
-        box-shadow: 0 -5px 15px rgba(59, 130, 246, 0.15); /* 阴影改为蓝色系 */
+        box-shadow: 0 -5px 15px rgba(59, 130, 246, 0.15); 
         display: flex; justify-content: center; align-items: center; gap: 10px; padding-top: 5px; 
         animation: float-bot 3s ease-in-out infinite; transition: border-color 0.3s, box-shadow 0.3s; 
       }
@@ -109,106 +107,61 @@
       .bot-antenna { position: absolute; top: -15px; left: 50%; transform: translateX(-50%); width: 2px; height: 15px; background: #e0e7ff; transition: background 0.3s; }
       .bot-antenna::after { content: ''; position: absolute; top: -6px; left: -3px; width: 8px; height: 8px; background: #3b82f6; border-radius: 50%; animation: pulse-antenna 2s infinite; transition: background 0.3s, box-shadow 0.3s; }
 
-      /* --- [重点修改] 悬停时的渐变蓝状态 --- */
-      body.badge-hovering .bot-pupil, body.hovering .bot-pupil { /* 也适用于普通hover */
+      /* 状态切换动画 */
+      body.badge-hovering .bot-pupil, body.hovering .bot-pupil { 
         background: radial-gradient(circle at 30% 30%, #60a5fa, #2563eb); 
         box-shadow: 0 0 15px rgba(59, 130, 246, 0.8), 0 0 30px rgba(59, 130, 246, 0.4); 
-        animation: eye-focus 0.5s infinite alternate; /* 增加对焦动画 */
+        animation: eye-focus 0.5s infinite alternate; 
       }
       body.badge-hovering .bot-antenna::after, body.hovering .bot-antenna::after {
-        background: #3b82f6; 
-        animation: marquee-blink-blue 0.2s infinite; 
-      }
-      body.badge-hovering .bot-eye, body.hovering .bot-eye, 
-      body.badge-hovering .bot-head, body.hovering .bot-head {
-        border-color: rgba(59, 130, 246, 0.6);
-        box-shadow: 0 -5px 20px rgba(59, 130, 246, 0.2);
+        background: #3b82f6; animation: marquee-blink-blue 0.2s infinite; 
       }
       
-      /* --- 6. 容器 & 内容 (玻璃拟态) --- */
+      /* --- 6. 容器 & Markdown 内容适配 --- */
       .container { 
         position: relative; padding: 60px 80px; 
-        background: rgba(255, 255, 255, 0.05); /* 更低的透明度 */
-        backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%); /* 更强的模糊和饱和度 */
-        border-radius: 20px; 
-        box-shadow: 0 20px 50px rgba(59, 130, 246, 0.15); /* 蓝色阴影 */
-        border: 1px solid rgba(255, 255, 255, 0.1); /* 更细、更透的边框 */
-        border-top: 4px solid #3b82f6; /* 顶部强调色改为蓝色 */
+        background: rgba(15, 23, 42, 0.7); /* 加深背景，方便阅读 Markdown 文本 */
+        backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%); 
+        border-radius: 20px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3); 
+        border: 1px solid rgba(255, 255, 255, 0.1); border-top: 4px solid #3b82f6; 
         opacity: 0; animation: fadeUp 0.8s ease-out 0.3s forwards; z-index: 1;
         transform-style: preserve-3d; transition: transform 0.1s ease-out; 
       }
       
+      /* 修正 Markdown 列表和标题的颜色与间距 */
+      #main_content h1, #main_content h2, #main_content h3 { color: #f8fafc; margin-top: 1.5em; }
+      #main_content p { margin-bottom: 1.2em; }
+      #main_content ul, #main_content ol { padding-left: 1.5em; margin-bottom: 1.2em; }
+      #main_content li { margin-bottom: 0.5em; }
+      #main_content code { background: rgba(59, 130, 246, 0.2); padding: 0.2em 0.4em; border-radius: 4px; font-family: 'JetBrains Mono', monospace; }
+      #main_content pre { background: rgba(0, 0, 0, 0.3); padding: 1em; border-radius: 8px; overflow-x: auto; }
+      
       .container::before {
         content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; 
         border-radius: 20px; overflow: hidden;
-        background: radial-gradient(800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(59, 130, 246, 0.08), transparent 40%); /* 鼠标追光改为蓝色 */
+        background: radial-gradient(800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(59, 130, 246, 0.1), transparent 40%); 
         opacity: 0; transition: opacity 0.5s ease; pointer-events: none;
       }
       .container:hover::before { opacity: 1; }
 
       @media screen and (max-width: 768px) { 
         .layout-wrapper { margin: 15px; perspective: none; }
-        .container { padding: 30px 15px; border-radius: 12px; transform: none !important; } 
+        .container { padding: 30px 20px; border-radius: 12px; transform: none !important; } 
         #bot-container { display: none; } 
-        h1 { font-size: 1.45rem !important; } 
       }
-      
-      h1 { 
-        font-size: 2.25rem; font-weight: 700; margin-bottom: 1.5rem; letter-spacing: -0.02em; 
-        background: linear-gradient(45deg, #3b82f6, #60a5fa, #93c5fd); /* 标题渐变改为蓝色系 */
-        background-size: 200% 200%; -webkit-background-clip: text; background-clip: text; color: transparent; 
-        animation: gradientMove 6s ease infinite, fadeUp 0.8s ease-out forwards; opacity: 0; 
-      }
-      a { color: #60a5fa; text-decoration: none; font-weight: 500; transition: color 0.2s; cursor: none; } /* 链接颜色改为蓝色 */
-      a:hover { color: #93c5fd; } /* 链接hover颜色改为亮蓝色 */
-      
-      img { 
-        max-width: 100%; height: auto; border-radius: 8px; display: inline-block; vertical-align: middle; 
-        /* mix-blend-mode: multiply; filter: contrast(1.02); */ /* 深色背景下通常不需要这些滤镜，可以移除或调整 */
-        border: none !important; box-shadow: none !important;
-      }
-      
-      /* --- 导航 Badge --- */
-      .nav-badges { margin: 2rem 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
-      .nav-badges a { opacity: 0; animation: fadeUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; text-decoration: none !important; border:none!important; }
-      .nav-badges a:nth-child(1) { animation-delay: 0.20s; }
-      .nav-badges a:nth-child(2) { animation-delay: 0.25s; }
-      .nav-badges a:nth-child(3) { animation-delay: 0.30s; }
-      .nav-badges a:nth-child(4) { animation-delay: 0.35s; }
-      .nav-badges a:nth-child(5) { animation-delay: 0.40s; }
-      .nav-badges a:nth-child(6) { animation-delay: 0.45s; }
-      .nav-badges img { height: 28px !important; width: auto; border-radius: 50px; box-shadow: 0 2px 6px rgba(59, 130, 246, 0.15); border: 1.5px solid white; transition: all 0.3s; margin: 0 !important; cursor: none; mix-blend-mode: normal !important; } /* badge 阴影改为蓝色 */
-      .nav-badges a:hover img { animation: float-hover 2s ease-in-out infinite; box-shadow: 0 8px 20px rgba(59, 130, 246, 0.35); z-index: 10; } /* badge hover 阴影改为蓝色 */
-      .nav-badges img.rippling { animation: ripple-wave 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; }
 
       /* --- 动画库 --- */
       @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
       @keyframes gradientMove { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
       @keyframes float-bot { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
       @keyframes blink { 0%, 48%, 52%, 100% { height: 0%; } 50% { height: 100%; } }
-      @keyframes pulse-antenna { 0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7); } 70% { box-shadow: 0 0 0 5px rgba(59, 130, 246, 0); } 100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); } } /* 天线脉冲改为蓝色 */
+      @keyframes pulse-antenna { 0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7); } 70% { box-shadow: 0 0 0 5px rgba(59, 130, 246, 0); } 100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); } } 
       @keyframes botEnter { from { opacity: 0; transform: translateX(-50%) translateY(20px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
       @keyframes spin-happy { 0% { transform: rotate(0deg) scale(1); } 50% { transform: rotate(10deg) scale(1.1); } 75% { transform: rotate(-10deg) scale(1.1); } 100% { transform: rotate(0deg) scale(1); } }
-      @keyframes float-hover { 0% { transform: scale(1.15) translateY(-2px); } 50% { transform: scale(1.15) translateY(-6px); } 100% { transform: scale(1.15) translateY(-2px); } }
-      @keyframes ripple-wave { 0% { transform: scale(1) translateY(0); } 30% { transform: scale(1.12) translateY(-5px); } 100% { transform: scale(1) translateY(0); } }
-      
-      /* 新增蓝色系动画 */
-      @keyframes marquee-blink-blue { 
-        0%, 100% { opacity: 1; box-shadow: 0 0 15px #3b82f6; background: #60a5fa; } 
-        50% { opacity: 0.6; box-shadow: 0 0 5px #2563eb; background: #2563eb; } 
-      }
-      @keyframes eye-focus {
-        from { transform: translate(-50%, -50%) scale(1); }
-        to { transform: translate(-50%, -50%) scale(1.1); }
-      }
-      /* 新增背景脉冲动画 */
-      @keyframes pulse-bg {
-        0% { opacity: 0.7; }
-        50% { opacity: 1; }
-        100% { opacity: 0.7; }
-      }
+      @keyframes marquee-blink-blue { 0%, 100% { opacity: 1; box-shadow: 0 0 15px #3b82f6; background: #60a5fa; } 50% { opacity: 0.6; box-shadow: 0 0 5px #2563eb; background: #2563eb; } }
+      @keyframes eye-focus { from { transform: translate(-50%, -50%) scale(1); } to { transform: translate(-50%, -50%) scale(1.1); } }
+      @keyframes pulse-bg { 0% { opacity: 0.7; } 50% { opacity: 1; } 100% { opacity: 0.7; } }
     </style>
-
   </head>
 
   <body>
@@ -219,7 +172,6 @@
     <div id="vanta-bg"></div>
 
     <div class="layout-wrapper">
-      
       <div id="bot-container" title="Click me!">
         <div class="bot-antenna"></div>
         <div class="bot-head">
@@ -230,65 +182,22 @@
 
       <div class="container">
         <section id="main_content">
-          <h1>欢迎来到赛博神经世界</h1>
-          <p>这是一个以神经元网络为背景，充满未来感的个人页面模板。</p>
-          <p>
-            你可以自由地修改这段内容，加入你的项目介绍、个人博客文章、或任何你想展示的信息。
-            <a href="https://github.com/your-repo" target="_blank">查看我的GitHub</a>
-          </p>
-
-          <div class="nav-badges">
-            <a href="#about" title="关于我"><img src="https://img.shields.io/badge/About-Me-blue.svg?style=for-the-badge&logo=github" alt="About Me"></a>
-            <a href="#projects" title="我的项目"><img src="https://img.shields.io/badge/My-Projects-blue.svg?style=for-the-badge&logo=appveyor" alt="My Projects"></a>
-            <a href="#contact" title="联系方式"><img src="https://img.shields.io/badge/Contact-Me-blue.svg?style=for-the-badge&logo=linkedin" alt="Contact Me"></a>
-          </div>
-
-          <h2>神经美学与交互</h2>
-          <p>
-            背景的动态神经元网络将随着鼠标移动而轻微互动，模拟大脑中不断连接和处理信息的过程。
-            机器人的眼睛会追踪你的鼠标，点击它还会触发一个可爱的“眩晕”动画和背景的颜色变化，
-            给你带来独特的交互体验。
-          </p>
-
-          <h3>技术栈</h3>
-          <ul>
-            <li>**HTML/CSS/JS**: 构建页面结构、样式和交互逻辑。</li>
-            <li>**Vanta.js**: 实现酷炫的神经元动态背景。</li>
-            <li>**Three.js**: Vanta.js 的底层3D渲染库。</li>
-            <li>**Glassmorphism**: 运用现代UI设计趋势，使内容区与背景融为一体。</li>
-          </ul>
-
-          <p>
-            这个模板旨在提供一个优雅且引人注目的展示平台。
-            享受探索赛博空间的感觉吧！
-          </p>
-
+          {{ content }}
         </section>
         <footer style="margin-top: 40px; padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.1); text-align: center; color: #94a3b8; font-size: 0.85rem;">
           <p>PEDAL-256 • Open Source Neural Interfaces</p>
         </footer>
       </div>
-
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
     <script>
-      // 将 Vanta 实例存储在变量中，以便后续修改
       let vantaEffect = VANTA.NET({
         el: "#vanta-bg",
         mouseControls: true, touchControls: true, gyroControls: false,
         minHeight: 200.00, minWidth: 200.00, scale: 1.00, scaleMobile: 1.00,
-        color: 0x3b82f6,       // [赛博深蓝] 神经元连接线的颜色，亮蓝色
-        backgroundColor: 0x0a0a0f, // [赛博深蓝] 深邃的黑色背景
-        points: 18.00,        // 增加神经元节点数量，更密集
-        maxDistance: 28.00,   // 增加连接线长度，网络感更强
-        spacing: 16.00,       // 节点间距
-        showDots: true,       // 确保神经元节点（点）是显示的
-        /* 你可以尝试更多参数来调整效果：
-        vertexColors: true, // 如果需要节点有颜色
-        blending: 'normal' // 混合模式
-        */
+        color: 0x3b82f6, backgroundColor: 0x0a0a0f, points: 18.00, maxDistance: 28.00, spacing: 16.00, showDots: true
       });
     </script>
     <script>
@@ -301,22 +210,14 @@
         const botContainer = document.getElementById('bot-container');
 
         window.addEventListener('mousemove', (e) => {
-           const posX = e.clientX;
-           const posY = e.clientY;
-
-           cursorDot.style.left = `${posX}px`;
-           cursorDot.style.top = `${posY}px`;
-           
-           cursorOutline.animate({
-             left: `${posX}px`,
-             top: `${posY}px`
-           }, { duration: 500, fill: "forwards" });
+           const posX = e.clientX; const posY = e.clientY;
+           cursorDot.style.left = `${posX}px`; cursorDot.style.top = `${posY}px`;
+           cursorOutline.animate({ left: `${posX}px`, top: `${posY}px` }, { duration: 500, fill: "forwards" });
 
            if (window.innerWidth > 768 && container) {
-             const x = (window.innerWidth / 2 - posX) / 50;
-             const y = (window.innerHeight / 2 - posY) / 50;
+             const x = (window.innerWidth / 2 - posX) / 55;
+             const y = (window.innerHeight / 2 - posY) / 55;
              container.style.transform = `rotateY(${x * -1}deg) rotateX(${y}deg)`;
-             
              const rect = container.getBoundingClientRect();
              container.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
              container.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
@@ -327,39 +228,15 @@
              const rect = eye.getBoundingClientRect();
              const eyeCenterX = rect.left + rect.width / 2;
              const eyeCenterY = rect.top + rect.height / 2;
-             const angle = Math.atan2(e.clientY - eyeCenterY, e.clientX - eyeCenterX);
-             const distance = Math.min(6, Math.hypot(e.clientX - eyeCenterX, e.clientY - eyeCenterY));
-             
-             if(document.body.classList.contains('badge-hovering') || document.body.classList.contains('hovering')) {
-                // 悬停状态下，眼睛放大且追踪
-                pupil.style.left = `calc(50% + ${Math.cos(angle) * distance}px)`;
-                pupil.style.top = `calc(50% + ${Math.sin(angle) * distance}px)`;
-             } else {
-                // 正常状态下，只追踪
-                pupil.style.transform = `translate(calc(-50% + ${Math.cos(angle) * distance}px), calc(-50% + ${Math.sin(angle) * distance}px))`;
-             }
+             const angle = Math.atan2(posY - eyeCenterY, posX - eyeCenterX);
+             const dist = Math.min(6, Math.hypot(posX - eyeCenterX, posY - eyeCenterY) / 10);
+             pupil.style.transform = `translate(calc(-50% + ${Math.cos(angle) * dist}px), calc(-50% + ${Math.sin(angle) * dist}px))`;
            });
         });
 
-        // --- 核心逻辑：Badge 悬停时切换机器人状态 + 背景颜色 ---
-        const badgeLinks = document.querySelectorAll('.nav-badges a');
-        badgeLinks.forEach(link => {
-          link.addEventListener('mouseenter', () => {
-            document.body.classList.add('badge-hovering');
-            document.body.classList.add('hovering');
-            // 背景变亮蓝色
-            if(vantaEffect) vantaEffect.setOptions({ color: 0x60a5fa, points: 20.00 });
-          });
-          link.addEventListener('mouseleave', () => {
-            document.body.classList.remove('badge-hovering');
-            document.body.classList.remove('hovering');
-            // 背景恢复赛博深蓝
-            if(vantaEffect) vantaEffect.setOptions({ color: 0x3b82f6, points: 18.00 });
-          });
-        });
-
-        const otherInteractives = document.querySelectorAll('button, #bot-container, .container a:not(.nav-badges a)');
-        otherInteractives.forEach(el => {
+        // 交互逻辑
+        const interactives = document.querySelectorAll('a, button, #bot-container');
+        interactives.forEach(el => {
           el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
           el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
         });
@@ -367,45 +244,16 @@
         if(botContainer){
           botContainer.addEventListener('click', () => {
             botContainer.classList.add('dizzy');
-            // 点击时背景颜色瞬间变亮，模拟思维爆炸
-            if(vantaEffect) vantaEffect.setOptions({
-              color: 0xffffff, // 闪烁白色
-              points: 25.00,
-              maxDistance: 35.00
-            });
-            
+            if(vantaEffect) vantaEffect.setOptions({ color: 0xffffff, points: 22.00 });
             setTimeout(() => { 
               botContainer.classList.remove('dizzy'); 
-              // 恢复赛博深蓝
-              if(vantaEffect) vantaEffect.setOptions({
-                color: 0x3b82f6,
-                points: 18.00,
-                maxDistance: 28.00
-              });
+              if(vantaEffect) vantaEffect.setOptions({ color: 0x3b82f6, points: 18.00 });
             }, 1000);
           });
         }
 
-        const links = Array.from(document.querySelectorAll('.nav-badges a'));
-        links.forEach((link, clickedIndex) => {
-          link.addEventListener('click', function(e) {
-            e.preventDefault();
-            const targetUrl = this.href;
-            links.forEach((sibling, siblingIndex) => {
-                const img = sibling.querySelector('img');
-                const distance = Math.abs(clickedIndex - siblingIndex);
-                const delay = distance * 0.06;
-                img.style.setProperty('--ripple-delay', `${delay}s`);
-                img.classList.add('rippling');
-            });
-            setTimeout(() => { window.location.href = targetUrl; }, 500); 
-          });
-        });
-
         window.addEventListener('scroll', () => {
-          const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-          const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-          const scrolled = (winScroll / height) * 100;
+          const scrolled = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
           document.getElementById("progress-bar").style.width = scrolled + "%";
         });
       });
