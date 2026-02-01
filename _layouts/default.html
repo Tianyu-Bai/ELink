@@ -1,224 +1,383 @@
 <!doctype html>
 <html lang="en">
- <head>
-   <meta charset="utf-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1">
-   
-   <title>{{ page.title }}</title>
-   <link rel="shortcut icon" type="image/x-icon" href="{{ '/Images/icon/favicon.ico' | relative_url }}">
-   <link rel="preconnect" href="https://fonts.googleapis.com">
-   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
-   
-   <style>
-     /* --- 0. 全局赛博设置 --- */
-     body { 
-       margin: 0; padding: 0; 
-       color: #e2e8f0; /* 亮浅色文字提升对比度 */
-       font-family: 'Inter', -apple-system, sans-serif; 
-       line-height: 1.6; overflow-x: hidden; 
-       cursor: none;
-       background-color: #020617; /* 深色底色 */
-       scrollbar-width: thin; scrollbar-color: #7dd3fc transparent;
-     }
-     @media (pointer: coarse) { body { cursor: auto; } }
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>{{ page.title }}</title>
+    <link rel="shortcut icon" type="image/x-icon" href="{{ '/Images/icon/favicon.ico' | relative_url }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ '/Images/icon/favicon-32x32.png' | relative_url }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ '/Images/icon/favicon-16x16.png' | relative_url }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ '/Images/icon/apple-touch-icon.png' | relative_url }}">
+    <link rel="manifest" href="{{ '/Images/icon/site.webmanifest' | relative_url }}">
 
-     ::-webkit-scrollbar { width: 4px; }
-     ::-webkit-scrollbar-thumb { background: rgba(56, 189, 248, 0.5); border-radius: 10px; }
-     ::selection { background: #0ea5e9; color: #ffffff; }
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    
+    <style>
+      /* --- 0. 全局设置 --- */
+      body { 
+        margin: 0; padding: 0; color: #e0e7ff; /* 整体文字颜色改为亮色 */
+        font-family: 'Inter', -apple-system, sans-serif; 
+        line-height: 1.6; overflow-x: hidden; 
+        cursor: none;
+        scrollbar-width: thin; scrollbar-color: #3b82f6 transparent; /* 滚动条颜色改为蓝色 */
+      }
+      @media (pointer: coarse) { body { cursor: auto; } }
 
-     /* --- 1. 自定义光标 --- */
-     .cursor-dot, .cursor-outline {
-       position: fixed; top: 0; left: 0; transform: translate(-50%, -50%); border-radius: 50%; z-index: 99999; pointer-events: none;
-     }
-     .cursor-dot { width: 6px; height: 6px; background-color: #38bdf8; box-shadow: 0 0 10px #38bdf8; }
-     .cursor-outline { width: 34px; height: 34px; border: 1px solid rgba(56, 189, 248, 0.4); transition: all 0.2s ease-out; }
-     body.hovering .cursor-outline { width: 50px; height: 50px; background-color: rgba(56, 189, 248, 0.05); border-color: #38bdf8; }
+      ::-webkit-scrollbar { width: 6px; }
+      ::-webkit-scrollbar-track { background: transparent; }
+      ::-webkit-scrollbar-thumb { background: rgba(59, 130, 246, 0.5); border-radius: 10px; } /* 滚动条颜色改为蓝色 */
+      ::-webkit-scrollbar-thumb:hover { background: rgba(59, 130, 246, 0.8); } /* 滚动条颜色改为蓝色 */
+      ::selection { background: #3b82f6; color: #ffffff; text-shadow: 0 0 8px rgba(255, 255, 255, 0.8); } /* 选中颜色改为蓝色 */
 
-     /* --- 2. 进度条 (赛博蓝) --- */
-     #progress-bar {
-       position: fixed; top: 0; left: 0; height: 2px;
-       background: linear-gradient(90deg, #38bdf8, #818cf8, #c084fc); 
-       width: 0%; z-index: 99999;
-     }
+      /* --- 1. 自定义光标 --- */
+      .cursor-dot, .cursor-outline {
+        position: fixed; top: 0; left: 0; 
+        transform: translate(-50%, -50%); border-radius: 50%; z-index: 99999; pointer-events: none;
+      }
+      .cursor-dot { width: 8px; height: 8px; background-color: #3b82f6; } /* 光标点改为蓝色 */
+      .cursor-outline { 
+        width: 40px; height: 40px; border: 1px solid rgba(59, 130, 246, 0.5); /* 光标边框改为蓝色 */
+        transition: width 0.2s, height 0.2s, background-color 0.2s;
+      }
+      body.hovering .cursor-outline { width: 60px; height: 60px; background-color: rgba(59, 130, 246, 0.1); border-color: transparent; } /* 悬停光标改为蓝色 */
+      @media (max-width: 768px) { .cursor-dot, .cursor-outline { display: none; } }
 
-     /* --- 3. 赛博背景容器 --- */
-     #vanta-bg { position: fixed; z-index: -5; top: 0; left: 0; width: 100%; height: 100%; }
+      /* --- 2. 进度条 --- */
+      #progress-bar {
+        position: fixed; top: 0; left: 0; height: 3px;
+        background: linear-gradient(90deg, #3b82f6, #60a5fa); /* 进度条改为蓝色渐变 */
+        width: 0%; z-index: 99999; transition: width 0.1s;
+      }
 
-     /* --- 4. 布局包裹器 --- */
-     .layout-wrapper {
-       position: relative; max-width: 860px; margin: 80px auto 60px; z-index: 10;
-       perspective: 1200px;
-     }
+      /* --- 3. 背景 --- */
+      #vanta-bg { 
+        position: fixed; z-index: -5; top: 0; left: 0; width: 100%; height: 100%; 
+        background: #0a0a0f; /* 初始深色背景 */
+        animation: pulse-bg 8s infinite ease-in-out; /* 新增背景脉冲动画 */
+        filter: contrast(1.2) brightness(1.1); /* 增加对比度和亮度 */
+      }
+      /* 模拟神经脉冲微光叠加层 */
+      #vanta-bg::after {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: radial-gradient(circle at center, transparent 0%, rgba(10, 10, 15, 0.4) 100%);
+        pointer-events: none;
+      }
 
-     /* --- 5. 机器人核心 (保留样式) --- */
-     #bot-container {
-       position: absolute; top: -55px; left: 50%; transform: translateX(-50%);
-       width: 120px; height: 70px; z-index: 9999; cursor: pointer;
-       opacity: 0; animation: botEnter 0.8s ease-out 0.8s forwards; transition: transform 0.3s;
-     }
-     .bot-head { 
-       width: 90px; height: 45px; background: rgba(255, 255, 255, 0.9); 
-       border: 2px solid #38bdf8; border-bottom: none; border-radius: 40px 40px 15px 15px; 
-       margin: 0 auto; display: flex; justify-content: center; align-items: center; gap: 8px;
-       animation: float-bot 3s ease-in-out infinite; box-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
-     }
-     .bot-eye { width: 22px; height: 22px; background: #0f172a; border-radius: 50%; position: relative; overflow: hidden; }
-     .bot-pupil { width: 10px; height: 10px; background: #38bdf8; border-radius: 50%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); box-shadow: 0 0 8px #38bdf8; }
-     .bot-lid { position: absolute; top: 0; left: 0; width: 100%; height: 0%; background: white; z-index: 10; animation: blink 4s infinite; }
-     .bot-antenna { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); width: 2px; height: 12px; background: #38bdf8; }
-     .bot-antenna::after { content: ''; position: absolute; top: -6px; left: -3px; width: 8px; height: 8px; background: #38bdf8; border-radius: 50%; animation: pulse-antenna 2s infinite; }
 
-     /* 悬停时的“超载”放电状态 */
-     body.badge-hovering .bot-pupil { background: #f43f5e; box-shadow: 0 0 15px #f43f5e; }
-     body.badge-hovering .bot-head { border-color: #f43f5e; }
-     body.badge-hovering .bot-antenna::after { background: #f43f5e; animation: marquee-blink-blue 0.2s infinite; }
+      /* --- 4. 布局包裹器 --- */
+      .layout-wrapper {
+        position: relative; max-width: 860px; margin: 80px auto 60px; z-index: 10;
+        perspective: 1000px;
+      }
 
-     /* --- 6. 容器 (毛玻璃 & 赛博边框) --- */
-     .container { 
-       position: relative; padding: 50px 70px; 
-       background: rgba(15, 23, 42, 0.8); /* 深色透明 */
-       backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-       border-radius: 16px; border: 1px solid rgba(56, 189, 248, 0.2); 
-       border-top: 2px solid #38bdf8;
-       box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-       opacity: 0; animation: fadeUp 0.8s ease-out 0.3s forwards;
-     }
+      /* --- 5. 机器人核心样式 --- */
+      #bot-container {
+        position: absolute; top: -45px; left: 50%; transform: translateX(-50%);
+        width: 120px; height: 70px; z-index: 9999; 
+        cursor: pointer;
+        opacity: 0; animation: botEnter 0.8s ease-out 0.8s forwards;
+        transition: transform 0.3s ease;
+      }
+      #bot-container:hover { transform: translateX(-50%) translateY(-5px) scale(1.05); }
+      #bot-container.dizzy .bot-head { animation: spin-happy 1s ease-in-out; }
 
-     /* 打字机样式应用区域 */
-     .typewriter-text {
-       font-family: 'JetBrains Mono', monospace;
-       border-right: 2px solid #38bdf8;
-       white-space: nowrap; overflow: hidden;
-       animation: typing 3.5s steps(40, end), blink-caret .75s step-end infinite;
-     }
+      .bot-head { 
+        width: 100px; height: 50px; background: #ffffff; border: 2px solid #e0e7ff; border-bottom: none; 
+        border-radius: 50px 50px 20px 20px; margin: 0 auto; position: relative; 
+        box-shadow: 0 -5px 15px rgba(59, 130, 246, 0.15); /* 阴影改为蓝色系 */
+        display: flex; justify-content: center; align-items: center; gap: 10px; padding-top: 5px; 
+        animation: float-bot 3s ease-in-out infinite; transition: border-color 0.3s, box-shadow 0.3s; 
+      }
+      
+      .bot-eye { 
+        width: 28px; height: 28px; background: #bfdbfe; border-radius: 50%; border: 1px solid #93c5fd; position: relative; overflow: hidden; 
+        box-shadow: inset 0 2px 5px rgba(0,0,0,0.05); transition: border-color 0.3s; 
+      }
+      
+      .bot-pupil { 
+        width: 14px; height: 14px; background: #1e3a8a; border-radius: 50%; position: absolute; top: 50%; left: 50%; 
+        transform: translate(-50%, -50%); box-shadow: 0 0 4px rgba(30, 58, 138, 0.6); transition: background 0.3s, box-shadow 0.3s, transform 0.1s ease-out; 
+      }
+      
+      .bot-pupil::after { content: ''; position: absolute; top: 3px; left: 3px; width: 4px; height: 4px; background: white; border-radius: 50%; opacity: 0.8; }
+      .bot-lid { position: absolute; top: 0; left: 0; width: 100%; height: 0%; background: #ffffff; z-index: 10; animation: blink 4s infinite; }
+      
+      .bot-antenna { position: absolute; top: -15px; left: 50%; transform: translateX(-50%); width: 2px; height: 15px; background: #e0e7ff; transition: background 0.3s; }
+      .bot-antenna::after { content: ''; position: absolute; top: -6px; left: -3px; width: 8px; height: 8px; background: #3b82f6; border-radius: 50%; animation: pulse-antenna 2s infinite; transition: background 0.3s, box-shadow 0.3s; }
 
-     h1 { 
-       font-size: 2rem; font-weight: 700; margin-bottom: 1.5rem;
-       background: linear-gradient(90deg, #38bdf8, #a78bfa, #f43f5e);
-       -webkit-background-clip: text; background-clip: text; color: transparent; 
-     }
+      /* --- [重点修改] 悬停时的渐变蓝状态 --- */
+      body.badge-hovering .bot-pupil, body.hovering .bot-pupil { /* 也适用于普通hover */
+        background: radial-gradient(circle at 30% 30%, #60a5fa, #2563eb); 
+        box-shadow: 0 0 15px rgba(59, 130, 246, 0.8), 0 0 30px rgba(59, 130, 246, 0.4); 
+        animation: eye-focus 0.5s infinite alternate; /* 增加对焦动画 */
+      }
+      body.badge-hovering .bot-antenna::after, body.hovering .bot-antenna::after {
+        background: #3b82f6; 
+        animation: marquee-blink-blue 0.2s infinite; 
+      }
+      body.badge-hovering .bot-eye, body.hovering .bot-eye, 
+      body.badge-hovering .bot-head, body.hovering .bot-head {
+        border-color: rgba(59, 130, 246, 0.6);
+        box-shadow: 0 -5px 20px rgba(59, 130, 246, 0.2);
+      }
+      
+      /* --- 6. 容器 & 内容 (玻璃拟态) --- */
+      .container { 
+        position: relative; padding: 60px 80px; 
+        background: rgba(255, 255, 255, 0.05); /* 更低的透明度 */
+        backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%); /* 更强的模糊和饱和度 */
+        border-radius: 20px; 
+        box-shadow: 0 20px 50px rgba(59, 130, 246, 0.15); /* 蓝色阴影 */
+        border: 1px solid rgba(255, 255, 255, 0.1); /* 更细、更透的边框 */
+        border-top: 4px solid #3b82f6; /* 顶部强调色改为蓝色 */
+        opacity: 0; animation: fadeUp 0.8s ease-out 0.3s forwards; z-index: 1;
+        transform-style: preserve-3d; transition: transform 0.1s ease-out; 
+      }
+      
+      .container::before {
+        content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; 
+        border-radius: 20px; overflow: hidden;
+        background: radial-gradient(800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(59, 130, 246, 0.08), transparent 40%); /* 鼠标追光改为蓝色 */
+        opacity: 0; transition: opacity 0.5s ease; pointer-events: none;
+      }
+      .container:hover::before { opacity: 1; }
 
-     /* --- 导航 Badge (保留形态) --- */
-     .nav-badges { margin: 2rem 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
-     .nav-badges img { 
-       height: 30px !important; border-radius: 6px; 
-       filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
-       transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-     }
-     .nav-badges a:hover img { transform: scale(1.2) translateY(-5px); filter: brightness(1.2) drop-shadow(0 0 10px rgba(56, 189, 248, 0.6)); }
+      @media screen and (max-width: 768px) { 
+        .layout-wrapper { margin: 15px; perspective: none; }
+        .container { padding: 30px 15px; border-radius: 12px; transform: none !important; } 
+        #bot-container { display: none; } 
+        h1 { font-size: 1.45rem !important; } 
+      }
+      
+      h1 { 
+        font-size: 2.25rem; font-weight: 700; margin-bottom: 1.5rem; letter-spacing: -0.02em; 
+        background: linear-gradient(45deg, #3b82f6, #60a5fa, #93c5fd); /* 标题渐变改为蓝色系 */
+        background-size: 200% 200%; -webkit-background-clip: text; background-clip: text; color: transparent; 
+        animation: gradientMove 6s ease infinite, fadeUp 0.8s ease-out forwards; opacity: 0; 
+      }
+      a { color: #60a5fa; text-decoration: none; font-weight: 500; transition: color 0.2s; cursor: none; } /* 链接颜色改为蓝色 */
+      a:hover { color: #93c5fd; } /* 链接hover颜色改为亮蓝色 */
+      
+      img { 
+        max-width: 100%; height: auto; border-radius: 8px; display: inline-block; vertical-align: middle; 
+        /* mix-blend-mode: multiply; filter: contrast(1.02); */ /* 深色背景下通常不需要这些滤镜，可以移除或调整 */
+        border: none !important; box-shadow: none !important;
+      }
+      
+      /* --- 导航 Badge --- */
+      .nav-badges { margin: 2rem 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+      .nav-badges a { opacity: 0; animation: fadeUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; text-decoration: none !important; border:none!important; }
+      .nav-badges a:nth-child(1) { animation-delay: 0.20s; }
+      .nav-badges a:nth-child(2) { animation-delay: 0.25s; }
+      .nav-badges a:nth-child(3) { animation-delay: 0.30s; }
+      .nav-badges a:nth-child(4) { animation-delay: 0.35s; }
+      .nav-badges a:nth-child(5) { animation-delay: 0.40s; }
+      .nav-badges a:nth-child(6) { animation-delay: 0.45s; }
+      .nav-badges img { height: 28px !important; width: auto; border-radius: 50px; box-shadow: 0 2px 6px rgba(59, 130, 246, 0.15); border: 1.5px solid white; transition: all 0.3s; margin: 0 !important; cursor: none; mix-blend-mode: normal !important; } /* badge 阴影改为蓝色 */
+      .nav-badges a:hover img { animation: float-hover 2s ease-in-out infinite; box-shadow: 0 8px 20px rgba(59, 130, 246, 0.35); z-index: 10; } /* badge hover 阴影改为蓝色 */
+      .nav-badges img.rippling { animation: ripple-wave 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; }
 
-     /* --- 动画 --- */
-     @keyframes typing { from { width: 0 } to { width: 100% } }
-     @keyframes blink-caret { from, to { border-color: transparent } 50% { border-color: #38bdf8; } }
-     @keyframes float-bot { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
-     @keyframes pulse-antenna { 0% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.6); } 70% { box-shadow: 0 0 0 8px rgba(56, 189, 248, 0); } 100% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0); } }
-     @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-     @keyframes botEnter { from { opacity: 0; transform: translateX(-50%) translateY(20px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
+      /* --- 动画库 --- */
+      @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+      @keyframes gradientMove { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+      @keyframes float-bot { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+      @keyframes blink { 0%, 48%, 52%, 100% { height: 0%; } 50% { height: 100%; } }
+      @keyframes pulse-antenna { 0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7); } 70% { box-shadow: 0 0 0 5px rgba(59, 130, 246, 0); } 100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); } } /* 天线脉冲改为蓝色 */
+      @keyframes botEnter { from { opacity: 0; transform: translateX(-50%) translateY(20px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
+      @keyframes spin-happy { 0% { transform: rotate(0deg) scale(1); } 50% { transform: rotate(10deg) scale(1.1); } 75% { transform: rotate(-10deg) scale(1.1); } 100% { transform: rotate(0deg) scale(1); } }
+      @keyframes float-hover { 0% { transform: scale(1.15) translateY(-2px); } 50% { transform: scale(1.15) translateY(-6px); } 100% { transform: scale(1.15) translateY(-2px); } }
+      @keyframes ripple-wave { 0% { transform: scale(1) translateY(0); } 30% { transform: scale(1.12) translateY(-5px); } 100% { transform: scale(1) translateY(0); } }
+      
+      /* 新增蓝色系动画 */
+      @keyframes marquee-blink-blue { 
+        0%, 100% { opacity: 1; box-shadow: 0 0 15px #3b82f6; background: #60a5fa; } 
+        50% { opacity: 0.6; box-shadow: 0 0 5px #2563eb; background: #2563eb; } 
+      }
+      @keyframes eye-focus {
+        from { transform: translate(-50%, -50%) scale(1); }
+        to { transform: translate(-50%, -50%) scale(1.1); }
+      }
+      /* 新增背景脉冲动画 */
+      @keyframes pulse-bg {
+        0% { opacity: 0.7; }
+        50% { opacity: 1; }
+        100% { opacity: 0.7; }
+      }
+    </style>
 
-     @media screen and (max-width: 768px) { 
-       .container { padding: 30px 20px; margin: 10px; }
-       #bot-container { display: none; }
-     }
-   </style>
- </head>
- 
- <body>
-   <div class="cursor-dot"></div>
-   <div class="cursor-outline"></div>
-   <div id="progress-bar"></div>
-   <div id="vanta-bg"></div>
- 
-   <div class="layout-wrapper">
-     <div id="bot-container">
-       <div class="bot-antenna"></div>
-       <div class="bot-head">
-         <div class="bot-eye"><div class="bot-pupil"></div><div class="bot-lid"></div></div>
-         <div class="bot-eye"><div class="bot-pupil"></div><div class="bot-lid"></div></div>
-       </div>
-     </div>
- 
-     <div class="container">
-       <section id="main_content">
-         {{ content }}
-       </section>
-       <footer style="margin-top: 40px; padding-top: 20px; border-top: 1px solid rgba(56, 189, 248, 0.2); text-align: center; color: #64748b; font-size: 0.8rem; letter-spacing: 2px;">
-         <p>NEURAL_LINK // TERMINAL_EST_2026</p>
-       </footer>
-     </div>
-   </div>
- 
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
-   <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
-   <script>
-     // 赛博神经元网络配置
-     let vantaEffect = VANTA.NET({
-       el: "#vanta-bg",
-       mouseControls: true,
-       touchControls: true,
-       gyroControls: false,
-       minHeight: 200.00,
-       minWidth: 200.00,
-       scale: 1.00,
-       scaleMobile: 1.00,
-       color: 0x38bdf8,          // 电光蓝 (神经元色)
-       backgroundColor: 0x020617, // 极夜黑
-       points: 12.00,            // 神经元密度
-       maxDistance: 20.00,       // 突触连接长度
-       spacing: 16.00,
-       showDots: true            // 显示神经核
-     })
-   </script>
-   <script>
-     document.addEventListener("DOMContentLoaded", function() {
-       const cursorDot = document.querySelector('.cursor-dot');
-       const cursorOutline = document.querySelector('.cursor-outline');
-       const container = document.querySelector('.container');
-       const pupils = document.querySelectorAll('.bot-pupil');
-       const eyes = document.querySelectorAll('.bot-eye');
- 
-       window.addEventListener('mousemove', (e) => {
-          const posX = e.clientX;
-          const posY = e.clientY;
-          cursorDot.style.left = `${posX}px`;
-          cursorDot.style.top = `${posY}px`;
-          cursorOutline.animate({ left: `${posX}px`, top: `${posY}px` }, { duration: 400, fill: "forwards" });
- 
-          // 容器 3D 偏转
-          if (window.innerWidth > 768 && container) {
-            const x = (window.innerWidth / 2 - posX) / 60;
-            const y = (window.innerHeight / 2 - posY) / 60;
-            container.style.transform = `rotateY(${x * -1}deg) rotateX(${y}deg)`;
-          }
+  </head>
 
-          // 机器人眼睛跟随
-          pupils.forEach((pupil, index) => {
-            const eye = eyes[index];
-            const rect = eye.getBoundingClientRect();
-            const angle = Math.atan2(e.clientY - (rect.top + rect.height/2), e.clientX - (rect.left + rect.width/2));
-            const dist = Math.min(5, Math.hypot(e.clientX - (rect.left + rect.width/2), e.clientY - (rect.top + rect.height/2)) / 10);
-            pupil.style.transform = `translate(calc(-50% + ${Math.cos(angle) * dist}px), calc(-50% + ${Math.sin(angle) * dist}px))`;
+  <body>
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <div id="progress-bar"></div>
+    <div id="vanta-bg"></div>
+
+    <div class="layout-wrapper">
+      
+      <div id="bot-container" title="Click me!">
+        <div class="bot-antenna"></div>
+        <div class="bot-head">
+          <div class="bot-eye"><div class="bot-pupil"></div><div class="bot-lid"></div></div>
+          <div class="bot-eye"><div class="bot-pupil"></div><div class="bot-lid"></div></div>
+        </div>
+      </div>
+
+      <div class="container">
+<section id="main_content">
+  {{ content }}
+</section>
+
+        <footer style="margin-top: 40px; padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.1); text-align: center; color: #94a3b8; font-size: 0.85rem;">
+          <p>PEDAL-256 • Open Source Neural Interfaces</p>
+        </footer>
+      </div>
+
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+    <script>
+      // 将 Vanta 实例存储在变量中，以便后续修改
+      let vantaEffect = VANTA.NET({
+        el: "#vanta-bg",
+        mouseControls: true, touchControls: true, gyroControls: false,
+        minHeight: 200.00, minWidth: 200.00, scale: 1.00, scaleMobile: 1.00,
+        color: 0x3b82f6,       // [赛博深蓝] 神经元连接线的颜色，亮蓝色
+        backgroundColor: 0x0a0a0f, // [赛博深蓝] 深邃的黑色背景
+        points: 18.00,        // 增加神经元节点数量，更密集
+        maxDistance: 28.00,   // 增加连接线长度，网络感更强
+        spacing: 16.00,       // 节点间距
+        showDots: true,       // 确保神经元节点（点）是显示的
+        /* 你可以尝试更多参数来调整效果：
+        vertexColors: true, // 如果需要节点有颜色
+        blending: 'normal' // 混合模式
+        */
+      });
+    </script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorOutline = document.querySelector('.cursor-outline');
+        const container = document.querySelector('.container');
+        const pupils = document.querySelectorAll('.bot-pupil');
+        const eyes = document.querySelectorAll('.bot-eye');
+        const botContainer = document.getElementById('bot-container');
+
+        window.addEventListener('mousemove', (e) => {
+           const posX = e.clientX;
+           const posY = e.clientY;
+
+           cursorDot.style.left = `${posX}px`;
+           cursorDot.style.top = `${posY}px`;
+           
+           cursorOutline.animate({
+             left: `${posX}px`,
+             top: `${posY}px`
+           }, { duration: 500, fill: "forwards" });
+
+           if (window.innerWidth > 768 && container) {
+             const x = (window.innerWidth / 2 - posX) / 50;
+             const y = (window.innerHeight / 2 - posY) / 50;
+             container.style.transform = `rotateY(${x * -1}deg) rotateX(${y}deg)`;
+             
+             const rect = container.getBoundingClientRect();
+             container.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
+             container.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
+           }
+
+           pupils.forEach((pupil, index) => {
+             const eye = eyes[index];
+             const rect = eye.getBoundingClientRect();
+             const eyeCenterX = rect.left + rect.width / 2;
+             const eyeCenterY = rect.top + rect.height / 2;
+             const angle = Math.atan2(e.clientY - eyeCenterY, e.clientX - eyeCenterX);
+             const distance = Math.min(6, Math.hypot(e.clientX - eyeCenterX, e.clientY - eyeCenterY));
+             
+             if(document.body.classList.contains('badge-hovering') || document.body.classList.contains('hovering')) {
+                // 悬停状态下，眼睛放大且追踪
+                pupil.style.left = `calc(50% + ${Math.cos(angle) * distance}px)`;
+                pupil.style.top = `calc(50% + ${Math.sin(angle) * distance}px)`;
+             } else {
+                // 正常状态下，只追踪
+                pupil.style.transform = `translate(calc(-50% + ${Math.cos(angle) * distance}px), calc(-50% + ${Math.sin(angle) * distance}px))`;
+             }
+           });
+        });
+
+        // --- 核心逻辑：Badge 悬停时切换机器人状态 + 背景颜色 ---
+        const badgeLinks = document.querySelectorAll('.nav-badges a');
+        badgeLinks.forEach(link => {
+          link.addEventListener('mouseenter', () => {
+            document.body.classList.add('badge-hovering');
+            document.body.classList.add('hovering');
+            // 背景变亮蓝色
+            if(vantaEffect) vantaEffect.setOptions({ color: 0x60a5fa, points: 20.00 });
           });
-       });
- 
-       // Badge 悬停逻辑：触发背景变红（警告色）和机器人变色
-       const badgeLinks = document.querySelectorAll('.nav-badges a');
-       badgeLinks.forEach(link => {
-         link.addEventListener('mouseenter', () => {
-           document.body.classList.add('badge-hovering', 'hovering');
-           if(vantaEffect) vantaEffect.setOptions({ color: 0xf43f5e, points: 15.00 }); // 变红且密集
-         });
-         link.addEventListener('mouseleave', () => {
-           document.body.classList.remove('badge-hovering', 'hovering');
-           if(vantaEffect) vantaEffect.setOptions({ color: 0x38bdf8, points: 12.00 });
-         });
-       });
+          link.addEventListener('mouseleave', () => {
+            document.body.classList.remove('badge-hovering');
+            document.body.classList.remove('hovering');
+            // 背景恢复赛博深蓝
+            if(vantaEffect) vantaEffect.setOptions({ color: 0x3b82f6, points: 18.00 });
+          });
+        });
 
-       // 滚动进度
-       window.addEventListener('scroll', () => {
-         const scrolled = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
-         document.getElementById("progress-bar").style.width = scrolled + "%";
-       });
-     });
-   </script>
- </body>
+        const otherInteractives = document.querySelectorAll('button, #bot-container, .container a:not(.nav-badges a)');
+        otherInteractives.forEach(el => {
+          el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
+          el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
+        });
+
+        if(botContainer){
+          botContainer.addEventListener('click', () => {
+            botContainer.classList.add('dizzy');
+            // 点击时背景颜色瞬间变亮，模拟思维爆炸
+            if(vantaEffect) vantaEffect.setOptions({
+              color: 0xffffff, // 闪烁白色
+              points: 25.00,
+              maxDistance: 35.00
+            });
+            
+            setTimeout(() => { 
+              botContainer.classList.remove('dizzy'); 
+              // 恢复赛博深蓝
+              if(vantaEffect) vantaEffect.setOptions({
+                color: 0x3b82f6,
+                points: 18.00,
+                maxDistance: 28.00
+              });
+            }, 1000);
+          });
+        }
+
+        const links = Array.from(document.querySelectorAll('.nav-badges a'));
+        links.forEach((link, clickedIndex) => {
+          link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetUrl = this.href;
+            links.forEach((sibling, siblingIndex) => {
+                const img = sibling.querySelector('img');
+                const distance = Math.abs(clickedIndex - siblingIndex);
+                const delay = distance * 0.06;
+                img.style.setProperty('--ripple-delay', `${delay}s`);
+                img.classList.add('rippling');
+            });
+            setTimeout(() => { window.location.href = targetUrl; }, 500); 
+          });
+        });
+
+        window.addEventListener('scroll', () => {
+          const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+          const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+          const scrolled = (winScroll / height) * 100;
+          document.getElementById("progress-bar").style.width = scrolled + "%";
+        });
+      });
+    </script>
+  </body>
 </html>
