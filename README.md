@@ -1,8 +1,8 @@
 
 <div class="github-only">
   <p align="center">
-    <a href="https://your-username.github.io/your-repo">
-      🌐 Click here to view the interactive web documentation
+    <a href="https://tianyu-bai.github.io/E-Link">
+      🌐 Click here to view the interactive website
     </a>
   </p>
 </div>
