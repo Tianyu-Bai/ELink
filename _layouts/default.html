@@ -110,30 +110,48 @@
 
     .bot-head { width: 100px; height: 50px; background: #ffffff; border: 2px solid #e0e7ff; border-bottom: none; border-radius: 50px 50px 20px 20px; margin: 0 auto; position: relative; box-shadow: 0 -5px 15px rgba(59, 130, 246, 0.15); display: flex; justify-content: center; align-items: center; gap: 10px; padding-top: 5px; animation: float-bot 3s ease-in-out infinite; }
     
-    /* 眼睛基础 */
+    /* --- 眼睛基础样式 --- */
     .bot-eye { 
       width: 28px; height: 28px; background: #bfdbfe; 
       border-radius: 50%; border: 1px solid #93c5fd; 
       position: relative; overflow: hidden; 
-      transform-origin: center; /* 确保缩放从中心开始 */
-      transition: all 0.2s; /* 快速响应 */
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); 
     }
-    .bot-pupil { width: 14px; height: 14px; background: #1e3a8a; border-radius: 50%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); transition: all 0.2s; }
+    .bot-pupil { width: 14px; height: 14px; background: #1e3a8a; border-radius: 50%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); transition: opacity 0.2s; }
     .bot-lid { position: absolute; top: 0; left: 0; width: 100%; height: 0%; background: #ffffff; z-index: 10; animation: blink 4s infinite; }
     
-    /* --- [核心特效] 说话时的眨眼放电 (Cyber Blink) --- */
+    /* --- [关键修改 1] 眼睛：可爱的眯眯眼 (Smile) --- */
     #bot-container.speaking .bot-eye { 
-      /* 眼睛快速压扁复原，模拟说话频闪 */
-      animation: cyber-blink 0.25s infinite alternate; 
-      background: #60a5fa; /* 眼睛背景变亮蓝 */
-      border-color: #3b82f6;
+      background: transparent; 
+      border: none;
+      box-shadow: none; 
+      /* 用 border-top 画出弧线 */
+      width: 22px; height: 12px;
+      border-top: 3px solid #3b82f6; 
+      border-radius: 22px 22px 0 0; /* 倒U形 */
+      margin-top: 8px;
     }
-    #bot-container.speaking .bot-pupil {
-      background: #ffffff; /* 瞳孔变白，模拟高能放电 */
-      box-shadow: 0 0 8px #ffffff; /* 增加发光晕影 */
-      transform: translate(-50%, -50%) scale(1.2); /* 瞳孔变大 */
+    #bot-container.speaking .bot-pupil, 
+    #bot-container.speaking .bot-lid { opacity: 0; /* 隐藏瞳孔 */ }
+
+    /* --- [关键修改 2] 嘴巴：平时隐藏，说话出现 --- */
+    .bot-mouth {
+      position: absolute;
+      bottom: 8px; left: 50%; transform: translateX(-50%);
+      width: 6px; height: 6px;
+      background: #3b82f6;
+      border-radius: 4px;
+      opacity: 0; /* 默认闭嘴 */
+      transition: all 0.2s;
     }
-    #bot-container.speaking .bot-lid { opacity: 0; /* 说话时禁用自然眨眼 */ }
+    
+    #bot-container.speaking .bot-mouth {
+      opacity: 1;
+      width: 14px;
+      background: transparent;
+      border: 2px solid #3b82f6;
+      animation: mouth-talk 0.25s infinite alternate; /* 嘴巴一张一合 */
+    }
 
     /* 天线 & 呼吸灯 */
     .bot-antenna { position: absolute; top: -25px; left: 50%; transform: translateX(-50%); width: 2px; height: 25px; background: #e0e7ff; }
@@ -237,11 +255,10 @@
     @keyframes pulse-ring-anim { 0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.6; } 100% { transform: translate(-50%, -50%) scale(1.4); opacity: 0; } }
     @keyframes pulse-antenna-breath { 0%, 100% { background: #3b82f6; box-shadow: 0 0 5px #3b82f6; } 50% { background: #93c5fd; box-shadow: 0 0 15px #60a5fa, 0 0 8px #ffffff; } }
     
-    /* [新增] 赛博频闪特效：模拟快速眨眼说话 */
-    @keyframes cyber-blink {
-      0% { transform: scaleY(1); }
-      50% { transform: scaleY(0.2); } /* 压扁 */
-      100% { transform: scaleY(1); }
+    /* [新增] 嘴巴动效：高度变化模拟说话 */
+    @keyframes mouth-talk {
+      0% { height: 2px; }
+      100% { height: 8px; border-radius: 50%; }
     }
  
     /* --- [手机端适配 - 左右钉死版] --- */
@@ -259,14 +276,14 @@
         animation: none !important;
       }
 
-      /* 左右留 10px，绝对不会超出屏幕 */
+      /* 左右留 5px (极限宽度)，保证不切边 */
       #bot-container #rpg-dialogue {
         position: fixed !important;
         top: auto !important; 
         bottom: 100px !important;
         
-        left: 10px !important; 
-        right: 10px !important;
+        left: 5px !important; 
+        right: 5px !important;
         width: auto !important;
         max-width: none !important;
         
@@ -301,6 +318,7 @@
     <div class="bot-head">
       <div class="bot-eye"><div class="bot-pupil"></div><div class="bot-lid"></div></div>
       <div class="bot-eye"><div class="bot-pupil"></div><div class="bot-lid"></div></div>
+      <div class="bot-mouth"></div>
     </div>
   </div>
 
