@@ -70,7 +70,6 @@
     /* --- 4. 布局包裹器 --- */
     .layout-wrapper {
       position: relative; max-width: 860px; 
-      /* PC端默认顶部边距 */
       margin: 140px auto 60px; 
       z-index: 10;
       perspective: 1000px;
@@ -80,7 +79,9 @@
     #bot-container { 
       /* [默认状态 - PC顶部] */
       position: absolute; 
-      top: 70px; left: 50%; 
+      /* [修改点] 从 70px 改为 110px，让它下移，贴近内容 */
+      top: 110px; 
+      left: 50%; 
       transform: translateX(-50%); 
       width: 120px; height: 70px; 
       z-index: 9999; cursor: pointer; 
@@ -89,7 +90,6 @@
       transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55); 
     }
 
-    /* [状态 - PC端滚动后固定在角落] */
     #bot-container.fixed-mode {
       position: fixed !important;
       top: auto !important;
@@ -103,14 +103,14 @@
     .pulse-ring {
       position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
       width: 100px; height: 100px;
-      border-radius: 50%; border: 2px solid rgba(59, 130, 246, 0.6);
+      border-radius: 50%; border: 2px solid rgba(168, 85, 247, 0.6);
       opacity: 0; z-index: -1; animation: pulse-ring-anim 3s infinite; pointer-events: none;
     }
     #bot-container.hint-removed .pulse-ring { opacity: 0; animation: none; }
 
     .bot-head { width: 100px; height: 50px; background: #ffffff; border: 2px solid #e0e7ff; border-bottom: none; border-radius: 50px 50px 20px 20px; margin: 0 auto; position: relative; box-shadow: 0 -5px 15px rgba(59, 130, 246, 0.15); display: flex; justify-content: center; align-items: center; gap: 10px; padding-top: 5px; animation: float-bot 3s ease-in-out infinite; }
     
-    /* --- 眼睛基础样式 --- */
+    /* 眼睛基础样式 */
     .bot-eye { 
       width: 28px; height: 28px; background: #bfdbfe; 
       border-radius: 50%; border: 1px solid #93c5fd; 
@@ -120,36 +120,28 @@
     .bot-pupil { width: 14px; height: 14px; background: #1e3a8a; border-radius: 50%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); transition: opacity 0.2s; }
     .bot-lid { position: absolute; top: 0; left: 0; width: 100%; height: 0%; background: #ffffff; z-index: 10; animation: blink 4s infinite; }
     
-    /* --- [关键修改 1] 眼睛：可爱的眯眯眼 (Smile) --- */
+    /* 说话时的眯眯眼 (Smile) */
     #bot-container.speaking .bot-eye { 
       background: transparent; 
       border: none;
       box-shadow: none; 
-      /* 用 border-top 画出弧线 */
       width: 22px; height: 12px;
       border-top: 3px solid #3b82f6; 
       border-radius: 22px 22px 0 0; /* 倒U形 */
       margin-top: 8px;
     }
     #bot-container.speaking .bot-pupil, 
-    #bot-container.speaking .bot-lid { opacity: 0; /* 隐藏瞳孔 */ }
+    #bot-container.speaking .bot-lid { opacity: 0; }
 
-    /* --- [关键修改 2] 嘴巴：平时隐藏，说话出现 --- */
+    /* 嘴巴：平时隐藏，说话出现 */
     .bot-mouth {
-      position: absolute;
-      bottom: 8px; left: 50%; transform: translateX(-50%);
-      width: 6px; height: 6px;
-      background: #3b82f6;
-      border-radius: 4px;
-      opacity: 0; /* 默认闭嘴 */
-      transition: all 0.2s;
+      position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%);
+      width: 6px; height: 6px; background: #3b82f6; border-radius: 4px;
+      opacity: 0; transition: all 0.2s;
     }
     
     #bot-container.speaking .bot-mouth {
-      opacity: 1;
-      width: 14px;
-      background: transparent;
-      border: 2px solid #3b82f6;
+      opacity: 1; width: 14px; background: transparent; border: 2px solid #3b82f6;
       animation: mouth-talk 0.25s infinite alternate; /* 嘴巴一张一合 */
     }
 
@@ -255,13 +247,10 @@
     @keyframes pulse-ring-anim { 0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.6; } 100% { transform: translate(-50%, -50%) scale(1.4); opacity: 0; } }
     @keyframes pulse-antenna-breath { 0%, 100% { background: #3b82f6; box-shadow: 0 0 5px #3b82f6; } 50% { background: #93c5fd; box-shadow: 0 0 15px #60a5fa, 0 0 8px #ffffff; } }
     
-    /* [新增] 嘴巴动效：高度变化模拟说话 */
-    @keyframes mouth-talk {
-      0% { height: 2px; }
-      100% { height: 8px; border-radius: 50%; }
-    }
+    /* 嘴巴动效：高度变化模拟说话 */
+    @keyframes mouth-talk { 0% { height: 2px; } 100% { height: 8px; border-radius: 50%; } }
  
-    /* --- [手机端适配 - 左右钉死版] --- */
+    /* --- [手机端精准适配 - 左右钉死版] --- */
     @media (max-width: 768px) { 
       .cursor-dot, .cursor-outline { display: none; } 
       .layout-wrapper { margin-top: 40px !important; }
@@ -359,7 +348,7 @@
         options: [ { text: "Show me the badges", next: "show_badges" }, { text: "Back to menu", next: "start" } ]
       },
       "tech_details": {
-        text: "It runs on Python & Node.js with ultra-low latency. Check the GitHub link below!",
+        text: "It is a an open-source, Interconnection-based based pedestal connector. Check the GitHub link to know more!",
         options: [ { text: "Awesome!", next: "close" } ]
       },
       "show_badges": {
@@ -502,7 +491,8 @@
         if(rpgDialogue.classList.contains('active') && !botContainer.contains(e.target)) closeDialogue();
       });
 
-      setTimeout(() => botSay("Click me for guide!", 4000), 1000);
+      // [修改点] 停留时间改为 16秒
+      setTimeout(() => botSay("Click me for guide!", 16000), 1000);
 
       const badges = document.querySelectorAll('.nav-badges a');
       badges.forEach(b => {
