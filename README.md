@@ -22,15 +22,12 @@
      <a href="https://github.com/tianyu-bai/E-Link/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-A31F34?style=flat-square&logo=opensourceinitiative&logoColor=white" alt="License"></a>
   </div>
 
-  <img src="Videos/Demo trans bg.gif"
-       alt="ELINK-256 Assembly Demo GIF"
+ <img src="Videos/Demo trans bg.gif" 
+       alt="ELINK-256 Assembly Demo GIF" 
        class="gif-blend"
-       width="750"
-       style="border-radius: 8px;
-              box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
-              display: block;
-              /* 核心：在这里引用上面定义的滤镜ID */
-              filter: url(#remove-white-filter);">
+       width="750" 
+       style="border-radius: 8px; box-shadow: 0 0 20px rgba(59, 130, 246, 0.3); display: block;">
+
 </div>
 
 ---
