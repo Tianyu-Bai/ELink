@@ -152,7 +152,7 @@
 <div align="center">
  <br>
  <img src="Images/001.PNG" alt="PEDAL-256 Exploded View" width="750">
- <p style="margin-top: 5px; font-size: 0.95em; color: #cbd5e1;">
+ <p style="margin-top: 5px; font-size: 0.95em; color: #3b82f6;">
    <b>Mating Dynamics (left) and Structural Breakdown (right) of the E-Link(256) </b>
  </p>
 </div>
@@ -460,7 +460,7 @@ This project is open-source and available under the **MIT License**. Click the b
 <div align="center">
   <br>
   <img src="Images/001.PNG" alt="PEDAL-256 分解图" width="750">
-  <p style="margin-top: 5px; font-size: 0.95em; color: #cbd5e1;">
+  <p style="margin-top: 5px; font-size: 0.95em; color: ##3b82f6;">
     <b>E-Link(256) 的插拔动态（左）和结构分解（右）</b>
   </p>
 </div>
