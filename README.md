@@ -40,12 +40,20 @@
        style="border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); display: block;">
 </div>
 
----
-
 <span id="en-overview"></span>
 ## 📖 Overview
 
-**E-Link** (Elastomer Interconnection-based connector) is an open-source, solderless, and scalable pedestal connector system designed for high-density chronic neural recording. It provides a mechanically robust and electrically reliable interface between thin-film implanted neural probes and external headstages, with a form factor optimized for freely moving animal studies.
+**E-Link** (Elastomer Interconnection-based connector) is an open-source, high-density pedestal connector system. It offers a robust, scalable interface for thin-film neural probes, specifically optimized for long-term use in freely moving animals.
+
+<div align="center">
+ <br>
+ <img src="Images/001.PNG" alt="PEDAL-256 Exploded View" width="750">
+ <p style="margin-top: 5px; font-size: 0.95em; color: #3b82f6;">
+   <b>Mating Dynamics (left) and Structural Breakdown (right) of the E-Link(256) </b>
+ </p>
+</div>
+
+---
 
 > [!NOTE]
 > **Key Innovation:** The system integrates two high-density PCBs, an anisotropic elastomeric contact interface, and a lightweight pedestal housing into a fully integrated, headstage-ready solution.
@@ -147,14 +155,6 @@
      </tr>
    </tbody>
  </table>
-</div>
-
-<div align="center">
- <br>
- <img src="Images/001.PNG" alt="PEDAL-256 Exploded View" width="750">
- <p style="margin-top: 5px; font-size: 0.95em; color: #3b82f6;">
-   <b>Mating Dynamics (left) and Structural Breakdown (right) of the E-Link(256) </b>
- </p>
 </div>
 
 ---
@@ -348,12 +348,20 @@ This project is open-source and available under the **MIT License**. Click the b
        style="border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); display: block;">
 </div>
 
----
-
 <span id="cn-overview"></span>
 ## 📖 概览
 
-**E-Link** (易连—基于弹性体互连的连接器)：一种用于高密度神经记录的开源弹性体连接器。它提供了一个稳健、紧凑的接口，用于将薄膜探针连接到自由活动动物的头部放大器（Headstage）。
+**E-Link易连**，一种基于弹性导电体互连的用于高密度神经记录的连接器。它提供了一个紧凑的接口大小，用于将薄膜探针连接到自由活动动物的头部放大器（Headstage）。
+
+<div align="center">
+  <br>
+  <img src="Images/001.PNG" alt="PEDAL-256 分解图" width="750">
+  <p style="margin-top: 5px; font-size: 0.95em; color: ##3b82f6;">
+    <b>E-Link(256) 的插拔动态（左）和结构分解（右）</b>
+  </p>
+</div>
+
+---
 
 > [!NOTE]
 > **核心创新：** 该系统将两个高密度 PCB、一个各向异性弹性体接触界面和一个轻量级基座外壳集成到一个完全一体化的、即插即用的头部采集方案中。
@@ -455,14 +463,6 @@ This project is open-source and available under the **MIT License**. Click the b
       </tr>
     </tbody>
   </table>
-</div>
-
-<div align="center">
-  <br>
-  <img src="Images/001.PNG" alt="PEDAL-256 分解图" width="750">
-  <p style="margin-top: 5px; font-size: 0.95em; color: ##3b82f6;">
-    <b>E-Link(256) 的插拔动态（左）和结构分解（右）</b>
-  </p>
 </div>
 
 ---
