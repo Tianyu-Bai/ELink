@@ -10,7 +10,6 @@
   <link rel="icon" type="image/png" sizes="16x16" href="{{ '/Images/icon/favicon-16x16.png' | relative_url }}">
   <link rel="apple-touch-icon" sizes="180x180" href="{{ '/Images/icon/apple-touch-icon.png' | relative_url }}">
   <link rel="manifest" href="{{ '/Images/icon/site.webmanifest' | relative_url }}">
-
  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
@@ -281,25 +280,25 @@
     <div class="modal-content">
       
       <div class="modal-title">
-       <span class="m-en">✨ Hi, Welcome to E-Link!</span>
-       <span class="m-zh">✨ 嗨！欢迎来到E-Link！</span>
+        <span class="m-en">✨ Hi, Welcome to E-Link!</span>
+        <span class="m-zh">✨ 哈喽！欢迎到访易连接！</span>
       </div>
       
-     <div class="modal-body">
-  <span class="m-en">
-    We recommend <b>Dark Mode</b> for a more immersive experience <br>
-    <span style="font-size: 0.85rem; color: #94a3b8; display: block; margin-top: 8px;">
-      (Feel free to tailor your view at the top-right corner.)
-    </span>
-  </span>
-  <span class="m-zh">
-   “为呈现最佳视觉体验，建议开启<b>深色模式</b> <br>
-    <span style="font-size: 0.85rem; color: #94a3b8; display: block; margin-top: 8px;">
-      (您可随时通过右上角切换语言主题。)
-    </span>
-  </span>
-</div>
-     
+      <div class="modal-body">
+        <span class="m-en">
+         We recommend <b>Dark Mode</b> for a more immersive experience<br>
+          <span style="font-size: 0.85rem; color: #94a3b8;">
+            (Feel free to tailor your view at the top-right corner)
+          </span>
+        </span>
+        <span class="m-zh">
+          为呈现最佳**视觉体验**，建议保留<b>深色设置</b> <br>
+          <span style="font-size: 0.85rem; color: #94a3b8;">
+            ((您可随时通过右上角切换语言主题)
+          </span>
+        </span>
+      </div>
+
       <div class="modal-btns">
         <button id="modal-keep-dark-btn" class="btn-primary">
           <span class="m-en">🌑 Keep Dark Mode</span>
@@ -569,7 +568,7 @@
       },
       "animal": {
         text: "可以。低剖面设计适配机械换向器 (Commutator)，允许动物自然行为，线缆不打结。",
-        options: [ { text: "给我看文件！", next: "show_badges" } ]
+        options: [ { text: "我想看文件！", next: "show_badges" } ]
       },
       "show_badges": {
         text: "滑到最下面！👇那些图标是你通往代码、制造文件和演示视频的大门。",
@@ -586,8 +585,7 @@
       el: "#vanta-bg",
       mouseControls: true, touchControls: true, gyroControls: false,
       minHeight: 200.00, minWidth: 200.00, scale: 1.00, scaleMobile: 1.00,
-      color: 0x3b82f6, backgroundColor: 0x0a0a0f, points: 16.00, maxDistance: 22.00, spacing: 16.00, showDots: true
-     speed: 1.50           // 调至 1.5 左右：这是产生“呼吸感”的黄金频率
+      color: 0x3b82f6, backgroundColor: 0x0a0a0f, points: 18.00, maxDistance: 28.00, spacing: 16.00, showDots: true
     });
  
     const textsEN = ["Welcome to this webpage！", "Thanks for visiting us!", "Stay tuned!"];
@@ -640,7 +638,7 @@
         if(idleInterval) clearInterval(idleInterval);
         
         const enTips = ["Click me for guide!", "I'm here to help!"];
-        const zhTips = ["我是E-Link的管家", "有问题随时‘敲’我哈！"];
+        const zhTips = ["我是E-Link专属管家", "有问题随时“敲”我哈！"];
         
         // 循环执行函数
         const runCycle = () => {
