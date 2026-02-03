@@ -43,8 +43,7 @@
 <span id="en-overview"></span>
 ## 📖 Overview
 
-**E-Link** (Elastomer Interconnection-based connector) is an open-source, high-density pedestal connector system. It offers a robust, scalable interface for thin-film neural probes, specifically optimized for long-term use in freely moving animals.
-
+**E-Link** (Elastomer Interconnection-based connector) is an open-source, high-density connector system. It offers a robust, scalable interface for flexible neural probes, specifically optimized for long-term use in freely moving animals.
 <div align="center">
  <br>
  <img src="Images/001.PNG" alt="PEDAL-256 Exploded View" width="750">
