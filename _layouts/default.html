@@ -339,12 +339,20 @@
   <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
   <script>
     const dialogData = {
-      // --- Root Menu ---
+      // --- 1. Opening Screen (Greeting) ---
       "start": {
-        text: "Hi! I'm the Connector Guardian. I protect your neural interfaces. Select a category to inspect:",
+        text: "Hi! I'm the Connector Guardian. I protect your neural interfaces.",
         options: [
-          { text: "🌟 What's Special? (Innovation)", next: "innovation" },
-          { text: "📊 Specs (Weight/Heat/Noise)", next: "specs_menu" },
+          { text: "🚀 Let's start!", next: "root_menu" } // 唯一的入口按钮
+        ]
+      },
+
+      // --- 2. Main Hub (The 5 Options) ---
+      "root_menu": {
+        text: "System Online. Select a category to inspect:",
+        options: [
+          { text: "🌟 What's Special?", next: "innovation" },
+          { text: "📊 Specifications (Weight/Noise)", next: "specs_menu" },
           { text: "🛡️ Reliability & Durability", next: "reliability_menu" },
           { text: "🔧 Usage & Compatibility", next: "usage_menu" },
           { text: "Just browsing", next: "close" }
@@ -353,19 +361,19 @@
 
       // --- Branch 1: Innovation & Mechanics ---
       "innovation": {
-        text: "I feature a novel elastomeric interposer. This means NO precise alignment is needed and ZERO insertion force[cite: 7, 49].",
+        text: "I feature a novel elastomeric interposer. This means NO precise alignment is needed and ZERO insertion force.",
         options: [
           { text: "Why is 'Zero Force' better?", next: "zero_force" },
           { text: "Can it scale up?", next: "scalability" },
-          { text: "Back to Menu", next: "start" }
+          { text: "Back to Menu", next: "root_menu" } // 返回主菜单，而不是开场白
         ]
       },
       "zero_force": {
-        text: "Traditional plugs require high force, risking probe fracture. [cite_start]My threaded cap converts rotation into gentle vertical pressure, protecting delicate films[cite: 61, 608].",
-        options: [ { text: "Smart design! Back.", next: "innovation" } ]
+        text: "Traditional plugs require high force, risking probe fracture. My threaded cap converts rotation into gentle vertical pressure, protecting delicate films.",
+        options: [ { text: "Cool! Back.", next: "innovation" } ]
       },
       "scalability": {
-        text: "Yes! The fine-pitch elastomer allows scaling to 1024 channels within the same 25mm footprint. [cite_start]I am future-proof[cite: 11, 599].",
+        text: "Yes! The fine-pitch elastomer allows scaling to 1024 channels within the same 25mm footprint. I am future-proof.",
         options: [ { text: "Impressive. Back.", next: "innovation" } ]
       },
 
@@ -376,11 +384,11 @@
           { text: "Is it heavy? (Weight)", next: "weight" },
           { text: "Does it get hot? (Thermal)", next: "thermal" },
           { text: "How clean is the signal? (Noise)", next: "noise" },
-          { text: "Back to Menu", next: "start" }
+          { text: "Back to Menu", next: "root_menu" }
         ]
       },
       "weight": {
-        text: "I am ultra-light. Detached weight is only 2.8g. [cite_start]Even housed, I am 57% lighter (6.6g) than competitors, reducing strain on the animal[cite: 10, 604].",
+        text: "I am ultra-light. Detached weight is only 2.8g. Even housed, I am 57% lighter (6.6g) than competitors, reducing strain on the animal.",
         options: [ { text: "Good for mice/rats.", next: "specs_menu" } ]
       },
       "thermal": {
@@ -398,8 +406,8 @@
         options: [
           { text: "Lifespan (Cycles)", next: "cycles" },
           { text: "What if I align it wrong?", next: "misalignment" },
-          { text: "Contact Resistance?", next: "impedance" },
-          { text: "Back to Menu", next: "start" }
+          { text: "Contact Impedance?", next: "impedance" },
+          { text: "Back to Menu", next: "root_menu" }
         ]
       },
       "cycles": {
@@ -422,7 +430,7 @@
           { text: "Is assembly difficult?", next: "assembly" },
           { text: "Compatible Systems?", next: "system" },
           { text: "For freely moving animals?", next: "animal" },
-          { text: "Back to Menu", next: "start" }
+          { text: "Back to Menu", next: "root_menu" }
         ]
       },
       "assembly": {
@@ -440,12 +448,10 @@
 
       // --- End State ---
       "show_badges": {
-        text: "Scroll down! 👇 Those icons are your gateway to the Code, Fabrication Files, and Demo Videos.",
+        text: "Scroll to the bottom! 👇 Those icons are your gateway to the Code, Fabrication Files, and Demo Videos.",
         options: [ { text: "Thanks, Guardian!", next: "close" } ]
       }
     };
-
-
    
     let vantaEffect = VANTA.NET({
       el: "#vanta-bg",
