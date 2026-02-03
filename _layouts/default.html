@@ -129,22 +129,24 @@
     .ctrl-btn:hover { background: rgba(255, 255, 255, 0.2); transform: scale(1.1); }
     #lang-toggle { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; font-weight: bold; width: auto; padding: 0 10px; border-radius: 20px; }
 
-    body.light-mode { color: #1e293b; }
-    body.light-mode #vanta-bg::after { background: radial-gradient(circle at center, transparent 0%, rgba(255, 255, 255, 0.6) 100%); }
-    body.light-mode .container { background: rgba(255, 255, 255, 0.65); border-color: rgba(0, 0, 0, 0.1); box-shadow: 0 20px 50px rgba(0, 0, 0, 0.05); }
-    body.light-mode #rpg-dialogue { background: rgba(255, 255, 255, 0.95); border-color: #cbd5e1; box-shadow: 0 10px 40px rgba(0,0,0,0.1); }
+/* --- ☁️ 护眼柔光模式 (Soft Light Mode) --- */
+    body.light-mode { color: #334155; background-color: #f1f5f9; }
+   /* 下面这行最关键：用高浓度的云白色(0.9)遮盖底层的黑色，只透出一点点纹理，不再刺眼 */
+    body.light-mode #vanta-bg::after { background: radial-gradient(circle at center, rgba(241, 245, 249, 0.9) 0%, #f1f5f9 100%); }
+    body.light-mode .container { background: rgba(255, 255, 255, 0.85); border-color: rgba(203, 213, 225, 0.4); box-shadow: 0 20px 50px rgba(148, 163, 184, 0.15); backdrop-filter: blur(25px); }
+    body.light-mode #rpg-dialogue { background: rgba(255, 255, 255, 0.95); border-color: #cbd5e1; box-shadow: 0 10px 30px rgba(148, 163, 184, 0.1); }
     body.light-mode #rpg-text { color: #334155; }
-    body.light-mode .rpg-btn { background: rgba(37, 99, 235, 0.1); color: #2563eb; border-color: rgba(37, 99, 235, 0.2); }
-    body.light-mode .rpg-btn:hover { background: rgba(37, 99, 235, 0.2); color: #1d4ed8; }
-    body.light-mode #bot-speech { background: rgba(255, 255, 255, 0.95); color: #1e293b; border-color: #cbd5e1; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+    body.light-mode .rpg-btn { background: rgba(226, 232, 240, 0.5); color: #475569; border-color: rgba(203, 213, 225, 0.6); }
+    body.light-mode .rpg-btn:hover { background: #e2e8f0; color: #2563eb; border-color: #93c5fd; }
+    body.light-mode #bot-speech { background: rgba(255, 255, 255, 0.95); color: #334155; border-color: #cbd5e1; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
     body.light-mode .typewriter-container { color: #2563eb; }
-    body.light-mode #main_content th { color: #2563eb; }
-    body.light-mode #main_content td { border-color: rgba(0,0,0,0.1); }
+    body.light-mode #main_content th { color: #1e40af; background: rgba(241, 245, 249, 0.5) !important; }
+    body.light-mode #main_content td { border-color: #e2e8f0; }
     body.light-mode .rpg-close { color: #94a3b8; }
     body.light-mode .rpg-close:hover { color: #ef4444; }
-    body.light-mode .ctrl-btn { background: rgba(0, 0, 0, 0.05); border-color: rgba(0, 0, 0, 0.1); color: #334155; }
-    body.light-mode .ctrl-btn:hover { background: rgba(0, 0, 0, 0.1); }
-    .img-caption { color: #3b82f6; } 
+    body.light-mode .ctrl-btn { background: rgba(255, 255, 255, 0.6); border-color: #cbd5e1; color: #64748b; }
+    body.light-mode .ctrl-btn:hover { background: #ffffff; color: #0f172a; transform: scale(1.05); }
+    .img-caption { color: #2563eb; } 
 
     @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     @keyframes float-bot { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
