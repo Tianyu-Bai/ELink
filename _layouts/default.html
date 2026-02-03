@@ -338,33 +338,113 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
   <script>
-    const dialogData = {
+  const dialogData = {
+      // --- Root Menu ---
       "start": {
-        text: "Hi! I'm the Connector Guardian. Need a quick guide?",
+        text: "Hi! I'm the Connector Guardian. I protect your neural interfaces. Select a category to inspect:",
         options: [
-          { text: "What is the Connector?", next: "what_is" },
-          { text: "How do I use it?", next: "how_to" },
-          { text: "Just looking around", next: "close" }
+          { text: "🌟 What's Special? (Innovation)", next: "innovation" },
+          { text: "📊 Specs (Weight/Heat/Noise)", next: "specs_menu" },
+          { text: "🛡️ Reliability & Durability", next: "reliability_menu" },
+          { text: "🔧 Usage & Compatibility", next: "usage_menu" },
+          { text: "Just browsing", next: "close" }
         ]
       },
-      "what_is": {
-        text: "The Connector is a powerful bridge between data sources. It simplifies complex workflows into one click.",
-        options: [ { text: "Sounds cool! Technical details?", next: "tech_details" }, { text: "Got it, thanks!", next: "close" } ]
+
+      // --- Branch 1: Innovation & Mechanics ---
+      "innovation": {
+        [cite_start]text: "I feature a novel elastomeric interposer. This means NO precise alignment is needed and ZERO insertion force[cite: 7, 49].",
+        options: [
+          { text: "Why is 'Zero Force' better?", next: "zero_force" },
+          { text: "Can it scale up?", next: "scalability" },
+          { text: "Back to Menu", next: "start" }
+        ]
       },
-      "how_to": {
-        text: "Simply click the badges below to integrate. Documentation is available in the repo.",
-        options: [ { text: "Show me the badges", next: "show_badges" }, { text: "Back to menu", next: "start" } ]
+      "zero_force": {
+        text: "Traditional plugs require high force, risking probe fracture. [cite_start]My threaded cap converts rotation into gentle vertical pressure, protecting delicate films[cite: 61, 608].",
+        options: [ { text: "Smart design! Back.", next: "innovation" } ]
       },
-      "tech_details": {
-        text: "It runs on Python & Node.js with ultra-low latency. Check the GitHub link below!",
-        options: [ { text: "Awesome!", next: "close" } ]
+      "scalability": {
+        text: "Yes! The fine-pitch elastomer allows scaling to 1024 channels within the same 25mm footprint. [cite_start]I am future-proof[cite: 11, 599].",
+        options: [ { text: "Impressive. Back.", next: "innovation" } ]
       },
+
+      // --- Branch 2: Physical & Electrical Specs ---
+      "specs_menu": {
+        text: "Checking Diagnostics... Which parameter concerns you?",
+        options: [
+          { text: "Is it heavy? (Weight)", next: "weight" },
+          { text: "Does it get hot? (Thermal)", next: "thermal" },
+          { text: "How clean is the signal? (Noise)", next: "noise" },
+          { text: "Back to Menu", next: "start" }
+        ]
+      },
+      "weight": {
+        text: "I am ultra-light. Detached weight is only 2.8g. [cite_start]Even housed, I am 57% lighter (6.6g) than competitors, reducing strain on the animal[cite: 10, 604].",
+        options: [ { text: "Good for mice/rats.", next: "specs_menu" } ]
+      },
+      "thermal": {
+        text: "I stay cool. Steady-state temperature is 30.5°C, well below the 37°C biological threshold. No active cooling required.",
+        options: [ { text: "Safe confirmed.", next: "specs_menu" } ]
+      },
+      "noise": {
+        text: "Crystal clear. My noise floor is 2.68 ± 0.46 µV RMS, matching the theoretical limit of the Intan chips. No signal degradation.",
+        options: [ { text: "Great specs.", next: "specs_menu" } ]
+      },
+
+      // --- Branch 3: Reliability & Robustness ---
+      "reliability_menu": {
+        text: "I am built to last. What is your concern?",
+        options: [
+          { text: "Lifespan (Cycles)", next: "cycles" },
+          { text: "What if I align it wrong?", next: "misalignment" },
+          { text: "Contact Resistance?", next: "impedance" },
+          { text: "Back to Menu", next: "start" }
+        ]
+      },
+      "cycles": {
+        text: "Verified for 100+ mating cycles with >97% connection yield. The elastomer shows negligible wear.",
+        options: [ { text: "Solid.", next: "reliability_menu" } ]
+      },
+      "misalignment": {
+        text: "No problem. The elastomer has 'structural redundancy' (pitch < pad size). Even with radial misalignment, the connection holds.",
+        options: [ { text: "Very forgiving.", next: "reliability_menu" } ]
+      },
+      "impedance": {
+        text: "Low and stable. Contact impedance is consistently between 0.3 kΩ and 0.4 kΩ across the array.",
+        options: [ { text: "Acknowledged.", next: "reliability_menu" } ]
+      },
+
+      // --- Branch 4: Usage & Fabrication ---
+      "usage_menu": {
+        text: "Designed for researchers. Ask me about usage:",
+        options: [
+          { text: "Is assembly difficult?", next: "assembly" },
+          { text: "Compatible Systems?", next: "system" },
+          { text: "For freely moving animals?", next: "animal" },
+          { text: "Back to Menu", next: "start" }
+        ]
+      },
+      "assembly": {
+        text: "Easy. No specialized micro-soldering needed. It's a 'plug-and-play' assembly using standard tools.",
+        options: [ { text: "User friendly.", next: "usage_menu" } ]
+      },
+      "system": {
+        text: "Fully compatible with the Intan RHD recording system. Supports 64, 128, and 256 channel configurations.",
+        options: [ { text: "Perfect.", next: "usage_menu" } ]
+      },
+      "animal": {
+        text: "Yes. The low profile fits mechanical commutators, allowing natural behavior without cable twisting.",
+        options: [ { text: "Show me the files!", next: "show_badges" } ]
+      },
+
+      // --- End State ---
       "show_badges": {
-        text: "Look down! 👇 Those shiny icons are your gateway.",
-        options: [ { text: "Okay!", next: "close" } ]
+        text: "Scroll down! 👇 Those icons are your gateway to the Code, Fabrication Files, and Demo Videos.",
+        options: [ { text: "Thanks, Guardian!", next: "close" } ]
       }
     };
-
+   
     let vantaEffect = VANTA.NET({
       el: "#vanta-bg",
       mouseControls: true, touchControls: true, gyroControls: false,
