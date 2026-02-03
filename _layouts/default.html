@@ -52,16 +52,9 @@
     #progress-bar { position: fixed; top: 0; left: 0; height: 3px; background: linear-gradient(90deg, #3b82f6, #60a5fa); width: 0%; z-index: 99999; transition: width 0.1s; }
  
     /* --- 2. 背景 --- */
-    #vanta-bg { position: fixed; z-index: -5; top: 0; left: 0; width: 100%; height: 100%; background: #0a0a0f; 
-   animation: bg-breathing 8s infinite ease-in-out;}
-   
-   /* 呼吸动画：通过透明度微调明暗 */
-@keyframes bg-breathing {
-  0%, 100% { opacity: 0.85; }/* 稍微低一点，让暗处更深 */
-  50% { opacity: 1; }/* 亮处维持原样 */
-}
+    #vanta-bg { position: fixed; z-index: -5; top: 0; left: 0; width: 100%; height: 100%; background: #0a0a0f; }
     #vanta-bg::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at center, transparent 0%, rgba(10, 10, 15, 0.4) 100%); pointer-events: none; transition: background 0.5s ease; }
-
+ 
     /* --- 3. 布局 --- */
     .layout-wrapper { position: relative; max-width: 860px; margin: 100px auto 60px; z-index: 10; perspective: 1000px; }
  
