@@ -1,4 +1,3 @@
-
 <div class="github-only">
   <p align="center">
     <a href="https://tianyu-bai.github.io/E-Link">
@@ -219,7 +218,7 @@ This project is developed by the **MINE Lab** at Dartmouth College. <a href="htt
 
 * **Tianyu Bai** (Lead Designer) <a href="https://tianyu-bai.github.io/"><img src="https://img.shields.io/badge/Website-Tianyu%20Bai-0077B5?style=flat-square&logo=github&logoColor=white" alt="Website"></a>
 * **Gen Li, Ph.D.**
-* **Hui Fang, Ph.D.**  <a href="https://engineering.dartmouth.edu/community/faculty/hui-fang"><img src="https://img.shields.io/badge/Principal%20Investigator-444444?style=flat-square&logoColor=white" />
+* **Hui Fang, Ph.D.** <a href="https://engineering.dartmouth.edu/community/faculty/hui-fang"><img src="https://img.shields.io/badge/Principal%20Investigator-444444?style=flat-square&logoColor=white" />
 
 ---
 
@@ -274,14 +273,316 @@ Special thanks to the members of the **MINE Lab** and the **Thayer School of Eng
 
 ## 📜 License
 
-Copyright © 2026 Tianyu Bai  <a href="https://tianyu-bai.github.io/"><img src="https://img.shields.io/badge/Website-Tianyu%20Bai-0077B5?style=flat-square&logo=github&logoColor=white" alt="Website"></a>
+Copyright © 2026 Tianyu Bai <a href="https://tianyu-bai.github.io/"><img src="https://img.shields.io/badge/Website-Tianyu%20Bai-0077B5?style=flat-square&logo=github&logoColor=white" alt="Website"></a>
 
-This project is open-source hardware and available under the *Licenses**. Click the badge below for full license details.
-Hardware Source Files (KiCad/Gerbers/STL files): Licensed under MIT License.
-Documentation, Schematics (PDF), and Images: Licensed under CC BY 4.0 International.
+This project is open-source hardware and available under the **Licenses**. Click the badge below for full license details.
+
+* **Hardware Source Files** (KiCad/Gerbers/STL files): Licensed under the **MIT License**.
+* **Documentation, Schematics (PDF), and Images**: Licensed under **CC BY 4.0 International**.
 
 <div align="center">
   <a href="https://github.com/tianyu-bai/E-Link/blob/main/LICENSE">
     <img src="https://img.shields.io/badge/License-MIT-A31F34?style=flat-square&logo=opensourceinitiative&logoColor=white" alt="License">
   </a>
 </div>
+
+---
+
+<details>
+<summary style="cursor: pointer; font-size: 1.2em; font-weight: bold;">
+  🇨🇳 点击此处查看中文版 / Click to expand Chinese Version
+</summary>
+<br>
+
+<div class="lang-zh">
+
+<div class="github-only">
+  <p align="center">
+    <a href="https://tianyu-bai.github.io/E-Link">
+      🌐 点击此处查看交互式网站
+    </a>
+  </p>
+</div>
+
+<div align="center" class="nav-badges">
+  <a href="#-overview"><img src="https://img.shields.io/badge/📖_概览-3b82f6?style=flat-square&logoColor=white" alt="Overview"></a>
+  <a href="#-key-features"><img src="https://img.shields.io/badge/✨_特性-3b82f6?style=flat-square&logoColor=white" alt="Features"></a>
+  <a href="#-quick-specifications"><img src="https://img.shields.io/badge/📊_规格-3b82f6?style=flat-square&logoColor=white" alt="Specs"></a>
+  <a href="#-system-components"><img src="https://img.shields.io/badge/🧩_组件-3b82f6?style=flat-square&logoColor=white" alt="Components"></a>
+  <a href="#-bill-of-materials-bom-of-the-headstage"><img src="https://img.shields.io/badge/🛠_物料清单-3b82f6?style=flat-square&logoColor=white" alt="BOM"></a>
+  <a href="#-repository--downloads"><img src="https://img.shields.io/badge/🔗_下载-3b82f6?style=flat-square&logoColor=white" alt="Downloads"></a>
+</div>
+  
+<div align="center">
+  <h1 style="border-bottom: none; margin-bottom: 5px; color: #60a5fa; font-size: 2em;">🚀 E-Link(256)</h1>
+  
+<div align="center">
+    <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=30&pause=1000&color=60a5fa&center=true&vCenter=true&width=1100&lines=An+Open-Source,+Elastomer+Interconnection-based;Connector+for+Flexible+Neural+Interfaces" />
+</div>
+
+  <div  align="center" style="margin-top: 15px;">
+    <a href="https://sites.dartmouth.edu/fang-group/"><img src="https://img.shields.io/badge/Dartmouth-MINE--Lab-00693E?style=flat-square" alt="MINE Lab"></a>
+    <img src="https://img.shields.io/badge/已验证-256通道-FFA500?style=flat-square" alt="Verified" />
+    <a href="https://tianyu-bai.github.io/"><img src="https://img.shields.io/badge/个人主页-Tianyu%20Bai-0077B5?style=flat-square&logo=github&logoColor=white" alt="Website"></a>
+    <a href="https://www.linkedin.com/in/tianyubai/"><img src="https://img.shields.io/badge/领英-Profile-0A66C2?style=flat-square&logo=linkedin&logoColor=white" alt="LinkedIn"></a>
+     <a href="https://github.com/tianyu-bai/E-Link/blob/main/LICENSE"><img src="https://img.shields.io/badge/开源协议-MIT-A31F34?style=flat-square&logo=opensourceinitiative&logoColor=white" alt="License"></a>
+  </div>
+
+  <img src="Videos/Demo new new.gif"
+       alt="ELINK-256 组装演示 GIF"
+       width="750"
+       style="border-radius: 8px;
+              box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+              display: block;">
+</div>
+
+## 📖 概览
+
+**E-Link** (基于弹性体互连的连接器)：一种用于高密度神经记录的开源弹性体连接器。它提供了一个稳健、紧凑的接口，用于将薄膜探针连接到自由活动动物的头部放大器（Headstage）。
+
+<div align="center">
+  <img src="Images/001.PNG" alt="PEDAL-256 分解图" width="750">
+  <p style="margin-top: 5px; font-size: 0.95em; color: #3b82f6;">
+    <b>E-Link(256) 的插拔动态（左）和结构分解（右）</b>
+  </p>
+</div>
+
+> [!NOTE]
+> **核心创新：** 该系统将两个高密度 PCB、一个各向异性弹性体接触界面和一个轻量级基座外壳集成到一个完全一体化的、即插即用的头部采集方案中。
+
+---
+
+### 📊 快速规格参数
+
+<div align="center">
+  <table style="margin-left: auto; margin-right: auto; width: 80%; text-align: center; border-collapse: collapse; border: 1px solid #e1e4e8;">
+    <thead>
+      <tr style="background-color: #f6f8fa; border-bottom: 2px solid #e1e4e8;">
+        <th style="padding: 10px; border: 1px solid #e1e4e8;">规格项目</th>
+        <th style="padding: 10px; border: 1px solid #e1e4e8;">E-Link(256)_V1.0</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #e1e4e8;"><b>通道数</b></td>
+        <td style="padding: 8px; border: 1px solid #e1e4e8;">128 或 256 通道 (支持单/双 SPI 端口)</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #e1e4e8;"><b>总质量</b></td>
+        <td style="padding: 8px; border: 1px solid #e1e4e8;">6.6 g (含外壳)<br>2.8 g (不含外壳)</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #e1e4e8;"><b>互连类型</b></td>
+        <td style="padding: 8px; border: 1px solid #e1e4e8;">免焊各向异性弹性体</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #e1e4e8;"><b>兼容采集系统</b></td>
+        <td style="padding: 8px; border: 1px solid #e1e4e8;">Intan Recording Controller (512ch/1024ch)<br>Open-Ephys DAQ box<br>NeuroNexus Smartbox<br>OmniPlex DAQ box</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #e1e4e8;"><b>外壳材料</b></td>
+        <td style="padding: 8px; border: 1px solid #e1e4e8;">3D 打印 PEEK / 手术级树脂</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+---
+
+## ✨ 关键特性
+
+* **⚡ 256 通道高密度接口**
+  紧凑的基座占地面积，支持高密度采集，且不增加手术负担。
+* **🔌 免焊弹性体互连**
+  使用各向异性导电弹性体，实现可重复、允许一定对准误差的电气接触。
+* **🐭 专为体内研究优化**
+  最小化植入占地面积。核心组件重量仅为 2.8g（移除外壳后），减少了头重脚轻的现象，并在长期记录过程中改善动物福利。
+* **🛠️ 模块化与可扩展**
+  外壳、PCB 和保护盖均可分离，便于快速迭代和故障排查。
+* **🧪 手术级设计**
+  纹理化侧壁设计，增强了与牙科水泥或紫外光固化树脂的附着力。
+<div align="center">
+  <img src="Videos/Animation%20repeat.gif" 
+       alt="ELINK-256 动画演示 GIF" 
+       class="gif-blend" 
+       width="500" 
+       style="border-radius: 6px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); display: block;">
+</div>
+
+---
+
+## 🧩 系统组件
+
+<div align="center">
+  <table border="1" style="border-collapse: collapse; width: 90%; text-align: center;">
+    <thead>
+      <tr style="background-color: #f2f2f2;">
+        <th>组件</th>
+        <th>描述</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><b>基座外壳 (Pedestal Housing)</b></td>
+        <td>3D 打印/机械加工的基座，提供结构支撑和颅骨固定</td>
+      </tr>
+      <tr>
+        <td><b>定制化 256Ch 头部放大器</b></td>
+        <td>针对高密度 128/256 通道信号采集优化的形状因数记录接口</td>
+      </tr>
+      <tr>
+        <td><b>泡沫垫圈 (Foam Washer)</b></td>
+        <td>提供柔性压缩，确保弹性体接口上的电气接触均匀</td>
+      </tr>
+      <tr>
+        <td><b>转接板 PCB (Adapter PCB)</b></td>
+        <td>高密度 4 层 PCB，用于将信号从薄膜探针路由到头部放大器的球栅阵列图案</td>
+      </tr>
+      <tr>
+        <td><b>手术保护盖 (Surgical Cap)</b></td>
+        <td>保护性外壳，在长期慢性实验中保持电气和机械完整性</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+---
+
+### 🛠 头部放大器物料清单 (BOM)
+
+<div align="center">
+  <table style="margin-left: auto; margin-right: auto; width: 90%; text-align: center; border-collapse: collapse; border: 1px solid #e1e4e8;">
+    <thead>
+      <tr style="background-color: #f6f8fa; border-bottom: 2px solid #e1e4e8;">
+        <th style="padding: 10px; border: 1px solid #e1e4e8; text-align: center;">组件</th>
+        <th style="padding: 10px; border: 1px solid #e1e4e8; text-align: center;">描述</th>
+        <th style="padding: 10px; border: 1px solid #e1e4e8; text-align: center;">数量</th>
+        <th style="padding: 10px; border: 1px solid #e1e4e8; text-align: center;">封装</th>
+        <th style="padding: 10px; border: 1px solid #e1e4e8; text-align: center;">备注</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #e1e4e8; text-align: center;"><b>放大器 IC</b></td>
+        <td style="padding: 8px; border: 1px solid #e1e4e8; text-align: center;">Intan RHD2164</td>
+        <td style="padding: 8px; border: 1px solid #e1e4e8; text-align: center;">4</td>
+        <td style="padding: 8px; border: 1px solid #e1e4e8; text-align: center;">BGA</td>
+        <td style="padding: 8px; border: 1px solid #e1e4e8; text-align: center;"><b>关键：</b> 确保方向正确</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #e1e4e8; text-align: center;"><b>SPI 连接器</b></td>
+        <td style="padding: 8px; border: 1px solid #e1e4e8; text-align: center;">Omnetics A7621</td>
+        <td style="padding: 8px; border: 1px solid #e1e4e8; text-align: center;">2</td>
+        <td style="padding: 8px; border: 1px solid #e1e4e8; text-align: center;">-</td>
+        <td style="padding: 8px; border: 1px solid #e1e4e8; text-align: center;">12 线线束 (32 AWG)</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #e1e4e8; text-align: center;"><b>电阻</b></td>
+        <td style="padding: 8px; border: 1px solid #e1e4e8; text-align: center;">标准 SMD</td>
+        <td style="padding: 8px; border: 1px solid #e1e4e8; text-align: center;">7</td>
+        <td style="padding: 8px; border: 1px solid #e1e4e8; text-align: center;">0402</td>
+        <td style="padding: 8px; border: 1px solid #e1e4e8; text-align: center;">LVDS 配置</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #e1e4e8; text-align: center;"><b>电容</b></td>
+        <td style="padding: 8px; border: 1px solid #e1e4e8; text-align: center;">标准 SMD</td>
+        <td style="padding: 8px; border: 1px solid #e1e4e8; text-align: center;">8</td>
+        <td style="padding: 8px; border: 1px solid #e1e4e8; text-align: center;">0603</td>
+        <td style="padding: 8px; border: 1px solid #e1e4e8; text-align: center;">LVDS 配置</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #e1e4e8; text-align: center;"><b>电源 LED</b></td>
+        <td style="padding: 8px; border: 1px solid #e1e4e8; text-align: center;">绿色 LED</td>
+        <td style="padding: 8px; border: 1px solid #e1e4e8; text-align: center;">1</td>
+        <td style="padding: 8px; border: 1px solid #e1e4e8; text-align: center;">0402</td>
+        <td style="padding: 8px; border: 1px solid #e1e4e8; text-align: center;">电源指示灯</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #e1e4e8; text-align: center;"><b>锡球 (Solder Balls)</b></td>
+        <td style="padding: 8px; border: 1px solid #e1e4e8; text-align: center;">0.4 mm 无铅</td>
+        <td style="padding: 8px; border: 1px solid #e1e4e8; text-align: center;">~300</td>
+        <td style="padding: 8px; border: 1px solid #e1e4e8; text-align: center;">-</td>
+        <td style="padding: 8px; border: 1px solid #e1e4e8; text-align: center;">用于 BGA 返修/组装</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+---
+
+## 👥 开发者与实验室
+
+本项目由达特茅斯学院的 **MINE Lab** 开发。<a href="https://sites.dartmouth.edu/fang-group/"><img src="https://img.shields.io/badge/访问网站_%E2%86%97-MINE_Lab-00693E?style=flat-square" alt="MINE Lab"></a>
+
+* **Tianyu Bai** (首席设计师) <a href="https://tianyu-bai.github.io/"><img src="https://img.shields.io/badge/个人主页-Tianyu%20Bai-0077B5?style=flat-square&logo=github&logoColor=white" alt="Website"></a>
+* **Gen Li, Ph.D.**
+* **Hui Fang, Ph.D.** <a href="https://engineering.dartmouth.edu/community/faculty/hui-fang"><img src="https://img.shields.io/badge/首席研究员_(PI)-444444?style=flat-square&logoColor=white" />
+
+---
+
+## 📄 出版物
+
+这项工作目前正在 **IEEE Journal on Flexible Electronics (JFLEX)** 审稿中。
+
+本仓库中的硬件设计和视觉资产直接对应于投稿手稿中描述的系统。为了维护同行评审过程的完整性：
+
+* **完整引用**：正式录用后，最终论文的永久链接将立即在此处更新。
+* **预印本/全文**：*即将推出。*
+  
+* 我们欢迎神经工程社区的反馈与合作！
+
+* **咨询**：如需获取技术设计文件或有任何疑问，请联系：
+    * **Tianyu Bai** ([<font color="#60a5fa">Tianyu.Bai.TH@Dartmouth.edu</font>](mailto:Tianyu.Bai.TH@Dartmouth.edu))
+    * **Prof. Hui Fang** ([<font color="#60a5fa">Hui.Fang@Dartmouth.edu</font>](mailto:Hui.Fang@Dartmouth.edu))
+
+---
+
+## 📑 引用与 DOI
+
+如果您在研究中使用了这些设计、代码或资产，请使用 Zenodo 提供的永久 DOI 引用本仓库：
+
+**当前参考：**
+> T. Bai, et al., "E-Link GitHub Repository," v1.0, MINE Lab, Dartmouth College, 2026. [![DOI](https://zenodo.org/badge/1119765398.svg)](https://doi.org/10.5281/zenodo.18440104)
+
+---
+
+## 🔗 仓库与下载
+
+本项目完全开源。相关论文录用后，包含 **PCB 制造文件 (Gerber/NC Drill)**、**BOM** 和 **机械 CAD** 的完整数据集将通过以下链接提供访问。
+
+<div align="center">
+  <p><b>👇 收藏本仓库以便未来下载：</b></p>
+
+<div align="center">
+  <a href="https://github.com/Tianyu-Bai/ELINK"><img src="https://img.shields.io/badge/GitHub-查看源仓库-181717?style=for-the-badge&logo=github&logoColor=white" alt="View on GitHub"></a>
+  <img src="https://img.shields.io/badge/状态-锁定直到发表-A31F34?style=for-the-badge&logo=private" alt="Status Locked">
+</div>
+</div>
+
+---
+
+## 🤝 致谢
+
+开发者衷心感谢 **NIH (R01MH139342)** 和 **达特茅斯博士创新奖学金 (Dartmouth PhD Innovation Fellowship)** 的支持。
+
+特别感谢 **MINE Lab** 和 **Thayer 工程学院** 的成员在 E-Link (256) 系统开发过程中提供的技术支持和反馈。
+
+---
+
+## 📜 许可协议
+
+版权所有 © 2026 Tianyu Bai <a href="https://tianyu-bai.github.io/"><img src="https://img.shields.io/badge/个人主页-Tianyu%20Bai-0077B5?style=flat-square&logo=github&logoColor=white" alt="Website"></a>
+
+本项目为开源硬件，在以下许可下可用。点击下方徽章查看完整许可详情。
+
+* **硬件源文件** (KiCad/Gerbers/STL 文件)：在 **MIT 许可** 下授权。
+* **文档、原理图 (PDF) 和图像**：在 **CC BY 4.0 国际许可** 下授权。
+
+<div align="center">
+  <a href="https://github.com/tianyu-bai/E-Link/blob/main/LICENSE">
+    <img src="https://img.shields.io/badge/协议-MIT-A31F34?style=flat-square&logo=opensourceinitiative&logoColor=white" alt="License">
+  </a>
+</div>
+
+</div>
+</details>
