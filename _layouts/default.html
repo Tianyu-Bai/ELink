@@ -323,6 +323,12 @@
     input:focus + .slider { box-shadow: 0 0 1px #3b82f6; }
     input:checked + .slider:before { transform: translateX(20px); }
 
+    /* 🔥 左下角水印 */
+    .modal-watermark {
+      position: absolute; bottom: 20px; left: 25px;
+      font-size: 0.7rem; color: #475569; font-family: 'JetBrains Mono', monospace; pointer-events: none;
+    }
+
     @media (max-width: 768px) { 
       #bot-speech {
         white-space: normal !important; max-width: 200px !important; width: max-content !important; height: auto !important; line-height: 1.5;
@@ -384,6 +390,11 @@
           <span class="m-en">☀️ Switch to Light Mode</span>
           <span class="m-zh">☀️ 切换到浅色</span>
         </button>
+      </div>
+
+      <div class="modal-watermark">
+        <span class="m-en">Designed & Coded by Tianyu Bai © 2026</span>
+        <span class="m-zh">原创设计与开发：Tianyu Bai © 2026</span>
       </div>
 
       <div class="modal-lang-switch-container">
@@ -549,7 +560,7 @@
 
     const dialogData_ZH = {
       "start": {
-        text: "你好！我是连接器守护者。我会保护你的神经接口。",
+        text: "你好！我是易连的守护者。由我来保护你的脑机探针。",
         options: [ { text: "🚀 开始探索！", next: "root_menu" } ]
       },
       "root_menu": {
@@ -567,7 +578,7 @@
         options: [
           { text: "“零插入力”有什么好处？", next: "zero_force" },
           { text: "通道数能扩展吗？", next: "scalability" },
-          { text: "返回主菜单", next: "root_menu" } 
+          { text: "返回主菜单", next: "root_menu" } 
         ]
       },
       "zero_force": {
@@ -592,24 +603,24 @@
         options: [ { text: "很适合小鼠/大鼠。", next: "specs_menu" } ]
       },
       "thermal": {
-        text: "我很冷静。稳态温度仅为 30.5°C，远低于 37°C 的生物阈值。无需主动散热。",
+        text: "我运转冷静。稳态温度仅为 30.5°C，远低于 37°C 的生物阈值。无需主动散热。",
         options: [ { text: "安全确认。", next: "specs_menu" } ]
       },
       "noise": {
-        text: "晶莹剔透。我的本底噪声为 2.68 ± 0.46 µV RMS，达到了 Intan 芯片的理论极限。信号无损耗。",
+        text: "晶莹剔透。我的本底噪声为 2.68 ± 0.46 µV RMS，接近了 Intan 芯片的理论极限。信号无损耗。",
         options: [ { text: "参数很强。", next: "specs_menu" } ]
       },
       "reliability_menu": {
-        text: "我经久耐用。你担心什么？",
+        text: "我经久耐用。你可能担心什么？",
         options: [
           { text: "寿命 (插拔次数)", next: "cycles" },
           { text: "如果对不准怎么办？", next: "misalignment" },
-          { text: "接触电阻？", next: "impedance" },
+          { text: "接触电阻多大？", next: "impedance" },
           { text: "返回主菜单", next: "root_menu" }
         ]
       },
       "cycles": {
-        text: "已验证 100 次以上的插拔循环，连接良率 >97%。弹性体几乎没有磨损。",
+        text: "已验证 100 次以上的插拔循环，连接良率 >97%。弹性导电体几乎没有磨损。",
         options: [ { text: "靠谱。", next: "reliability_menu" } ]
       },
       "misalignment": {
