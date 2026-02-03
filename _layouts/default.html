@@ -826,15 +826,16 @@
           botContainer.classList.remove('speaking');
         }, duration);
       }
- 
-      function showDialogueNode(nodeKey) {
+
+       function showDialogueNode(nodeKey) {
         if(nodeKey === 'close') { 
             closeDialogue(); 
             botContainer.classList.add('interaction-done');
-            const byeText = currentLang === 'en' ? "Nice chatting with you. Have a good day!" : "很高兴与你交谈。祝你今天愉快！";
+            // 修改点：在句子中间加了 \n 强制换行
+            const byeText = currentLang === 'en' ? "Nice chatting with you.\nHave a good day!" : "很高兴与你交谈。\n祝你今天愉快！";
             botSay(byeText, 3600); 
             return; 
-        }    
+        }
         
         const node = dialogData[nodeKey];
         if(!node) return;
