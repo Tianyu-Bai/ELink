@@ -9,12 +9,12 @@
 </div>
 
 <div align="center" class="nav-badges">
-  <a href="#-overview"><img src="https://img.shields.io/badge/📖_Overview-3b82f6?style=flat-square&logoColor=white" alt="Overview"></a>
-  <a href="#-key-features"><img src="https://img.shields.io/badge/✨_Features-3b82f6?style=flat-square&logoColor=white" alt="Features"></a>
-  <a href="#-quick-specifications"><img src="https://img.shields.io/badge/📊_Specs-3b82f6?style=flat-square&logoColor=white" alt="Specs"></a>
-  <a href="#-system-components"><img src="https://img.shields.io/badge/🧩_Components-3b82f6?style=flat-square&logoColor=white" alt="Components"></a>
-  <a href="#-bill-of-materials-bom-of-the-headstage"><img src="https://img.shields.io/badge/🛠_BOM-3b82f6?style=flat-square&logoColor=white" alt="BOM"></a>
-  <a href="#-repository--downloads"><img src="https://img.shields.io/badge/🔗_Downloads-3b82f6?style=flat-square&logoColor=white" alt="Downloads"></a>
+  <a href="#en-overview"><img src="https://img.shields.io/badge/📖_Overview-3b82f6?style=flat-square&logoColor=white" alt="Overview"></a>
+  <a href="#en-features"><img src="https://img.shields.io/badge/✨_Features-3b82f6?style=flat-square&logoColor=white" alt="Features"></a>
+  <a href="#en-specs"><img src="https://img.shields.io/badge/📊_Specs-3b82f6?style=flat-square&logoColor=white" alt="Specs"></a>
+  <a href="#en-components"><img src="https://img.shields.io/badge/🧩_Components-3b82f6?style=flat-square&logoColor=white" alt="Components"></a>
+  <a href="#en-bom"><img src="https://img.shields.io/badge/🛠_BOM-3b82f6?style=flat-square&logoColor=white" alt="BOM"></a>
+  <a href="#en-downloads"><img src="https://img.shields.io/badge/🔗_Downloads-3b82f6?style=flat-square&logoColor=white" alt="Downloads"></a>
 </div>
   
 <div align="center">
@@ -42,6 +42,7 @@
 
 ---
 
+<span id="en-overview"></span>
 ## 📖 Overview
 
 **E-Link** (Elastomer Interconnection-based connector) is an open-source, solderless, and scalable pedestal connector system designed for high-density chronic neural recording. It provides a mechanically robust and electrically reliable interface between thin-film implanted neural probes and external headstages, with a form factor optimized for freely moving animal studies.
@@ -51,6 +52,7 @@
 
 ---
 
+<span id="en-specs"></span>
 ### 📊 Quick Specifications
 
 <div align="center">
@@ -88,6 +90,7 @@
 
 ---
 
+<span id="en-features"></span>
 ## ✨ Key Features
 
 * **⚡ 256-Channel High-Density Interface**
@@ -110,6 +113,7 @@
 
 ---
 
+<span id="en-components"></span>
 ## 🧩 System Components
 
 <div align="center">
@@ -155,6 +159,7 @@
 
 ---
 
+<span id="en-bom"></span>
 ### 🛠 Bill of Materials (BOM) of the headstage
 
 <div align="center">
@@ -253,6 +258,7 @@ If you utilize these designs, code, or assets in your research, please cite this
 
 ---
 
+<span id="en-downloads"></span>
 ## 🔗 Repository & Downloads
 
 This project is fully open-source. Upon acceptance of the associated paper, the complete dataset comprising **PCB fabrication files (Gerber/NC Drill)**, **BOM**, and **Mechanical CAD** will be accessible via the link below.
@@ -311,12 +317,12 @@ This project is open-source and available under the **MIT License**. Click the b
 </div>
 
 <div align="center" class="nav-badges">
-  <a href="#-overview"><img src="https://img.shields.io/badge/📖_概览-3b82f6?style=flat-square&logoColor=white" alt="Overview"></a>
-  <a href="#-key-features"><img src="https://img.shields.io/badge/✨_特性-3b82f6?style=flat-square&logoColor=white" alt="Features"></a>
-  <a href="#-quick-specifications"><img src="https://img.shields.io/badge/📊_规格-3b82f6?style=flat-square&logoColor=white" alt="Specs"></a>
-  <a href="#-system-components"><img src="https://img.shields.io/badge/🧩_组件-3b82f6?style=flat-square&logoColor=white" alt="Components"></a>
-  <a href="#-bill-of-materials-bom-of-the-headstage"><img src="https://img.shields.io/badge/🛠_物料清单-3b82f6?style=flat-square&logoColor=white" alt="BOM"></a>
-  <a href="#-repository--downloads"><img src="https://img.shields.io/badge/🔗_下载-3b82f6?style=flat-square&logoColor=white" alt="Downloads"></a>
+  <a href="#cn-overview"><img src="https://img.shields.io/badge/📖_概览-3b82f6?style=flat-square&logoColor=white" alt="Overview"></a>
+  <a href="#cn-features"><img src="https://img.shields.io/badge/✨_特性-3b82f6?style=flat-square&logoColor=white" alt="Features"></a>
+  <a href="#cn-specs"><img src="https://img.shields.io/badge/📊_规格-3b82f6?style=flat-square&logoColor=white" alt="Specs"></a>
+  <a href="#cn-components"><img src="https://img.shields.io/badge/🧩_组件-3b82f6?style=flat-square&logoColor=white" alt="Components"></a>
+  <a href="#cn-bom"><img src="https://img.shields.io/badge/🛠_物料清单-3b82f6?style=flat-square&logoColor=white" alt="BOM"></a>
+  <a href="#cn-downloads"><img src="https://img.shields.io/badge/🔗_下载-3b82f6?style=flat-square&logoColor=white" alt="Downloads"></a>
 </div>
   
 <div align="center">
@@ -344,6 +350,7 @@ This project is open-source and available under the **MIT License**. Click the b
 
 ---
 
+<span id="cn-overview"></span>
 ## 📖 概览
 
 **E-Link** (基于弹性体互连的连接器)：一种用于高密度神经记录的开源弹性体连接器。它提供了一个稳健、紧凑的接口，用于将薄膜探针连接到自由活动动物的头部放大器（Headstage）。
@@ -353,6 +360,7 @@ This project is open-source and available under the **MIT License**. Click the b
 
 ---
 
+<span id="cn-specs"></span>
 ### 📊 快速规格参数
 
 <div align="center">
@@ -390,6 +398,7 @@ This project is open-source and available under the **MIT License**. Click the b
 
 ---
 
+<span id="cn-features"></span>
 ## ✨ 关键特性
 
 * **⚡ 256 通道高密度接口**
@@ -412,6 +421,7 @@ This project is open-source and available under the **MIT License**. Click the b
 
 ---
 
+<span id="cn-components"></span>
 ## 🧩 系统组件
 
 <div align="center">
@@ -457,6 +467,7 @@ This project is open-source and available under the **MIT License**. Click the b
 
 ---
 
+<span id="cn-bom"></span>
 ### 🛠 头部放大器物料清单 (BOM)
 
 <div align="center">
@@ -521,11 +532,11 @@ This project is open-source and available under the **MIT License**. Click the b
 
 ## 👥 开发者与实验室
 
-本项目由达特茅斯学院的 **MINE Lab** 开发。<a href="https://sites.dartmouth.edu/fang-group/"><img src="https://img.shields.io/badge/访问网站_%E2%86%97-MINE_Lab-00693E?style=flat-square" alt="MINE Lab"></a>
+本项目由达特茅斯学院的 **MINE Lab** 主导开发。<a href="https://sites.dartmouth.edu/fang-group/"><img src="https://img.shields.io/badge/访问网站_%E2%86%97-MINE_Lab-00693E?style=flat-square" alt="MINE Lab"></a>
 
-* **Tianyu Bai** (首席设计师) <a href="https://tianyu-bai.github.io/"><img src="https://img.shields.io/badge/个人主页-Tianyu%20Bai-0077B5?style=flat-square&logo=github&logoColor=white" alt="Website"></a>
-* **Gen Li, Ph.D.**
-* **Hui Fang, Ph.D.** <a href="https://engineering.dartmouth.edu/community/faculty/hui-fang"><img src="https://img.shields.io/badge/首席研究员_(PI)-444444?style=flat-square&logoColor=white" />
+* **白天宇** (设计，开发) <a href="https://tianyu-bai.github.io/"><img src="https://img.shields.io/badge/个人主页-Tianyu%20Bai-0077B5?style=flat-square&logo=github&logoColor=white" alt="Website"></a>
+* **李根博士**
+* **方辉教授** <a href="https://engineering.dartmouth.edu/community/faculty/hui-fang"><img src="https://img.shields.io/badge/首席研究员_(PI)-444444?style=flat-square&logoColor=white" />
 
 ---
 
@@ -533,16 +544,16 @@ This project is open-source and available under the **MIT License**. Click the b
 
 这项工作目前正在 **IEEE Journal on Flexible Electronics (JFLEX)** 审稿中。
 
-本仓库中的硬件设计和视觉资产直接对应于投稿手稿中描述的系统。为了维护同行评审过程的完整性：
+本仓库中的硬件设计和视觉资产直接对应于投稿中描述的系统。为了维护同行评审过程的完整性：
 
 * **完整引用**：正式录用后，最终论文的永久链接将立即在此处更新。
 * **预印本/全文**：*即将推出。*
   
-* 我们欢迎神经工程社区的反馈与合作！
+* 我们欢迎神经工程科研社区的反馈与合作！
 
-* **咨询**：如需获取技术设计文件或有任何疑问，请联系：
-    * **Tianyu Bai** ([<font color="#60a5fa">Tianyu.Bai.TH@Dartmouth.edu</font>](mailto:Tianyu.Bai.TH@Dartmouth.edu))
-    * **Prof. Hui Fang** ([<font color="#60a5fa">Hui.Fang@Dartmouth.edu</font>](mailto:Hui.Fang@Dartmouth.edu))
+* **咨询**：如需获取技术设计文件或有任何疑问，请邮件联系：
+    * **白天宇** ([<font color="#60a5fa">Tianyu.Bai.TH@Dartmouth.edu</font>](mailto:Tianyu.Bai.TH@Dartmouth.edu))
+    * **方辉教授** ([<font color="#60a5fa">Hui.Fang@Dartmouth.edu</font>](mailto:Hui.Fang@Dartmouth.edu))
 
 ---
 
@@ -555,6 +566,7 @@ This project is open-source and available under the **MIT License**. Click the b
 
 ---
 
+<span id="cn-downloads"></span>
 ## 🔗 仓库与下载
 
 本项目完全开源。相关论文录用后，包含 **PCB 制造文件 (Gerber/NC Drill)**、**BOM** 和 **机械 CAD** 的完整数据集将通过以下链接提供访问。
