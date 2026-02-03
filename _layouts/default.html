@@ -529,9 +529,9 @@
         options: [ { text: "参数很强。", next: "specs_menu" } ]
       },
       "reliability_menu": {
-        text: "我经久耐用。你可能担心什么？",
+        text: "我经久耐用。猜你有可能担心这些？",
         options: [
-          { text: "寿命 (插拔次数)", next: "cycles" },
+          { text: "寿命 (贴合次数)", next: "cycles" },
           { text: "如果对不准怎么办？", next: "misalignment" },
           { text: "接触电阻多大？", next: "impedance" },
           { text: "返回主菜单", next: "root_menu" }
@@ -638,7 +638,7 @@
         if(idleInterval) clearInterval(idleInterval);
         
         const enTips = ["Click me for guide!", "I'm here to help!"];
-        const zhTips = ["我是易连助手", "有问题随时问我！"];
+        const zhTips = ["我是易连的助手", "有问题随时问我！"];
         
         // 循环执行函数
         const runCycle = () => {
@@ -676,8 +676,8 @@
 
             setTimeout(() => {
                 botContainer.classList.remove('attention-jump');
-            }, 5000);
-        }, 500);
+            }, 3000);
+        }, 100);
       }
 
       modalKeepDarkBtn.addEventListener('click', closeModal);
