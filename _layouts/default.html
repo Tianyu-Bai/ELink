@@ -996,31 +996,31 @@ body.light-mode #main_content td {
         }
         
         reset() {
-          // 1. 角度：统一从“右上”飞向“左下” (约135度)，带微小随机散射，模拟流星雨
-          this.angle = Math.PI * 0.75 + (Math.random() - 0.5) * 0.1;
+          // 随机起点 (在画布任意位置)
+          this.x = Math.random() * width;
+          this.y = Math.random() * height;
           
-          // 2. 速度：大大提升，营造“划破夜空”的感觉 (15 ~ 25)
-          this.speed = Math.random() * 10 + 15;
+          // 随机长度 (50px ~ 150px)
+          this.len = Math.random() * 100 + 50;
           
-          // 3. 长度：加长尾巴 (150px ~ 300px)，看着更壮观
-          this.len = Math.random() * 150 + 150;
+          // 随机速度 (慢一点，像流星)
+          this.speed = Math.random() * 2 + 3;
           
-          // 4. 粗细：稍微加粗头部 (1.5px ~ 3px) 增加亮度感
-          this.size = Math.random() * 1.5 + 1.5;
+          // 随机大小 (非常细)
+          this.size = Math.random() * 1 + 0.5;
           
-          // 5. 起点优化：只从“上方”或“右侧”生成，保证流星是划过屏幕的
-          if (Math.random() < 0.5) {
-             this.x = Math.random() * width + width * 0.5; // 偏右侧
-             this.y = -150; // 屏幕上方外
-          } else {
-             this.x = width + 150; // 屏幕右侧外
-             this.y = Math.random() * height * 0.5; // 偏上方
-          }
+          // ✅ 规律化：统一往“左下角”飞 (约135度)，带一点点随机散射
+          // Math.PI * 0.75 是标准的左下角方向
+          // 后面的计算是为了让它们不要完全平行，有一点自然的散开感
+          this.angle = (Math.PI * 0.75) + (Math.random() - 0.5) * 0.5;
           
+          // 初始透明度
           this.opacity = 0;
-          this.state = 'fadein'; 
+          
+          // 生命周期状态
+          this.state = 'fadein'; // fadein, active, fadeout
           this.life = 0;
-          this.maxLife = Math.random() * 30 + 30; 
+          this.maxLife = Math.random() * 30 + 20; // 存活帧数
         }
         
         update() {
@@ -1028,9 +1028,9 @@ body.light-mode #main_content td {
           this.x += Math.cos(this.angle) * this.speed;
           this.y += Math.sin(this.angle) * this.speed;
           
-          // 状态机 (淡入淡出逻辑)
+          // 状态机
           if(this.state === 'fadein') {
-             this.opacity += 0.05; // 稍微慢点亮起
+             this.opacity += 0.1;
              if(this.opacity >= 1) this.state = 'active';
           } else if(this.state === 'active') {
              this.life++;
@@ -1040,8 +1040,8 @@ body.light-mode #main_content td {
              if(this.opacity <= 0) this.reset();
           }
           
-          // 边界检查 (跑太远了就重置)
-          if(this.x < -300 || this.y > height + 300) {
+          // 边界检查 (出了屏幕就重置)
+          if(this.x < -100 || this.x > width + 100 || this.y < -100 || this.y > height + 100) {
              this.reset();
           }
         }
@@ -1049,54 +1049,45 @@ body.light-mode #main_content td {
         draw() {
           if(this.opacity <= 0) return;
           
+          // 计算尾巴坐标
           const tailX = this.x - Math.cos(this.angle) * this.len;
           const tailY = this.y - Math.sin(this.angle) * this.len;
           
-          // 🔥 关键修改：颜色渐变，头部纯白(最亮)，尾部你的主题蓝
+          // 创建渐变：头亮尾暗
           const gradient = ctx.createLinearGradient(this.x, this.y, tailX, tailY);
-          
-          // 0.0 = 头部：纯白色 (模拟高温燃烧)
-          gradient.addColorStop(0, `rgba(255, 255, 255, ${this.opacity})`);
-          // 0.2 = 颈部：青蓝色 (过渡)
-          gradient.addColorStop(0.2, `rgba(147, 197, 253, ${this.opacity * 0.8})`);
-          // 1.0 = 尾部：透明蓝
-          gradient.addColorStop(1, `rgba(59, 130, 246, 0)`);
+          // 颜色匹配你的主题色 #3b82f6 (RGB: 59, 130, 246)
+          gradient.addColorStop(0, `rgba(96, 165, 250, ${this.opacity})`); // 亮蓝头部
+          gradient.addColorStop(1, `rgba(59, 130, 246, 0)`);   // 透明尾部
           
           ctx.beginPath();
           ctx.moveTo(this.x, this.y);
           ctx.lineTo(tailX, tailY);
           ctx.strokeStyle = gradient;
           ctx.lineWidth = this.size;
-          ctx.lineCap = 'round'; // 圆头，看起来更柔和
+          ctx.lineCap = 'round';
           ctx.stroke();
-          
-          // ✨ 额外细节：给头部加一个发光的球，显得更亮
-          ctx.beginPath();
-          ctx.arc(this.x, this.y, this.size * 1.5, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity * 0.8})`; // 头部光晕
-          ctx.fill();
         }
       }
       
       // 创建一批流星
       const meteors = [];
-      const meteorCount = 8; // 数量不用太多，因为现在每条都很长很亮
+      const meteorCount = 12; // 数量适中，既不杂乱又有氛围
       for(let i=0; i<meteorCount; i++) {
          const m = new Meteor();
-         m.life = Math.random() * 100; // 错开时间
+         // 错开初始状态，避免同时出现
+         m.opacity = 0; 
+         m.life = Math.random() * 50;
          meteors.push(m);
       }
       
       function animateMeteors() {
         ctx.clearRect(0, 0, width, height);
+        
         meteors.forEach(m => {
           m.update();
           m.draw();
         });
-        requestAnimationFrame(animateMeteors);
-      }
-      
-      animateMeteors();
+        
         requestAnimationFrame(animateMeteors);
       }
       
