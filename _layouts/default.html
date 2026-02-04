@@ -130,7 +130,6 @@
     #lang-toggle { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; font-weight: bold; width: auto; padding: 0 10px; border-radius: 20px; }
 
 /* --- ☁️ 护眼柔光模式 (Soft Light Mode) --- */
-/* --- ☁️ 护眼柔光模式 (Soft Light Mode - Gray Tone) --- */
     body.light-mode { color: #334155; background-color: #ffffff; }
 
     /* 1. 背景遮罩：边缘不再是白色，而是淡灰色，与网页背景融合 */
@@ -835,35 +834,73 @@ body.light-mode #main_content td {
           botContainer.classList.remove('speaking');
         }, duration);
       }
-
-       function showDialogueNode(nodeKey) {
+        // 第一次点进去会有打字特效（仪式感），想退出来换个选项时，一瞬间就回去了（效率感）
+      function showDialogueNode(nodeKey, isFastMode = false) {
+        // 1. 处理关闭逻辑
         if(nodeKey === 'close') { 
             closeDialogue(); 
             botContainer.classList.add('interaction-done');
-            // 修改点：在句子中间加了 \n 强制换行
-            const byeText = currentLang === 'en' ? "Nice chatting with you.\nHave a good day!" : "很高兴与你交谈。\n祝你今天愉快！";
-            botSay(byeText, 3600); 
+            const byeText = currentLang === 'en' ? "Nice chatting with you!" : "很高兴与你交谈！";
+            botSay(byeText, 3000); 
             return; 
-        }
+        }    
         
         const node = dialogData[nodeKey];
         if(!node) return;
-        rpgOptions.innerHTML = ''; rpgText.textContent = '';
+        
+        // 清空旧内容
+        rpgOptions.innerHTML = ''; 
         if(typeTimer) clearInterval(typeTimer);
-        let i = 0;
-        typeTimer = setInterval(() => {
-          rpgText.textContent += node.text.charAt(i); i++;
-          if(i >= node.text.length) {
-            clearInterval(typeTimer);
+
+        // 定义一个显示按钮的函数 (复用逻辑)
+        const showButtons = () => {
             node.options.forEach((opt, idx) => {
               const btn = document.createElement('div');
-              btn.className = 'rpg-btn'; btn.textContent = '> ' + opt.text;
-              btn.style.animationDelay = `${idx * 0.1}s`;
-              btn.onclick = (e) => { e.stopPropagation(); showDialogueNode(opt.next); };
+              btn.className = 'rpg-btn'; 
+              btn.textContent = '> ' + opt.text;
+              
+              // 关键点1：检查按钮文字是否包含“返回”或“Back”
+              // 如果包含，点击它进入下一个节点时，就开启“快速模式”
+              const isBackAction = opt.text.includes("Back") || opt.text.includes("返回");
+
+              // 样式处理：如果是快速模式，按钮不需要淡入延迟
+              if(isFastMode) {
+                  btn.style.opacity = 1;
+                  btn.style.transform = 'translateX(0)';
+                  btn.style.animation = 'none'; // 取消动画直接显示
+              } else {
+                  btn.style.animationDelay = `${idx * 0.1}s`;
+              }
+
+              btn.onclick = (e) => { 
+                  e.stopPropagation(); 
+                  // 关键点2：把判断结果传给下一次调用
+                  showDialogueNode(opt.next, isBackAction); 
+              };
               rpgOptions.appendChild(btn);
             });
-          }
-        }, 30);
+        };
+
+        // 2. 根据模式决定显示方式
+        if (isFastMode) {
+            // 🔥 快速模式 (点击返回时触发)：
+            // 直接显示全部文字，不打字
+            rpgText.textContent = node.text; 
+            // 立即显示按钮
+            showButtons();
+        } else {
+            // 🐢 普通模式 (正常流程)：
+            // 还是以前的打字机效果
+            rpgText.textContent = '';
+            let i = 0;
+            typeTimer = setInterval(() => {
+              rpgText.textContent += node.text.charAt(i); i++;
+              if(i >= node.text.length) {
+                clearInterval(typeTimer);
+                showButtons();
+              }
+            }, 30); // 打字速度
+        }
       }
  
       function openDialogue() {
