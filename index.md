@@ -165,7 +165,21 @@ title: E-Link Home
 
 <span id="en-bom"></span>
 ### 🛠 Bill of Materials (BOM) of the headstage
+<span id="en-bom"></span>
 
+<div align="center">
+  <img src="Images/256HD.png" 
+       alt="256Ch Headstage PCBA Assembly" 
+       width="500" 
+       style="border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin-bottom: 20px;">
+  <p style="margin-top: 5px; font-size: 0.9em; color: #64748b;">
+    <b>Assembled 256-Channel Headstage (Top View)</b>
+  </p>
+</div>
+<div align="center">
+  <table style="margin-left: auto; margin-right: auto; width: 90%; text-align: center; border-collapse: collapse; border: 1px solid #e1e4e8;">
+  ... (后面的表格代码保持不变)
+    
 <div align="center">
  <table style="margin-left: auto; margin-right: auto; width: 90%; text-align: center; border-collapse: collapse; border: 1px solid #e1e4e8;">
    <thead>
