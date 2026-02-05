@@ -1,3 +1,8 @@
+---
+layout: default
+title: E-Link Home
+---
+
 <div class="lang-en" markdown="1">
 
 <div class="github-only">
@@ -310,7 +315,7 @@ This project is open-source and available under the **MIT License**. Click the b
 <div class="github-only">
   <p align="center">
     <a href="https://tianyu-bai.github.io/E-Link">
-      🌐 点击此处查看交互式网站
+      🌐 点击此处进入交互式网站
     </a>
   </p>
 </div>
@@ -325,7 +330,7 @@ This project is open-source and available under the **MIT License**. Click the b
 </div>
   
 <div align="center">
-  <h1 style="border-bottom: none; margin-bottom: 5px; color: #60a5fa; font-size: 2em;">🚀 E-Link(易连256)</h1>
+  <h1 style="border-bottom: none; margin-bottom: 5px; color: #60a5fa; font-size: 2em;">🚀 E-Link(易链256)</h1>
   
 <div align="center">
   <img src="https://readme-typing-svg.demolab.com?font=Noto+Sans+SC&size=30&pause=100&color=60a5fa&center=true&vCenter=true&width=1100&lines=%E4%B8%80%E7%A7%8D%E5%9F%BA%E4%BA%8E%E5%BC%B9%E6%80%A7%E4%B8%AD%E9%97%B4%E5%B1%82%E5%AF%BC%E7%94%B5%E4%BD%93%E7%9A%84;%E9%AB%98%E5%AF%86%E5%BA%A6%E7%A5%9E%E7%BB%8F%E5%85%83%E7%94%B5%E4%BF%A1%E5%8F%B7%E8%AE%B0%E5%BD%95%E8%BF%9E%E6%8E%A5%E5%99%A8" alt="Typing SVG" />
@@ -350,21 +355,21 @@ This project is open-source and available under the **MIT License**. Click the b
 <span id="cn-overview"></span>
 ## 📖 概览
 
-**E-Link易连**，是一款基于弹性体互连技术（Elastomer Interconnection）的开源微型基座连接系统。它为柔性神经探针提供了稳固且可扩展的接口，专为自由活动动物的长期慢性实验而优化设计
+**E-Link易链**，是一款基于弹性体互连技术（Elastomer Interconnection）的开源微型基座连接系统。它为柔性神经探针提供了稳固且可扩展的接口，专为自由活动动物的长期慢性实验而优化设计
 
 <div align="center">
   <br>
   <img src="Images/001.PNG" alt="PEDAL-256 分解图" width="750">
   <p style="margin-top: 5px; font-size: 0.95em; color: ##3b82f6;">
-    <b>E-Link(256) 的插拔动态（左）和结构分解（右）</b>
+    <b>E-Link易链(256) 的插拔动态（左）和结构分解（右）</b>
   </p>
 </div>
 
 ---
 
 > [!NOTE]
-> **核心创新：** 该系统将两个高密度 PCB、一个各向异性弹性体接触界面和一个轻量级基座外壳集成到一个完全一体化的、即插即用的头部采集方案中。
-
+> **核心创新：** 该系统将两个高密度 PCB、一个各向异性弹性体接触界面和一个轻量级基座外壳集成到一个完全一体化的、即插即用的头部采集方案中。</p>
+ **技术革新：** 采用弹性中间层导电基体技术，实现“零力插拔”，告别因按压操作导致的多脚连接器存在的针脚损坏问题。
 ---
 
 <span id="cn-specs"></span>
@@ -441,7 +446,7 @@ This project is open-source and available under the **MIT License**. Click the b
     </thead>
     <tbody>
       <tr>
-        <td><b>基座外壳 (Pedestal Housing)</b></td>
+        <td><b>基座外壳</b></td>
         <td>3D 打印/机械加工的基座，提供结构支撑和颅骨固定</td>
       </tr>
       <tr>
@@ -449,15 +454,15 @@ This project is open-source and available under the **MIT License**. Click the b
         <td>针对高密度 128/256 通道信号采集优化的形状因数记录接口</td>
       </tr>
       <tr>
-        <td><b>泡沫垫圈 (Foam Washer)</b></td>
+        <td><b>泡沫垫圈</b></td>
         <td>提供柔性压缩，确保弹性导电基体上方的电气接触均匀</td>
       </tr>
       <tr>
-        <td><b>转接板 PCB (Adapter PCB)</b></td>
+        <td><b>转接PCB</b></td>
         <td>高密度 4 层 PCB，用于将信号从薄膜探针路由到放大器的球栅阵列图案转换</td>
       </tr>
       <tr>
-        <td><b>手术保护盖 (Surgical Cap)</b></td>
+        <td><b>手术保护盖</b></td>
         <td>保护性外壳，在长期慢性实验中保持电气和机械完整性</td>
       </tr>
     </tbody>
@@ -533,7 +538,7 @@ This project is open-source and available under the **MIT License**. Click the b
 
 本项目由达特茅斯学院的 **MINE Lab** 主导开发。<a href="https://sites.dartmouth.edu/fang-group/"><img src="https://img.shields.io/badge/访问网站_%E2%86%97-MINE_Lab-00693E?style=flat-square" alt="MINE Lab"></a>
 
-* **白天宇** (设计，开发) <a href="https://tianyu-bai.github.io/"><img src="https://img.shields.io/badge/个人主页-Tianyu%20Bai-0077B5?style=flat-square&logo=github&logoColor=white" alt="Website"></a>
+* **白天宇** (主导设计及开发) <a href="https://tianyu-bai.github.io/"><img src="https://img.shields.io/badge/个人主页-Tianyu%20Bai-0077B5?style=flat-square&logo=github&logoColor=white" alt="Website"></a>
 * **李根博士**
 * **方辉教授** <a href="https://engineering.dartmouth.edu/community/faculty/hui-fang"><img src="https://img.shields.io/badge/首席研究员_(PI)-444444?style=flat-square&logoColor=white" />
 
@@ -575,7 +580,7 @@ This project is open-source and available under the **MIT License**. Click the b
 
 <div align="center">
   <a href="https://github.com/Tianyu-Bai/ELINK"><img src="https://img.shields.io/badge/GitHub-查看源仓库-181717?style=for-the-badge&logo=github&logoColor=white" alt="View on GitHub"></a>
-  <img src="https://img.shields.io/badge/状态-锁定直到发表-A31F34?style=for-the-badge&logo=private" alt="Status Locked">
+  <img src="https://img.shields.io/badge/状态-锁定中，直到发表-A31F34?style=for-the-badge&logo=private" alt="Status Locked">
 </div>
 </div>
 
@@ -585,7 +590,7 @@ This project is open-source and available under the **MIT License**. Click the b
 
 开发者衷心感谢 **NIH (R01MH139342)** 和 **达特茅斯博士生创新奖学金 (Dartmouth PhD Innovation Fellowship)** 的支持。
 
-特别感谢 **MINE Lab** 和 **Thayer 工程学院** 的成员在 E-Link (256) 系统开发过程中提供的技术支持和反馈。
+特别感谢 **达特茅斯Thayer工学院** 的相关成员在易链系统开发过程中提供的技术支持和反馈。
 
 ---
 
@@ -605,3 +610,4 @@ This project is open-source and available under the **MIT License**. Click the b
 </div>
 
 </div>
+
