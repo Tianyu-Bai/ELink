@@ -976,7 +976,7 @@
       mouseX = e.clientX;
       mouseY = e.clientY;
       if(cursorDot) { cursorDot.style.left = `${mouseX}px`; cursorDot.style.top = `${mouseY}px`; }
-      if(cursorOutline) { cursorOutline.animate({ left: `${mouseX}px`, top: `${mouseY}px` }, { duration: 500, fill: "forwards" }); }
+      if(cursorOutline) { cursorOutline.animate({ left: `${mouseX}px`, top: `${mouseY}px` }, { duration: 100, fill: "forwards" }); }
       if (window.innerWidth > 768 && container) {
         const rx = (window.innerWidth / 2 - mouseX) / 50;
         const ry = (window.innerHeight / 2 - mouseY) / 50;
