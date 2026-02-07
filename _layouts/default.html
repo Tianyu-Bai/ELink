@@ -26,7 +26,8 @@
     margin: 0; padding: 0; color: #e0e7ff; 
     font-family: 'Inter', -apple-system, sans-serif; 
     line-height: 1.6; overflow-x: hidden; 
-    cursor: none; 
+    .video-modal, .video-modal * {
+    cursor: auto !important;} 
     scrollbar-width: thin; scrollbar-color: #3b82f6 transparent;
     transition: color 0.5s ease;
     background-color: #0a0a0f; 
@@ -482,222 +483,225 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
 <script>
-  // --- 🌍 双语数据源 ---
-  const dialogData_EN = {
-    "start": {
-      text: "Hi! I'm the Connector Guardian. I protect your neural interfaces.",
-      options: [ 
-         { text: "🎬 Watch Demo Video", next: "play_video" }, // 🔥 新增
-         { text: "🚀 Let's start!", next: "root_menu" } 
-      ]
-    },
-    // 🔥 新增：视频处理节点
-    "play_video": {
-       text: "Initiating Cinema Mode... Loading visual data.",
-       options: [ { text: "Close Video", next: "start" } ]
-    },
-    "root_menu": {
-      text: "Select a category to inspect:",
-      options: [
-        { text: "🌟 What's Special?", next: "innovation" },
-        { text: "📊 Specifications (Weight/Noise)", next: "specs_menu" },
-        { text: "🛡️ Reliability & Durability", next: "reliability_menu" },
-        { text: "🔧 Usage & Compatibility", next: "usage_menu" },
-        { text: "Just browsing", next: "close" }
-      ]
-    },
-    "innovation": {
-      text: "I feature a novel elastomeric interposer. This means NO precise alignment is needed and ZERO insertion force.",
-      options: [
-        { text: "Why is 'Zero Force' better?", next: "zero_force" },
-        { text: "Can it scale up?", next: "scalability" },
-        { text: "Back to Menu", next: "root_menu" } 
-      ]
-    },
-    "zero_force": {
-      text: "Traditional plugs require high force, risking probe fracture. My threaded cap converts rotation into gentle vertical pressure, protecting delicate films.",
-      options: [ { text: "Cool! Back.", next: "innovation" } ]
-    },
-    "scalability": {
-      text: "Yes! The fine-pitch elastomer allows scaling to 1024 channels within the same 25mm footprint. I am future-proof.",
-      options: [ { text: "Got it, Back.", next: "innovation" } ]
-    },
-    "specs_menu": {
-      text: "Checking Diagnostics... Which parameter concerns you?",
-      options: [
-        { text: "Is it heavy? (Weight)", next: "weight" },
-        { text: "Does it get hot? (Thermal)", next: "thermal" },
-        { text: "How clean is the signal? (Noise)", next: "noise" },
-        { text: "Back to Menu", next: "root_menu" }
-      ]
-    },
-    "weight": {
-      text: "I am ultra-light. Detached weight is only 2.8g. Even housed, I am 57% lighter (6.6g) than competitors, reducing strain on the animal.",
-      options: [ { text: "Good for mice/rats.", next: "specs_menu" } ]
-    },
-    "thermal": {
-      text: "I stay cool. Steady-state temperature is 30.5°C, well below the 37°C biological threshold. No active cooling required.",
-      options: [ { text: "Safe confirmed.", next: "specs_menu" } ]
-    },
-    "noise": {
-      text: "Crystal clear. My noise floor is 2.68 ± 0.46 µV RMS, matching the theoretical limit of the Intan chips. No signal degradation.",
-      options: [ { text: "Great specs.", next: "specs_menu" } ]
-    },
-    "reliability_menu": {
-      text: "I am built to last. What is your concern?",
-      options: [
-        { text: "Lifespan (Cycles)", next: "cycles" },
-        { text: "What if I align it wrong?", next: "misalignment" },
-        { text: "Contact Impedance?", next: "impedance" },
-        { text: "Back to Menu", next: "root_menu" }
-      ]
-    },
-    "cycles": {
-      text: "Verified for 100+ mating cycles with >97% connection yield. The elastomer shows negligible wear.",
-      options: [ { text: "Solid.", next: "reliability_menu" } ]
-    },
-    "misalignment": {
-      text: "No problem. The elastomer has 'structural redundancy' (pitch < pad size). Even with radial misalignment, the connection holds.",
-      options: [ { text: "Very forgiving.", next: "reliability_menu" } ]
-    },
-    "impedance": {
-      text: "Low and stable. Contact impedance is consistently between 0.3 kΩ and 0.4 kΩ across the array.",
-      options: [ { text: "Acknowledged.", next: "reliability_menu" } ]
-    },
-    "usage_menu": {
-      text: "Designed for researchers. Ask me about usage:",
-      options: [
-        { text: "Is assembly difficult?", next: "assembly" },
-        { text: "Compatible Systems?", next: "system" },
-        { text: "For freely moving animals?", next: "animal" },
-        { text: "Back to Menu", next: "root_menu" }
-      ]
-    },
-    "assembly": {
-      text: "Easy. No specialized micro-soldering needed. It's a 'plug-and-play' assembly using standard tools.",
-      options: [ { text: "User friendly.", next: "usage_menu" } ]
-    },
-    "system": {
-      text: "Fully compatible with the Intan RHD recording system. Supports 64, 128, and 256 channel configurations.",
-      options: [ { text: "Perfect.", next: "usage_menu" } ]
-    },
-    "animal": {
-      text: "Yes. The low profile fits mechanical commutators, allowing natural behavior without cable twisting.",
-      options: [ { text: "Show me the files!", next: "show_badges" } ]
-    },
-    "show_badges": {
-      text: "Scroll to the bottom! 👇 Those icons are your gateway to the Code, Fabrication Files, and Demo Videos.",
-      options: [ { text: "Thanks, Guardian!", next: "close" } ]
-    }
-  };
 
-  const dialogData_ZH = {
-    "start": {
-      text: "你好！我是易链的守护者。由我来保护你的脑机探针。",
-      options: [ 
-        { text: "🎬 观看演示视频", next: "play_video" }, // 🔥 新增
-        { text: "🚀 开始探索！", next: "root_menu" } 
-      ]
-    },
-    // 🔥 新增：视频处理节点
-    "play_video": {
-       text: "正在启动影院模式... 调取视觉数据。",
-       options: [ { text: "关闭视频", next: "start" } ]
-    },
-    "root_menu": {
-      text: "系统已就绪。请选择想要查看的类别：",
-      options: [
-        { text: "🌟 核心亮点", next: "innovation" },
-        { text: "📊 规格参数 (重量/噪音)", next: "参数菜单" },
-        { text: "🛡️ 可靠性与耐久度", next: "可靠性菜单" },
-        { text: "🔧 使用与兼容性", next: "usage_menu" },
-        { text: "随便看看", next: "close" }
-      ]
-    },
-    "innovation": {
-      text: "我采用了新型弹性体互连技术 (Elastomeric Interposer)。这意味着无需精确对准，且实现了“零插入力”。",
-      options: [
-        { text: "“零插入力”有什么好处？", next: "零插入力" },
-        { text: "通道数能扩展吗？", next: "可拓展性" },
-        { text: "返回主菜单", next: "root_menu" } 
-      ]
-    },
-    "零插入力": {
-      text: "传统插头需要很大的力，容易弄断脆弱的探针。我的螺纹盖将旋转转化为轻柔的垂直压力，完美保护薄膜探针。",
-      options: [ { text: "很棒的设计！返回。", next: "innovation" } ]
-    },
-    "可拓展性": {
-      text: "当然！高密度弹性体允许在同样的 25mm 封装内扩展至 1024 通道。我是面向未来的设计。",
-      options: [ { text: "已知晓，返回。", next: "innovation" } ]
-    },
-    "参数菜单": {
-      text: "正在检查诊断数据... 你关心哪个参数？",
-      options: [
-        { text: "重不重？ (重量)", next: "weight" },
-        { text: "发热吗？ (热学)", next: "thermal" },
-        { text: "信号干净吗？ (噪音)", next: "noise" },
-        { text: "返回主菜单", next: "root_menu" }
-      ]
-    },
-    "weight": {
-      text: "我非常轻。拆卸后仅重 2.8g。即使含外壳，我也比竞品轻 57% (6.6g)，大大减轻了动物的负担。",
-      options: [ { text: "很适合小鼠/大鼠。", next: "specs_menu" } ]
-    },
-    "thermal": {
-      text: "我运转冷静。稳态温度仅为 30.5°C，远低于 37°C 的生物阈值。无需主动散热。",
-      options: [ { text: "安全确认。", next: "specs_menu" } ]
-    },
-    "noise": {
-      text: "噪声很小。我的本底噪声为 2.68 ± 0.46 µV RMS，接近了 Intan 芯片的理论极限。信号无损耗。",
-      options: [ { text: "参数很强。", next: "specs_menu" } ]
-    },
-    "可靠性菜单": {
-      text: "我经久耐用。猜你有可能担心这些？",
-      options: [
-        { text: "寿命 (贴合次数)", next: "cycles" },
-        { text: "如果对不准怎么办？", next: "misalignment" },
-        { text: "接触电阻多大？", next: "impedance" },
-        { text: "返回主菜单", next: "root_menu" }
-      ]
-    },
-    "cycles": {
-      text: "已验证 100 次以上的插拔循环，连接良率 >97%。弹性导电体几乎没有磨损。",
-      options: [ { text: "很靠谱，已知晓", next: "可靠性菜单" } ]
-    },
-    "misalignment": {
-      text: "弹性体具有“结构冗余”（间距小于焊盘尺寸）。即使径向没对准，依然能稳定连接。",
-      options: [ { text: "容错率很高，已知晓", next: "可靠性菜单" } ]
-    },
-    "impedance": {
-      text: "低且稳定。整个阵列的接触阻抗始终保持在 0.3 kΩ 到 0.4 kΩ 之间。",
-      options: [ { text: "已知晓", next: "可靠性菜单" } ]
-    },
-    "usage_menu": {
-      text: "专为相关领域人员设计。问我关于使用的问题：",
-      options: [
-        { text: "组装容易吗？", next: "assembly" },
-        { text: "兼容哪些采集系统？", next: "system" },
-        { text: "动物能自由活动吗？", next: "animal" },
-        { text: "返回主菜单", next: "root_menu" }
-      ]
-    },
-    "assembly": {
-      text: "非常容易.即拧即用的模块化设计，告别插拔带来的断针弯针，轻松建立连接",
-      options: [ { text: "已知晓", next: "usage_menu" } ]
-    },
-    "system": {
-      text: "完全兼容Intan RHD记录系统. 支持64，128，256通道设定.",
-      options: [ { text: "完美，已知晓", next: "usage_menu" } ]
-    },
-    "animal": {
-      text: "可以。低剖面设计适配机械换向器 (Commutator)，允许动物自然行为，线缆不打结。",
-      options: [ { text: "我想查看文件", next: "徽章指引" } ]
-    },
-    "徽章指引": {
-      text: "滑到最下面！👇红色图标是你通往代码、制造文件和演示视频的大门。",
-      options: [ { text: "谢谢易链守护者！", next: "关闭对话窗" } ]
-    }
-  };
+   // --- 🌍 双语数据源 ---
+ const dialogData_EN = {
+   "start": {
+     text: "Hi! I'm the Connector Guardian. I protect your neural interfaces.",
+     options: [ 
+        { text: "🚀 Click Here to Explore with Me!", next: "root_menu" } 
+        { text: "🎬 Watch Intro Video", next: "play_video" }, // 🔥 新增
+
+     ]
+   },
+   // 🔥 新增：视频处理节点
+   "play_video": {
+      text: "Initiating Cinema Mode... Loading visual data.",
+      options: [ { text: "Close Video", next: "start" } ]
+   },
+   "root_menu": {
+     text: "👨‍🚀System ready. Select a category to inspect:",
+     options: [
+       { text: "🌟 What's Special?", next: "innovation" },
+       { text: "📊 Specifications (Weight/Noise)", next: "specs_menu" },
+       { text: "🛡️ Reliability & Durability", next: "reliability_menu" },
+       { text: "🔧 Usage & Compatibility", next: "usage_menu" },
+       { text: "Just browsing", next: "close" }
+     ]
+   },
+   "innovation": {
+     text: "I feature a novel elastomeric interposer. This means NO precise alignment is needed and ZERO insertion force.",
+     options: [
+       { text: "Why is 'Zero Force' better?", next: "zero_force" },
+       { text: "Can it scale up?", next: "scalability" },
+       { text: "Back to Menu", next: "root_menu" } 
+     ]
+   },
+   "zero_force": {
+     text: "Traditional plugs require high force, risking probe fracture. My threaded cap converts rotation into gentle vertical pressure, protecting delicate films.",
+     options: [ { text: "Cool! Back.", next: "innovation" } ]
+   },
+   "scalability": {
+     text: "Yes! The fine-pitch elastomer allows scaling to 1024 channels within the same 25mm footprint. I am future-proof.",
+     options: [ { text: "Got it, Back.", next: "innovation" } ]
+   },
+   "specs_menu": {
+     text: "💡Checking Diagnostics... Which parameter concerns you?",
+     options: [
+       { text: "Is it heavy? (Weight)", next: "weight" },
+       { text: "Does it get hot? (Thermal)", next: "thermal" },
+       { text: "How clean is the signal? (Noise)", next: "noise" },
+       { text: "Back to Menu", next: "root_menu" }
+     ]
+   },
+   "weight": {
+     text: "I am ultra-light. Detached weight is only 2.8g. Even housed, I am 57% lighter (6.6g) than competitors, reducing strain on the animal.",
+     options: [ { text: "Good for mice/rats.", next: "specs_menu" } ]
+   },
+   "thermal": {
+     text: "I stay cool. Steady-state temperature is 30.5°C, well below the 37°C biological threshold. No active cooling required.",
+     options: [ { text: "Safe confirmed.", next: "specs_menu" } ]
+   },
+   "noise": {
+     text: "Crystal clear. My noise floor is 2.68 ± 0.46 µV RMS, matching the theoretical limit of the Intan chips. No signal degradation.",
+     options: [ { text: "Great specs.", next: "specs_menu" } ]
+   },
+   "reliability_menu": {
+     text: "I am built to last. What is your concern?",
+     options: [
+       { text: "Lifespan (Cycles)", next: "cycles" },
+       { text: "What if I align it wrong?", next: "misalignment" },
+       { text: "Contact Impedance?", next: "impedance" },
+       { text: "Back to Menu", next: "root_menu" }
+     ]
+   },
+   "cycles": {
+     text: "Verified for 100+ mating cycles with >97% connection yield. The elastomer shows negligible wear.",
+     options: [ { text: "Solid.", next: "reliability_menu" } ]
+   },
+   "misalignment": {
+     text: "No problem. The elastomer has 'structural redundancy' (pitch < pad size). Even with radial misalignment, the connection holds.",
+     options: [ { text: "Very forgiving.", next: "reliability_menu" } ]
+   },
+   "impedance": {
+     text: "Low and stable. Contact impedance is consistently between 0.3 kΩ and 0.4 kΩ across the array.",
+     options: [ { text: "Acknowledged.", next: "reliability_menu" } ]
+   },
+   "usage_menu": {
+     text: "Designed for researchers. Ask me about usage:",
+     options: [
+       { text: "Is assembly difficult?", next: "assembly" },
+       { text: "Compatible Systems?", next: "system" },
+       { text: "For freely moving animals?", next: "animal" },
+       { text: "Back to Menu", next: "root_menu" }
+     ]
+   },
+   "assembly": {
+     text: "Easy. No specialized micro-soldering needed. It's a 'plug-and-play' assembly using standard tools.",
+     options: [ { text: "User friendly.", next: "usage_menu" } ]
+   },
+   "system": {
+     text: "Fully compatible with the Intan RHD recording system. Supports 64, 128, and 256 channel configurations.",
+     options: [ { text: "Perfect.", next: "usage_menu" } ]
+   },
+   "animal": {
+     text: "Yes. The low profile fits mechanical commutators, allowing natural behavior without cable twisting.",
+     options: [ { text: "Show me the files!", next: "show_badges" } ]
+   },
+   "show_badges": {
+     text: "Scroll to the bottom! 👇 Those icons are your gateway to the Code, Fabrication Files, and Demo Videos.",
+     options: [ { text: "Thanks, Guardian!", next: "close" } ]
+   }
+ };
+ 
+ const dialogData_ZH = {
+   "start": {
+     text: "你好！我是易链的守护者。由我来保护你的脑机探针。",
+     options: [ 
+       { text: "🚀 点击和我一同探索!", next: "root_menu" } 
+       { text: "🎬 观看演示视频", next: "play_video" }, // 🔥 新增
+   
+     ]
+   },
+   // 🔥 新增：视频处理节点
+   "play_video": {
+      text: "正在启动影院模式... 调取视觉数据。",
+      options: [ { text: "关闭视频", next: "start" } ]
+   },
+   "root_menu": {
+     text: "👨‍🚀系统已就绪。请选择想要查看的类别：",
+     options: [
+       { text: "🌟 核心亮点", next: "innovation" },
+       { text: "📊 规格参数 (重量/噪音)", next: "参数菜单" },
+       { text: "🛡️ 可靠性与耐久度", next: "可靠性菜单" },
+       { text: "🔧 使用与兼容性", next: "usage_menu" },
+       { text: "随便看看", next: "close" }
+     ]
+   },
+   "innovation": {
+     text: "我采用了新型弹性体互连技术 (Elastomeric Interposer)。这意味着无需精确对准，且实现了“零插入力”。",
+     options: [
+       { text: "零插入力"有什么好处？", next: "零插入力" },
+       { text: "通道数能扩展吗？", next: "可拓展性" },
+       { text: "返回主菜单", next: "root_menu" } 
+     ]
+   },
+   "零插入力": {
+     text: "传统插头需要很大的力，容易弄断脆弱的探针。我的螺纹盖将旋转转化为轻柔的垂直压力，完美保护薄膜探针。",
+     options: [ { text: "很棒的设计！返回。", next: "innovation" } ]
+   },
+   "可拓展性": {
+     text: "当然！高密度弹性体允许在同样的 25mm 封装内扩展至 1024 通道。我是面向未来的设计。",
+     options: [ { text: "已知晓，返回。", next: "innovation" } ]
+   },
+   "参数菜单": {
+     text: "💡正在检查我的数据库... 你关心哪个参数？",
+     options: [
+       { text: "重不重？ (重量)", next: "weight" },
+       { text: "发热吗？ (热学)", next: "thermal" },
+       { text: "信号干净吗？ (噪音)", next: "noise" },
+       { text: "返回主菜单", next: "root_menu" }
+     ]
+   },
+   "weight": {
+     text: "我非常轻。拆卸后仅重 2.8g。即使含外壳，我也比竞品轻 57% (6.6g)，大大减轻了动物的负担。",
+     options: [ { text: "很适合小鼠/大鼠。", next: "specs_menu" } ]
+   },
+   "thermal": {
+     text: "我运转冷静。稳态温度仅为 30.5°C，远低于 37°C 的生物阈值。无需主动散热。",
+     options: [ { text: "安全确认。", next: "specs_menu" } ]
+   },
+   "noise": {
+     text: "噪声很小。我的本底噪声为 2.68 ± 0.46 µV RMS，接近了 Intan 芯片的理论极限。信号无损耗。",
+     options: [ { text: "参数很强。", next: "specs_menu" } ]
+   },
+   "可靠性菜单": {
+     text: "我经久耐用。猜你有可能担心以下？",
+     options: [
+       { text: "寿命 (贴合次数)", next: "cycles" },
+       { text: "如果对不准怎么办？", next: "misalignment" },
+       { text: "接触电阻多大？", next: "impedance" },
+       { text: "返回主菜单", next: "root_menu" }
+     ]
+   },
+   "cycles": {
+     text: "已验证 100 次以上的插拔循环，连接良率 >97%。弹性导电体几乎没有磨损。",
+     options: [ { text: "很靠谱，已知晓", next: "可靠性菜单" } ]
+   },
+   "misalignment": {
+     text: "弹性体具有“结构冗余”（间距小于焊盘尺寸）。即使径向没对准，依然能稳定连接。",
+     options: [ { text: "容错率很高，已知晓", next: "可靠性菜单" } ]
+   },
+   "impedance": {
+     text: "低且稳定。整个阵列的接触阻抗始终保持在 0.3 kΩ 到 0.4 kΩ 之间。",
+     options: [ { text: "已知晓", next: "可靠性菜单" } ]
+   },
+   "usage_menu": {
+     text: "专为相关领域人员设计。问我关于使用的问题：",
+     options: [
+       { text: "组装容易吗？", next: "assembly" },
+       { text: "兼容哪些采集系统？", next: "system" },
+       { text: "动物能自由活动吗？", next: "animal" },
+       { text: "返回主菜单", next: "root_menu" }
+     ]
+   },
+   "assembly": {
+     text: "非常容易.即拧即用的模块化设计，告别插拔带来的断针弯针，轻松建立连接",
+     options: [ { text: "已知晓", next: "usage_menu" } ]
+   },
+   "system": {
+     text: "完全兼容Intan RHD记录系统. 支持64，128，256通道设定.",
+     options: [ { text: "完美，已知晓", next: "usage_menu" } ]
+   },
+   "animal": {
+     text: "可以。低剖面设计适配机械换向器 (Commutator)，允许动物自然行为，线缆不打结。",
+     options: [ { text: "我想查看文件", next: "徽章指引" } ]
+   },
+   "徽章指引": {
+     text: "滑到最下面！👇红色图标是你通往代码、制造文件和演示视频的大门。",
+     options: [ { text: "谢谢易链守护者！", next: "关闭对话窗" } ]
+   }
+ };
      
   // 默认使用英文
   let currentLang = 'en';
