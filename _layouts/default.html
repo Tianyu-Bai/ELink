@@ -23,20 +23,19 @@
     line-height: 1.6; overflow-x: hidden; 
     cursor: none; 
     scrollbar-width: thin; scrollbar-color: #3b82f6 transparent;
-    transition: color 0.5s ease, background-color 0.5s ease; /* 优化 transition */
+    transition: color 0.5s ease;
     background-color: #0a0a0f; 
   }
   @media (pointer: coarse) { body { cursor: auto; } }
  
-  /* ⚡️ CSS 性能优化 */
+  /* ⚡️ CSS 性能优化：保留图片加载优化 */
   img, video, iframe { 
       max-width: 100% !important; 
       height: auto !important; 
       box-sizing: border-box; 
       content-visibility: auto; 
       transition: opacity 0.5s ease;
-      /* 开启硬件加速防止抖动 */
-      transform: translateZ(0); 
+      transform: translateZ(0); /* 开启硬件加速 */
   }
  
   ::-webkit-scrollbar { width: 6px; }
@@ -45,36 +44,27 @@
   ::-webkit-scrollbar-thumb:hover { background: rgba(59, 130, 246, 0.8); }
   ::selection { background: #3b82f6; color: #ffffff; text-shadow: 0 0 8px rgba(255, 255, 255, 0.8); }
  
-  /* --- 1. 光标 & 进度条 (优化版) --- */
+  /* --- 1. 光标 & 进度条 (保留优化版) --- */
+  /* 这里保留 translate3d 因为它是鼠标流畅的关键，不影响机器人 */
   .cursor-dot, .cursor-outline {
     position: fixed; top: 0; left: 0; 
-    /* 核心修改：使用 translate3d 替代 top/left，开启GPU加速 */
     transform: translate3d(-50%, -50%, 0); 
     border-radius: 50%; z-index: 99999; pointer-events: none;
-    /* 告诉浏览器这个属性会变，提前优化 */
     will-change: transform; 
   }
   .cursor-dot { width: 8px; height: 8px; background-color: #3b82f6; transition: width 0.2s, height 0.2s; }
-  /* outline 去掉 transform 的 transition，完全交由 JS 控制以避免滞后感 */
   .cursor-outline { 
     width: 40px; height: 40px; 
     border: 1px solid rgba(59, 130, 246, 0.5); 
     transition: width 0.2s, height 0.2s, background-color 0.2s;
   }
   body.hovering .cursor-outline { width: 60px; height: 60px; background-color: rgba(59, 130, 246, 0.1); border-color: transparent; }
-  
-  #progress-bar { 
-    position: fixed; top: 0; left: 0; height: 3px; 
-    background: linear-gradient(90deg, #3b82f6, #60a5fa); 
-    width: 0%; z-index: 99999; 
-    transition: width 0.1s linear; /* 线性过渡更顺滑 */
-    will-change: width;
-  }
+  #progress-bar { position: fixed; top: 0; left: 0; height: 3px; background: linear-gradient(90deg, #3b82f6, #60a5fa); width: 0%; z-index: 99999; transition: width 0.1s linear; will-change: width; }
  
   /* --- 2. 背景 --- */
-  #vanta-bg { position: fixed; z-index: -5; top: 0; left: 0; width: 100%; height: 100%; background: #0a0a0f; pointer-events: none; /* 防止背景抢占鼠标事件 */ }
+  #vanta-bg { position: fixed; z-index: -5; top: 0; left: 0; width: 100%; height: 100%; background: #0a0a0f; }
   #vanta-bg::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at center, transparent 0%, rgba(10, 10, 15, 0.4) 100%); pointer-events: none; transition: background 0.5s ease; }
- 
+  
   #meteor-canvas {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       z-index: -4; pointer-events: none; 
@@ -83,43 +73,51 @@
   /* --- 3. 布局 --- */
   .layout-wrapper { position: relative; max-width: 860px; margin: 100px auto 60px; z-index: 10; perspective: 1000px; }
  
-  /* --- 4. 机器人核心 --- */
+  /* --- 4. 机器人核心 (已完全还原回原始 CSS) --- */
+  /* ⚠️ 还原：去掉 translate3d，改回 transform: translateX(-50%)，确保气泡定位正确 */
   #bot-container { 
     position: absolute; top: 70px; left: 50%; 
-    /* 优化：使用 translate3d */
-    transform: translate3d(-50%, 0, 0); 
+    transform: translateX(-50%); 
     width: 120px; height: 70px; 
     z-index: 9999; cursor: pointer; 
     opacity: 1; 
     transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55); 
-    will-change: transform, top, left;
   }
   
-  /* Fixed mode 优化 */
-  #bot-container.fixed-mode { 
-    position: fixed !important; top: auto !important; left: auto !important; 
-    bottom: 30px !important; right: 30px !important; 
-    transform: translate3d(0, 0, 0) scale(0.9) !important; /* 使用 translate3d */
-    opacity: 1 !important; 
-  }
-  
-  /* Guide mode 优化 */
-  #bot-container.guide-mode {
-    position: fixed !important;
-    top: 50% !important; right: 15% !important; left: auto !important; bottom: auto !important;
-    transform: translate3d(0, -50%, 0) scale(1.2) !important;
-    z-index: 100006 !important;
+  /* ⚠️ 还原：Fixed Mode 样式改回原版 */
+  #bot-container.fixed-mode { position: fixed !important; top: auto !important; left: auto !important; bottom: 30px !important; right: 30px !important; transform: scale(0.9) !important; opacity: 1 !important; }
+   
+  /* --- 🔥 机器人引导模式 --- */
+  .guide-arrow {
+    position: absolute;
+    left: -50px; 
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 40px;
+    color: #ef4444; 
+    opacity: 0;
+    pointer-events: none;
+    text-shadow: 0 0 10px rgba(239, 68, 68, 0.8);
+    transition: opacity 0.3s;
+    z-index: 100;
+    font-weight: bold;
   }
 
-  /* 箭头样式 */
-  .guide-arrow {
-    position: absolute; left: -50px; top: 50%;
-    transform: translateY(-50%);
-    font-size: 40px; color: #ef4444; opacity: 0; pointer-events: none;
-    text-shadow: 0 0 10px rgba(239, 68, 68, 0.8);
-    transition: opacity 0.3s; z-index: 100; font-weight: bold;
+  /* Guide Mode 样式保持不变，因为这是新功能，不影响旧布局 */
+  #bot-container.guide-mode {
+    position: fixed !important;
+    top: 50% !important;
+    right: 15% !important; 
+    left: auto !important;
+    bottom: auto !important;
+    transform: translate(0, -50%) scale(1.2) !important;
+    z-index: 100006 !important; 
   }
-  #bot-container.guide-mode .guide-arrow { opacity: 1; animation: point-left 0.8s ease-in-out infinite alternate; }
+
+  #bot-container.guide-mode .guide-arrow {
+    opacity: 1;
+    animation: point-left 0.8s ease-in-out infinite alternate;
+  }
 
   @keyframes point-left {
     from { transform: translateY(-50%) translateX(0); }
@@ -128,19 +126,17 @@
 
   #bot-container.attention-jump { animation: attention-bounce 0.6s ease infinite alternate; }
   @keyframes attention-bounce { 0% { transform: translateX(-50%) translateY(0) scale(1); } 100% { transform: translateX(-50%) translateY(-15px) scale(1.1); } }
-  
   #bot-container.fixed-mode.attention-jump { animation: attention-bounce-fixed 0.6s ease infinite alternate; }
   @keyframes attention-bounce-fixed { 0% { transform: scale(0.9) translateY(0); } 100% { transform: scale(0.9) translateY(-15px); } }
  
-  /* 涟漪光圈 */
   .pulse-ring { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 100px; height: 100px; border-radius: 50%; border: 2px solid rgba(168, 85, 247, 0.5); opacity: 0; z-index: -1; pointer-events: none; animation: pulse-ring-anim 6s infinite cubic-bezier(0.4, 0, 0.6, 1); transition: opacity 0.5s; }
   #bot-container.speaking .pulse-ring { animation-duration: 1.5s; border-color: rgba(59, 130, 246, 0.8); }
   #bot-container.interaction-done .pulse-ring { opacity: 0 !important; animation: none !important; }
   @keyframes pulse-ring-anim { 0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; } 30% { opacity: 0.6; } 100% { transform: translate(-50%, -50%) scale(2.5); opacity: 0; } }
  
-  .bot-head { width: 100px; height: 50px; background: #ffffff; border: 2px solid #e0e7ff; border-bottom: none; border-radius: 50px 50px 20px 20px; margin: 0 auto; position: relative; box-shadow: 0 -5px 15px rgba(59, 130, 246, 0.15); display: flex; justify-content: center; align-items: center; gap: 10px; padding-top: 5px; animation: float-bot 3s ease-in-out infinite; will-change: transform; }
+  .bot-head { width: 100px; height: 50px; background: #ffffff; border: 2px solid #e0e7ff; border-bottom: none; border-radius: 50px 50px 20px 20px; margin: 0 auto; position: relative; box-shadow: 0 -5px 15px rgba(59, 130, 246, 0.15); display: flex; justify-content: center; align-items: center; gap: 10px; padding-top: 5px; animation: float-bot 3s ease-in-out infinite; }
   .bot-eye { width: 28px; height: 28px; background: #bfdbfe; border-radius: 50%; border: 1px solid #93c5fd; position: relative; overflow: hidden; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
-  .bot-pupil { width: 14px; height: 14px; background: #1e3a8a; border-radius: 50%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); transition: opacity 0.2s; will-change: transform; }
+  .bot-pupil { width: 14px; height: 14px; background: #1e3a8a; border-radius: 50%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); transition: opacity 0.2s; }
   .bot-lid { position: absolute; top: 0; left: 0; width: 100%; height: 0%; background: #ffffff; z-index: 10; animation: blink 4s infinite; }
   #bot-container.speaking .bot-eye { background: transparent; border: none; box-shadow: none; width: 22px; height: 12px; border-top: 3px solid #3b82f6; border-radius: 22px 22px 0 0; margin-top: 8px; }
   #bot-container.speaking .bot-pupil, #bot-container.speaking .bot-lid { opacity: 0; }
@@ -148,37 +144,31 @@
   #bot-container.speaking .bot-mouth { opacity: 1; width: 14px; background: transparent; border: 2px solid #3b82f6; animation: mouth-talk 0.25s infinite alternate; }
   .bot-antenna { position: absolute; top: -25px; left: 50%; transform: translateX(-50%); width: 2px; height: 25px; background: #e0e7ff; }
   .bot-antenna::after { content: ''; position: absolute; top: -6px; left: -3px; width: 8px; height: 8px; border-radius: 50%; animation: pulse-antenna-breath 2s infinite ease-in-out; }
+  
+  /* ⚠️ 还原：Speech Bubble 样式完全还原 */
   #bot-speech { position: absolute; top: -45px; left: 50%; transform: translateX(-50%) scale(0); transform-origin: bottom center; background: rgba(30, 41, 59, 0.95); color: #fff; padding: 6px 14px; border-radius: 12px; font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; white-space: nowrap; pointer-events: none; border: 1px solid rgba(59, 130, 246, 0.4); box-shadow: 0 4px 15px rgba(0,0,0,0.3); transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s; z-index: 10000; opacity: 0; }
   #bot-speech::after { content: ''; position: absolute; bottom: -5px; left: 50%; width: 8px; height: 8px; background: inherit; transform: translateX(-50%) rotate(45deg); border-right: 1px solid rgba(59, 130, 246, 0.4); border-bottom: 1px solid rgba(59, 130, 246, 0.4); }
   #bot-container.speaking #bot-speech { transform: translateX(-50%) scale(1); opacity: 1; }
  
-  /* RPG 对话框优化 */
-  #rpg-dialogue { position: absolute; top: 65px; left: 50%; transform: translateX(-50%) translateY(20px); width: 600px; max-width: 90vw; background: rgba(15, 23, 42, 0.95); border: 1px solid #3b82f6; border-radius: 12px; padding: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.6), 0 0 15px rgba(59, 130, 246, 0.2); z-index: 20000; opacity: 0; pointer-events: none; transition: opacity 0.3s ease, transform 0.3s ease; display: flex; flex-direction: column; gap: 10px; font-family: 'JetBrains Mono', monospace; }
+  /* ⚠️ 还原：RPG 样式还原 */
+  #rpg-dialogue { position: absolute; top: 65px; left: 50%; transform: translateX(-50%) translateY(20px); width: 600px; max-width: 90vw; background: rgba(15, 23, 42, 0.95); border: 1px solid #3b82f6; border-radius: 12px; padding: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.6), 0 0 15px rgba(59, 130, 246, 0.2); z-index: 20000; opacity: 0; pointer-events: none; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; gap: 10px; font-family: 'JetBrains Mono', monospace; }
   #rpg-dialogue.active { opacity: 1; transform: translateX(-50%) translateY(0); pointer-events: auto; }
+  #bot-container.fixed-mode #rpg-dialogue { top: auto; bottom: 80px; left: auto; right: 0; transform: translateY(20px); }
+  #bot-container.fixed-mode #rpg-dialogue.active { transform: translateY(0); }
   
-  /* --- 内容容器 (性能热点) --- */
-  .container { 
-    position: relative; padding: 60px 80px; 
-    /* 尽量减少大面积的 backdrop-filter，如果还是很卡，建议去掉 blur */
-    background: rgba(255, 255, 255, 0.05); 
-    backdrop-filter: blur(20px) saturate(180%); 
-    -webkit-backdrop-filter: blur(20px) saturate(180%); 
-    border-radius: 20px; box-shadow: 0 20px 50px rgba(59, 130, 246, 0.15); 
-    border: 1px solid rgba(255, 255, 255, 0.1); border-top: 4px solid #3b82f6; 
-    opacity: 0; animation: fadeUp 0.8s ease-out 0.3s forwards; 
-    z-index: 1; 
-    transform-style: preserve-3d; 
-    /* 优化 3D 转换性能 */
-    will-change: transform;
-    overflow: hidden; 
-  }
-  
-  /* 其他样式保持不变，但建议检查 transform */
+  #rpg-text { color: #bfdbfe; font-size: 0.9rem; min-height: 40px; line-height: 1.5; }
+  #rpg-cursor { display: inline-block; width: 8px; height: 14px; background: #3b82f6; vertical-align: middle; animation: blink 1s infinite; }
+  #rpg-options { display: flex; flex-direction: column; gap: 8px; margin-top: 5px; }
+  .rpg-btn { background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); color: #93c5fd; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; text-align: left; transition: all 0.2s; opacity: 0; transform: translateX(-10px); animation: slideIn 0.3s forwards; }
+  .rpg-btn:hover { background: rgba(59, 130, 246, 0.25); border-color: #60a5fa; color: #fff; transform: translateX(2px); }
+  @keyframes slideIn { to { opacity: 1; transform: translateX(0); } }
+  .rpg-close { position: absolute; top: 5px; right: 8px; font-size: 18px; color: #475569; cursor: pointer; }
+  .rpg-close:hover { color: #fff; }
+ 
+  /* --- 内容容器 --- */
+  .container { position: relative; padding: 60px 80px; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%); border-radius: 20px; box-shadow: 0 20px 50px rgba(59, 130, 246, 0.15); border: 1px solid rgba(255, 255, 255, 0.1); border-top: 4px solid #3b82f6; opacity: 0; animation: fadeUp 0.8s ease-out 0.3s forwards; z-index: 1; transform-style: preserve-3d; transition: transform 0.1s ease-out; will-change: transform; overflow: hidden; }
   .container::before { content: ""; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.07), transparent 40%); z-index: -1; pointer-events: none; opacity: 0; transition: opacity 0.5s; }
   .container:hover::before { opacity: 1; }
-  
-  /* ... (保留原有Table, Typewriter, Badges, Modal等样式，未修改) ... */
-  /* 为了简洁，此处省略未修改的CSS，请保留你原代码中 .nav-badges 到 .welcome-modal 之间的所有 CSS */
   #main_content table { width: 100% !important; border-collapse: collapse; margin: 20px 0; background: rgba(10, 10, 15, 0.3); border-radius: 8px; overflow: hidden; }
   #main_content th, #main_content td { padding: 12px; border: 1px solid rgba(255, 255, 255, 0.1); }
   #main_content tr { background: rgba(30, 41, 59, 0.8) !important; }     
@@ -190,14 +180,14 @@
   .nav-badges img { height: 28px !important; width: auto; border-radius: 50px; box-shadow: 0 2px 6px rgba(59, 130, 246, 0.15); border: 1.5px solid white; transition: all 0.3s; mix-blend-mode: normal !important; }
   .nav-badges a:hover img { animation: float-hover 2s ease-in-out infinite; box-shadow: 0 8px 20px rgba(59, 130, 246, 0.35); transform: scale(1.1); }
   .nav-badges img.rippling { animation: ripple-wave 0.5s forwards; }
-  
-  /* 按钮 & 模式 */
+        
+  /* --- 按钮 & 模式 --- */
   .controls-container { position: fixed; top: 20px; right: 20px; display: flex; gap: 15px; z-index: 10000; }
   .ctrl-btn { width: 40px; height: 40px; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; backdrop-filter: blur(10px); transition: all 0.3s ease; font-size: 1.2rem; user-select: none; }
   .ctrl-btn:hover { background: rgba(255, 255, 255, 0.2); transform: scale(1.1); }
   #lang-toggle { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; font-weight: bold; width: auto; padding: 0 10px; border-radius: 20px; }
-
-  /* 护眼模式等其他样式保持不变 */
+ 
+  /* --- ☁️ 护眼柔光模式 --- */
   body.light-mode { color: #334155; background-color: #ffffff; }
   body.light-mode #vanta-bg::after { background: radial-gradient(circle at center, rgba(241, 245, 249, 0.7) 0%, #f1f5f9 100%); }
   body.light-mode .container { background: rgba(241, 245, 249, 0.9); border-color: rgba(203, 213, 225, 0.6); box-shadow: 0 20px 50px rgba(148, 163, 184, 0.15); backdrop-filter: blur(25px); }
@@ -226,7 +216,6 @@
   @keyframes pulse-antenna-breath { 0%, 100% { background: #3b82f6; box-shadow: 0 0 5px #3b82f6; } 50% { background: #93c5fd; box-shadow: 0 0 15px #60a5fa, 0 0 8px #ffffff; } }
   @keyframes mouth-talk { 0% { height: 2px; } 100% { height: 8px; border-radius: 50%; } }
     
-  /* 模态框等样式保留 */
   .welcome-modal {
     position: fixed; inset: 0; 
     background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(5px);
@@ -239,8 +228,9 @@
   .welcome-modal * { cursor: default !important; }
   .welcome-modal .btn-primary, .welcome-modal .btn-secondary, .welcome-modal .slider { cursor: pointer !important; }
   .welcome-modal.show { opacity: 1; pointer-events: auto; }
+    
   .welcome-modal:hover ~ .cursor-dot, .welcome-modal:hover ~ .cursor-outline { opacity: 0 !important; }
-  
+    
   .modal-content {
     background: rgba(30, 41, 59, 0.85); 
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -255,9 +245,11 @@
     padding-bottom: 140px; 
   }
   .welcome-modal.show .modal-content { transform: scale(1); }
+    
   .modal-title { font-size: 1.5rem; margin-bottom: 15px; color: #fff; font-weight: 600; }
   .modal-body { font-size: 1rem; color: #cbd5e1; margin-bottom: 25px; line-height: 1.6; }
   .m-zh { display: none; }
+ 
   .modal-btns { display: flex; flex-direction: column; gap: 10px; }
   .btn-primary, .btn-secondary {
     padding: 12px 20px; border-radius: 10px; font-weight: 600; transition: all 0.2s;
@@ -267,6 +259,7 @@
   .btn-primary:hover { background: #2563eb; transform: translateY(-2px); }
   .btn-secondary { background: rgba(255, 255, 255, 0.1); color: #e2e8f0; }
   .btn-secondary:hover { background: rgba(255, 255, 255, 0.2); }
+ 
   .modal-lang-switch-container {
     position: absolute; bottom: 60px; left: 50%; transform: translateX(-50%); 
     display: flex; flex-direction: column; align-items: center; gap: 4px; width: 100%; 
@@ -280,21 +273,23 @@
   input:checked + .slider { background-color: #3b82f6; }
   input:focus + .slider { box-shadow: 0 0 1px #3b82f6; }
   input:checked + .slider:before { transform: translateX(20px); }
+ 
   .modal-watermark {
     position: absolute; bottom: 20px; left: 0; width: 100%; 
     text-align: center; font-size: 0.65rem; color: #94a3b8; font-family: 'JetBrains Mono', monospace; pointer-events: none; opacity: 0.6; 
   }
 
-  /* 视频弹窗样式 */
+  /* --- 🎬 视频弹窗样式 --- */
   .video-modal {
     position: fixed; inset: 0;
-    background: rgba(0, 0, 0, 0.9); 
-    z-index: 100005; 
+    background: rgba(0, 0, 0, 0.9); /* 深色背景 */
+    z-index: 100005; /* 只有它能盖住机器人 */
     display: flex; justify-content: center; align-items: center;
     opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
     backdrop-filter: blur(10px);
   }
   .video-modal.show { opacity: 1; pointer-events: auto; }
+
   .video-content {
     width: 90%; max-width: 800px;
     background: rgba(15, 23, 42, 1);
@@ -305,6 +300,7 @@
     transform: scale(0.9); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }
   .video-modal.show .video-content { transform: scale(1); }
+
   .video-header {
     display: flex; justify-content: space-between; align-items: center;
     padding: 10px 20px;
@@ -316,9 +312,13 @@
     cursor: pointer; font-size: 1.5rem; line-height: 1; color: #64748b; transition: color 0.2s;
   }
   .video-close:hover { color: #ef4444; }
-  video#guardian-video { width: 100%; display: block; outline: none; }
+
+  video#guardian-video {
+    width: 100%; display: block; outline: none;
+  }
  
   @media (max-width: 768px) { 
+    /* ⚠️ 还原：移动端 Speech Bubble 样式 */
     #bot-speech {
       white-space: normal !important; max-width: 200px !important; width: max-content !important; height: auto !important; line-height: 1.5;
       left: auto !important; right: 0 !important; top: -55px !important; border-radius: 12px 12px 0 12px !important; 
@@ -331,11 +331,10 @@
     .ctrl-btn { width: 35px; height: 35px; font-size: 1rem; }
     #lang-toggle { font-size: 0.7rem; padding: 0 8px; }
     
-    /* 移动端 Bot 定位优化：使用 translate */
+    /* ⚠️ 还原：移动端 Bot 定位逻辑 */
     #bot-container { 
       display: block !important; position: fixed !important; top: auto !important; left: auto !important;
-      right: 20px !important; bottom: 30px !important; 
-      transform: translate3d(0, 0, 0) scale(0.85) !important;
+      right: 20px !important; bottom: 30px !important; transform: scale(0.85) translateX(0) !important;
       opacity: 1 !important; animation: none !important;
     }
     #bot-container #rpg-dialogue {
@@ -348,11 +347,22 @@
     .modal-content { padding-bottom: 140px; } 
 
     #bot-container.guide-mode {
-      top: auto !important; bottom: 20% !important; left: 50% !important; right: auto !important;
-      transform: translate3d(-50%, 0, 0) scale(1) !important;
+      top: auto !important;
+      bottom: 20% !important; 
+      left: 50% !important;
+      right: auto !important;
+      transform: translateX(-50%) scale(1) !important;
     }
-    .guide-arrow { left: 50%; top: -40px; transform: translateX(-50%) rotate(90deg); }
-    #bot-container.guide-mode .guide-arrow { animation: point-up 0.8s ease-in-out infinite alternate; }
+     
+    .guide-arrow {
+      left: 50%; top: -40px;
+      transform: translateX(-50%) rotate(90deg); 
+    }
+     
+    #bot-container.guide-mode .guide-arrow {
+      animation: point-up 0.8s ease-in-out infinite alternate;
+    }
+     
     @keyframes point-up {
       from { transform: translateX(-50%) rotate(-90deg) translateY(0); }
       to { transform: translateX(-50%) rotate(-90deg) translateY(-15px); }
@@ -360,7 +370,10 @@
   }
 </style>
 
-<script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+<script type="module"
+ src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
+</script>
+ 
 </head>
  
 <body>
@@ -482,6 +495,7 @@
           { text: "🚀 Let's start!", next: "root_menu" } 
       ]
     },
+    // 🔥 新增：视频处理节点
     "play_video": {
        text: "Initiating Cinema Mode... Loading visual data.",
        options: [ { text: "Close Video", next: "start" } ]
@@ -585,10 +599,11 @@
     "start": {
       text: "你好！我是易链的守护者。由我来保护你的脑机探针。",
       options: [ 
-        { text: "🎬 观看演示视频", next: "play_video" }, 
+        { text: "🎬 观看演示视频", next: "play_video" }, // 🔥 新增
         { text: "🚀 开始探索！", next: "root_menu" } 
       ]
     },
+    // 🔥 新增：视频处理节点
     "play_video": {
        text: "正在启动影院模式... 调取视觉数据。",
        options: [ { text: "关闭视频", next: "start" } ]
@@ -946,7 +961,7 @@
       }
     });
 
-// 🔥 [核心优化] 鼠标移动逻辑
+    // 🔥 [核心优化] 鼠标移动逻辑
     let mouseX = window.innerWidth / 2;
     let mouseY = 100;
     let isMouseTicking = false;
@@ -963,7 +978,6 @@
           }
           
           // 2. 外层光圈：保留极小的惯性 (从 500ms 改为 80ms)
-          // 这样既有高级感，又不会觉得滞后
           if(cursorOutline) { 
             cursorOutline.animate({
                transform: `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%)`
