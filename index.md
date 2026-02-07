@@ -176,6 +176,17 @@ title: E-Link Home
     <b>Assembled 256-Channel Headstage (Top View)</b>
   </p>
 </div>
+
+<div align="center">
+  <img src="Videos/Top PCB Layout.gif" 
+       alt="4-Layer PCB Stackup Explosion" 
+       width="600" 
+       style="border-radius: 8px; margin-top: 10px;">
+  <p style="margin-top: 5px; font-size: 0.9em; color: #64748b;">
+    <b> 4-Layer Routing Structure (Top to Bottom)</b>
+  </p>
+</div>
+
 <div align="center">
  <table style="margin-left: auto; margin-right: auto; width: 90%; text-align: center; border-collapse: collapse; border: 1px solid #e1e4e8;">
    <thead>
@@ -492,6 +503,16 @@ This project is open-source and available under the **MIT License**. Click the b
        style="border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin-bottom: 20px;">
   <p style="margin-top: 5px; font-size: 0.9em; color: #64748b;">
     <b>已组装的 256 通道前置放大器 (顶视图)</b>
+  </p>
+</div>
+
+<div align="center">
+  <img src="Videos/Top PCB Layout.gif" 
+       alt="顶部4层电路板的设计爆炸动图" 
+       width="600" 
+       style="border-radius: 8px; margin-top: 10px;">
+  <p style="margin-top: 5px; font-size: 0.9em; color: #64748b;">
+    <b> 4-Layer Routing Structure (Top to Bottom)</b>
   </p>
 </div>
     
