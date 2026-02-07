@@ -48,26 +48,37 @@ title: E-Link Home
 </div>
 
 <style>/*开始做出演示动作*/
-  /* --- 1. 时间轴控制 (总时长 27秒) --- */
-  /* Drag 容器的显隐时间轴：在第1段和第3段出现 */
+ 
+  /* --- 1. 复杂时间轴控制 (总周期 48秒) --- */
+  
+  /* Drag 容器显隐：在 0-3s, 6-9s, 27-30s 出现 */
   @keyframes timeline-drag-container {
-    0%, 11%  { opacity: 1; z-index: 10; } /* 0-3秒: 显示 */
-    11.1%, 22% { opacity: 0; z-index: -1; } /* 3-6秒: 隐藏 */
-    22.1%, 33% { opacity: 1; z-index: 10; } /* 6-9秒: 显示 */
-    33.1%, 100% { opacity: 0; z-index: -1; } /* 9-27秒: 隐藏 (含休息) */
+    /* --- 第一阶段：重复2次 --- */
+    0%, 6.25%    { opacity: 1; z-index: 10; } /* 0-3s: 显示 (Drag 1) */
+    6.35%, 12.4% { opacity: 0; z-index: -1; } /* 3-6s: 隐藏 (给Zoom) */
+    12.5%, 18.75% { opacity: 1; z-index: 10; } /* 6-9s: 显示 (Drag 2) */
+    18.85%, 56.15% { opacity: 0; z-index: -1; } /* 9-27s: 隐藏 (给Zoom + 休息15s) */
+    
+    /* --- 第二阶段：重复1次 --- */
+    56.25%, 62.5% { opacity: 1; z-index: 10; } /* 27-30s: 显示 (Drag 3) */
+    62.6%, 100%   { opacity: 0; z-index: -1; } /* 30-48s: 隐藏 (给Zoom + 休息15s) */
   }
 
-  /* Zoom 容器的显隐时间轴：在第2段和第4段出现 */
+  /* Zoom 容器显隐：在 3-6s, 9-12s, 30-33s 出现 */
   @keyframes timeline-zoom-container {
-    0%, 11% { opacity: 0; z-index: -1; }
-    11.1%, 22% { opacity: 1; z-index: 10; } /* 3-6秒: 显示 */
-    22.1%, 33% { opacity: 0; z-index: -1; }
-    33.1%, 44% { opacity: 1; z-index: 10; } /* 9-12秒: 显示 */
-    44.1%, 100% { opacity: 0; z-index: -1; } /* 12-27秒: 隐藏 (含休息) */
+    /* --- 第一阶段：重复2次 --- */
+    0%, 6.15%    { opacity: 0; z-index: -1; } /* 0-3s: 隐藏 */
+    6.25%, 12.5% { opacity: 1; z-index: 10; } /* 3-6s: 显示 (Zoom 1) */
+    12.6%, 18.65% { opacity: 0; z-index: -1; } /* 6-9s: 隐藏 */
+    18.75%, 25%  { opacity: 1; z-index: 10; } /* 9-12s: 显示 (Zoom 2) */
+    25.1%, 62.4% { opacity: 0; z-index: -1; } /* 12-30s: 隐藏 (休息15s + 等Drag3结束) */
+
+    /* --- 第二阶段：重复1次 --- */
+    62.5%, 68.75% { opacity: 1; z-index: 10; } /* 30-33s: 显示 (Zoom 3) */
+    68.85%, 100%  { opacity: 0; z-index: -1; } /* 33-48s: 隐藏 (休息15s) */
   }
 
-  /* --- 2. 动作动画 (具体的移动效果) --- */
-  /* 单手拖拽动作 */
+  /* --- 2. 动作动画 (保持不变，仅循环播放) --- */
   @keyframes move-drag-hand {
     0% { transform: translateX(-40px) rotate(-15deg); opacity: 0; }
     20% { opacity: 1; }
@@ -75,22 +86,20 @@ title: E-Link Home
     100% { transform: translateX(40px) rotate(5deg); opacity: 0; }
   }
 
-  /* 双手缩放动作 - 左手 */
   @keyframes move-zoom-left {
-    0% { transform: translate(10px, 10px); opacity: 0; } /* 从中心开始 */
+    0% { transform: translate(10px, 10px); opacity: 0; }
     20% { opacity: 1; }
     80% { opacity: 1; }
-    100% { transform: translate(-50px, 40px); opacity: 0; } /* 向左下拉开 */
+    100% { transform: translate(-50px, -40px); opacity: 0; }
   }
-  /* 双手缩放动作 - 右手 */
   @keyframes move-zoom-right {
-    0% { transform: translate(-10px, 10px); opacity: 0; } /* 从中心开始 */
+    0% { transform: translate(-10px, 10px); opacity: 0; }
     20% { opacity: 1; }
     80% { opacity: 1; }
-    100% { transform: translate(50px, -40px); opacity: 0; } /* 向右上拉开 */
+    100% { transform: translate(50px, 40px); opacity: 0; }
   }
 
-  /* --- 3. 基础样式 --- */
+  /* --- 3. 容器布局样式 --- */
   .gesture-overlay {
     position: absolute;
     top: 50%;
@@ -106,11 +115,10 @@ title: E-Link Home
     align-items: center;
   }
 
-  /* 容器动画绑定 */
-  .mode-drag { animation: timeline-drag-container 27s infinite; }
-  .mode-zoom { animation: timeline-zoom-container 27s infinite; }
+  /* 绑定时间轴：总时长改为 48s */
+  .mode-drag { animation: timeline-drag-container 48s infinite; }
+  .mode-zoom { animation: timeline-zoom-container 48s infinite; }
 
-  /* 图标样式 */
   .icon-box {
     position: relative;
     height: 80px;
@@ -122,13 +130,13 @@ title: E-Link Home
     font-size: 50px;
     position: absolute;
     top: 20px;
-    left: 50%; /* 基础定位在中间 */
+    left: 50%;
     filter: drop-shadow(2px 4px 0px rgba(0,0,0,0.8)) drop-shadow(0 0 10px rgba(0,0,0,0.5));
   }
 
-  /* 绑定具体的动作 */
+  /* 绑定具体动作 */
   .mode-drag .hand-icon {
-    margin-left: -25px; /* 修正居中 */
+    margin-left: -25px;
     animation: move-drag-hand 1.5s infinite ease-in-out;
   }
   
@@ -183,15 +191,14 @@ title: E-Link Home
 
     <div class="gesture-overlay mode-zoom">
       <div class="icon-box">
-        <div class="hand-icon hand-left" style="transform-origin: center;">👇</div>
-        <div class="hand-icon hand-right" style="transform-origin: center;">☝️</div>
+        <div class="hand-icon hand-left" style="transform-origin: center;">☝️</div>
+        <div class="hand-icon hand-right" style="transform-origin: center;">👇</div>
       </div>
       <div class="gesture-text">Pinch to Zoom</div>
     </div>
-
-  </model-viewer>
-  
+  </model-viewer>  
 </div>
+  
 <span id="en-overview"></span>
 
 ## 📖 Overview
