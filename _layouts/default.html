@@ -2,18 +2,28 @@
 <html lang="en">
  <head>
  <meta charset="utf-8">
- <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+ <meta name="viewport" content="width=device-width,
+initial-scale=1, maximum-scale=1, user-scalable=no">
   
  <title>{{ page.title }}</title>
- <link rel="shortcut icon" type="image/x-icon" href="{{ '/Images/icon/favicon.ico' | relative_url }}">
- <link rel="icon" type="image/png" sizes="32x32" href="{{ '/Images/icon/favicon-32x32.png' | relative_url }}">
- <link rel="icon" type="image/png" sizes="16x16" href="{{ '/Images/icon/favicon-16x16.png' | relative_url }}">
- <link rel="apple-touch-icon" sizes="180x180" href="{{ '/Images/icon/apple-touch-icon.png' | relative_url }}">
- <link rel="manifest" href="{{ '/Images/icon/site.webmanifest' | relative_url }}">
+ <link rel="shortcut icon" type="image/x-icon"
+href="{{ '/Images/icon/favicon.ico' | relative_url }}">
+ <link rel="icon" type="image/png"
+sizes="32x32" href="{{ '/Images/icon/favicon-32x32.png' |
+relative_url }}">
+ <link rel="icon" type="image/png"
+sizes="16x16" href="{{ '/Images/icon/favicon-16x16.png' |
+relative_url }}">
+ <link rel="apple-touch-icon" sizes="180x180"
+href="{{ '/Images/icon/apple-touch-icon.png' | relative_url }}">
+ <link rel="manifest" href="{{
+'/Images/icon/site.webmanifest' | relative_url }}">
  
  <link rel="preconnect" href="https://fonts.googleapis.com">
  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
- <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
+ <link
+href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=JetBrains+Mono&display=swap"
+rel="stylesheet">
   
  <style>
    /* --- 0. 全局设置 --- */
@@ -29,53 +39,93 @@
      cursor: none; 
      scrollbar-width: thin; scrollbar-color: #3b82f6 transparent;
      transition: color 0.5s ease;
+     /* ⚡️ 优化：设置默认深色背景，防止JS加载前的瞬间白屏 */
      background-color: #0a0a0f; 
     }
    @media (pointer: coarse) { body { cursor: auto; } }
  
-   /* 🔥 1. 图片与徽章修复：去掉 !important，防止覆盖徽章大小 */
-   img, video, iframe { max-width: 100%; height: auto; box-sizing: border-box; }
-   
-   /* 🔥 2. GIF加速优化：内容区大图预加载样式 */
-   #main_content img {
-       opacity: 0; 
-       background-color: rgba(59, 130, 246, 0.05);
-       border-radius: 8px;
-       border: 1px solid rgba(59, 130, 246, 0.1);
-       transition: opacity 0.5s ease-in-out;
-       min-height: 50px; 
-   }
-   /* 图片加载完成后显示的样式 */
-   #main_content img.loaded {
-       opacity: 1;
-       background-color: transparent;
-       border-color: transparent;
-   }
-
+   img, video, iframe { max-width: 100% !important; height: auto
+!important; box-sizing: border-box; }
+ 
    ::-webkit-scrollbar { width: 6px; }
    ::-webkit-scrollbar-track { background: transparent; }
-   ::-webkit-scrollbar-thumb { background: rgba(59, 130, 246, 0.5); border-radius: 10px; }
+   ::-webkit-scrollbar-thumb { background: rgba(59, 130, 246, 0.5);
+border-radius: 10px; }
    ::-webkit-scrollbar-thumb:hover { background: rgba(59, 130, 246, 0.8); }
-   ::selection { background: #3b82f6; color: #ffffff; text-shadow: 0 0 8px rgba(255, 255, 255, 0.8); }
- 
-   /* --- 1. 光标 & 进度条 --- */
+   ::selection { background: #3b82f6; color: #ffffff; text-shadow: 0 0 8px
+rgba(255, 255, 255, 0.8); }
+
+/* --- GIF 基础样式与性能优化 --- */
+img[src$=".gif"] {
+  /* 1. 占位符动画 */
+  background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
+  background-size: 200% 100%;
+  animation: loading-shimmer 1.5s infinite;
+  
+  /* 2. 布局稳定性 */
+  display: block;
+  min-height: 200px; /* 稍微调高一点，避免太扁 */
+  
+  /* 3. ⚡️ 核心优化：移到这里！在加载前就生效 */
+  content-visibility: auto; 
+  contain-intrinsic-size: 1px 300px; /* 告诉浏览器这个坑位大概有多高 */
+  will-change: transform; /* 开启GPU加速 */
+}
+
+@keyframes loading-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* --- 加载完成后的状态 --- */
+img.loaded {
+  /* 关掉动画和背景，展示真实图片 */
+  animation: none !important;
+  background: transparent !important;
+  /* 移除最小高度限制，让图片撑开到真实高度 */
+  min-height: auto; 
+}
+  
+   /* --- 1. 光标 & 进度条
+--- */
    .cursor-dot, .cursor-outline {
      position: fixed; top: 0; left: 0; 
-     transform: translate(-50%, -50%); border-radius: 50%; z-index: 99999; pointer-events: none;
-     transition: opacity 0.2s ease, width 0.2s, height 0.2s, background-color 0.2s;
+     transform: translate(-50%, -50%); border-radius: 50%; z-index: 99999;
+pointer-events: none;
+     transition: opacity 0.2s ease, width 0.2s, height 0.2s, background-color
+0.2s;
     }
    .cursor-dot { width: 8px; height: 8px; background-color: #3b82f6; }
-   .cursor-outline { width: 40px; height: 40px; border: 1px solid rgba(59, 130, 246, 0.5); }
-   body.hovering .cursor-outline { width: 60px; height: 60px; background-color: rgba(59, 130, 246, 0.1); border-color: transparent; }
-   #progress-bar { position: fixed; top: 0; left: 0; height: 3px; background: linear-gradient(90deg, #3b82f6, #60a5fa); width: 0%; z-index: 99999; transition: width 0.1s; }
+   .cursor-outline { width: 40px; height: 40px; border: 1px solid rgba(59,
+130, 246, 0.5); }
+   body.hovering .cursor-outline { width: 60px; height: 60px;
+background-color: rgba(59, 130, 246, 0.1); border-color: transparent; }
+   #progress-bar { position: fixed; top: 0; left: 0; height: 3px;
+background: linear-gradient(90deg, #3b82f6, #60a5fa); width: 0%; z-index:
+99999; transition: width 0.1s; }
  
    /* --- 2. 背景 --- */
-   #vanta-bg { position: fixed; z-index: -5; top: 0; left: 0; width: 100%; height: 100%; background: #0a0a0f; }
-   #vanta-bg::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at center, transparent 0%, rgba(10, 10, 15, 0.4) 100%); pointer-events: none; transition: background 0.5s ease; }
-   #meteor-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -4; pointer-events: none; }
+   #vanta-bg { position: fixed; z-index: -5; top: 0; left: 0; width: 100%;
+height: 100%; background: #0a0a0f; }
+   #vanta-bg::after { content: ''; position: absolute; top: 0; left: 0;
+width: 100%; height: 100%; background: radial-gradient(circle at center,
+transparent 0%, rgba(10, 10, 15, 0.4) 100%); pointer-events: none; transition:
+background 0.5s ease; }
+ 
+   /* 🔥 新增：流星特效 Canvas 层 */
+   #meteor-canvas {
+       position: fixed;
+       top: 0;
+       left: 0;
+       width: 100%;
+       height: 100%;
+       z-index: -4; /* 位于 Vanta(-5) 之上，内容之下 */
+       pointer-events: none; /* 确保不影响点击 */
+    }
    
    /* --- 3. 布局 --- */
-   .layout-wrapper { position: relative; max-width: 860px; margin: 100px auto 60px; z-index: 10; perspective: 1000px; }
+   .layout-wrapper { position: relative; max-width: 860px; margin: 100px
+auto 60px; z-index: 10; perspective: 1000px; }
  
    /* --- 4. 机器人核心 --- */
    #bot-container { 
@@ -85,129 +135,230 @@
      opacity: 1; 
      transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55); 
     }
-   #bot-container.fixed-mode { position: fixed !important; top: auto !important; left: auto !important; bottom: 30px !important; right: 30px !important; transform: scale(0.9) !important; opacity: 1 !important; }
+   #bot-container.fixed-mode { position: fixed !important; top: auto
+!important; left: auto !important; bottom: 30px !important; right: 30px
+!important; transform: scale(0.9) !important; opacity: 1 !important; }
    
-   #bot-container.attention-jump { animation: attention-bounce 0.6s ease infinite alternate; }
-   @keyframes attention-bounce { 0% { transform: translateX(-50%) translateY(0) scale(1); } 100% { transform: translateX(-50%) translateY(-15px) scale(1.1); } }
-   #bot-container.fixed-mode.attention-jump { animation: attention-bounce-fixed 0.6s ease infinite alternate; }
-   @keyframes attention-bounce-fixed { 0% { transform: scale(0.9) translateY(0); } 100% { transform: scale(0.9) translateY(-15px); } }
+   /* 跳动动画 */
+   #bot-container.attention-jump { animation: attention-bounce 0.6s ease
+infinite alternate; }
+   @keyframes attention-bounce { 0% { transform: translateX(-50%)
+translateY(0) scale(1); } 100% { transform: translateX(-50%) translateY(-15px)
+scale(1.1); } }
+   #bot-container.fixed-mode.attention-jump { animation:
+attention-bounce-fixed 0.6s ease infinite alternate; }
+   @keyframes attention-bounce-fixed { 0% { transform: scale(0.9)
+translateY(0); } 100% { transform: scale(0.9) translateY(-15px); } }
  
-   .pulse-ring { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 100px; height: 100px; border-radius: 50%; border: 2px solid rgba(168, 85, 247, 0.5); opacity: 0; z-index: -1; pointer-events: none; animation: pulse-ring-anim 6s infinite cubic-bezier(0.4, 0, 0.6, 1); transition: opacity 0.5s; }
-   #bot-container.speaking .pulse-ring { animation-duration: 1.5s; border-color: rgba(59, 130, 246, 0.8); }
-   #bot-container.interaction-done .pulse-ring { opacity: 0 !important; animation: none !important; }
-   @keyframes pulse-ring-anim { 0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; } 30% { opacity: 0.6; } 100% { transform: translate(-50%, -50%) scale(2.5); opacity: 0; } }
+   /* 涟漪光圈 */
+   .pulse-ring { position: absolute; top: 50%; left: 50%; transform:
+translate(-50%, -50%); width: 100px; height: 100px; border-radius: 50%; border:
+2px solid rgba(168, 85, 247, 0.5); opacity: 0; z-index: -1; pointer-events:
+none; animation: pulse-ring-anim 6s infinite cubic-bezier(0.4, 0, 0.6, 1);
+transition: opacity 0.5s; }
+   #bot-container.speaking .pulse-ring { animation-duration: 1.5s;
+border-color: rgba(59, 130, 246, 0.8); }
+   #bot-container.interaction-done .pulse-ring { opacity: 0 !important;
+animation: none !important; }
+   @keyframes pulse-ring-anim { 0% { transform: translate(-50%, -50%)
+scale(0.5); opacity: 0; } 30% { opacity: 0.6; } 100% { transform:
+translate(-50%, -50%) scale(2.5); opacity: 0; } }
  
-   .bot-head { width: 100px; height: 50px; background: #ffffff; border: 2px solid #e0e7ff; border-bottom: none; border-radius: 50px 50px 20px 20px; margin: 0 auto; position: relative; box-shadow: 0 -5px 15px rgba(59, 130, 246, 0.15); display: flex; justify-content: center; align-items: center; gap: 10px; padding-top: 5px; animation: float-bot 3s ease-in-out infinite; }
-   .bot-eye { width: 28px; height: 28px; background: #bfdbfe; border-radius: 50%; border: 1px solid #93c5fd; position: relative; overflow: hidden; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
-   .bot-pupil { width: 14px; height: 14px; background: #1e3a8a; border-radius: 50%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); transition: opacity 0.2s; }
-   .bot-lid { position: absolute; top: 0; left: 0; width: 100%; height: 0%; background: #ffffff; z-index: 10; animation: blink 4s infinite; }
-   #bot-container.speaking .bot-eye { background: transparent; border: none; box-shadow: none; width: 22px; height: 12px; border-top: 3px solid #3b82f6; border-radius: 22px 22px 0 0; margin-top: 8px; }
-   #bot-container.speaking .bot-pupil, #bot-container.speaking .bot-lid { opacity: 0; }
-   .bot-mouth { position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); width: 6px; height: 6px; background: #3b82f6; border-radius: 4px; opacity: 0; transition: all 0.2s; }
-   #bot-container.speaking .bot-mouth { opacity: 1; width: 14px; background: transparent; border: 2px solid #3b82f6; animation: mouth-talk 0.25s infinite alternate; }
-   .bot-antenna { position: absolute; top: -25px; left: 50%; transform: translateX(-50%); width: 2px; height: 25px; background: #e0e7ff; }
-   .bot-antenna::after { content: ''; position: absolute; top: -6px; left: -3px; width: 8px; height: 8px; border-radius: 50%; animation: pulse-antenna-breath 2s infinite ease-in-out; }
-   #bot-speech { position: absolute; top: -45px; left: 50%; transform: translateX(-50%) scale(0); transform-origin: bottom center; background: rgba(30, 41, 59, 0.95); color: #fff; padding: 6px 14px; border-radius: 12px; font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; white-space: nowrap; pointer-events: none; border: 1px solid rgba(59, 130, 246, 0.4); box-shadow: 0 4px 15px rgba(0,0,0,0.3); transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s; z-index: 10000; opacity: 0; }
-   #bot-speech::after { content: ''; position: absolute; bottom: -5px; left: 50%; width: 8px; height: 8px; background: inherit; transform: translateX(-50%) rotate(45deg); border-right: 1px solid rgba(59, 130, 246, 0.4); border-bottom: 1px solid rgba(59, 130, 246, 0.4); }
-   #bot-container.speaking #bot-speech { transform: translateX(-50%) scale(1); opacity: 1; }
+   .bot-head { width: 100px; height: 50px; background: #ffffff; border: 2px
+solid #e0e7ff; border-bottom: none; border-radius: 50px 50px 20px 20px; margin:
+0 auto; position: relative; box-shadow: 0 -5px 15px rgba(59, 130, 246, 0.15);
+display: flex; justify-content: center; align-items: center; gap: 10px;
+padding-top: 5px; animation: float-bot 3s ease-in-out infinite; }
+   .bot-eye { width: 28px; height: 28px; background: #bfdbfe;
+border-radius: 50%; border: 1px solid #93c5fd; position: relative; overflow:
+hidden; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
+   .bot-pupil { width: 14px; height: 14px; background: #1e3a8a;
+border-radius: 50%; position: absolute; top: 50%; left: 50%; transform:
+translate(-50%, -50%); transition: opacity 0.2s; }
+   .bot-lid { position: absolute; top: 0; left: 0; width: 100%; height: 0%;
+background: #ffffff; z-index: 10; animation: blink 4s infinite; }
+   #bot-container.speaking .bot-eye { background: transparent; border:
+none; box-shadow: none; width: 22px; height: 12px; border-top: 3px solid
+#3b82f6; border-radius: 22px 22px 0 0; margin-top: 8px; }
+   #bot-container.speaking .bot-pupil, #bot-container.speaking .bot-lid {
+opacity: 0; }
+   .bot-mouth { position: absolute; bottom: 8px; left: 50%; transform:
+translateX(-50%); width: 6px; height: 6px; background: #3b82f6; border-radius:
+4px; opacity: 0; transition: all 0.2s; }
+   #bot-container.speaking .bot-mouth { opacity: 1; width: 14px;
+background: transparent; border: 2px solid #3b82f6; animation: mouth-talk 0.25s
+infinite alternate; }
+   .bot-antenna { position: absolute; top: -25px; left: 50%; transform:
+translateX(-50%); width: 2px; height: 25px; background: #e0e7ff; }
+   .bot-antenna::after { content: ''; position: absolute; top: -6px; left:
+-3px; width: 8px; height: 8px; border-radius: 50%; animation:
+pulse-antenna-breath 2s infinite ease-in-out; }
+   #bot-speech { position: absolute; top: -45px; left: 50%; transform:
+translateX(-50%) scale(0); transform-origin: bottom center; background:
+rgba(30, 41, 59, 0.95); color: #fff; padding: 6px 14px; border-radius: 12px;
+font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; white-space:
+nowrap; pointer-events: none; border: 1px solid rgba(59, 130, 246, 0.4);
+box-shadow: 0 4px 15px rgba(0,0,0,0.3); transition: transform 0.3s
+cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s; z-index: 10000; opacity: 0; }
+   #bot-speech::after { content: ''; position: absolute; bottom: -5px;
+left: 50%; width: 8px; height: 8px; background: inherit; transform:
+translateX(-50%) rotate(45deg); border-right: 1px solid rgba(59, 130, 246, 0.4);
+border-bottom: 1px solid rgba(59, 130, 246, 0.4); }
+   #bot-container.speaking #bot-speech { transform: translateX(-50%)
+scale(1); opacity: 1; }
  
-   #rpg-dialogue { position: absolute; top: 65px; left: 50%; transform: translateX(-50%) translateY(20px); width: 600px; max-width: 90vw; background: rgba(15, 23, 42, 0.95); border: 1px solid #3b82f6; border-radius: 12px; padding: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.6), 0 0 15px rgba(59, 130, 246, 0.2); z-index: 20000; opacity: 0; pointer-events: none; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; gap: 10px; font-family: 'JetBrains Mono', monospace; }
-   #rpg-dialogue.active { opacity: 1; transform: translateX(-50%) translateY(0); pointer-events: auto; }
-   #bot-container.fixed-mode #rpg-dialogue { top: auto; bottom: 80px; left: auto; right: 0; transform: translateY(20px); }
-   #bot-container.fixed-mode #rpg-dialogue.active { transform: translateY(0); }
-   #rpg-text { color: #bfdbfe; font-size: 0.9rem; min-height: 40px; line-height: 1.5; }
-   #rpg-cursor { display: inline-block; width: 8px; height: 14px; background: #3b82f6; vertical-align: middle; animation: blink 1s infinite; }
-   #rpg-options { display: flex; flex-direction: column; gap: 8px; margin-top: 5px; }
-   .rpg-btn { background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); color: #93c5fd; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; text-align: left; transition: all 0.2s; opacity: 0; transform: translateX(-10px); animation: slideIn 0.3s forwards; }
-   .rpg-btn:hover { background: rgba(59, 130, 246, 0.25); border-color: #60a5fa; color: #fff; transform: translateX(2px); }
+   #rpg-dialogue { position: absolute; top: 65px; left: 50%; transform:
+translateX(-50%) translateY(20px); width: 600px; max-width: 90vw; background:
+rgba(15, 23, 42, 0.95); border: 1px solid #3b82f6; border-radius: 12px;
+padding: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.6), 0 0 15px rgba(59, 130,
+246, 0.2); z-index: 20000; opacity: 0; pointer-events: none; transition: all
+0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; gap:
+10px; font-family: 'JetBrains Mono', monospace; }
+   #rpg-dialogue.active { opacity: 1; transform: translateX(-50%)
+translateY(0); pointer-events: auto; }
+   #bot-container.fixed-mode #rpg-dialogue { top: auto; bottom: 80px; left:
+auto; right: 0; transform: translateY(20px); }
+   #bot-container.fixed-mode #rpg-dialogue.active { transform:
+translateY(0); }
+   #rpg-text { color: #bfdbfe; font-size: 0.9rem; min-height: 40px;
+line-height: 1.5; }
+   #rpg-cursor { display: inline-block; width: 8px; height: 14px;
+background: #3b82f6; vertical-align: middle; animation: blink 1s infinite; }
+   #rpg-options { display: flex; flex-direction: column; gap: 8px;
+margin-top: 5px; }
+   .rpg-btn { background: rgba(59, 130, 246, 0.1); border: 1px solid
+rgba(59, 130, 246, 0.3); color: #93c5fd; padding: 8px 12px; border-radius: 6px;
+cursor: pointer; font-size: 0.8rem; text-align: left; transition: all 0.2s;
+opacity: 0; transform: translateX(-10px); animation: slideIn 0.3s forwards; }
+   .rpg-btn:hover { background: rgba(59, 130, 246, 0.25); border-color:
+#60a5fa; color: #fff; transform: translateX(2px); }
    @keyframes slideIn { to { opacity: 1; transform: translateX(0); } }
-   .rpg-close { position: absolute; top: 5px; right: 8px; font-size: 18px; color: #475569; cursor: pointer; }
+   .rpg-close { position: absolute; top: 5px; right: 8px; font-size: 18px;
+color: #475569; cursor: pointer; }
    .rpg-close:hover { color: #fff; }
  
    /* --- 内容容器 --- */
-   .container { position: relative; padding: 60px 80px; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%); border-radius: 20px; box-shadow: 0 20px 50px rgba(59, 130, 246, 0.15); border: 1px solid rgba(255, 255, 255, 0.1); border-top: 4px solid #3b82f6; opacity: 0; animation: fadeUp 0.8s ease-out 0.3s forwards; z-index: 1; transform-style: preserve-3d; transition: transform 0.1s ease-out; overflow: hidden; }
-   .container::before { content: ""; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.07), transparent 40%); z-index: -1; pointer-events: none; opacity: 0; transition: opacity 0.5s; }
+   .container { position: relative; padding: 60px 80px; background:
+rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px) saturate(180%);
+-webkit-backdrop-filter: blur(20px) saturate(180%); border-radius: 20px; box-shadow:
+0 20px 50px rgba(59, 130, 246, 0.15); border: 1px solid rgba(255, 255, 255,
+0.1); border-top: 4px solid #3b82f6; opacity: 0; animation: fadeUp 0.8s
+ease-out 0.3s forwards; z-index: 1; transform-style: preserve-3d; transition:
+transform 0.1s ease-out; overflow: hidden; }
+   .container::before { content: ""; position: absolute; top: 0;
+left: 0; right: 0; bottom: 0; background: radial-gradient(800px circle at
+var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.07), transparent
+40%); z-index: -1; pointer-events: none; opacity: 0; transition: opacity 0.5s;
+}
    .container:hover::before { opacity: 1; }
-   #main_content table { width: 100% !important; border-collapse: collapse; margin: 20px 0; background: rgba(10, 10, 15, 0.3); border-radius: 8px; overflow: hidden; }
-   #main_content th, #main_content td { padding: 12px; border: 1px solid rgba(255, 255, 255, 0.1); }
-   #main_content tr { background: rgba(30, 41, 59, 0.8) !important; } 
+   #main_content table { width: 100% !important; border-collapse: collapse;
+margin: 20px 0; background: rgba(10, 10, 15, 0.3); border-radius: 8px;
+overflow: hidden; }
+   #main_content th, #main_content td { padding: 12px; border: 1px solid
+rgba(255, 255, 255, 0.1); }
+   #main_content tr { background: rgba(30, 41, 59, 0.8) !important; }    /* ✅ 修改后的代码：只针对 thead (表头) 变色 */
    #main_content th { color: #60a5fa; font-weight: 600; }
-   .typewriter-container { font-family: 'JetBrains Mono', monospace; font-size: 1.1rem; color: #93c5fd; min-height: 1.6em; margin-bottom: 2rem; }
-   .typewriter-cursor { animation: blink-cursor 0.8s infinite; border-left: 3px solid #3b82f6; margin-left: 2px; }
-   
-   /* 徽章容器 */
-   .nav-badges { margin: 2rem 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
-   .nav-badges a { opacity: 0; animation: fadeUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; position: relative; z-index: 2; }
-   
-   /* 🔥 3. 徽章样式修复：强制高度为 28px，不被全局 auto 影响 */
-   .nav-badges img { 
-       height: 28px !important; 
-       width: auto !important; 
-       border-radius: 50px; 
-       box-shadow: 0 2px 6px rgba(59, 130, 246, 0.15); 
-       border: 1.5px solid white; 
-       transition: all 0.3s; 
-       mix-blend-mode: normal !important; 
-       opacity: 1 !important; 
-    }
-   .nav-badges a:hover img { animation: float-hover 2s ease-in-out infinite; box-shadow: 0 8px 20px rgba(59, 130, 246, 0.35); transform: scale(1.1); }
+   .typewriter-container { font-family: 'JetBrains Mono', monospace;
+font-size: 1.1rem; color: #93c5fd; min-height: 1.6em; margin-bottom: 2rem; }
+   .typewriter-cursor { animation: blink-cursor 0.8s infinite; border-left:
+3px solid #3b82f6; margin-left: 2px; }
+   .nav-badges { margin: 2rem 0; display: flex; flex-wrap: wrap;
+justify-content: center; gap: 10px; }
+   .nav-badges a { opacity: 0; animation: fadeUp 0.6s cubic-bezier(0.34,
+1.56, 0.64, 1) forwards; position: relative; z-index: 2; }
+   .nav-badges img { height: 28px !important; width: auto; border-radius:
+50px; box-shadow: 0 2px 6px rgba(59, 130, 246, 0.15); border: 1.5px solid
+white; transition: all 0.3s; mix-blend-mode: normal !important; }
+   .nav-badges a:hover img { animation: float-hover 2s ease-in-out
+infinite; box-shadow: 0 8px 20px rgba(59, 130, 246, 0.35); transform:
+scale(1.1); }
    .nav-badges img.rippling { animation: ripple-wave 0.5s forwards; }
-        
-   /* --- 🔥 4. 按钮 & 模式 (胶囊样式还原) --- */
-   .controls-container { position: fixed; top: 20px; right: 20px; display: flex; gap: 15px; z-index: 10000; }
-   
-   /* 4.1 通用按钮（主题切换）：圆形 */
-   .ctrl-btn { 
-       width: 40px; 
-       height: 40px; 
-       background: rgba(255, 255, 255, 0.1); 
-       border: 1px solid rgba(255, 255, 255, 0.2); 
-       border-radius: 50%; /* 圆形 */
-       display: flex; justify-content: center; align-items: center; 
-       cursor: pointer; backdrop-filter: blur(10px); 
-       transition: all 0.3s ease; font-size: 1.2rem; user-select: none; 
-   }
-   .ctrl-btn:hover { background: rgba(255, 255, 255, 0.2); transform: scale(1.1); }
-   
-   /* 4.2 语言切换按钮：还原为胶囊形 */
-   #lang-toggle { 
-       font-family: 'JetBrains Mono', monospace; 
-       font-size: 0.8rem; 
-       font-weight: bold; 
-       width: auto !important;   /* 强制宽度自适应，变回长条 */
-       padding: 0 12px;          /* 左右加点内边距 */
-       border-radius: 20px;      /* 胶囊圆角 */
-       aspect-ratio: auto;       /* 防止被压成正方形 */
-   }
+       
+   /* --- 按钮 & 模式 ---
+*/
+   .controls-container { position: fixed; top: 20px; right: 20px; display:
+flex; gap: 15px; z-index: 10000; }
+   .ctrl-btn { width: 40px; height: 40px; background: rgba(255, 255, 255,
+0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 50%; display:
+flex; justify-content: center; align-items: center; cursor: pointer;
+backdrop-filter: blur(10px); transition: all 0.3s ease; font-size: 1.2rem;
+user-select: none; }
+   .ctrl-btn:hover { background: rgba(255, 255, 255, 0.2); transform:
+scale(1.1); }
+   #lang-toggle { font-family: 'JetBrains Mono', monospace; font-size:
+0.8rem; font-weight: bold; width: auto; padding: 0 10px; border-radius: 20px; }
  
-   /* --- ☁️ 护眼柔光模式 --- */
+/* --- ☁️ 护眼柔光模式 (Soft  Mode) --- */
    body.light-mode { color: #334155; background-color: #ffffff; }
-   body.light-mode #vanta-bg::after { background: radial-gradient(circle at center, rgba(241, 245, 249, 0.7) 0%, #f1f5f9 100%); }
-   body.light-mode .container { background: rgba(241, 245, 249, 0.9); border-color: rgba(203, 213, 225, 0.6); box-shadow: 0 20px 50px rgba(148, 163, 184, 0.15); backdrop-filter: blur(25px); }
-   body.light-mode #rpg-dialogue { background: #ffffff; border-color: #cbd5e1; box-shadow: 0 10px 30px rgba(148, 163, 184, 0.1); }
+ 
+   /* 1. 背景遮罩：边缘不再是白色，而是淡灰色，与网页背景融合 */
+   body.light-mode #vanta-bg::after { background: radial-gradient(circle at
+center, rgba(241, 245, 249, 0.7) 0%, #f1f5f9 100%); }
+ 
+   /* 2. 主容器：由纯白改为“淡冷灰”，消除刺眼的对比度 */
+   body.light-mode .container { background: rgba(241, 245, 249, 0.9);
+border-color: rgba(203, 213, 225, 0.6); box-shadow: 0 20px 50px rgba(148, 163,
+184, 0.15); backdrop-filter: blur(25px); }
+ 
+   /* RPG对话框：保持白色，以便在灰色背景上突出来 (形成层次感) */
+   body.light-mode #rpg-dialogue { background: #ffffff; border-color:
+#cbd5e1; box-shadow: 0 10px 30px rgba(148, 163, 184, 0.1); }
    body.light-mode #rpg-text { color: #334155; }
-   body.light-mode .rpg-btn { background: rgba(226, 232, 240, 0.6); color: #475569; border-color: rgba(203, 213, 225, 0.8); }
-   body.light-mode .rpg-btn:hover { background: #cbd5e1; color: #1e40af; border-color: #94a3b8; }
-   body.light-mode #bot-speech { background: #ffffff; color: #334155; border-color: #cbd5e1; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+ 
+   /* 按钮样式 */
+   body.light-mode .rpg-btn { background: rgba(226, 232, 240, 0.6); color:
+#475569; border-color: rgba(203, 213, 225, 0.8); }
+   body.light-mode .rpg-btn:hover { background: #cbd5e1; color: #1e40af;
+border-color: #94a3b8; }
+ 
+   /* 机器人气泡：保持白色 */
+   body.light-mode #bot-speech { background: #ffffff; color: #334155;
+border-color: #cbd5e1; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+ 
    body.light-mode .typewriter-container { color: #2563eb; }
-   body.light-mode #main_content table { background: #f8fafc;  box-shadow: none; }
-   body.light-mode #main_content th { color: #1e293b; background: #e2e8f0 !important; border-color: cbd5e1; }
-   body.light-mode #main_content td { border-color: #e2e8f0; color: #334155; } 
-   body.light-mode #main_content tr { background: transparent !important; }
-   body.light-mode #main_content tr:hover { background: rgba(0, 0, 0, 0.03) !important;}
+ 
+   /* 3. 表格修正：填充色调整 */
+   body.light-mode #main_content table { background: #f8fafc;   box-shadow: none;  /* 极浅的蓝灰色 (Slate 50),去掉可能的深色阴影 */ }
+   /* 表头：使用比容器稍深的灰色 (#e2e8f0)，否则会看不清表头范围 */
+   body.light-mode #main_content th { color: #1e293b; background: #e2e8f0
+!important; border-color: cbd5e1; }
+   /* 表格内容：深色文字，边框加深一点 */
+   body.light-mode #main_content td { border-color: #e2e8f0; color:
+#334155; } /* 深色文字，确保在浅色背景上清晰可见 */
+   body.light-mode #main_content tr { background: transparent !important;
+/* 强制去掉深色背景 */}
+   /* 增加一个浅色模式下的斑马纹或鼠标悬停效果（可选） */
+   body.light-mode #main_content tr:hover { background: rgba(0, 0, 0, 0.03)
+!important;}
+    }
+ 
    body.light-mode .rpg-close { color: #94a3b8; }
    body.light-mode .rpg-close:hover { color: #ef4444; }
-   body.light-mode .ctrl-btn { background: rgba(255, 255, 255, 0.5); border-color: #cbd5e1; color: #64748b; }
-   body.light-mode .ctrl-btn:hover { background: #ffffff; color: #0f172a; transform: scale(1.05); }
+ 
+   /* 顶部控制按钮 */
+   body.light-mode .ctrl-btn { background: rgba(255, 255, 255, 0.5);
+border-color: #cbd5e1; color: #64748b; }
+   body.light-mode .ctrl-btn:hover { background: #ffffff; color: #0f172a;
+transform: scale(1.05); }
+ 
+   /* 图片说明文字 */
    body.light-mode .img-caption { color: #2563eb; }
  
-   @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-   @keyframes float-bot { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
-   @keyframes blink { 0%, 48%, 52%, 100% { height: 0%; } 50% { height: 100%; } }
-   @keyframes botEnter { from { opacity: 0; transform: translateX(-50%) translateY(20px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
+   @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to
+{ opacity: 1; transform: translateY(0); } }
+   @keyframes float-bot { 0%, 100% { transform: translateY(0); } 50% {
+transform: translateY(-5px); } }
+   @keyframes blink { 0%, 48%, 52%, 100% { height: 0%; } 50% { height:
+100%; } }
+   @keyframes botEnter { from { opacity: 0; transform: translateX(-50%)
+translateY(20px); } to { opacity: 1; transform: translateX(-50%) translateY(0);
+} }
    @keyframes blink-cursor { from, to { opacity: 1; } 50% { opacity: 0; } }
-   @keyframes pulse-antenna-breath { 0%, 100% { background: #3b82f6; box-shadow: 0 0 5px #3b82f6; } 50% { background: #93c5fd; box-shadow: 0 0 15px #60a5fa, 0 0 8px #ffffff; } }
-   @keyframes mouth-talk { 0% { height: 2px; } 100% { height: 8px; border-radius: 50%; } }
+   @keyframes pulse-antenna-breath { 0%, 100% { background: #3b82f6;
+box-shadow: 0 0 5px #3b82f6; } 50% { background: #93c5fd; box-shadow: 0 0 15px
+#60a5fa, 0 0 8px #ffffff; } }
+   @keyframes mouth-talk { 0% { height: 2px; } 100% { height: 8px;
+border-radius: 50%; } }
     
    /* 移动端弹窗绝对居中 */
    .welcome-modal {
@@ -217,15 +368,22 @@
      display: flex; justify-content: center; align-items: center;
      opacity: 0; pointer-events: none; transition: opacity 0.5s ease;
      padding: 20px;
+     /* 🔥 关键修改：鼠标在弹窗上恢复系统指针 */
      cursor: default !important;
     }
    .welcome-modal * { cursor: default !important; }
-   .welcome-modal .btn-primary, .welcome-modal .btn-secondary, .welcome-modal .slider { 
-        cursor: pointer !important; 
+   .welcome-modal .btn-primary, .welcome-modal .btn-secondary,
+.welcome-modal .slider { 
+       cursor: pointer !important; 
     }
    .welcome-modal.show { opacity: 1; pointer-events: auto; }
+    
+   /* 鼠标悬停在弹窗时，隐藏自定义 JS 光标
+*/
    .welcome-modal:hover ~ .cursor-dot, 
-   .welcome-modal:hover ~ .cursor-outline { opacity: 0 !important; }
+   .welcome-modal:hover ~ .cursor-outline {
+       opacity: 0 !important;
+    }
     
    .modal-content {
      background: rgba(30, 41, 59, 0.85); 
@@ -236,48 +394,112 @@
      width: 90%; max-width: 400px; text-align: center;
      margin: auto; 
      max-height: 90vh; overflow-y: auto; 
-     transform: scale(0.9); transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+     transform: scale(0.9); transition: transform 0.5s cubic-bezier(0.175,
+0.885, 0.32, 1.275);
      position: relative; 
+     /* 🔥 重点：给底部留足空间，避免按钮、开关、水印打架 */
      padding-bottom: 140px; 
     }
    .welcome-modal.show .modal-content { transform: scale(1); }
-   .modal-title { font-size: 1.5rem; margin-bottom: 15px; color: #fff; font-weight: 600; }
-   .modal-body { font-size: 1rem; color: #cbd5e1; margin-bottom: 25px; line-height: 1.6; }
+    
+   .modal-title { font-size: 1.5rem; margin-bottom: 15px; color: #fff;
+font-weight: 600; }
+   .modal-body { font-size: 1rem; color: #cbd5e1; margin-bottom: 25px;
+line-height: 1.6; }
    .m-zh { display: none; }
+ 
    .modal-btns { display: flex; flex-direction: column; gap: 10px; }
-   .btn-primary, .btn-secondary { padding: 12px 20px; border-radius: 10px; font-weight: 600; transition: all 0.2s; border: none; font-family: inherit; }
-   .btn-primary { background: #3b82f6; color: white; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4); }
+   .btn-primary, .btn-secondary {
+     padding: 12px 20px; border-radius: 10px; font-weight: 600; transition:
+all 0.2s;
+     border: none; font-family: inherit;
+    }
+   .btn-primary { background: #3b82f6; color: white; box-shadow: 0 4px 15px
+rgba(59, 130, 246, 0.4); }
    .btn-primary:hover { background: #2563eb; transform: translateY(-2px); }
    .btn-secondary { background: rgba(255, 255, 255, 0.1); color: #e2e8f0; }
    .btn-secondary:hover { background: rgba(255, 255, 255, 0.2); }
-   .modal-lang-switch-container { position: absolute; bottom: 60px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 4px; width: 100%; }
-   .lang-title { font-size: 0.7rem; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; }
-   .lang-row { display: flex; align-items: center; gap: 8px; justify-content: center; font-size: 0.85rem; color: #cbd5e1; font-family: 'JetBrains Mono', monospace; }
-   .switch { position: relative; display: inline-block; width: 40px; height: 20px; }
+ 
+   /* 🔥 居中开关 */
+   .modal-lang-switch-container {
+     position: absolute; 
+     bottom: 60px; /* 放在水印上方 */
+     left: 50%;
+     transform: translateX(-50%); 
+     display: flex; flex-direction: column; align-items: center; 
+     gap: 4px;
+     width: 100%; 
+    }
+   .lang-title {
+     font-size: 0.7rem; color: #64748b; text-transform: uppercase;
+letter-spacing: 0.5px;
+    }
+   .lang-row {
+     display: flex; align-items: center; gap: 8px; justify-content: center;
+     font-size: 0.85rem; color: #cbd5e1; font-family: 'JetBrains Mono',
+monospace;
+    }
+    
+   /* 开关本体 */
+   .switch { position: relative; display: inline-block; width: 40px;
+height: 20px; }
    .switch input { opacity: 0; width: 0; height: 0; }
-   .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #475569; transition: .4s; border-radius: 20px; }
-   .slider:before { position: absolute; content: ""; height: 16px; width: 16px; left: 2px; bottom: 2px; background-color: white; transition: .4s; border-radius: 50%; }
+   .slider { position: absolute; cursor: pointer; top: 0; left: 0; right:
+0; bottom: 0; background-color: #475569; transition: .4s; border-radius: 20px;
+}
+   .slider:before { position: absolute; content: ""; height:
+16px; width: 16px; left: 2px; bottom: 2px; background-color: white; transition:
+.4s; border-radius: 50%; }
    input:checked + .slider { background-color: #3b82f6; }
    input:focus + .slider { box-shadow: 0 0 1px #3b82f6; }
    input:checked + .slider:before { transform: translateX(20px); }
-   .modal-watermark { position: absolute; bottom: 20px; left: 0; width: 100%; text-align: center; font-size: 0.65rem; color: #94a3b8; font-family: 'JetBrains Mono', monospace; pointer-events: none; opacity: 0.6; }
+ 
+   /* 🔥 居中水印 (半透明，放在最底端) */
+   .modal-watermark {
+     position: absolute; 
+     bottom: 20px; 
+     left: 0; width: 100%; 
+     text-align: center; 
+     font-size: 0.65rem; color: #94a3b8; font-family: 'JetBrains Mono',
+monospace; pointer-events: none;
+     opacity: 0.6; /* 恢复半透明 */
+    }
  
    @media (max-width: 768px) { 
-     #bot-speech { white-space: normal !important; max-width: 200px !important; width: max-content !important; height: auto !important; line-height: 1.5; left: auto !important; right: 0 !important; top: -55px !important; border-radius: 12px 12px 0 12px !important; transform: translateX(0) scale(0) !important; transform-origin: bottom right !important; }
-     #bot-container.speaking #bot-speech { transform: translateX(0) scale(1) !important; }
+     #bot-speech {
+       white-space: normal !important; max-width: 200px !important; width:
+max-content !important; height: auto !important; line-height: 1.5;
+       left: auto !important; right: 0 !important; top: -55px !important;
+border-radius: 12px 12px 0 12px !important; 
+       transform: translateX(0) scale(0) !important; transform-origin: bottom
+right !important; 
+     }
+     #bot-container.speaking #bot-speech { transform: translateX(0) scale(1)
+!important; }
      .cursor-dot, .cursor-outline { display: none; } 
      .layout-wrapper { margin-top: 40px !important; }
      .controls-container { top: 15px; right: 15px; gap: 8px; }
-     
-     /* 移动端按钮适配 */
      .ctrl-btn { width: 35px; height: 35px; font-size: 1rem; }
      #lang-toggle { font-size: 0.7rem; padding: 0 8px; }
- 
-     #bot-container { display: block !important; position: fixed !important; top: auto !important; left: auto !important; right: 20px !important; bottom: 30px !important; transform: scale(0.85) translateX(0) !important; opacity: 1 !important; animation: none !important; }
-     #bot-container #rpg-dialogue { position: fixed !important; top: auto !important; bottom: 100px !important; left: 10px !important; right: 10px !important; width: auto !important; max-width: none !important; transform: translateY(10px) !important; }
-     #bot-container #rpg-dialogue.active { transform: translateY(0) !important; }
+     #bot-container { 
+       display: block !important; position: fixed !important; top: auto
+!important; left: auto !important;
+       right: 20px !important; bottom: 30px !important; transform: scale(0.85)
+translateX(0) !important;
+       opacity: 1 !important; animation: none !important;
+     }
+     #bot-container #rpg-dialogue {
+       position: fixed !important; top: auto !important; bottom: 100px
+!important; left: 10px !important; right: 10px !important;
+       width: auto !important; max-width: none !important; transform:
+translateY(10px) !important;
+     }
+     #bot-container #rpg-dialogue.active { transform: translateY(0)
+!important; }
      .container { padding: 30px 20px; } 
      #main_content { overflow-x: auto; }
+     
+     /* 移动端调整 */
      .modal-content { padding-bottom: 140px; } 
     }
  </style>
@@ -286,33 +508,69 @@
  <body>
  <div id="welcome-modal" class="welcome-modal">
    <div class="modal-content">
+     
      <div class="modal-title">
        <span class="m-en">✨ Hi, Welcome to E-Link!</span>
        <span class="m-zh">✨ 嗨！欢迎访问E-Link！</span>
      </div>
+     
      <div class="modal-body">
-       <span class="m-en">We recommend <b>Dark Mode</b> for a more immersive experience<br><span style="font-size: 0.85rem; color: #94a3b8;">(Feel free to tailor your view at the top-right corner)</span></span>
-       <span class="m-zh">为呈现最佳<b>视觉体验</b>，建议保留<b>深色设置</b> <br><span style="font-size: 0.85rem; color: #94a3b8;">(您可随时通过右上角切换语言或主题)</span></span>
+       <span class="m-en">
+        We recommend <b>Dark Mode</b> for a more immersive
+experience<br>
+        <span style="font-size: 0.85rem; color: #94a3b8;">
+          (Feel free to tailor your view at the top-right corner)
+        </span>
+       </span>
+       <span class="m-zh">
+        为呈现最佳<b>视觉体验</b>，建议保留<b>深色设置</b> <br>
+        <span style="font-size: 0.85rem; color: #94a3b8;">
+          (您可随时通过右上角切换语言或主题)
+        </span>
+       </span>
      </div>
+ 
      <div class="modal-btns">
-       <button id="modal-keep-dark-btn" class="btn-primary"><span class="m-en">🌙 Keep Dark Mode</span><span class="m-zh">🌙 保持深色 (推荐)</span></button>
-       <button id="modal-switch-light-btn" class="btn-secondary"><span class="m-en">🔆 Switch to Light Mode</span><span class="m-zh">🔆 切换到浅色</span></button>
+       <button id="modal-keep-dark-btn"
+class="btn-primary">
+         <span class="m-en">🌙 Keep Dark Mode</span>
+         <span class="m-zh">🌙 保持深色 (推荐)</span>
+       </button>
+       <button id="modal-switch-light-btn"
+class="btn-secondary">
+         <span class="m-en">🔆 Switch to Light Mode</span>
+         <span class="m-zh">🔆 切换到浅色</span>
+       </button>
      </div>
+ 
      <div class="modal-lang-switch-container">
        <span class="lang-title">Language / 语言</span>
        <div class="lang-row">
          <span>English</span>
-         <label class="switch"><input type="checkbox" id="modal-lang-toggle-checkbox"><span class="slider round"></span></label>
+         <label class="switch">
+           <input type="checkbox"
+id="modal-lang-toggle-checkbox">
+           <span class="slider round"></span>
+         </label>
          <span>简体中文</span>
        </div>
      </div>
-     <div class="modal-watermark"><span class="m-en">Webpage Designed by Tianyu Bai © 2026</span><span class="m-zh">本网页由 Tianyu Bai 设计制作 © 2026</span></div>
+ 
+     <div class="modal-watermark">
+       <span class="m-en">Webpage Designed by Tianyu Bai ©
+2026</span>
+       <span class="m-zh">本网页由 Tianyu
+Bai 设计制作 © 2026</span>
+     </div>
+ 
    </div>
  </div>
  
  <div class="controls-container">
-   <div id="lang-toggle" class="ctrl-btn" title="Switch Language">EN/CN</div>
-   <div id="theme-toggle" class="ctrl-btn" title="Switch Theme">☀️</div>
+   <div id="lang-toggle" class="ctrl-btn"
+title="Switch Language">EN/CN</div>
+   <div id="theme-toggle" class="ctrl-btn"
+title="Switch Theme">☀️</div>
  </div>
  
  <div class="cursor-dot"></div>
@@ -327,13 +585,19 @@
    <div id="bot-speech">System Online.</div>
    <div id="rpg-dialogue">
      <div class="rpg-close">×</div>
-     <div><span id="rpg-text">Initializing...</span><span id="rpg-cursor"></span></div>
+     <div><span
+id="rpg-text">Initializing...</span><span
+id="rpg-cursor"></span></div>
      <div id="rpg-options"></div>
    </div>
    <div class="bot-antenna"></div>
    <div class="bot-head">
-     <div class="bot-eye"><div class="bot-pupil"></div><div class="bot-lid"></div></div>
-     <div class="bot-eye"><div class="bot-pupil"></div><div class="bot-lid"></div></div>
+     <div class="bot-eye"><div
+class="bot-pupil"></div><div
+class="bot-lid"></div></div>
+     <div class="bot-eye"><div
+class="bot-pupil"></div><div
+class="bot-lid"></div></div>
      <div class="bot-mouth"></div>
    </div>
  </div>
@@ -343,63 +607,231 @@
      <section id="main_content">
        {{ content }}
      </section>
+ 
      <div class="typewriter-container">
-       <span id="typewriter-text"></span><span class="typewriter-cursor"></span>
+       <span id="typewriter-text"></span><span
+class="typewriter-cursor"></span>
      </div>
-     <footer style="margin-top: 40px; padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.1); text-align: center; color: #94a3b8; font-size: 0.85rem;">
+ 
+     <footer style="margin-top: 40px; padding-top: 20px; border-top:
+1px solid rgba(255, 255, 255, 0.1); text-align: center; color: #94a3b8;
+font-size: 0.85rem;">
        <p> E-Link • COPYRIGHT © 2026 Tianyu Bai</p>
      </footer>
    </div>
  </div>
  
- <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
- <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+ <script
+src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+ <script
+src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
  <script>
+   // --- 🌍 双语数据源 ---
    const dialogData_EN = {
-     "start": { text: "Hi! I'm the Connector Guardian. I protect your neural interfaces.", options: [ { text: "🚀 Let's start!", next: "root_menu" } ] },
-     "root_menu": { text: "Select a category to inspect:", options: [ { text: "🌟 What's Special?", next: "innovation" }, { text: "📊 Specifications (Weight/Noise)", next: "specs_menu" }, { text: "🛡️ Reliability & Durability", next: "reliability_menu" }, { text: "🔧 Usage & Compatibility", next: "usage_menu" }, { text: "Just browsing", next: "close" } ] },
-     "innovation": { text: "I feature a novel elastomeric interposer. This means NO precise alignment is needed and ZERO insertion force.", options: [ { text: "Why is 'Zero Force' better?", next: "zero_force" }, { text: "Can it scale up?", next: "scalability" }, { text: "Back to Menu", next: "root_menu" } ] },
-     "zero_force": { text: "Traditional plugs require high force, risking probe fracture. My threaded cap converts rotation into gentle vertical pressure, protecting delicate films.", options: [ { text: "Cool! Back.", next: "innovation" } ] },
-     "scalability": { text: "Yes! The fine-pitch elastomer allows scaling to 1024 channels within the same 25mm footprint. I am future-proof.", options: [ { text: "Got it, Back.", next: "innovation" } ] },
-     "specs_menu": { text: "Checking Diagnostics... Which parameter concerns you?", options: [ { text: "Is it heavy? (Weight)", next: "weight" }, { text: "Does it get hot? (Thermal)", next: "thermal" }, { text: "How clean is the signal? (Noise)", next: "noise" }, { text: "Back to Menu", next: "root_menu" } ] },
-     "weight": { text: "I am ultra-light. Detached weight is only 2.8g. Even housed, I am 57% lighter (6.6g) than competitors, reducing strain on the animal.", options: [ { text: "Good for mice/rats.", next: "specs_menu" } ] },
-     "thermal": { text: "I stay cool. Steady-state temperature is 30.5°C, well below the 37°C biological threshold. No active cooling required.", options: [ { text: "Safe confirmed.", next: "specs_menu" } ] },
-     "noise": { text: "Crystal clear. My noise floor is 2.68 ± 0.46 µV RMS, matching the theoretical limit of the Intan chips. No signal degradation.", options: [ { text: "Great specs.", next: "specs_menu" } ] },
-     "reliability_menu": { text: "I am built to last. What is your concern?", options: [ { text: "Lifespan (Cycles)", next: "cycles" }, { text: "What if I align it wrong?", next: "misalignment" }, { text: "Contact Impedance?", next: "impedance" }, { text: "Back to Menu", next: "root_menu" } ] },
-     "cycles": { text: "Verified for 100+ mating cycles with >97% connection yield. The elastomer shows negligible wear.", options: [ { text: "Solid.", next: "reliability_menu" } ] },
-     "misalignment": { text: "No problem. The elastomer has 'structural redundancy' (pitch < pad size). Even with radial misalignment, the connection holds.", options: [ { text: "Very forgiving.", next: "reliability_menu" } ] },
-     "impedance": { text: "Low and stable. Contact impedance is consistently between 0.3 kΩ and 0.4 kΩ across the array.", options: [ { text: "Acknowledged.", next: "reliability_menu" } ] },
-     "usage_menu": { text: "Designed for researchers. Ask me about usage:", options: [ { text: "Is assembly difficult?", next: "assembly" }, { text: "Compatible Systems?", next: "system" }, { text: "For freely moving animals?", next: "animal" }, { text: "Back to Menu", next: "root_menu" } ] },
-     "assembly": { text: "Easy. No specialized micro-soldering needed. It's a 'plug-and-play' assembly using standard tools.", options: [ { text: "User friendly.", next: "usage_menu" } ] },
-     "system": { text: "Fully compatible with the Intan RHD recording system. Supports 64, 128, and 256 channel configurations.", options: [ { text: "Perfect.", next: "usage_menu" } ] },
-     "animal": { text: "Yes. The low profile fits mechanical commutators, allowing natural behavior without cable twisting.", options: [ { text: "Show me the files!", next: "show_badges" } ] },
-     "show_badges": { text: "Scroll to the bottom! 👇 Those icons are your gateway to the Code, Fabrication Files, and Demo Videos.", options: [ { text: "Thanks, Guardian!", next: "close" } ] }
+     "start": {
+       text: "Hi! I'm the Connector Guardian. I protect your neural interfaces.",
+       options: [ { text: "🚀 Let's start!", next: "root_menu" } ]
+     },
+     "root_menu": {
+       text: "Select a category to inspect:",
+       options: [
+         { text: "🌟 What's Special?", next: "innovation" },
+         { text: "📊 Specifications (Weight/Noise)", next: "specs_menu" },
+         { text: "🛡️ Reliability & Durability", next: "reliability_menu" },
+         { text: "🔧 Usage & Compatibility", next: "usage_menu" },
+         { text: "Just browsing", next: "close" }
+       ]
+     },
+     "innovation": {
+       text: "I feature a novel elastomeric interposer. This means NO precise alignment is needed and ZERO insertion force.",
+       options: [
+         { text: "Why is 'Zero Force' better?", next: "zero_force" },
+         { text: "Can it scale up?", next: "scalability" },
+         { text: "Back to Menu", next: "root_menu" } 
+       ]
+     },
+     "zero_force": {
+       text: "Traditional plugs require high force, risking probe fracture. My threaded cap converts rotation into gentle vertical pressure, protecting delicate films.",
+       options: [ { text: "Cool! Back.", next: "innovation" } ]
+     },
+     "scalability": {
+       text: "Yes! The fine-pitch elastomer allows scaling to 1024 channels within the same 25mm footprint. I am future-proof.",
+       options: [ { text: "Got it, Back.", next: "innovation" } ]
+     },
+     "specs_menu": {
+       text: "Checking Diagnostics... Which parameter concerns you?",
+       options: [
+         { text: "Is it heavy? (Weight)", next: "weight" },
+         { text: "Does it get hot? (Thermal)", next: "thermal" },
+         { text: "How clean is the signal? (Noise)", next: "noise" },
+         { text: "Back to Menu", next: "root_menu" }
+       ]
+     },
+     "weight": {
+       text: "I am ultra-light. Detached weight is only 2.8g. Even housed, I am 57% lighter (6.6g) than competitors, reducing strain on the animal.",
+       options: [ { text: "Good for mice/rats.", next: "specs_menu" } ]
+     },
+     "thermal": {
+       text: "I stay cool. Steady-state temperature is 30.5°C, well below the 37°C biological threshold. No active cooling required.",
+       options: [ { text: "Safe confirmed.", next: "specs_menu" } ]
+     },
+     "noise": {
+       text: "Crystal clear. My noise floor is 2.68 ± 0.46 µV RMS, matching the theoretical limit of the Intan chips. No signal degradation.",
+       options: [ { text: "Great specs.", next: "specs_menu" } ]
+     },
+     "reliability_menu": {
+       text: "I am built to last. What is your concern?",
+       options: [
+         { text: "Lifespan (Cycles)", next: "cycles" },
+         { text: "What if I align it wrong?", next: "misalignment" },
+         { text: "Contact Impedance?", next: "impedance" },
+         { text: "Back to Menu", next: "root_menu" }
+       ]
+     },
+     "cycles": {
+       text: "Verified for 100+ mating cycles with >97% connection yield. The elastomer shows negligible wear.",
+       options: [ { text: "Solid.", next: "reliability_menu" } ]
+     },
+     "misalignment": {
+       text: "No problem. The elastomer has 'structural redundancy' (pitch < pad size). Even with radial misalignment, the connection holds.",
+       options: [ { text: "Very forgiving.", next: "reliability_menu" } ]
+     },
+     "impedance": {
+       text: "Low and stable. Contact impedance is consistently between 0.3 kΩ and 0.4 kΩ across the array.",
+       options: [ { text: "Acknowledged.", next: "reliability_menu" } ]
+     },
+     "usage_menu": {
+       text: "Designed for researchers. Ask me about usage:",
+       options: [
+         { text: "Is assembly difficult?", next: "assembly" },
+         { text: "Compatible Systems?", next: "system" },
+         { text: "For freely moving animals?", next: "animal" },
+         { text: "Back to Menu", next: "root_menu" }
+       ]
+     },
+     "assembly": {
+       text: "Easy. No specialized micro-soldering needed. It's a 'plug-and-play' assembly using standard tools.",
+       options: [ { text: "User friendly.", next: "usage_menu" } ]
+     },
+     "system": {
+       text: "Fully compatible with the Intan RHD recording system. Supports 64, 128, and 256 channel configurations.",
+       options: [ { text: "Perfect.", next: "usage_menu" } ]
+     },
+     "animal": {
+       text: "Yes. The low profile fits mechanical commutators, allowing natural behavior without cable twisting.",
+       options: [ { text: "Show me the files!", next: "show_badges" } ]
+     },
+     "show_badges": {
+       text: "Scroll to the bottom! 👇 Those icons are your gateway to the Code, Fabrication Files, and Demo Videos.",
+       options: [ { text: "Thanks, Guardian!", next: "close" } ]
+     }
    };
  
    const dialogData_ZH = {
-     "start": { text: "你好！我是易链的守护者。由我来保护你的脑机探针。", options: [ { text: "🚀 开始探索！", next: "root_menu" } ] },
-     "root_menu": { text: "系统已就绪。请选择想要查看的类别：", options: [ { text: "🌟 核心亮点", next: "innovation" }, { text: "📊 规格参数 (重量/噪音)", next: "参数菜单" }, { text: "🛡️ 可靠性与耐久度", next: "可靠性菜单" }, { text: "🔧 使用与兼容性", next: "usage_menu" }, { text: "随便看看", next: "close" } ] },
-     "innovation": { text: "我采用了新型弹性体互连技术 (Elastomeric Interposer)。这意味着无需精确对准，且实现了“零插入力”。", options: [ { text: "“零插入力”有什么好处？", next: "零插入力" }, { text: "通道数能扩展吗？", next: "可拓展性" }, { text: "返回主菜单", next: "root_menu" } ] },
-     "零插入力": { text: "传统插头需要很大的力，容易弄断脆弱的探针。我的螺纹盖将旋转转化为轻柔的垂直压力，完美保护薄膜探针。", options: [ { text: "很棒的设计！返回。", next: "innovation" } ] },
-     "可拓展性": { text: "当然！高密度弹性体允许在同样的 25mm 封装内扩展至 1024 通道。我是面向未来的设计。", options: [ { text: "已知晓，返回。", next: "innovation" } ] },
-     "参数菜单": { text: "正在检查诊断数据... 你关心哪个参数？", options: [ { text: "重不重？ (重量)", next: "weight" }, { text: "发热吗？ (热学)", next: "thermal" }, { text: "信号干净吗？ (噪音)", next: "noise" }, { text: "返回主菜单", next: "root_menu" } ] },
-     "weight": { text: "我非常轻。拆卸后仅重 2.8g。即使含外壳，我也比竞品轻 57% (6.6g)，大大减轻了动物的负担。", options: [ { text: "很适合小鼠/大鼠。", next: "specs_menu" } ] },
-     "thermal": { text: "我运转冷静。稳态温度仅为 30.5°C，远低于 37°C 的生物阈值。无需主动散热。", options: [ { text: "安全确认。", next: "specs_menu" } ] },
-     "noise": { text: "噪声很小。我的本底噪声为 2.68 ± 0.46 µV RMS，接近了 Intan 芯片的理论极限。信号无损耗。", options: [ { text: "参数很强。", next: "specs_menu" } ] },
-     "可靠性菜单": { text: "我经久耐用。猜你有可能担心这些？", options: [ { text: "寿命 (贴合次数)", next: "cycles" }, { text: "如果对不准怎么办？", next: "misalignment" }, { text: "接触电阻多大？", next: "impedance" }, { text: "返回主菜单", next: "root_menu" } ] },
-     "cycles": { text: "已验证 100 次以上的插拔循环，连接良率 >97%。弹性导电体几乎没有磨损。", options: [ { text: "很靠谱，已知晓", next: "可靠性菜单" } ] },
-     "misalignment": { text: "弹性体具有“结构冗余”（间距小于焊盘尺寸）。即使径向没对准，依然能稳定连接。", options: [ { text: "容错率很高，已知晓", next: "可靠性菜单" } ] },
-     "impedance": { text: "低且稳定。整个阵列的接触阻抗始终保持在 0.3 kΩ 到 0.4 kΩ 之间。", options: [ { text: "已知晓", next: "可靠性菜单" } ] },
-     "usage_menu": { text: "专为相关领域人员设计。问我关于使用的问题：", options: [ { text: "组装容易吗？", next: "assembly" }, { text: "兼容哪些采集系统？", next: "system" }, { text: "动物能自由活动吗？", next: "animal" }, { text: "返回主菜单", next: "root_menu" } ] },
-     "assembly": { text: "非常容易.即拧即用的模块化设计，告别插拔带来的断针弯针，轻松建立连接", options: [ { text: "已知晓", next: "usage_menu" } ] },
-     "system": { text: "完全兼容Intan RHD记录系统. 支持64，128，256通道设定.", options: [ { text: "完美，已知晓", next: "usage_menu" } ] },
-     "animal": { text: "可以。低剖面设计适配机械换向器 (Commutator)，允许动物自然行为，线缆不打结。", options: [ { text: "我想查看文件", next: "徽章指引" } ] },
-     "徽章指引": { text: "滑到最下面！👇红色图标是你通往代码、制造文件和演示视频的大门。", options: [ { text: "谢谢易链守护者！", next: "关闭对话窗" } ] }
+     "start": {
+       text: "你好！我是易链的守护者。由我来保护你的脑机探针。",
+       options: [ { text: "🚀 开始探索！", next: "root_menu" } ]
+     },
+     "root_menu": {
+       text: "系统已就绪。请选择想要查看的类别：",
+       options: [
+         { text: "🌟 核心亮点", next: "innovation" },
+         { text: "📊 规格参数 (重量/噪音)", next: "参数菜单" },
+         { text: "🛡️ 可靠性与耐久度", next: "可靠性菜单" },
+         { text: "🔧 使用与兼容性", next: "usage_menu" },
+         { text: "随便看看", next: "close" }
+       ]
+     },
+     "innovation": {
+       text: "我采用了新型弹性体互连技术 (Elastomeric Interposer)。这意味着无需精确对准，且实现了“零插入力”。",
+       options: [
+         { text: "“零插入力”有什么好处？", next: "零插入力" },
+         { text: "通道数能扩展吗？", next: "可拓展性" },
+         { text: "返回主菜单", next: "root_menu" } 
+       ]
+     },
+     "零插入力": {
+       text: "传统插头需要很大的力，容易弄断脆弱的探针。我的螺纹盖将旋转转化为轻柔的垂直压力，完美保护薄膜探针。",
+       options: [ { text: "很棒的设计！返回。", next: "innovation" } ]
+     },
+     "可拓展性": {
+       text: "当然！高密度弹性体允许在同样的 25mm 封装内扩展至 1024 通道。我是面向未来的设计。",
+       options: [ { text: "已知晓，返回。", next: "innovation" } ]
+     },
+     "参数菜单": {
+       text: "正在检查诊断数据... 你关心哪个参数？",
+       options: [
+         { text: "重不重？ (重量)", next: "weight" },
+         { text: "发热吗？ (热学)", next: "thermal" },
+         { text: "信号干净吗？ (噪音)", next: "noise" },
+         { text: "返回主菜单", next: "root_menu" }
+       ]
+     },
+     "weight": {
+       text: "我非常轻。拆卸后仅重 2.8g。即使含外壳，我也比竞品轻 57% (6.6g)，大大减轻了动物的负担。",
+       options: [ { text: "很适合小鼠/大鼠。", next: "specs_menu" } ]
+     },
+     "thermal": {
+       text: "我运转冷静。稳态温度仅为 30.5°C，远低于 37°C 的生物阈值。无需主动散热。",
+       options: [ { text: "安全确认。", next: "specs_menu" } ]
+     },
+     "noise": {
+       text: "噪声很小。我的本底噪声为 2.68 ± 0.46 µV RMS，接近了 Intan 芯片的理论极限。信号无损耗。",
+       options: [ { text: "参数很强。", next: "specs_menu" } ]
+     },
+     "可靠性菜单": {
+       text: "我经久耐用。猜你有可能担心这些？",
+       options: [
+         { text: "寿命 (贴合次数)", next: "cycles" },
+         { text: "如果对不准怎么办？", next: "misalignment" },
+         { text: "接触电阻多大？", next: "impedance" },
+         { text: "返回主菜单", next: "root_menu" }
+       ]
+     },
+     "cycles": {
+       text: "已验证 100 次以上的插拔循环，连接良率 >97%。弹性导电体几乎没有磨损。",
+       options: [ { text: "很靠谱，已知晓", next: "可靠性菜单" } ]
+     },
+     "misalignment": {
+       text: "弹性体具有“结构冗余”（间距小于焊盘尺寸）。即使径向没对准，依然能稳定连接。",
+       options: [ { text: "容错率很高，已知晓", next: "可靠性菜单" } ]
+     },
+     "impedance": {
+       text: "低且稳定。整个阵列的接触阻抗始终保持在 0.3 kΩ 到 0.4 kΩ 之间。",
+       options: [ { text: "已知晓", next: "可靠性菜单" } ]
+     },
+     "usage_menu": {
+       text: "专为相关领域人员设计。问我关于使用的问题：",
+       options: [
+         { text: "组装容易吗？", next: "assembly" },
+         { text: "兼容哪些采集系统？", next: "system" },
+         { text: "动物能自由活动吗？", next: "animal" },
+         { text: "返回主菜单", next: "root_menu" }
+       ]
+     },
+     "assembly": {
+       text: "非常容易.即拧即用的模块化设计，告别插拔带来的断针弯针，轻松建立连接",
+       options: [ { text: "已知晓", next: "usage_menu" } ]
+     },
+     "system": {
+       text: "完全兼容Intan RHD记录系统. 支持64，128，256通道设定.",
+       options: [ { text: "完美，已知晓", next: "usage_menu" } ]
+     },
+     "animal": {
+       text: "可以。低剖面设计适配机械换向器 (Commutator)，允许动物自然行为，线缆不打结。",
+       options: [ { text: "我想查看文件", next: "徽章指引" } ]
+     },
+     "徽章指引": {
+       text: "滑到最下面！👇红色图标是你通往代码、制造文件和演示视频的大门。",
+       options: [ { text: "谢谢易链守护者！", next: "关闭对话窗" } ]
+     }
    };
-      
+     
+   // 默认使用英文
    let currentLang = 'en';
    let dialogData = dialogData_EN;
  
+   // ⚡️ 优化：将 Vanta 初始化推迟到页面加载后，不再阻塞首屏
    let vantaEffect;
    window.addEventListener('load', function() {
        if (window.VANTA) {
@@ -410,26 +842,42 @@
            color: 0x3b82f6, backgroundColor: 0x0a0a0f, points: 18.00, maxDistance: 28.00, spacing: 16.00, showDots: true
          });
        }
-   });
 
-   document.addEventListener("DOMContentLoaded", function() {
-       const images = document.querySelectorAll('#main_content img');
-       images.forEach(img => {
-           img.setAttribute('loading', 'lazy');
-           img.setAttribute('decoding', 'async');
-           if (img.complete) {
-               img.classList.add('loaded');
-           } else {
-               img.addEventListener('load', () => {
-                   img.classList.add('loaded');
-               });
-           }
-       });
-   });
+    // ⚡️ 增强优化：GIF 预加载与占位符切换
+    const images = document.querySelectorAll('#main_content img');
+
+    // 创建交叉观察器：当图片距离进入视口还有 200px 时开始加载
+    const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const img = entry.target;
+                
+                // 只有当图片是 GIF 时才处理加载逻辑
+                if (img.src.toLowerCase().endsWith('.gif')) {
+                    if (img.complete) {
+                        img.classList.add('loaded');
+                    } else {
+                        img.onload = () => img.classList.add('loaded');
+                    }
+                } else {
+                    img.classList.add('loaded');
+                }
+                
+                // 加载后停止观察，节省 CPU
+                obs.unobserve(img);
+            }
+        });
+    }, { rootMargin: "0px 0px 400px 0px" }); // 提前 400px 预加载，保证滚动流畅
+
+    images.forEach(img => {
+        img.setAttribute('loading', 'lazy'); // 浏览器原生懒加载辅助
+        observer.observe(img);
+    });
+});
  
    const textsEN = ["Welcome to this webpage！", "Thanks for visiting us!", "Stay tuned!"];
    const textsZH = ["欢迎访问本网页！", "感谢您的关注！", "欢迎常来访问！"];
-   let texts = textsEN;
+   let texts = textsEN; // 默认文本
  
    let textIdx = 0, charIdx = 0, isDeleting = false;
    function type() {
@@ -450,106 +898,203 @@
      const pupils = document.querySelectorAll('.bot-pupil');
      const botContainer = document.getElementById('bot-container');
      const botSpeech = document.getElementById('bot-speech');
+       
      const rpgDialogue = document.getElementById('rpg-dialogue');
      const rpgText = document.getElementById('rpg-text');
      const rpgOptions = document.getElementById('rpg-options');
      const rpgClose = document.querySelector('.rpg-close');
      let typeTimer = null;
+ 
+     // --- 🔥 弹窗逻辑 ---
      const welcomeModal = document.getElementById('welcome-modal');
      const modalKeepDarkBtn = document.getElementById('modal-keep-dark-btn');
-     const modalSwitchLightBtn = document.getElementById('modal-switch-light-btn');
-     const modalLangCheckbox = document.getElementById('modal-lang-toggle-checkbox');
+     const modalSwitchLightBtn =
+document.getElementById('modal-switch-light-btn');
+     const modalLangCheckbox =
+document.getElementById('modal-lang-toggle-checkbox');
      let modalIsZh = false; 
-     setTimeout(() => { welcomeModal.classList.add('show'); }, 100);
+ 
+     // 0.1秒后显示弹窗
+     setTimeout(() => {
+       welcomeModal.classList.add('show');
+     }, 100);
+ 
+     // --- 🤖 新增：空闲时自动轮播提示语 ---
      let idleInterval;
      let tipIndex = 0;
+ 
      function startIdleTips() {
        if(idleInterval) clearInterval(idleInterval);
+       
        const enTips = ["Click me for guide!", "I'm here to help!"];
        const zhTips = ["我是E-Link专属管家", "欢迎随时“敲”我哈！"];
+       
+       // 循环执行函数
        const runCycle = () => {
-         const tips = currentLang === 'en' ? enTips : zhTips;
-         botSay(tips[tipIndex], 3000); 
-         tipIndex = (tipIndex + 1) % 2;
+          const tips = currentLang === 'en' ? enTips : zhTips;
+          // 显示当前提示语，停留 3000ms
+          botSay(tips[tipIndex], 3000); 
+          // 准备下一句的索引
+          tipIndex = (tipIndex + 1) % 2;
        };
-       runCycle(); 
+ 
+       runCycle(); // 立即执行第一次
+       
+       // 每 3.5 秒执行一次 (留出 0.5 秒的气泡消失动画时间)
        idleInterval = setInterval(runCycle, 3500);
      }
+ 
      function closeModal() {
        welcomeModal.classList.remove('show');
-       if (modalIsZh) { if (currentLang !== 'zh') { langToggle.click(); } } else { if (currentLang === 'zh') { langToggle.click(); } }
-       setTimeout(() => { botContainer.classList.add('attention-jump'); startIdleTips(); setTimeout(() => { botContainer.classList.remove('attention-jump'); }, 3200); }, 100);
+       
+       if (modalIsZh) {
+         if (currentLang !== 'zh') {
+            langToggle.click(); 
+         }
+       } else {
+         if (currentLang === 'zh') {
+            langToggle.click();
+         }
+       }
+ 
+       setTimeout(() => {
+           botContainer.classList.add('attention-jump'); 
+           
+           // 🔥 这里修改：不再只说一句话，而是开始循环
+           startIdleTips();
+ 
+           setTimeout(() => {
+               botContainer.classList.remove('attention-jump');
+           }, 3200);
+       }, 100);
      }
+ 
      modalKeepDarkBtn.addEventListener('click', closeModal);
-     modalSwitchLightBtn.addEventListener('click', () => { themeToggle.click(); closeModal(); });
+     
+     modalSwitchLightBtn.addEventListener('click', () => {
+       themeToggle.click(); 
+       closeModal();        
+     });
+ 
+     // 弹窗内的 Toggle Switch 监听
      modalLangCheckbox.addEventListener('change', () => {
        const enTexts = document.querySelectorAll('.m-en');
        const zhTexts = document.querySelectorAll('.m-zh');
+       
        modalIsZh = modalLangCheckbox.checked;
-       if (modalIsZh) { enTexts.forEach(el => el.style.display = 'none'); zhTexts.forEach(el => el.style.display = 'inline'); } else { zhTexts.forEach(el => el.style.display = 'none'); enTexts.forEach(el => el.style.display = 'inline'); }
+ 
+       if (modalIsZh) {
+         enTexts.forEach(el => el.style.display = 'none');
+         zhTexts.forEach(el => el.style.display = 'inline'); 
+       } else {
+         zhTexts.forEach(el => el.style.display = 'none');
+         enTexts.forEach(el => el.style.display = 'inline');
+       }
      });
+ 
+     // --- 切换逻辑 ---
      const themeToggle = document.getElementById('theme-toggle');
      const langToggle = document.getElementById('lang-toggle');
      let isLight = false;
+       
      themeToggle.addEventListener('click', () => {
        isLight = !isLight;
        document.body.classList.toggle('light-mode');
+       
        if (isLight) {
          themeToggle.textContent = "🌙"; 
-         if (vantaEffect) { vantaEffect.setOptions({ color: 0x2563eb, backgroundColor: 0xf1f5f9, points: 12.00, maxDistance: 24.00 }); }
+         if (vantaEffect) {
+           vantaEffect.setOptions({ color: 0x2563eb, backgroundColor: 0xf1f5f9,
+points: 12.00, maxDistance: 24.00 });
+         }
        } else {
          themeToggle.textContent = "☀️"; 
-         if (vantaEffect) { vantaEffect.setOptions({ color: 0x3b82f6, backgroundColor: 0x0a0a0f, points: 18.00, maxDistance: 28.00 }); }
+         if (vantaEffect) {
+           vantaEffect.setOptions({ color: 0x3b82f6, backgroundColor: 0x0a0a0f,
+points: 18.00, maxDistance: 28.00 });
+         }
        }
      });
+ 
      langToggle.addEventListener('click', () => {
        const enContent = document.querySelectorAll('.lang-en');
        const zhContent = document.querySelectorAll('.lang-zh');
+ 
        if (currentLang === 'en') {
-           currentLang = 'zh'; dialogData = dialogData_ZH; texts = textsZH; langToggle.textContent = "中 / 英";
-           enContent.forEach(el => el.style.display = 'none'); zhContent.forEach(el => el.style.display = 'block');
+           currentLang = 'zh';
+           dialogData = dialogData_ZH; 
+           texts = textsZH;            
+           langToggle.textContent = "中 / 英";
+           
+           enContent.forEach(el => el.style.display = 'none');
+           zhContent.forEach(el => el.style.display = 'block');
+ 
        } else {
-           currentLang = 'en'; dialogData = dialogData_EN; texts = textsEN; langToggle.textContent = "EN / CN";
-           enContent.forEach(el => el.style.display = 'block'); zhContent.forEach(el => el.style.display = 'none');
+           currentLang = 'en';
+           dialogData = dialogData_EN;
+           texts = textsEN;
+           langToggle.textContent = "EN / CN";
+ 
+           enContent.forEach(el => el.style.display = 'block');
+           zhContent.forEach(el => el.style.display = 'none');
        }
+       
        textIdx = 0; charIdx = 0; isDeleting = false;
+       
        if(rpgDialogue.classList.contains('active')) closeDialogue();
-       if (!rpgDialogue.classList.contains('active') && idleInterval) { startIdleTips(); }
+       
+       // 切换语言时，如果对话框没打开，立即更新提示语
+       if (!rpgDialogue.classList.contains('active') && idleInterval) {
+            // 重置循环以即时刷新语言
+            startIdleTips();
+       }
      });
+ 
      let mouseX = window.innerWidth / 2;
      let mouseY = 100;
+ 
      window.addEventListener('mousemove', (e) => {
        mouseX = e.clientX;
        mouseY = e.clientY;
-       if(cursorDot) { cursorDot.style.left = `${mouseX}px`; cursorDot.style.top = `${mouseY}px`; }
-       if(cursorOutline) { cursorOutline.animate({ left: `${mouseX}px`, top: `${mouseY}px` }, { duration: 500, fill: "forwards" }); }
+       if(cursorDot) { cursorDot.style.left = `${mouseX}px`;
+cursorDot.style.top = `${mouseY}px`; }
+       if(cursorOutline) { cursorOutline.animate({ left: `${mouseX}px`, top:
+`${mouseY}px` }, { duration: 500, fill: "forwards" }); }
        if (window.innerWidth > 768 && container) {
          const rx = (window.innerWidth / 2 - mouseX) / 50;
          const ry = (window.innerHeight / 2 - mouseY) / 50;
          container.style.transform = `rotateY(${rx * -1}deg) rotateX(${ry}deg)`;
          const rect = container.getBoundingClientRect();
-         container.style.setProperty("--mouse-x", `${mouseX - rect.left}px`);
-         container.style.setProperty("--mouse-y", `${mouseY - rect.top}px`);
+         container.style.setProperty("--mouse-x", `${mouseX -
+rect.left}px`);
+         container.style.setProperty("--mouse-y", `${mouseY -
+rect.top}px`);
        }
        pupils.forEach(p => {
          const rect = p.parentElement.getBoundingClientRect();
          const cx = rect.left + rect.width / 2, cy = rect.top + rect.height / 2;
          const angle = Math.atan2(mouseY - cy, mouseX - cx);
          const dist = Math.min(6, Math.hypot(mouseX - cx, mouseY - cy) / 10);
-         p.style.transform = `translate(calc(-50% + ${Math.cos(angle) * dist}px), calc(-50% + ${Math.sin(angle) * dist}px))`;
+         p.style.transform = `translate(calc(-50% + ${Math.cos(angle) * dist}px),
+calc(-50% + ${Math.sin(angle) * dist}px))`;
        });
      });
+ 
      window.addEventListener('scroll', () => {
-       const scrolled = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+       const scrolled = (window.scrollY /
+(document.documentElement.scrollHeight - window.innerHeight)) * 100;
        const pb = document.getElementById("progress-bar");
        if(pb) pb.style.width = scrolled + "%";
        if(botContainer && window.innerWidth > 768) {
-         if(window.scrollY > 200) { botContainer.classList.add('fixed-mode'); } 
+         if(window.scrollY > 200) { botContainer.classList.add('fixed-mode');
+} 
          else { botContainer.classList.remove('fixed-mode'); }
        }
      });
+ 
      function botSay(text, duration = 2000) {
-       if(!botSpeech || !botContainer || rpgDialogue.classList.contains('active')) return; 
+       if(!botSpeech || !botContainer ||
+rpgDialogue.classList.contains('active')) return; 
        botSpeech.textContent = text;
        botContainer.classList.add('speaking');
        if(botContainer.speechTimer) clearTimeout(botContainer.speechTimer);
@@ -557,7 +1102,9 @@
          botContainer.classList.remove('speaking');
        }, duration);
      }
+       // 第一次点进去会有打字特效（仪式感），想退出来换个选项时，一瞬间就回去了（效率感）
      function showDialogueNode(nodeKey, isFastMode = false) {
+       // 1. 处理关闭逻辑
        if(nodeKey === 'close') { 
            closeDialogue(); 
            botContainer.classList.add('interaction-done');
@@ -565,30 +1112,73 @@
            botSay(byeText, 3000); 
            return; 
        }    
+       
        const node = dialogData[nodeKey];
        if(!node) return;
+       
+       // 清空旧内容
        rpgOptions.innerHTML = ''; 
        if(typeTimer) clearInterval(typeTimer);
+ 
+       // 定义一个显示按钮的函数 (复用逻辑)
        const showButtons = () => {
            node.options.forEach((opt, idx) => {
-             const btn = document.createElement('div');
+             const btn =
+document.createElement('div');
              btn.className = 'rpg-btn'; 
-             btn.textContent = '> ' + opt.text;
-             const isBackAction = opt.text.includes("Back") || opt.text.includes("返回");
-             if(isFastMode) { btn.style.opacity = 1; btn.style.transform = 'translateX(0)'; btn.style.animation = 'none'; } else { btn.style.animationDelay = `${idx * 0.1}s`; }
-             btn.onclick = (e) => { e.stopPropagation(); showDialogueNode(opt.next, isBackAction); };
+             btn.textContent = '> ' +
+opt.text;
+             
+             // 关键点1：检查按钮文字是否包含“返回”或“Back”
+             // 如果包含，点击它进入下一个节点时，就开启“快速模式”
+             const isBackAction =
+opt.text.includes("Back") || opt.text.includes("返回");
+ 
+             // 样式处理：如果是快速模式，按钮不需要淡入延迟
+             if(isFastMode) {
+                 btn.style.opacity = 1;
+                 btn.style.transform =
+'translateX(0)';
+                 btn.style.animation = 'none';
+// 取消动画直接显示
+             } else {
+                 btn.style.animationDelay =
+`${idx * 0.1}s`;
+             }
+ 
+             btn.onclick = (e) => { 
+                 e.stopPropagation(); 
+                 // 关键点2：把判断结果传给下一次调用
+                 showDialogueNode(opt.next,
+isBackAction); 
+             };
              rpgOptions.appendChild(btn);
            });
        };
-       if (isFastMode) { rpgText.textContent = node.text; showButtons(); } else {
+ 
+       // 2. 根据模式决定显示方式
+       if (isFastMode) {
+           // 🔥 快速模式 (点击返回时触发)：
+           // 直接显示全部文字，不打字
+           rpgText.textContent = node.text; 
+           // 立即显示按钮
+           showButtons();
+       } else {
+           // 🐢 普通模式 (正常流程)：
+           // 还是以前的打字机效果
            rpgText.textContent = '';
            let i = 0;
            typeTimer = setInterval(() => {
-             rpgText.textContent += node.text.charAt(i); i++;
-             if(i >= node.text.length) { clearInterval(typeTimer); showButtons(); }
-           }, 30);
+             rpgText.textContent +=
+node.text.charAt(i); i++;
+             if(i >= node.text.length) {
+               clearInterval(typeTimer);
+               showButtons();
+             }
+           }, 30); // 打字速度
        }
      }
+ 
      function openDialogue() {
        if(rpgDialogue.classList.contains('active')) return;
        rpgDialogue.classList.add('active');
@@ -596,28 +1186,44 @@
        botContainer.classList.add('hint-removed'); 
        showDialogueNode('start');
      }
+ 
      function closeDialogue() {
        rpgDialogue.classList.remove('active');
        botContainer.classList.remove('speaking');
-       setTimeout(() => { rpgText.textContent = ''; rpgOptions.innerHTML = ''; }, 300);
+       setTimeout(() => { rpgText.textContent = ''; rpgOptions.innerHTML =
+''; }, 300);
      }
+ 
      if(botContainer) {
        botContainer.addEventListener('click', (e) => {
          e.stopPropagation();
-         if (idleInterval) { clearInterval(idleInterval); idleInterval = null; }
+         // 🔥 只要用户点击了机器人，就永久停止提示语循环
+         if (idleInterval) {
+             clearInterval(idleInterval);
+             idleInterval = null;
+         }
          if(botContainer.speechTimer) clearTimeout(botContainer.speechTimer); 
-         botSpeech.textContent = "";                    
+         botSpeech.textContent = "";                   
          botContainer.classList.remove('speaking'); 
-         if(rpgDialogue.classList.contains('active')) closeDialogue(); else openDialogue();
+         if(rpgDialogue.classList.contains('active')) closeDialogue();
+         else openDialogue();
        });
      }
-     setTimeout(() => { const guideText = currentLang === 'en' ? "Click me for guide!" : "点击我答疑解惑"; botSay(guideText, 60000); }, 1000);
+ 
+     // 初始加载时显示提示语
+     setTimeout(() => {
+         const guideText = currentLang === 'en' ? "Click me for guide!"
+: "点击我答疑解惑";
+         botSay(guideText, 60000); 
+     }, 1000);
+ 
      const badges = document.querySelectorAll('.nav-badges a');
      badges.forEach(b => {
        b.addEventListener('mouseenter', () => {
          document.body.classList.add('badge-hovering', 'hovering');
          if(vantaEffect) vantaEffect.setOptions({ color: 0x60a5fa });
-         const accessText = currentLang === 'en' ? "Accessing..." : "正在访问...";
+         const accessText = currentLang === 'en' ? "Accessing..." :
+"正在访问...";
          botSay(accessText, 1500);
        });
        b.addEventListener('mouseleave', () => {
@@ -628,44 +1234,136 @@
          e.preventDefault();
          const url = this.href;
          badges.forEach((sib, idx) => {
-             const img = sib.querySelector('img');
-             img.style.animationDelay = `${Math.abs(idx - [...badges].indexOf(this)) * 0.06}s`;
+             const img =
+sib.querySelector('img');
+             img.style.animationDelay =
+`${Math.abs(idx - [...badges].indexOf(this)) * 0.06}s`;
              img.classList.add('rippling');
          });
          setTimeout(() => window.location.href = url, 500);
        });
      });
+ 
+     // 🔥 --- 神经元流星特效逻辑 --- 🔥
      const canvas = document.getElementById('meteor-canvas');
      const ctx = canvas.getContext('2d');
      let width, height;
-     function resizeCanvas() { width = window.innerWidth; height = window.innerHeight; canvas.width = width; canvas.height = height; }
+     
+     // 调整画布尺寸
+     function resizeCanvas() {
+       width = window.innerWidth;
+       height = window.innerHeight;
+       canvas.width = width;
+       canvas.height = height;
+     }
      window.addEventListener('resize', resizeCanvas);
      resizeCanvas();
+ 
      class Meteor {
-       constructor() { this.reset(); }
+       constructor() {
+         this.reset();
+       }
+       
        reset() {
-         this.x = Math.random() * width; this.y = Math.random() * height;
-         this.len = Math.random() * 100 + 50; this.speed = Math.random() * 1 + 1; this.size = Math.random() * 1 + 0.5;
-         this.angle = (Math.PI * 0.75) + (Math.random() - 0.5) * 0.5; this.opacity = 0;
-         this.state = 'fadein'; this.life = 0; this.maxLife = Math.random() * 30 + 20;
+         // 随机起点 (在画布任意位置)
+         this.x = Math.random() * width;
+         this.y = Math.random() * height;
+         
+         // 随机长度 (50px ~ 150px)
+         this.len = Math.random() * 100 + 50;
+         
+         // 随机速度 (慢一点，像流星)
+         this.speed = Math.random() * 1 + 1;
+         
+         // 随机大小 (非常细)
+         this.size = Math.random() * 1 + 0.5;
+         
+         // ✅ 规律化：统一往“左下角”飞 (约135度)，带一点点随机散射
+         // Math.PI * 0.75 是标准的左下角方向
+         // 后面的计算是为了让它们不要完全平行，有一点自然的散开感
+         this.angle = (Math.PI * 0.75) + (Math.random() - 0.5) * 0.5;
+         
+         // 初始透明度
+         this.opacity = 0;
+         
+         // 生命周期状态
+         this.state = 'fadein'; // fadein, active, fadeout
+         this.life = 0;
+         this.maxLife = Math.random() * 30 + 20; // 存活帧数
        }
+       
        update() {
-         this.x += Math.cos(this.angle) * this.speed; this.y += Math.sin(this.angle) * this.speed;
-         if(this.state === 'fadein') { this.opacity += 0.1; if(this.opacity >= 1) this.state = 'active'; } else if(this.state === 'active') { this.life++; if(this.life > this.maxLife) this.state = 'fadeout'; } else if(this.state === 'fadeout') { this.opacity -= 0.05; if(this.opacity <= 0) this.reset(); }
-         if(this.x < -100 || this.x > width + 100 || this.y < -100 || this.y > height + 100) { this.reset(); }
+         // 移动
+         this.x += Math.cos(this.angle) * this.speed;
+         this.y += Math.sin(this.angle) * this.speed;
+         
+         // 状态机
+         if(this.state === 'fadein') {
+            this.opacity += 0.1;
+            if(this.opacity >= 1) this.state = 'active';
+         } else if(this.state === 'active') {
+            this.life++;
+            if(this.life > this.maxLife) this.state = 'fadeout';
+         } else if(this.state === 'fadeout') {
+            this.opacity -= 0.05;
+            if(this.opacity <= 0) this.reset();
+         }
+         
+         // 边界检查 (出了屏幕就重置)
+         if(this.x < -100 || this.x > width + 100 || this.y < -100 ||
+this.y > height + 100) {
+            this.reset();
+         }
        }
+       
        draw() {
          if(this.opacity <= 0) return;
-         const tailX = this.x - Math.cos(this.angle) * this.len; const tailY = this.y - Math.sin(this.angle) * this.len;
+         
+         // 计算尾巴坐标
+         const tailX = this.x - Math.cos(this.angle) * this.len;
+         const tailY = this.y - Math.sin(this.angle) * this.len;
+         
+         // 创建渐变：头亮尾暗
          const gradient = ctx.createLinearGradient(this.x, this.y, tailX, tailY);
-         gradient.addColorStop(0, `rgba(96, 165, 250, ${this.opacity})`); gradient.addColorStop(1, `rgba(59, 130, 246, 0)`);
-         ctx.beginPath(); ctx.moveTo(this.x, this.y); ctx.lineTo(tailX, tailY); ctx.strokeStyle = gradient; ctx.lineWidth = this.size; ctx.lineCap = 'round'; ctx.stroke();
+         // 颜色匹配你的主题色 #3b82f6 (RGB: 59, 130, 246)
+         gradient.addColorStop(0, `rgba(96, 165, 250, ${this.opacity})`); // 亮蓝头部
+         gradient.addColorStop(1, `rgba(59, 130, 246, 0)`);   // 透明尾部
+         
+         ctx.beginPath();
+         ctx.moveTo(this.x, this.y);
+         ctx.lineTo(tailX, tailY);
+         ctx.strokeStyle = gradient;
+         ctx.lineWidth = this.size;
+         ctx.lineCap = 'round';
+         ctx.stroke();
        }
      }
+     
+     // 创建一批流星
      const meteors = [];
-     for(let i=0; i<6; i++) { const m = new Meteor(); m.opacity = 0; m.life = Math.random() * 50; meteors.push(m); }
-     function animateMeteors() { ctx.clearRect(0, 0, width, height); meteors.forEach(m => { m.update(); m.draw(); }); requestAnimationFrame(animateMeteors); }
+     const meteorCount = 6; // 数量适中，既不杂乱又有氛围
+     for(let i=0; i<meteorCount; i++) {
+        const m = new Meteor();
+        // 错开初始状态，避免同时出现
+        m.opacity = 0; 
+        m.life = Math.random() * 50;
+        meteors.push(m);
+     }
+     
+     function animateMeteors() {
+       ctx.clearRect(0, 0, width, height);
+       
+       meteors.forEach(m => {
+         m.update();
+         m.draw();
+       });
+       
+       requestAnimationFrame(animateMeteors);
+     }
+     
      animateMeteors();
+     // 🔥 --- 流星特效结束 --- 🔥
+ 
    });
  </script>
  </body>
