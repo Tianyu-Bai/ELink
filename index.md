@@ -87,22 +87,29 @@ title: E-Link Home
     100% { transform: translateX(40px) rotate(5deg); opacity: 0; }
   }
 
-  /* --- 新的: 双手缩放动作 (水平拉开) --- */
-  /* 左手：指向右，向左移动 */
-  @keyframes move-zoom-left-horizontal {
-    0% { transform: translateX(-5px); opacity: 0; } /* 从靠近中心开始 */
+/* --- 修正: 双手缩放动作 (对角线拉开) --- */
+  
+  /* 左手 (👉): 位于左下，向左下角拉开 */
+  @keyframes move-zoom-left-diagonal {
+    /* 初始位置：X轴向左偏移30px，Y轴向下偏移15px -> 避开中心防止重叠 */
+    0% { transform: translate(-30px, 15px); opacity: 0; } 
     20% { opacity: 1; }
     80% { opacity: 1; }
-    100% { transform: translateX(-75px); opacity: 0; } /* 向左大幅拉开 */
+    /* 结束位置：大幅度向左下角移动 */
+    100% { transform: translate(-90px, 65px); opacity: 0; } 
   }
-  /* 右手：指向左，向右移动 */
-  @keyframes move-zoom-right-horizontal {
-    0% { transform: translateX(5px); opacity: 0; } /* 从靠近中心开始 */
+  
+  /* 右手 (👈): 位于右上，向右上角拉开 */
+  @keyframes move-zoom-right-diagonal {
+    /* 初始位置：X轴向右偏移30px，Y轴向上偏移15px -> 避开中心防止重叠 */
+    0% { transform: translate(30px, -15px); opacity: 0; } 
     20% { opacity: 1; }
     80% { opacity: 1; }
-    100% { transform: translateX(75px); opacity: 0; } /* 向右大幅拉开 */
+    /* 结束位置：大幅度向右上角移动 */
+    100% { transform: translate(90px, -65px); opacity: 0; } 
   }
 
+  
   /* =========================================
      3. 容器与图标样式
      ========================================= */
@@ -153,14 +160,13 @@ title: E-Link Home
      top: 15px; /* 稍微往上提一点，让两个手指水平对齐更好看 */
   }
 
-  /* 应用新的水平动画 */
+/* 应用新的对角线动画 */
   .mode-zoom .hand-left {
-    animation: move-zoom-left-horizontal 1.5s infinite ease-in-out;
+    animation: move-zoom-left-diagonal 1.5s infinite ease-in-out;
   }
   .mode-zoom .hand-right {
-    animation: move-zoom-right-horizontal 1.5s infinite ease-in-out;
+    animation: move-zoom-right-diagonal 1.5s infinite ease-in-out;
   }
-
   .gesture-text {
     color: white;
     font-family: sans-serif;
