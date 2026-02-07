@@ -215,7 +215,7 @@ title: E-Link Home
     </div>
 
   </model-viewer>
-</div> /* 结束 */
+</div> 
 
 <span id="en-overview"></span>
 
@@ -719,8 +719,6 @@ This project is open-source and available under the **MIT License**. Click the b
 
   </model-viewer>
 </div>
-
-
 
 <span id="cn-overview"></span>
 ## 📖 概览
