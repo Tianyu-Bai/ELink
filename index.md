@@ -473,11 +473,11 @@ This project is open-source and available under the **MIT License**. Click the b
       </tr>
       <tr>
         <td><b>定制化 256Ch 头部放大器</b></td>
-        <td>针对高密度 128/256 通道信号采集优化的形状因数记录接口</td>
+        <td>针对高密度 128/256 通道信号采集优化的记录接口</td>
       </tr>
       <tr>
         <td><b>泡沫垫圈</b></td>
-        <td>提供柔性压缩，确保弹性导电基体上方的电气接触均匀</td>
+        <td>提供柔性压缩层，确保弹性导电基体上方的电气接触均匀</td>
       </tr>
       <tr>
         <td><b>转接PCB</b></td>
