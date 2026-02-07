@@ -1,7 +1,7 @@
 ---
 layout: default
 title: E-Link Home
-glb_path: "Videos/RHD_example.glb"
+glb_path: "https://tianyu-bai.github.io/E-Link/Videos/RHD_example.glb"
 ---
 
 <div class="lang-en" markdown="1">
