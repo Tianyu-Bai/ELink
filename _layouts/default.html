@@ -250,16 +250,27 @@
   }
 
   /* --- 🎬 3D 模型弹窗样式 --- */
-  .video-modal {
-    position: fixed; inset: 0;
-    background: rgba(0, 0, 0, 0.9); /* 深色背景 */
-    z-index: 100005; /* 只有它能盖住机器人 */
-    display: flex; justify-content: center; align-items: center;
-    opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
-    backdrop-filter: blur(10px);
-  }
-  .video-modal.show { opacity: 1; pointer-events: auto; }
+.video-modal {
+  position: fixed; inset: 0;
+  background: rgba(0, 0, 0, 0.9);
+  z-index: 100005; 
+  display: flex; justify-content: center; align-items: center;
+  opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+  backdrop-filter: blur(10px);
+  
+  /* 🔥🔥🔥 关键修复：弹窗层级太高盖住了自定义光标，必须强制恢复系统鼠标！ */
+  cursor: auto !important; 
+}
 
+/* 让模型查看器也显式使用抓手图标 */
+model-viewer {
+  width: 100%; height: 500px; background-color: #0f172a;
+  cursor: grab;
+}
+model-viewer:active {
+  cursor: grabbing;
+}
+ 
   .video-content {
     width: 90%; max-width: 800px;
     background: rgba(15, 23, 42, 1);
@@ -351,19 +362,20 @@
       <span class="video-close" onclick="closeVideoModal()">×</span>
     </div>
 
-   <model-viewer 
-      src="{{ page.glb_path }}" 
-      alt="3D Model"
-      auto-rotate
-      camera-controls
-      shadow-intensity="1"
-      style="width: 100%; height: 500px; background-color: #0f172a;"
-    ></model-viewer>
-    
+   <model-viewer
+  src="{{ page.glb_path }}"
+  alt="3D Model"
+  auto-rotate
+  camera-controls
+  shadow-intensity="1"
+  environment-image="neutral" 
+  exposure="1"
+  style="width: 100%; height: 500px; background-color: #0f172a;"
+>
+  <div slot="progress-bar" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #3b82f6; font-family: sans-serif; background: rgba(0,0,0,0.8); padding: 10px 20px; border-radius: 8px;">
+    Loading 3D Model... 📦
   </div>
-</div>
-{% endif %}
-
+</model-viewer>
     
 <div id="welcome-modal" class="welcome-modal">
   <div class="modal-content">
@@ -716,26 +728,21 @@
 
   // 🔥 第二阶段：所有资源加载完毕（Page Load），开始静默下载动图
   window.addEventListener('load', function() {
-      // 找到所有GIF图片和视频和3D模型
- const heavyMedia = document.querySelectorAll('img[src$=".gif"], video, model-viewer');
-
+      // 找到所有GIF图片、视频和3D模型
+      const heavyMedia = document.querySelectorAll('img[src$=".gif"], video, model-viewer');
+      
       heavyMedia.forEach(media => {
-    // ... 原有逻辑 ...
-    
-    // 如果是 3D 模型，设置 eager 加载
-    if (media.tagName === 'MODEL-VIEWER') {
-        media.setAttribute('loading', 'eager');
-    }
-});
-   
-      heavyMedia.forEach(media => {
-          // 强制改为 Eager，利用空闲带宽下载
-          // 这样用户滑下去时，动图已经准备好了
+          // 1. 通用操作：强制改为 Eager，利用空闲带宽下载
           media.setAttribute('loading', 'eager');
           
-          // 如果是视频，设置预加载
+          // 2. 针对 Video 的特殊处理
           if(media.tagName === 'VIDEO') {
               media.setAttribute('preload', 'auto');
+          }
+          
+          // 3. 针对 3D 模型的特殊处理 (Model-Viewer 支持 loading 属性)
+          if(media.tagName === 'MODEL-VIEWER') {
+              media.setAttribute('loading', 'eager');
           }
       });
   });
