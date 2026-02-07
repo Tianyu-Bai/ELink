@@ -1,7 +1,7 @@
 ---
 layout: default
 title: E-Link Home
-glb_path: "/RHD_example.glb"   # 👈 定义模型路径
+glb_path: "/Videos/RHD_example.glb"
 ---
 
 <div class="lang-en" markdown="1">
