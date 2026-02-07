@@ -47,6 +47,16 @@ title: E-Link Home
 </div>
 </div>
 
+<div style="text-align: center; margin: 30px 0;">
+  <button 
+    onclick="openVideoModal()" 
+    style="background: #3b82f6; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-family: inherit; font-weight: bold; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);"
+  >
+    🧊 View Interactive 3D Model
+  </button>
+  <p style="font-size: 0.8rem; color: #94a3b8; margin-top: 5px;">(Click to rotate and zoom)</p>
+</div>
+
 <span id="en-overview"></span>
 
 ## 📖 Overview
