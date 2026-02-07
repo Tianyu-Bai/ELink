@@ -292,9 +292,6 @@
    text-align: center; font-size: 0.65rem; color: #94a3b8; font-family: 'JetBrains Mono', monospace; pointer-events: none; opacity: 0.6; 
   }
  
- /* 当弹窗开启时，强制恢复系统鼠标指针 */
-body.modal-open { cursor: auto !important; }
- 
   /* --- 🎬 视频弹窗样式 --- */
   .video-modal {
    position: fixed; inset: 0;
@@ -397,7 +394,7 @@ body.modal-open { cursor: auto !important; }
 class="video-modal">
  <div class="video-content">
    <div class="video-header">
-     <span>📽️ DEMO Video</span>
+     <span>📽️ DEMO REVIEW PROTOCOL</span>
      <span class="video-close"
 onclick="closeVideoModal()">×</span>
    </div>
@@ -528,6 +525,7 @@ class="typewriter-cursor"></span>
      options: [ 
         { text: "🚀 Click Here to Explore with Me!", next: "root_menu" } 
         { text: "🎬 Watch Intro Video", next: "play_video" }, // 🔥 新增
+
      ]
    },
    // 🔥 新增：视频处理节点
@@ -548,7 +546,7 @@ class="typewriter-cursor"></span>
    "innovation": {
      text: "I feature a novel elastomeric interposer. This means NO precise alignment is needed and ZERO insertion force.",
      options: [
-       { text: "Why is 'Zero Insertion Force' better?", next: "zero_force" },
+       { text: "Why is 'Zero Force' better?", next: "zero_force" },
        { text: "Can it scale up?", next: "scalability" },
        { text: "Back to Menu", next: "root_menu" } 
      ]
@@ -562,7 +560,7 @@ class="typewriter-cursor"></span>
      options: [ { text: "Got it, Back.", next: "innovation" } ]
    },
    "specs_menu": {
-     text: "💡 Checking Diagnostics... Which parameter concerns you?",
+     text: "💡Checking Diagnostics... Which parameter concerns you?",
      options: [
        { text: "Is it heavy? (Weight)", next: "weight" },
        { text: "Does it get hot? (Thermal)", next: "thermal" },
@@ -583,7 +581,7 @@ class="typewriter-cursor"></span>
      options: [ { text: "Great specs.", next: "specs_menu" } ]
    },
    "reliability_menu": {
-     text: "🗨️I am built to last. What is your concern?",
+     text: "I am built to last. What is your concern?",
      options: [
        { text: "Lifespan (Cycles)", next: "cycles" },
        { text: "What if I align it wrong?", next: "misalignment" },
@@ -636,6 +634,7 @@ class="typewriter-cursor"></span>
      options: [ 
        { text: "🚀 点击和我一同探索!", next: "root_menu" } 
        { text: "🎬 观看演示视频", next: "play_video" }, // 🔥 新增
+   
      ]
    },
    // 🔥 新增：视频处理节点
@@ -656,7 +655,7 @@ class="typewriter-cursor"></span>
    "innovation": {
      text: "我采用了新型弹性体互连技术 (Elastomeric Interposer)。这意味着无需精确对准，且实现了“零插入力”。",
      options: [
-       { text: "“零插入力”有什么好处？", next: "零插入力" },
+       { text: "零插入力"有什么好处？", next: "零插入力" },
        { text: "通道数能扩展吗？", next: "可拓展性" },
        { text: "返回主菜单", next: "root_menu" } 
      ]
@@ -670,7 +669,7 @@ class="typewriter-cursor"></span>
      options: [ { text: "已知晓，返回。", next: "innovation" } ]
    },
    "参数菜单": {
-     text: "💡正在检查诊断我的数据库... 你关心哪个参数？",
+     text: "💡正在检查我的数据库... 你关心哪个参数？",
      options: [
        { text: "重不重？ (重量)", next: "weight" },
        { text: "发热吗？ (热学)", next: "thermal" },
@@ -691,7 +690,7 @@ class="typewriter-cursor"></span>
      options: [ { text: "参数很强。", next: "specs_menu" } ]
    },
    "可靠性菜单": {
-     text: "🗨️我经久耐用。猜你有可能担心以下？",
+     text: "我经久耐用。猜你有可能担心以下？",
      options: [
        { text: "寿命 (贴合次数)", next: "cycles" },
        { text: "如果对不准怎么办？", next: "misalignment" },
@@ -1095,28 +1094,24 @@ class="typewriter-cursor"></span>
    const videoModal = document.getElementById('video-modal');
    const guardianVideo = document.getElementById('guardian-video');
  
-  window.openVideoModal = function() {
-      videoModal.classList.add('show');
-      // 🔥 关键修改：给 body 加个类，显示系统鼠标，否则你没法点播放键
-      document.body.classList.add('modal-open'); 
-      
-      botContainer.classList.add('guide-mode');
-      const clickText = currentLang === 'en' ? "Click the Play button here! 👉" : "请点击中间的播放按钮！👉";
-      botSay(clickText, 4000); 
-      closeDialogue(); 
+   window.openVideoModal = function() {
+     videoModal.classList.add('show');
+     // 🔥 机器人进入引导模式
+     botContainer.classList.add('guide-mode');
+     const clickText = currentLang === 'en' ? "Click the Play button here! 👉" : "请点击中间的播放按钮！👉";
+     botSay(clickText, 4000); 
+     closeDialogue(); 
     }
-
-    window.closeVideoModal = function() {
-      videoModal.classList.remove('show');
-      // 🔥 关键修改：移除类，恢复自定义光标模式
-      document.body.classList.remove('modal-open'); 
-      
-      guardianVideo.pause(); 
-      botContainer.classList.remove('guide-mode');
-      const backText = currentLang === 'en' ? "Did you see that mechanism?" : "看到那个机械结构了吗？";
-      setTimeout(() => botSay(backText, 3000), 500);
+ 
+   window.closeVideoModal = function() {
+     videoModal.classList.remove('show');
+     guardianVideo.pause(); 
+     // 🔥 机器人归位
+     botContainer.classList.remove('guide-mode');
+     const backText = currentLang === 'en' ? "Did you see that mechanism?" : "看到那个机械结构了吗？";
+     setTimeout(() => botSay(backText, 3000), 500);
     }
-  
+    
    videoModal.addEventListener('click', (e) => {
      if(e.target === videoModal) closeVideoModal();
    });
