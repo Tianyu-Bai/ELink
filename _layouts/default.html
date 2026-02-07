@@ -292,6 +292,9 @@
    text-align: center; font-size: 0.65rem; color: #94a3b8; font-family: 'JetBrains Mono', monospace; pointer-events: none; opacity: 0.6; 
   }
  
+ /* 当弹窗开启时，强制恢复系统鼠标指针 */
+body.modal-open { cursor: auto !important; }
+ 
   /* --- 🎬 视频弹窗样式 --- */
   .video-modal {
    position: fixed; inset: 0;
@@ -394,7 +397,7 @@
 class="video-modal">
  <div class="video-content">
    <div class="video-header">
-     <span>📽️ DEMO REVIEW PROTOCOL</span>
+     <span>📽️ DEMO Video</span>
      <span class="video-close"
 onclick="closeVideoModal()">×</span>
    </div>
@@ -1092,24 +1095,28 @@ class="typewriter-cursor"></span>
    const videoModal = document.getElementById('video-modal');
    const guardianVideo = document.getElementById('guardian-video');
  
-   window.openVideoModal = function() {
-     videoModal.classList.add('show');
-     // 🔥 机器人进入引导模式
-     botContainer.classList.add('guide-mode');
-     const clickText = currentLang === 'en' ? "Click the Play button here! 👉" : "请点击中间的播放按钮！👉";
-     botSay(clickText, 4000); 
-     closeDialogue(); 
+  window.openVideoModal = function() {
+      videoModal.classList.add('show');
+      // 🔥 关键修改：给 body 加个类，显示系统鼠标，否则你没法点播放键
+      document.body.classList.add('modal-open'); 
+      
+      botContainer.classList.add('guide-mode');
+      const clickText = currentLang === 'en' ? "Click the Play button here! 👉" : "请点击中间的播放按钮！👉";
+      botSay(clickText, 4000); 
+      closeDialogue(); 
     }
- 
-   window.closeVideoModal = function() {
-     videoModal.classList.remove('show');
-     guardianVideo.pause(); 
-     // 🔥 机器人归位
-     botContainer.classList.remove('guide-mode');
-     const backText = currentLang === 'en' ? "Did you see that mechanism?" : "看到那个机械结构了吗？";
-     setTimeout(() => botSay(backText, 3000), 500);
+
+    window.closeVideoModal = function() {
+      videoModal.classList.remove('show');
+      // 🔥 关键修改：移除类，恢复自定义光标模式
+      document.body.classList.remove('modal-open'); 
+      
+      guardianVideo.pause(); 
+      botContainer.classList.remove('guide-mode');
+      const backText = currentLang === 'en' ? "Did you see that mechanism?" : "看到那个机械结构了吗？";
+      setTimeout(() => botSay(backText, 3000), 500);
     }
-    
+  
    videoModal.addEventListener('click', (e) => {
      if(e.target === videoModal) closeVideoModal();
    });
