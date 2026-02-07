@@ -1,7 +1,6 @@
 ---
 layout: default
 title: E-Link Home
-glb_path: "/Videos/RHD_example.glb"
 ---
 
 <div class="lang-en" markdown="1">
@@ -48,15 +47,23 @@ glb_path: "/Videos/RHD_example.glb"
 </div>
 </div>
 
-<div style="text-align: center; margin: 30px 0;">
-  <button 
-    onclick="openVideoModal()" 
-    style="background: #3b82f6; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-family: inherit; font-weight: bold; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);"
-  >
-    🧊 View Interactive 3D Model
-  </button>
-  <p style="font-size: 0.8rem; color: #94a3b8; margin-top: 5px;">(Click to rotate and zoom)</p>
-</div>
+## 🔬 RHD Connector – Interactive 3D Model
+
+<p align="center">
+  <a href="https://tianyu-bai.github.io/ELink/#rhd-3d" target="_blank">
+    <img src="Images/preview/rhd_3d_preview.png" width="600" alt="RHD Connector 3D Preview">
+  </a>
+</p>
+
+<p align="center">
+  <a href="glb_path: "https://github.com/Tianyu-Bai/E-Link/blob/main/Videos/RHD_example.glb" target="_blank">
+    <img src="https://img.shields.io/badge/View-Interactive%203D%20Model-3b82f6?style=for-the-badge">
+  </a>
+</p>
+
+<p align="center">
+  <sub>Rotate · Zoom · Inspect geometry in browser</sub>
+</p>
 
 <span id="en-overview"></span>
 
