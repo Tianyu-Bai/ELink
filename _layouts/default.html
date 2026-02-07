@@ -526,8 +526,8 @@ class="typewriter-cursor"></span>
    "start": {
      text: "Hi! I'm the Connector Guardian. I protect your neural interfaces.",
      options: [ 
-        { text: "🎬 Watch Demo Video", next: "play_video" }, // 🔥 新增
-        { text: "🚀 Let's start!", next: "root_menu" } 
+        { text: "🚀 Click Here to Explore with Me!", next: "root_menu" } 
+        { text: "🎬 Watch Intro Video", next: "play_video" }, // 🔥 新增
      ]
    },
    // 🔥 新增：视频处理节点
@@ -536,7 +536,7 @@ class="typewriter-cursor"></span>
       options: [ { text: "Close Video", next: "start" } ]
    },
    "root_menu": {
-     text: "Select a category to inspect:",
+     text: "👨‍🚀System ready. Select a category to inspect:",
      options: [
        { text: "🌟 What's Special?", next: "innovation" },
        { text: "📊 Specifications (Weight/Noise)", next: "specs_menu" },
@@ -548,7 +548,7 @@ class="typewriter-cursor"></span>
    "innovation": {
      text: "I feature a novel elastomeric interposer. This means NO precise alignment is needed and ZERO insertion force.",
      options: [
-       { text: "Why is 'Zero Force' better?", next: "zero_force" },
+       { text: "Why is 'Zero Insertion Force' better?", next: "zero_force" },
        { text: "Can it scale up?", next: "scalability" },
        { text: "Back to Menu", next: "root_menu" } 
      ]
@@ -562,7 +562,7 @@ class="typewriter-cursor"></span>
      options: [ { text: "Got it, Back.", next: "innovation" } ]
    },
    "specs_menu": {
-     text: "Checking Diagnostics... Which parameter concerns you?",
+     text: "💡 Checking Diagnostics... Which parameter concerns you?",
      options: [
        { text: "Is it heavy? (Weight)", next: "weight" },
        { text: "Does it get hot? (Thermal)", next: "thermal" },
@@ -583,7 +583,7 @@ class="typewriter-cursor"></span>
      options: [ { text: "Great specs.", next: "specs_menu" } ]
    },
    "reliability_menu": {
-     text: "I am built to last. What is your concern?",
+     text: "🗨️I am built to last. What is your concern?",
      options: [
        { text: "Lifespan (Cycles)", next: "cycles" },
        { text: "What if I align it wrong?", next: "misalignment" },
@@ -634,8 +634,8 @@ class="typewriter-cursor"></span>
    "start": {
      text: "你好！我是易链的守护者。由我来保护你的脑机探针。",
      options: [ 
+       { text: "🚀 点击和我一同探索!", next: "root_menu" } 
        { text: "🎬 观看演示视频", next: "play_video" }, // 🔥 新增
-       { text: "🚀 开始探索！", next: "root_menu" } 
      ]
    },
    // 🔥 新增：视频处理节点
@@ -644,7 +644,7 @@ class="typewriter-cursor"></span>
       options: [ { text: "关闭视频", next: "start" } ]
    },
    "root_menu": {
-     text: "系统已就绪。请选择想要查看的类别：",
+     text: "👨‍🚀系统已就绪。请选择想要查看的类别：",
      options: [
        { text: "🌟 核心亮点", next: "innovation" },
        { text: "📊 规格参数 (重量/噪音)", next: "参数菜单" },
@@ -670,7 +670,7 @@ class="typewriter-cursor"></span>
      options: [ { text: "已知晓，返回。", next: "innovation" } ]
    },
    "参数菜单": {
-     text: "正在检查诊断数据... 你关心哪个参数？",
+     text: "💡正在检查诊断我的数据库... 你关心哪个参数？",
      options: [
        { text: "重不重？ (重量)", next: "weight" },
        { text: "发热吗？ (热学)", next: "thermal" },
@@ -691,7 +691,7 @@ class="typewriter-cursor"></span>
      options: [ { text: "参数很强。", next: "specs_menu" } ]
    },
    "可靠性菜单": {
-     text: "我经久耐用。猜你有可能担心这些？",
+     text: "🗨️我经久耐用。猜你有可能担心以下？",
      options: [
        { text: "寿命 (贴合次数)", next: "cycles" },
        { text: "如果对不准怎么办？", next: "misalignment" },
