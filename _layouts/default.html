@@ -18,6 +18,16 @@
 <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
  
 <style>
+ 
+ /* 当视频弹窗显示时，恢复默认鼠标指针并隐藏自定义光标 */
+body.video-active {
+    cursor: auto !important;
+}
+body.video-active .cursor-dot,
+body.video-active .cursor-outline {
+    display: none !important;
+}
+ 
   /* --- 0. 全局设置 --- */
   .github-only { display: none !important; }
   .lang-zh { display: none; animation: fadeIn 0.5s ease; }
@@ -1048,23 +1058,18 @@
     const guardianVideo = document.getElementById('guardian-video');
 
     window.openVideoModal = function() {
-      videoModal.classList.add('show');
-      // 🔥 机器人进入引导模式
-      botContainer.classList.add('guide-mode');
-      const clickText = currentLang === 'en' ? "Click the Play button here! 👉" : "请点击中间的播放按钮！👉";
-      botSay(clickText, 4000); 
-      closeDialogue(); 
-    }
+  videoModal.classList.add('show');
+  document.body.classList.add('video-active'); // 恢复默认鼠标
+  // ... 其他逻辑
+}
 
-    window.closeVideoModal = function() {
-      videoModal.classList.remove('show');
-      guardianVideo.pause(); 
-      // 🔥 机器人归位
-      botContainer.classList.remove('guide-mode');
-      const backText = currentLang === 'en' ? "Did you see that mechanism?" : "看到那个机械结构了吗？";
-      setTimeout(() => botSay(backText, 3000), 500);
-    }
-     
+     window.closeVideoModal = function() {
+  videoModal.classList.remove('show');
+  document.body.classList.remove('video-active'); // 重新隐藏默认鼠标，回到自定义状态
+  guardianVideo.pause(); 
+  // ... 其他逻辑
+}
+   
     videoModal.addEventListener('click', (e) => {
       if(e.target === videoModal) closeVideoModal();
     });
