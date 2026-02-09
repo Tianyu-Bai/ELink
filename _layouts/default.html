@@ -27,7 +27,7 @@ body.video-active .cursor-dot,
 body.video-active .cursor-outline {
     display: none !important;
 }
- 
+
   /* --- 0. 全局设置 --- */
   .github-only { display: none !important; }
   .lang-zh { display: none; animation: fadeIn 0.5s ease; }
@@ -67,6 +67,29 @@ body.video-active .cursor-outline {
   ::-webkit-scrollbar-thumb { background: rgba(59, 130, 246, 0.5); border-radius: 10px; }
   ::-webkit-scrollbar-thumb:hover { background: rgba(59, 130, 246, 0.8); }
   ::selection { background: #3b82f6; color: #ffffff; text-shadow: 0 0 8px rgba(255, 255, 255, 0.8); }
+
+/* --- 3D 窗口增强：加载器与水印 --- */
+.model-loader {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(59, 130, 246, 0.1);
+  border-radius: 50%;
+  border-top-color: #3b82f6;
+  animation: spin 1s linear infinite;
+}
+
+.model-watermark-text {
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.3);
+  pointer-events: none; /* 防止遮挡 3D 旋转操作 */
+  letter-spacing: 1px;
+  z-index: 20;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
  
   /* --- 1. 光标 & 进度条 --- */
   .cursor-dot, .cursor-outline {
