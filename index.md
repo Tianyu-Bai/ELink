@@ -211,7 +211,7 @@ title: E-Link Home
         <div class="hand-icon hand-left">👉</div>
         <div class="hand-icon hand-right">👈</div>
       </div>
-      <div class="gesture-text">Pinch/ <kbd>Ctrl</kbd> + 🖱️Wheel to Zoom</div>
+      <div class="gesture-text">Pinch / <kbd>Ctrl</kbd> + 🖱️Wheel to Zoom</div>
     </div>
 
   </model-viewer>
@@ -714,7 +714,7 @@ This project is open-source and available under the **MIT License**. Click the b
         <div class="hand-icon hand-left">👉</div>
         <div class="hand-icon hand-right">👈</div>
       </div>
-      <div class="gesture-text">双指对角线/Ctrl+鼠标滚轮拉动屏幕以放大/缩小</div>
+      <div class="gesture-text">双指对角线拉动 / Ctrl+鼠标滚轮以放大/缩小</div>
     </div>
 
   </model-viewer>
