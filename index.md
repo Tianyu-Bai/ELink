@@ -182,7 +182,7 @@ title: E-Link Home
 <div align="center" style="position: relative; max-width: 760px; margin: 0 auto;">
   
   <model-viewer
-    src="{{ '/Videos/ELink_3MB.glb' | relative_url }}"
+    src="{{ '/Videos/Elink_3MB.glb' | relative_url }}"
     alt="RHD Connector 3D Model"
     loading="lazy"
     camera-controls
