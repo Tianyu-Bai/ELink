@@ -353,7 +353,7 @@ title: E-Link Home
 </div>
 
 <div align="center">
-  <img src="Videos/Top PCB Layout.gif" 
+  <img src="Videos/Top PCB explosive new.gif" 
        alt="4-Layer PCB Stackup Explosion" 
        width="600" 
        style="border-radius: 8px; margin-top: 10px;">
@@ -853,7 +853,7 @@ This project is open-source and available under the **MIT License**. Click the b
 </div>
 
 <div align="center">
-  <img src="Videos/Top PCB Layout.gif" 
+  <img src="Videos/Top PCB explosive new.gif" 
        alt="顶部4层电路板的设计爆炸动图" 
        width="600" 
        style="border-radius: 8px; margin-top: 10px;">
