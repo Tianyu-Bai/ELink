@@ -205,6 +205,8 @@ title: E-Link Home
       <p style="margin-top: 20px; font-size: 0.9rem; letter-spacing: 2px; animation: blink 1.5s infinite;">INITIALIZING 3D SIGNAL...</p>
     </div>
     
+    <div class="model-watermark-text">Copyright © 2026 Tianyu Bai</div>
+    
     <div class="gesture-overlay mode-drag">
       <div class="icon-box">
         <div class="hand-icon">👆</div>
@@ -714,6 +716,8 @@ This project is open-source and available under the **MIT License**. Click the b
       <p style="margin-top: 20px; font-size: 0.9rem; letter-spacing: 2px; animation: blink 1.5s infinite;">INITIALIZING 3D SIGNAL...</p>
     </div>
     
+ <div class="model-watermark-text">Copyright © 2026 Tianyu Bai</div>
+ 
     <div class="gesture-overlay mode-drag">
       <div class="icon-box">
         <div class="hand-icon">👆</div>
