@@ -182,7 +182,7 @@ title: E-Link Home
 <div align="center" style="position: relative; max-width: 760px; margin: 0 auto;">
   
   <model-viewer
-    src="{{ '/Videos/Elink_3MB.glb' | relative_url }}"
+    src="{{ '/Videos/3D_3MB.glb' | relative_url }}"
     alt="RHD Connector 3D Model"
     loading="lazy"
     camera-controls
@@ -685,7 +685,7 @@ This project is open-source and available under the **MIT License**. Click the b
 <div align="center" style="position: relative; max-width: 760px; margin: 0 auto;">
   
   <model-viewer
-    src="{{ '/Videos/ELink_5MB.glb' | relative_url }}"
+    src="{{ '/Videos/3D_5MB.glb' | relative_url }}"
     alt="RHD Connector 3D Model"
     loading="lazy"
     camera-controls
