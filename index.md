@@ -184,6 +184,7 @@ title: E-Link Home
   <model-viewer
     src="{{ '/Videos/3D_1.85MB.glb' | relative_url }}"
     alt="E Link 3D Model"
+    Transparent 
     loading="eager"
     fetchpriority="high"  
     poster="{{ '/Images/poster.webp' | relative_url }}" 
@@ -194,7 +195,7 @@ title: E-Link Home
   auto-rotate
   interaction-prompt="none"
 
-  environment-image="studio"
+  environment-image="neutral"
   exposure="1.2"
 
   shadow-intensity="1"
@@ -705,6 +706,7 @@ This project is open-source and available under the **MIT License**. Click the b
   <model-viewer
     src="{{ '/Videos/Test 2.2MB.glb' | relative_url }}"
     alt="E Link 3D Model"
+    Transparent 
     loading="eager"
     fetchpriority="high"  
     poster="{{ '/Images/poster.webp' | relative_url }}" camera-controls
@@ -715,7 +717,7 @@ This project is open-source and available under the **MIT License**. Click the b
   auto-rotate
   interaction-prompt="none"
 
-  environment-image="studio"
+  environment-image="neutral"
   exposure="1.2"
 
   shadow-intensity="1"
