@@ -195,10 +195,12 @@ title: E-Link Home
     style="
       width: 100%;
       height: 460px;
-      background: rgba(15,23,42,0.6);
+      background: rgba(15,23,42,0.95);
       border-radius: 16px;
       border: 1px solid rgba(59,130,246,0.3);
       outline: none;">
+      environment-image="neutral"  
+      shadow-intensity="1"
 
     <div slot="poster" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; background: #0a0a0f; color: #3b82f6; font-family: 'JetBrains Mono', monospace;">
     <div class="model-loader"></div>
@@ -706,18 +708,20 @@ This project is open-source and available under the **MIT License**. Click the b
     style="
       width: 100%;
       height: 460px;
-      background: rgba(15,23,42,0.6);
+      background: rgba(15,23,42,0.95);
       border-radius: 16px;
       border: 1px solid rgba(59,130,246,0.3);
       outline: none;">
+      environment-image="neutral"  
+      shadow-intensity="1"
 
  <div slot="poster" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; background: #0a0a0f; color: #3b82f6; font-family: 'JetBrains Mono', monospace;">
  <div class="model-loader"></div>
       <p style="margin-top: 20px; font-size: 0.9rem; letter-spacing: 2px; animation: blink 1.5s infinite;">INITIALIZING 3D SIGNAL...</p>
     </div>
     
- <div class="model-watermark-text">Copyright © 2026 Tianyu Bai</div>
- 
+ <div class="model-watermark-text">Copyright © 2026 Tianyu Bai </div>
+
     <div class="gesture-overlay mode-drag">
       <div class="icon-box">
         <div class="hand-icon">👆</div>
