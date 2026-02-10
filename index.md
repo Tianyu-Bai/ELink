@@ -192,6 +192,8 @@ title: E-Link Home
     interaction-prompt="none" 
     shadow-intensity="1"
     exposure="1.1"
+    environment-image="neutral"  
+    shadow-intensity="1"
     style="
       width: 100%;
       height: 460px;
@@ -199,8 +201,6 @@ title: E-Link Home
       border-radius: 16px;
       border: 1px solid rgba(59,130,246,0.3);
       outline: none;">
-      environment-image="neutral"  
-      shadow-intensity="1"
 
     <div slot="poster" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; background: #0a0a0f; color: #3b82f6; font-family: 'JetBrains Mono', monospace;">
     <div class="model-loader"></div>
@@ -705,6 +705,8 @@ This project is open-source and available under the **MIT License**. Click the b
     interaction-prompt="none" 
     shadow-intensity="1"
     exposure="1.1"
+    environment-image="neutral"  
+    shadow-intensity="1"
     style="
       width: 100%;
       height: 460px;
@@ -712,8 +714,6 @@ This project is open-source and available under the **MIT License**. Click the b
       border-radius: 16px;
       border: 1px solid rgba(59,130,246,0.3);
       outline: none;">
-      environment-image="neutral"  
-      shadow-intensity="1"
 
  <div slot="poster" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; background: #0a0a0f; color: #3b82f6; font-family: 'JetBrains Mono', monospace;">
  <div class="model-loader"></div>
