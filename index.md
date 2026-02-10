@@ -194,7 +194,7 @@ title: E-Link Home
   auto-rotate
   interaction-prompt="none"
 
-  environment-image="neutral"
+  environment-image="studio"
   exposure="1.2"
 
   shadow-intensity="1"
@@ -715,7 +715,7 @@ This project is open-source and available under the **MIT License**. Click the b
   auto-rotate
   interaction-prompt="none"
 
-  environment-image="neutral"
+  environment-image="studio"
   exposure="1.2"
 
   shadow-intensity="1"
