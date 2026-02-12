@@ -2,6 +2,7 @@
 layout: default
 title: E-Link Home
 ---
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 <div class="lang-en" markdown="1">
 
@@ -280,7 +281,7 @@ title: E-Link Home
     interaction-prompt="none"
     environment-image="neutral"
     exposure="0.75"
-    shadow-intensity="1"
+    shadow-intensity="0"
     tone-mapping="commerce"
     style="
       width: 100%;
@@ -339,7 +340,7 @@ title: E-Link Home
     interaction-prompt="none"
     environment-image="neutral"
     exposure="0.75"
-    shadow-intensity="1"
+    shadow-intensity="0"
     tone-mapping="commerce"
     style="
       width: 100%;
@@ -1110,37 +1111,48 @@ This project is open-source and available under the **MIT License**. Click the b
 </div>
 
 <script>
-  // ===================== 用户交互后自动“专家模式” =====================
+  // ===================== 性能救星：智能显存管理 =====================
+  // 原理：谁在屏幕上，谁才允许渲染；滑走后立即暂停，释放 GPU
 
+  document.addEventListener("DOMContentLoaded", () => {
+    const viewers = document.querySelectorAll('model-viewer');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        const viewer = entry.target;
+        
+        if (entry.isIntersecting) {
+          // 1. 进入屏幕：开始旋转，恢复渲染
+          viewer.play(); 
+          viewer.setAttribute('auto-rotate', '');
+        } else {
+          // 2. 离开屏幕：彻底暂停，释放显存 (关键!)
+          viewer.pause();
+          viewer.removeAttribute('auto-rotate');
+        }
+      });
+    }, {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.2 // 只要出现 20% 就加载，保证用户看到时已经在转了
+    });
+
+    viewers.forEach(viewer => {
+      // 初始状态：先全部暂停，交给 Observer 唤醒
+      viewer.pause();
+      observer.observe(viewer);
+    });
+  });
+
+  // ===================== 交互提示逻辑 =====================
+  // 用户一旦开始操作，隐藏手势提示
   document.querySelectorAll('model-viewer').forEach(viewer => {
-
     const hideAllHints = () => {
       viewer.querySelectorAll('.gesture-overlay, .gesture-hud')
         .forEach(el => el.classList.add('gesture-hidden'));
     };
-
-    // 鼠标 / 触控 / 滚轮 = 已理解交互
     viewer.addEventListener('mousedown', hideAllHints, { once: true });
     viewer.addEventListener('wheel', hideAllHints, { once: true });
     viewer.addEventListener('touchstart', hideAllHints, { once: true });
   });
-</script>
-
-<script>
-/* ================== 滚动到视口才激活动画 ================== */
-
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('gesture-active');
-      observer.unobserve(entry.target); // 只触发一次
-    }
-  });
-}, {
-  threshold: 0.4   // 至少 40% 进入视口
-});
-
-document.querySelectorAll('.model-block').forEach(block => {
-  observer.observe(block);
-});
 </script>
