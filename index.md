@@ -716,65 +716,9 @@ This project is open-source and available under the **MIT License**. Click the b
 </div>
 </div>
 
-## 🔬 定制256通道放大器 – 三维交互模型
-
-<div class="model-block" align="center" style="position: relative; max-width: 760px; margin: 0 auto;">
-  
-  <model-viewer
-    src="{{ '/Videos/3D_1.85MB.glb' | relative_url }}"
-    alt="E Link 3D Model"
-    loading="lazy"
-    poster="{{ '/Images/poster.webp' | relative_url }}"
-    camera-controls
-    bounds="tight"
-    field-of-view="30deg"
-    auto-rotate
-    auto-rotate-delay="2000"
-    interaction-prompt="none"
-    environment-image="neutral"
-    exposure="0.75"
-    shadow-intensity="1"
-    tone-mapping="commerce"
-    style="
-      width: 100%;
-      height: 460px;
-      background: transparent;
-      border-radius: 16px;
-      border: 1px solid rgba(59,130,246,0.3);
-      outline: none;">
-
- <div slot="poster" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; background: #0a0a0f; color: #3b82f6; font-family: 'JetBrains Mono', monospace;">
- <div class="model-loader"></div>
-      <p style="margin-top: 20px; font-size: 0.9rem; letter-spacing: 2px; animation: blink 1.5s infinite;">INITIALIZING 3D SIGNAL...</p>
-    </div>
-    
- <div class="model-watermark-text">Copyright © 2026 Tianyu Bai </div>
-
-    <div class="gesture-overlay mode-drag">
-      <div class="icon-box">
-        <div class="hand-icon">👆</div>
-      </div>
-      <div class="gesture-text">单指拖拽/鼠标拉动以实现旋转</div>
-    </div>
-
-    <div class="gesture-overlay mode-zoom">
-      <div class="icon-box">
-        <div class="hand-icon hand-left">👉</div>
-        <div class="hand-icon hand-right">👈</div>
-      </div>
-      <div class="gesture-text">双指对角线拉动 / Ctrl+鼠标滚轮以放大/缩小</div>
-    </div>
-
-<button class="reset-btn" onclick="this.parentElement.cameraOrbit = '45deg 55deg auto'; this.parentElement.fieldOfView = '30deg';">
-    ⟲ Reset View
-  </button>
-  
-  </model-viewer>
-</div>
-
 ## 🔬 E-Link – 三维交互模型
+
 <div class="model-block" align="center" style="position: relative; max-width: 760px; margin: 0 auto;">
-  
   <model-viewer
     src="{{ '/Videos/Whole_2.34MB.glb' | relative_url }}"
     alt="E Link 3D Model" 
@@ -788,7 +732,7 @@ This project is open-source and available under the **MIT License**. Click the b
     interaction-prompt="none"
     environment-image="neutral"
     exposure="0.75"
-    shadow-intensity="1"
+    shadow-intensity="0"
     tone-mapping="commerce"
     style="
       width: 100%;
@@ -830,6 +774,62 @@ This project is open-source and available under the **MIT License**. Click the b
   
   </model-viewer>
 </div> 
+
+## 🔬 定制256通道放大器 – 三维交互模型
+
+<div class="model-block" align="center" style="position: relative; max-width: 760px; margin: 0 auto;">
+  
+  <model-viewer
+    src="{{ '/Videos/3D_1.85MB.glb' | relative_url }}"
+    alt="E Link 3D Model"
+    loading="lazy"
+    poster="{{ '/Images/poster.webp' | relative_url }}"
+    camera-controls
+    bounds="tight"
+    field-of-view="30deg"
+    auto-rotate
+    auto-rotate-delay="2000"
+    interaction-prompt="none"
+    environment-image="neutral"
+    exposure="0.75"
+    shadow-intensity="0"
+    tone-mapping="commerce"
+    style="
+      width: 100%;
+      height: 460px;
+      background: transparent;
+      border-radius: 16px;
+      border: 1px solid rgba(59,130,246,0.3);
+      outline: none;">
+
+ <div slot="poster" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; background: #0a0a0f; color: #3b82f6; font-family: 'JetBrains Mono', monospace;">
+ <div class="model-loader"></div>
+      <p style="margin-top: 20px; font-size: 0.9rem; letter-spacing: 2px; animation: blink 1.5s infinite;">INITIALIZING 3D SIGNAL...</p>
+    </div>
+    
+ <div class="model-watermark-text">Copyright © 2026 Tianyu Bai </div>
+
+    <div class="gesture-overlay mode-drag">
+      <div class="icon-box">
+        <div class="hand-icon">👆</div>
+      </div>
+      <div class="gesture-text">单指拖拽/鼠标拉动以实现旋转</div>
+    </div>
+
+    <div class="gesture-overlay mode-zoom">
+      <div class="icon-box">
+        <div class="hand-icon hand-left">👉</div>
+        <div class="hand-icon hand-right">👈</div>
+      </div>
+      <div class="gesture-text">双指对角线拉动 / Ctrl+鼠标滚轮以放大/缩小</div>
+    </div>
+
+<button class="reset-btn" onclick="this.parentElement.cameraOrbit = '45deg 55deg auto'; this.parentElement.fieldOfView = '30deg';">
+    ⟲ Reset View
+  </button>
+  
+  </model-viewer>
+</div>
 
 <span id="cn-overview"></span>
 ## 📖 概览
