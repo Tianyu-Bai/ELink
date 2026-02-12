@@ -276,7 +276,7 @@ title: E-Link Home
     bounds="tight"
     field-of-view="30deg"
     auto-rotate
-    auto-rotate-delay="0"
+    auto-rotate-delay="2000"
     interaction-prompt="none"
     environment-image="neutral"
     exposure="0.75"
@@ -335,7 +335,7 @@ title: E-Link Home
     bounds="tight"
     field-of-view="30deg"
     auto-rotate
-    auto-rotate-delay="0"
+    auto-rotate-delay="2000"
     interaction-prompt="none"
     environment-image="neutral"
     exposure="0.75"
@@ -728,7 +728,7 @@ This project is open-source and available under the **MIT License**. Click the b
     bounds="tight"
     field-of-view="30deg"
     auto-rotate
-    auto-rotate-delay="0"
+    auto-rotate-delay="2000"
     interaction-prompt="none"
     environment-image="neutral"
     exposure="0.75"
