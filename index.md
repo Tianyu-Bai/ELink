@@ -221,7 +221,7 @@ title: E-Link Home
 ## 🔬 E-Link – 3D Interactive View
 <div class="model-block" align="center" style="position: relative; max-width: 760px; margin: 0 auto;">
   
-  <
+  <model-viewer
     src="{{ '/Videos/Whole_2.34MB.glb' | relative_url }}"
     alt="E Link 3D Model" 
     loading="eager"
@@ -272,7 +272,7 @@ title: E-Link Home
       <div class="gesture-text">Pinch / <kbd>Ctrl</kbd> + 🖱️Wheel to Zoom</div>
     </div>
 
-  </>
+  </model-viewer>
 </div> 
 
 ## 🔬 256Ch Customized Headstage – 3D Interactive View
