@@ -279,7 +279,7 @@ title: E-Link Home
     field-of-view="30deg"
     auto-rotate
     auto-rotate-delay="0"
-    rotation-per-second="35deg"
+    rotation-per-second="10deg"
     interaction-prompt="none"
     environment-image="neutral"
     exposure="1.0"
@@ -339,7 +339,7 @@ title: E-Link Home
     field-of-view="30deg"
     auto-rotate
     auto-rotate-delay="0"
-    rotation-per-second="35deg"
+    rotation-per-second="10deg"
     interaction-prompt="none"
     environment-image="neutral"
     exposure="1.0"
@@ -733,7 +733,7 @@ This project is open-source and available under the **MIT License**. Click the b
     field-of-view="30deg"
     auto-rotate
     auto-rotate-delay="0"
-    rotation-per-second="35deg"
+    rotation-per-second="10deg"
     interaction-prompt="none"
     environment-image="neutral"
     exposure="1.0"
@@ -789,7 +789,7 @@ This project is open-source and available under the **MIT License**. Click the b
     field-of-view="30deg"
     auto-rotate
     auto-rotate-delay="0"
-    rotation-per-second="35deg"
+    rotation-per-second="10deg"
     interaction-prompt="none"
     environment-image="neutral"
     exposure="1.0"
