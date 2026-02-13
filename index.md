@@ -4,6 +4,153 @@ title: E-Link Home
 ---
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
+<style>
+  /* 基础容器 */
+  .model-block { position: relative; max-width: 760px; margin: 0 auto; min-height: 460px; background: #0a0a0f; border-radius: 16px; }
+  
+  e-link-viewer { display: block; margin-bottom: 40px; }
+
+  /* Model Viewer 样式 */
+  e-link-viewer model-viewer {
+    width: 100%; height: 460px; background: transparent;
+    border-radius: 16px; border: 1px solid rgba(59,130,246,0.3); outline: none;
+    --poster-color: transparent;
+  }
+
+  /* 修复加载时的海报闪烁 */
+  model-viewer::part(default-progress-bar) { display: none; }
+
+  /* 自定义海报/加载层 */
+  .custom-poster { 
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; 
+    background: #0a0a0f; color: #3b82f6; font-family: 'JetBrains Mono', monospace;
+    z-index: 100; transition: opacity 0.5s ease;
+    pointer-events: none; /* 允许点击穿透到底下的 viewer */
+  }
+
+  /* 加载圈 */
+  .model-loader { width: 40px; height: 40px; border: 3px solid rgba(59,130,246,0.3); border-radius: 50%; border-top-color: #3b82f6; animation: spin 1s ease-in-out infinite; margin-bottom: 10px;}
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .init-text { margin-top: 20px; font-size: 0.9rem; letter-spacing: 2px; animation: blink 1.5s infinite; }
+  @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+  /* 水印 */
+  .model-watermark-text { position: absolute; bottom: 10px; left: 10px; font-size: 10px; opacity: 0.5; color: white; pointer-events: none; z-index: 2; font-family: sans-serif; }
+
+  /* 隐藏类 */
+  .fade-out { opacity: 0; pointer-events: none; }
+
+  /* ===================== 手势与UI ===================== */
+  /* 复用你之前的动画逻辑，但简化层级以减少渲染压力 */
+  @keyframes timeline-drag { 0%, 10% { opacity: 1; } 15%, 100% { opacity: 0; } }
+  @keyframes move-hand { 0% { transform: translateX(-20px); opacity: 0; } 50% { opacity: 1; } 100% { transform: translateX(20px); opacity: 0; } }
+
+  .gesture-overlay {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    pointer-events: none; display: flex; flex-direction: column; align-items: center;
+    z-index: 10; opacity: 0; transition: opacity 0.3s;
+  }
+  
+  /* 只有当模型激活时才显示手势 */
+  .model-loaded .gesture-overlay { animation: timeline-drag 6s forwards; }
+
+  .hand-icon { font-size: 40px; filter: drop-shadow(0 4px 4px rgba(0,0,0,0.5)); animation: move-hand 2s infinite; }
+  .gesture-text { margin-top: 10px; background: rgba(0,0,0,0.6); padding: 4px 12px; border-radius: 12px; color: white; font-size: 14px; }
+
+  /* 重置按钮 */
+  .reset-btn {
+    position: absolute; bottom: 16px; left: 16px; z-index: 50;
+    background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(59, 130, 246, 0.3);
+    color: white; border-radius: 8px; padding: 6px 12px;
+    font-size: 12px; cursor: pointer; display: none; /* 初始隐藏 */
+  }
+  .model-loaded .reset-btn { display: flex; }
+</style>
+
+<script>
+class ELinkViewer extends HTMLElement {
+  connectedCallback() {
+    // 获取真实路径，并保存到 dataset 中，不直接赋值给 src
+    const modelSrc = this.getAttribute('src'); 
+    const posterUrl = "{{ '/Images/poster.webp' | relative_url }}"; 
+    
+    // 清空 src 属性，防止 model-viewer 自动加载
+    this.removeAttribute('src');
+
+    this.innerHTML = `
+      <div class="model-block">
+        <model-viewer
+          data-src="${modelSrc}"
+          poster="${posterUrl}"
+          loading="eager"
+          camera-controls
+          auto-rotate
+          auto-rotate-delay="1000"
+          rotation-per-second="30deg"
+          field-of-view="30deg"
+          shadow-intensity="0"
+          exposure="0.8"
+          interaction-prompt="none">
+          
+          <div slot="poster" class="custom-poster">
+            <div class="model-loader"></div>
+            <p class="init-text">LOADING 3D DATA...</p>
+          </div>
+
+          <div class="model-watermark-text">Copyright © 2026 Tianyu Bai</div>
+
+          <div class="gesture-overlay">
+            <div class="hand-icon">👆</div>
+            <div class="gesture-text">Interact</div>
+          </div>
+
+          <button class="reset-btn" onclick="this.parentElement.cameraOrbit='45deg 55deg auto'">
+             ⟲ Reset
+          </button>
+        </model-viewer>
+      </div>
+    `;
+
+    const viewer = this.querySelector('model-viewer');
+    const posterLayer = this.querySelector('.custom-poster');
+    const block = this.querySelector('.model-block');
+
+    // --- 核心防闪退逻辑 ---
+    // 只有当模型出现在屏幕中央 20% 区域时，才加载。
+    // 一旦离开屏幕，立即销毁 src (释放显存)。
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          // 1. 进入视野：加载模型
+          if (!viewer.src || viewer.src === '') {
+             viewer.src = viewer.getAttribute('data-src');
+             block.classList.add('model-loaded');
+          }
+        } else {
+          // 2. 离开视野：【关键】清空 src，强制释放 GPU 显存
+          viewer.src = ''; 
+          block.classList.remove('model-loaded');
+          // 恢复海报层，这样回来时看到的是 loading 而不是黑屏
+          posterLayer.classList.remove('fade-out');
+        }
+      });
+    }, {
+      rootMargin: '0px', 
+      threshold: 0.1 // 稍微露头就开始加载，但主要靠离开时销毁来省内存
+    });
+
+    observer.observe(block);
+
+    // 监听加载完成事件，隐藏海报
+    viewer.addEventListener('load', () => {
+      posterLayer.classList.add('fade-out');
+    });
+  }
+}
+customElements.define('e-link-viewer', ELinkViewer);
+</script>
+
 <div class="lang-en" markdown="1">
 
 <div class="github-only">
@@ -47,255 +194,6 @@ title: E-Link Home
  </p>
 </div>
 </div>
-
-<style>
-  /* 基础容器 */
-  .model-block { position: relative; max-width: 760px; margin: 0 auto; }
-  
-  e-link-viewer { display: block; margin-bottom: 40px; }
-
-  /* Model Viewer 样式 */
-  e-link-viewer model-viewer {
-    width: 100%; height: 460px; background: transparent;
-    border-radius: 16px; border: 1px solid rgba(59,130,246,0.3); outline: none;
-  }
-
-  /* 海报区 */
-  .custom-poster { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; background: #0a0a0f; color: #3b82f6; font-family: 'JetBrains Mono', monospace; }
-  .model-loader { width: 40px; height: 40px; border: 3px solid rgba(59,130,246,0.3); border-radius: 50%; border-top-color: #3b82f6; animation: spin 1s ease-in-out infinite; margin-bottom: 10px;}
-  @keyframes spin { to { transform: rotate(360deg); } }
-  .init-text { margin-top: 20px; font-size: 0.9rem; letter-spacing: 2px; animation: blink 1.5s infinite; }
-  @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
-
-  /* 水印 */
-  .model-watermark-text { position: absolute; bottom: 10px; left: 10px; font-size: 10px; opacity: 0.5; color: white; pointer-events: none; z-index: 2; font-family: sans-serif; }
-
-  /* ========================================= 1. 复杂时间轴控制 (严格保留你的48秒周期) ========================================= */
-  @keyframes timeline-drag-container {
-    /* --- 第一阶段：重复2次 --- */
-    0%, 6.25%     { opacity: 1; z-index: 10; } /* 0-3s: 显示 */
-    6.35%, 12.4%  { opacity: 0; z-index: -1; } /* 3-6s: 隐藏 */
-    12.5%, 18.75% { opacity: 1; z-index: 10; } /* 6-9s: 显示 */
-    18.85%, 56.15%{ opacity: 0; z-index: -1; } /* 9-27s: 隐藏 (休息15s) */
-    /* --- 第二阶段：重复1次 --- */
-    56.25%, 62.5% { opacity: 1; z-index: 10; } /* 27-30s: 显示 */
-    62.6%, 100%   { opacity: 0; z-index: -1; } /* 30-48s: 隐藏 (休息15s) */
-  }
-
-  @keyframes timeline-zoom-container {
-    /* --- 第一阶段：重复2次 --- */
-    0%, 6.15%     { opacity: 0; z-index: -1; }
-    6.25%, 12.5%  { opacity: 1; z-index: 10; } /* 3-6s: 显示 */
-    12.6%, 18.65% { opacity: 0; z-index: -1; }
-    18.75%, 25%   { opacity: 1; z-index: 10; } /* 9-12s: 显示 */
-    25.1%, 62.4%  { opacity: 0; z-index: -1; } /* 12-30s: 隐藏 */
-    /* --- 第二阶段：重复1次 --- */
-    62.5%, 68.75% { opacity: 1; z-index: 10; } /* 30-33s: 显示 */
-    68.85%, 100%  { opacity: 0; z-index: -1; } /* 33-48s: 隐藏 */
-  }
-
-  /* ========================================= 2. 动作动画 (严格保留对角线参数) ========================================= */
-  /* 拖拽动作 */
-  @keyframes move-drag-hand {
-    0% { transform: translateX(-40px) rotate(-15deg); opacity: 0; }
-    20% { opacity: 1; }
-    80% { opacity: 1; }
-    100% { transform: translateX(40px) rotate(5deg); opacity: 0; }
-  }
-
-  /* 左手 (👉): 位于左下，向左下角拉开 */
-  @keyframes move-zoom-left-diagonal {
-    0% { transform: translate(-30px, 15px); opacity: 0; } 
-    20% { opacity: 1; }
-    80% { opacity: 1; }
-    100% { transform: translate(-90px, 65px); opacity: 0; } 
-  }
-  
-  /* 右手 (👈): 位于右上，向右上角拉开 */
-  @keyframes move-zoom-right-diagonal {
-    0% { transform: translate(30px, -15px); opacity: 0; } 
-    20% { opacity: 1; }
-    80% { opacity: 1; }
-    100% { transform: translate(90px, -65px); opacity: 0; } 
-  }
-
-  /* ========================================= 3. 容器与图标样式 ========================================= */
-  .gesture-overlay {
-    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-    pointer-events: none; text-align: center; width: 220px; height: 150px;
-    display: flex; flex-direction: column; justify-content: center; align-items: center;
-    animation-play-state: paused; /* 默认暂停，JS激活 */
-  }
-
-  /* 激活时运行动画 */
-  .gesture-active .gesture-overlay { animation-play-state: running; }
-  
-  .mode-drag { animation: timeline-drag-container 48s infinite; }
-  .mode-zoom { animation: timeline-zoom-container 48s infinite; }
-
-  .icon-box { position: relative; height: 80px; width: 100%; margin-bottom: 5px; }
-  
-  .hand-icon {
-    font-size: 50px; position: absolute; top: 20px; left: 50%;
-    filter: drop-shadow(2px 4px 0px rgba(0,0,0,0.8)) drop-shadow(0 0 10px rgba(0,0,0,0.5));
-    will-change: transform, opacity;
-  }
-
-  /* 拖拽具体样式 */
-  .mode-drag .hand-icon { margin-left: -25px; animation: move-drag-hand 1.5s infinite ease-in-out; }
-
-  /* Zoom 具体样式 */
-  .mode-zoom .hand-icon { margin-left: -25px; top: 15px; /* 保留了你的 top: 15px */ }
-  .mode-zoom .hand-left { animation: move-zoom-left-diagonal 1.5s infinite ease-in-out; }
-  .mode-zoom .hand-right { animation: move-zoom-right-diagonal 1.5s infinite ease-in-out; }
-
-  .gesture-text {
-    color: white; font-family: sans-serif; font-weight: bold; font-size: 16px;
-    text-shadow: 0 2px 4px black; background: rgba(0,0,0,0.4);
-    padding: 4px 12px; border-radius: 12px; white-space: nowrap;
-  }
-
-  /* ===================== HUD ===================== */
-  .gesture-hud {
-    position: absolute; top: 12px; left: 50%; transform: translateX(-50%);
-    display: flex; gap: 12px; font-size: 13px;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-    color: rgba(255, 255, 255, 0.65); background: rgba(15, 23, 42, 0.45);
-    border: 1px solid rgba(59,130,246,0.25); padding: 6px 10px; border-radius: 20px;
-    white-space: nowrap; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
-    transition: opacity 0.4s ease; z-index: 5; pointer-events: none;
-  }
-  .gesture-hud span { white-space: nowrap; }
-
-  /* 统一隐藏状态 */
-  .gesture-hidden { opacity: 0 !important; }
-
-  /* ===================== Reset Button ===================== */
-  .reset-btn {
-    position: absolute; bottom: 16px; left: 16px; z-index: 10;
-    background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(59, 130, 246, 0.3);
-    color: rgba(255, 255, 255, 0.8); border-radius: 8px; padding: 6px 12px;
-    font-family: system-ui, sans-serif; font-size: 12px; cursor: pointer;
-    backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); transition: all 0.3s ease;
-    display: flex; align-items: center; gap: 6px;
-  }
-  .reset-btn:hover {
-    background: rgba(59, 130, 246, 0.4); color: #fff;
-    border-color: rgba(59, 130, 246, 0.8); transform: scale(1.05);
-    box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
-  }
-  .reset-btn:active { transform: scale(0.95); }
-</style>
-
-<script>
-class ELinkViewer extends HTMLElement {
-  connectedCallback() {
-    const src = this.getAttribute('src');
-    const posterUrl = "{{ '/Images/poster.webp' | relative_url }}"; 
-
-    // 关键优化：初始时不设置 src，而是设置 data-src，实现真正的懒加载
-    this.innerHTML = `
-      <div class="model-block" align="center">
-        <model-viewer
-          data-src="${src}" 
-          alt="E Link 3D Model"
-          loading="lazy"
-          poster="${posterUrl}"
-          camera-controls
-          bounds="tight"
-          field-of-view="30deg"
-          auto-rotate-delay="2000"
-          interaction-prompt="none"
-          environment-image="neutral"
-          exposure="0.75"
-          shadow-intensity="0"
-          tone-mapping="commerce">
-
-          <div slot="poster" class="custom-poster">
-            <div class="model-loader"></div>
-            <p class="init-text">INITIALIZING 3D SIGNAL...</p>
-          </div>
-          
-          <div class="model-watermark-text">Copyright © 2026 Tianyu Bai</div>
-          
-          <div class="gesture-hud">
-            <span>↺ Drag</span>
-            <span>⌃ + 🖱 Zoom</span>
-          </div>
-
-          <div class="gesture-overlay mode-drag">
-            <div class="icon-box">
-              <div class="hand-icon">👆</div>
-            </div>
-            <div class="gesture-text">Drag to Rotate</div>
-          </div>
-
-          <div class="gesture-overlay mode-zoom">
-            <div class="icon-box">
-              <div class="hand-icon hand-left">👉</div>
-              <div class="hand-icon hand-right">👈</div>
-            </div>
-            <div class="gesture-text">Pinch / <kbd>Ctrl</kbd> + 🖱️Wheel to Zoom</div>
-          </div>
-          
-          <button class="reset-btn" onclick="this.parentElement.cameraOrbit = '45deg 55deg auto'; this.parentElement.fieldOfView = '30deg';">
-            ⟲ Reset View
-          </button>
-        </model-viewer>
-      </div>
-    `;
-
-    const viewer = this.querySelector('model-viewer');
-    const block = this.querySelector('.model-block');
-
-    // 1. 初始化 IntersectionObserver (集成懒加载 + 动画控制)
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          // A. 懒加载逻辑：进入缓冲区才开始下载模型
-          if (!viewer.getAttribute('src') && viewer.getAttribute('data-src')) {
-            viewer.setAttribute('src', viewer.getAttribute('data-src'));
-          }
-
-          // B. 动画逻辑：激活手势动画 & 自动旋转
-          block.classList.add('gesture-active');
-          viewer.dismissPoster(); // 确保隐藏海报
-          
-          // 尝试播放 (防止模型未加载完报错)
-          try {
-            viewer.play();
-            viewer.setAttribute('auto-rotate', '');
-          } catch(e) {}
-
-        } else {
-          // C. 离开逻辑：暂停渲染以节省显存，停止动画
-          block.classList.remove('gesture-active');
-          viewer.pause();
-          viewer.removeAttribute('auto-rotate');
-        }
-      });
-    }, {
-      rootMargin: '200px 0px', // 缓冲区：提前 200px 开始加载
-      threshold: 0.01
-    });
-
-    observer.observe(block);
-
-    // 2. 交互逻辑：用户操作一次后，永久隐藏手势提示
-    const hideAllHints = () => {
-      const overlays = this.querySelectorAll('.gesture-overlay, .gesture-hud');
-      overlays.forEach(el => el.classList.add('gesture-hidden'));
-    };
-
-    // 监听多种交互事件
-    ['mousedown', 'wheel', 'touchstart'].forEach(evt => {
-      viewer.addEventListener(evt, hideAllHints, { once: true });
-    });
-  }
-}
-customElements.define('e-link-viewer', ELinkViewer);
-</script>
-
 
 ## 🔬 E-Link – 3D Interactive View
  
