@@ -49,37 +49,33 @@ title: E-Link Home
 </div>
 
 
-<style>/*开始开始开始做出演示动作*/
-  /* ========================================= 1. 复杂时间轴控制 (总周期 48秒) - 保持不变 ========================================= */
+<style>
+  /* ========================================= 1. 复杂时间轴控制 (总周期 48秒) ========================================= */
    
   /* Drag 容器显隐 */
   @keyframes timeline-drag-container {
-    /* --- 第一阶段：重复2次 --- */
-    0%, 6.25%    { opacity: 1; z-index: 10; } /* 0-3s: 显示 */
-    6.35%, 12.4% { opacity: 0; z-index: -1; } /* 3-6s: 隐藏 */
-    12.5%, 18.75% { opacity: 1; z-index: 10; } /* 6-9s: 显示 */
-    18.85%, 56.15% { opacity: 0; z-index: -1; } /* 9-27s: 隐藏 (休息15s) */
-    /* --- 第二阶段：重复1次 --- */
-    56.25%, 62.5% { opacity: 1; z-index: 10; } /* 27-30s: 显示 */
-    62.6%, 100%   { opacity: 0; z-index: -1; } /* 30-48s: 隐藏 (休息15s) */
+    0%, 6.25%    { opacity: 1; z-index: 10; } 
+    6.35%, 12.4% { opacity: 0; z-index: -1; } 
+    12.5%, 18.75% { opacity: 1; z-index: 10; } 
+    18.85%, 56.15% { opacity: 0; z-index: -1; } 
+    56.25%, 62.5% { opacity: 1; z-index: 10; } 
+    62.6%, 100%   { opacity: 0; z-index: -1; } 
   }
 
   /* Zoom 容器显隐 */
   @keyframes timeline-zoom-container {
-    /* --- 第一阶段：重复2次 --- */
     0%, 6.15%    { opacity: 0; z-index: -1; }
-    6.25%, 12.5% { opacity: 1; z-index: 10; } /* 3-6s: 显示 */
+    6.25%, 12.5% { opacity: 1; z-index: 10; } 
     12.6%, 18.65% { opacity: 0; z-index: -1; }
-    18.75%, 25%  { opacity: 1; z-index: 10; } /* 9-12s: 显示 */
-    25.1%, 62.4% { opacity: 0; z-index: -1; } /* 12-30s: 隐藏 */
-    /* --- 第二阶段：重复1次 --- */
-    62.5%, 68.75% { opacity: 1; z-index: 10; } /* 30-33s: 显示 */
-    68.85%, 100%  { opacity: 0; z-index: -1; } /* 33-48s: 隐藏 */
+    18.75%, 25%  { opacity: 1; z-index: 10; } 
+    25.1%, 62.4% { opacity: 0; z-index: -1; } 
+    62.5%, 68.75% { opacity: 1; z-index: 10; } 
+    68.85%, 100%  { opacity: 0; z-index: -1; } 
   }
   
-  /* ========================================= 2. 动作动画 (修改了 Zoom 的部分)   ========================================= */
+  /* ========================================= 2. 动作动画 ========================================= */
   
-  /* 拖拽动作 (保持不变) */
+  /* 拖拽动作 */
   @keyframes move-drag-hand {
     0% { transform: translateX(-40px) rotate(-15deg); opacity: 0; }
     20% { opacity: 1; }
@@ -87,25 +83,19 @@ title: E-Link Home
     100% { transform: translateX(40px) rotate(5deg); opacity: 0; }
   }
 
-/* --- 修正: 双手缩放动作 (对角线拉开) --- */
-  
-  /* 左手 (👉): 位于左下，向左下角拉开 */
+  /* 左手 (👉) */
   @keyframes move-zoom-left-diagonal {
-    /* 初始位置：X轴向左偏移30px，Y轴向下偏移15px -> 避开中心防止重叠 */
     0% { transform: translate(-30px, 15px); opacity: 0; } 
     20% { opacity: 1; }
     80% { opacity: 1; }
-    /* 结束位置：大幅度向左下角移动 */
     100% { transform: translate(-90px, 65px); opacity: 0; } 
   }
   
-  /* 右手 (👈): 位于右上，向右上角拉开 */
+  /* 右手 (👈) */
   @keyframes move-zoom-right-diagonal {
-    /* 初始位置：X轴向右偏移30px，Y轴向上偏移15px -> 避开中心防止重叠 */
     0% { transform: translate(30px, -15px); opacity: 0; } 
     20% { opacity: 1; }
     80% { opacity: 1; }
-    /* 结束位置：大幅度向右上角移动 */
     100% { transform: translate(90px, -65px); opacity: 0; } 
   }
     
@@ -118,7 +108,7 @@ title: E-Link Home
     transform: translate(-50%, -50%);
     pointer-events: none;
     text-align: center;
-    width: 220px; /* 稍微加宽一点容器以容纳水平动作 */
+    width: 220px; 
     height: 150px;
     display: flex;
     flex-direction: column;
@@ -126,7 +116,6 @@ title: E-Link Home
     align-items: center;
   }
 
-  /* 绑定时间轴 */
   .mode-drag { animation: timeline-drag-container 48s infinite; }
   .mode-zoom { animation: timeline-zoom-container 48s infinite; }
 
@@ -143,28 +132,22 @@ title: E-Link Home
     top: 20px;
     left: 50%;
     filter: drop-shadow(2px 4px 0px rgba(0,0,0,0.8)) drop-shadow(0 0 10px rgba(0,0,0,0.5));
-    will-change: transform, opacity; /* 性能优化 */
+    will-change: transform, opacity;
   }
 
-  /* 绑定具体动作 */
   .mode-drag .hand-icon {
     margin-left: -25px;
     animation: move-drag-hand 1.5s infinite ease-in-out;
   }
   
-  /* Zoom 模式图标样式微调 */
   .mode-zoom .hand-icon {
-     margin-left: -25px; /* 修正图标本身的中心点 */
-     top: 15px; /* 稍微往上提一点，让两个手指水平对齐更好看 */
+     margin-left: -25px; 
+     top: 15px; 
   }
 
-/* 应用新的对角线动画 */
-  .mode-zoom .hand-left {
-    animation: move-zoom-left-diagonal 1.5s infinite ease-in-out;
-  }
-  .mode-zoom .hand-right {
-    animation: move-zoom-right-diagonal 1.5s infinite ease-in-out;
-  }
+  .mode-zoom .hand-left { animation: move-zoom-left-diagonal 1.5s infinite ease-in-out; }
+  .mode-zoom .hand-right { animation: move-zoom-right-diagonal 1.5s infinite ease-in-out; }
+
   .gesture-text {
     color: white;
     font-family: sans-serif;
@@ -194,41 +177,24 @@ title: E-Link Home
   padding: 6px 10px;
   border-radius: 20px;
   white-space: nowrap;
-  -webkit-backdrop-filter: blur(6px); /* 部分旧版 iPhone 可能不支持标准 backdrop-filter */
+  -webkit-backdrop-filter: blur(6px);
   pointer-events: none;
   backdrop-filter: blur(6px);
   transition: opacity 0.4s ease;
   z-index: 5;
 }
 
-.gesture-hud span {
-  white-space: nowrap;
-}
-
-/* 统一隐藏状态（给 JS 用） */
-.gesture-hidden {
-  opacity: 0 !important;
-}
-
-/* ================== 手势动画默认暂停 ================== */
-.gesture-overlay {
-  animation-play-state: paused;
-}
-
-/* ================== 进入视口后才激活 ================== */
-.gesture-active .gesture-overlay {
-  animation-play-state: running;
-}
+.gesture-hud span { white-space: nowrap; }
+.gesture-hidden { opacity: 0 !important; }
+.gesture-overlay { animation-play-state: paused; }
+.gesture-active .gesture-overlay { animation-play-state: running; }
 
 /* ===================== 复位按钮样式 ===================== */
 .reset-btn {
-  /* 1. 绝对定位在左下角 */
   position: absolute;
   bottom: 16px;
   left: 16px;
-  z-index: 10; /* 保证能被点到 */
-
-  /* 2. 科技感外观 (与 HUD 风格一致) */
+  z-index: 10;
   background: rgba(15, 23, 42, 0.6);
   border: 1px solid rgba(59, 130, 246, 0.3);
   color: rgba(255, 255, 255, 0.8);
@@ -237,59 +203,48 @@ title: E-Link Home
   font-family: system-ui, sans-serif;
   font-size: 12px;
   cursor: pointer;
-  
-  /* 3. 磨砂玻璃效果 */
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
   transition: all 0.3s ease;
-  
-  /* 4. 图标与文字对齐 */
   display: flex;
   align-items: center;
   gap: 6px;
 }
 
-/* 悬停高亮效果 */
 .reset-btn:hover {
   background: rgba(59, 130, 246, 0.4);
   color: #fff;
   border-color: rgba(59, 130, 246, 0.8);
-  transform: scale(1.05); /* 微微放大 */
+  transform: scale(1.05); 
   box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
 }
 
-/* 点击时的按压感 */
 .reset-btn:active {
   transform: scale(0.95);
 }
-  
+
+/* ===================== 模型全局基础样式 ===================== */
+.custom-model-viewer {
+  width: 100%;
+  height: 460px;
+  background: transparent;
+  border-radius: 16px;
+  border: 1px solid rgba(59,130,246,0.3);
+  outline: none;
+}
 </style>
 
 ## 🔬 E-Link – 3D Interactive View
  
 <div class="model-block" align="center" style="position: relative; max-width: 760px; margin: 0 auto;">
   <model-viewer
-    src="{{ '/Videos/Whole_2.34MB.glb' | relative_url }}"
+    class="custom-model-viewer"
+    data-src="{{ '/Videos/Whole_2.34MB.glb' | relative_url }}"
     alt="E Link 3D Model"
     loading="lazy"
     poster="{{ '/Images/poster.webp' | relative_url }}"
-    camera-controls
-    bounds="tight"
-    field-of-view="30deg"
-    auto-rotate
-    auto-rotate-delay="2000"
-    interaction-prompt="none"
-    environment-image="neutral"
-    exposure="0.75"
-    shadow-intensity="0"
-    tone-mapping="commerce"
-    style="
-      width: 100%;
-      height: 460px;
-      background: transparent;
-      border-radius: 16px;
-      border: 1px solid rgba(59,130,246,0.3);
-      outline: none;">
+    camera-controls bounds="tight" field-of-view="30deg" auto-rotate auto-rotate-delay="2000"
+    interaction-prompt="none" environment-image="neutral" exposure="0.75" shadow-intensity="0" tone-mapping="commerce">
 
     <div slot="poster" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; background: #0a0a0f; color: #3b82f6; font-family: 'JetBrains Mono', monospace;">
       <div class="model-loader"></div>
@@ -304,9 +259,7 @@ title: E-Link Home
     </div>
 
     <div class="gesture-overlay mode-drag">
-      <div class="icon-box">
-        <div class="hand-icon">👆</div>
-      </div>
+      <div class="icon-box"><div class="hand-icon">👆</div></div>
       <div class="gesture-text">Drag to Rotate</div>
     </div>
 
@@ -317,38 +270,23 @@ title: E-Link Home
       </div>
       <div class="gesture-text">Pinch / <kbd>Ctrl</kbd> + 🖱️Wheel to Zoom</div>
     </div>
+    
     <button class="reset-btn" onclick="this.parentElement.cameraOrbit = '45deg 55deg auto'; this.parentElement.fieldOfView = '30deg';">
       ⟲ Reset View
     </button>
   </model-viewer>
 </div>
-
 ## 🔬 256Ch Customized Headstage – 3D Interactive View
 
 <div class="model-block" align="center" style="position: relative; max-width: 760px; margin: 0 auto;">
-  
   <model-viewer
-    src="{{ '/Videos/3D_1.85MB.glb' | relative_url }}"
+    class="custom-model-viewer"
+    data-src="{{ '/Videos/3D_1.85MB.glb' | relative_url }}"
     alt="E Link 3D Model" 
-     loading="lazy"
+    loading="lazy"
     poster="{{ '/Images/poster.webp' | relative_url }}"
-    camera-controls
-    bounds="tight"
-    field-of-view="30deg"
-    auto-rotate
-    auto-rotate-delay="2000"
-    interaction-prompt="none"
-    environment-image="neutral"
-    exposure="0.75"
-    shadow-intensity="0"
-    tone-mapping="commerce"
-    style="
-      width: 100%;
-      height: 460px;
-      background: transparent;
-      border-radius: 16px;
-      border: 1px solid rgba(59,130,246,0.3);
-      outline: none;">
+    camera-controls bounds="tight" field-of-view="30deg" auto-rotate auto-rotate-delay="2000"
+    interaction-prompt="none" environment-image="neutral" exposure="0.75" shadow-intensity="0" tone-mapping="commerce">
 
     <div slot="poster" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; background: #0a0a0f; color: #3b82f6; font-family: 'JetBrains Mono', monospace;">
       <div class="model-loader"></div>
@@ -363,9 +301,7 @@ title: E-Link Home
     </div>
 
     <div class="gesture-overlay mode-drag">
-      <div class="icon-box">
-        <div class="hand-icon">👆</div>
-      </div>
+      <div class="icon-box"><div class="hand-icon">👆</div></div>
       <div class="gesture-text">Drag to Rotate</div>
     </div>
 
@@ -377,13 +313,11 @@ title: E-Link Home
       <div class="gesture-text">Pinch / <kbd>Ctrl</kbd> + 🖱️Wheel to Zoom</div>
     </div>
     
-<button class="reset-btn" onclick="this.parentElement.cameraOrbit = '45deg 55deg auto'; this.parentElement.fieldOfView = '30deg';">
-    ⟲ Reset View
-  </button>
-  
+    <button class="reset-btn" onclick="this.parentElement.cameraOrbit = '45deg 55deg auto'; this.parentElement.fieldOfView = '30deg';">
+      ⟲ Reset View
+    </button>
   </model-viewer>
 </div> 
-
 <span id="en-overview"></span>
 
 ## 📖 Overview
@@ -720,27 +654,13 @@ This project is open-source and available under the **MIT License**. Click the b
 
 <div class="model-block" align="center" style="position: relative; max-width: 760px; margin: 0 auto;">
   <model-viewer
-    src="{{ '/Videos/Whole_2.34MB.glb' | relative_url }}"
+    class="custom-model-viewer"
+    data-src="{{ '/Videos/Whole_2.34MB.glb' | relative_url }}"
     alt="E Link 3D Model" 
     loading="lazy"
     poster="{{ '/Images/poster.webp' | relative_url }}"
-    camera-controls
-    bounds="tight"
-    field-of-view="30deg"
-    auto-rotate
-    auto-rotate-delay="0.5"
-    interaction-prompt="none"
-    environment-image="neutral"
-    exposure="0.75"
-    shadow-intensity="0"
-    tone-mapping="commerce"
-    style="
-      width: 100%;
-      height: 460px;
-      background: transparent;
-      border-radius: 16px;
-      border: 1px solid rgba(59,130,246,0.3);
-      outline: none;">
+    camera-controls bounds="tight" field-of-view="30deg" auto-rotate auto-rotate-delay="2000"
+    interaction-prompt="none" environment-image="neutral" exposure="0.75" shadow-intensity="0" tone-mapping="commerce">
 
     <div slot="poster" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; background: #0a0a0f; color: #3b82f6; font-family: 'JetBrains Mono', monospace;">
     <div class="model-loader"></div>
@@ -748,15 +668,14 @@ This project is open-source and available under the **MIT License**. Click the b
     </div>
     
     <div class="model-watermark-text">Copyright © 2026 Tianyu Bai</div>
+    
     <div class="gesture-hud">
-  <span>↺ 拖拽旋转</span>
-  <span>Ctrl + 滚轮缩放</span>
+      <span>↺ 拖拽旋转</span>
+      <span>Ctrl + 滚轮缩放</span>
    </div>
 
     <div class="gesture-overlay mode-drag">
-      <div class="icon-box">
-        <div class="hand-icon">👆</div>
-      </div>
+      <div class="icon-box"><div class="hand-icon">👆</div></div>
       <div class="gesture-text">单指拖拽/鼠标拉动以实现旋转</div>
     </div>
 
@@ -768,51 +687,32 @@ This project is open-source and available under the **MIT License**. Click the b
       <div class="gesture-text">双指对角线拉动 / Ctrl+鼠标滚轮以放大/缩小</div>
     </div>
     
-<button class="reset-btn" onclick="this.parentElement.cameraOrbit = '45deg 55deg auto'; this.parentElement.fieldOfView = '30deg';">
-    ⟲ Reset View
-  </button>
-  
+    <button class="reset-btn" onclick="this.parentElement.cameraOrbit = '45deg 55deg auto'; this.parentElement.fieldOfView = '30deg';">
+      ⟲ Reset View
+    </button>
   </model-viewer>
 </div> 
-
 ## 🔬 定制256通道放大器 – 三维交互模型
 
 <div class="model-block" align="center" style="position: relative; max-width: 760px; margin: 0 auto;">
-  
   <model-viewer
-    src="{{ '/Videos/3D_1.85MB.glb' | relative_url }}"
+    class="custom-model-viewer"
+    data-src="{{ '/Videos/3D_1.85MB.glb' | relative_url }}"
     alt="E Link 3D Model"
     loading="lazy"
     poster="{{ '/Images/poster.webp' | relative_url }}"
-    camera-controls
-    bounds="tight"
-    field-of-view="30deg"
-    auto-rotate
-    auto-rotate-delay="2000"
-    interaction-prompt="none"
-    environment-image="neutral"
-    exposure="0.75"
-    shadow-intensity="0"
-    tone-mapping="commerce"
-    style="
-      width: 100%;
-      height: 460px;
-      background: transparent;
-      border-radius: 16px;
-      border: 1px solid rgba(59,130,246,0.3);
-      outline: none;">
+    camera-controls bounds="tight" field-of-view="30deg" auto-rotate auto-rotate-delay="2000"
+    interaction-prompt="none" environment-image="neutral" exposure="0.75" shadow-intensity="0" tone-mapping="commerce">
 
- <div slot="poster" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; background: #0a0a0f; color: #3b82f6; font-family: 'JetBrains Mono', monospace;">
- <div class="model-loader"></div>
+    <div slot="poster" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; background: #0a0a0f; color: #3b82f6; font-family: 'JetBrains Mono', monospace;">
+      <div class="model-loader"></div>
       <p style="margin-top: 20px; font-size: 0.9rem; letter-spacing: 2px; animation: blink 1.5s infinite;">INITIALIZING 3D SIGNAL...</p>
     </div>
     
- <div class="model-watermark-text">Copyright © 2026 Tianyu Bai </div>
+    <div class="model-watermark-text">Copyright © 2026 Tianyu Bai </div>
 
     <div class="gesture-overlay mode-drag">
-      <div class="icon-box">
-        <div class="hand-icon">👆</div>
-      </div>
+      <div class="icon-box"><div class="hand-icon">👆</div></div>
       <div class="gesture-text">单指拖拽/鼠标拉动以实现旋转</div>
     </div>
 
@@ -824,13 +724,11 @@ This project is open-source and available under the **MIT License**. Click the b
       <div class="gesture-text">双指对角线拉动 / Ctrl+鼠标滚轮以放大/缩小</div>
     </div>
 
-<button class="reset-btn" onclick="this.parentElement.cameraOrbit = '45deg 55deg auto'; this.parentElement.fieldOfView = '30deg';">
-    ⟲ Reset View
-  </button>
-  
+    <button class="reset-btn" onclick="this.parentElement.cameraOrbit = '45deg 55deg auto'; this.parentElement.fieldOfView = '30deg';">
+      ⟲ Reset View
+    </button>
   </model-viewer>
 </div>
-
 <span id="cn-overview"></span>
 ## 📖 概览
 
@@ -1167,7 +1065,7 @@ This project is open-source and available under the **MIT License**. Click the b
       observer.observe(viewer);
     });
 
-    // ===================== 交互提示逻辑 (保留你原有的配置) =====================
+    // ===================== 交互提示逻辑 =====================
     // 用户一旦开始操作，隐藏手势提示
     document.querySelectorAll('model-viewer').forEach(viewer => {
       const hideAllHints = () => {
