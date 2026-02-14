@@ -704,7 +704,7 @@ This project is open-source and available under the **MIT License**. Click the b
     
     <div class="gesture-hud">
       <span>↺ 旋转：拖拽</span>
-  <span class="pc-only">缩放：Ctrl + 滚轮</span>
+  <span class="pc-only">缩放：Ctrl键 + 鼠标滚轮</span>
   <span class="mobile-only">缩放：双指捏合</span>
 </div>
 
@@ -719,7 +719,7 @@ This project is open-source and available under the **MIT License**. Click the b
     <div class="hand-icon hand-right">👈</div>
   </div>
   <div class="gesture-text">
-    <span class="pc-tip">Ctrl + 鼠标滚轮以缩放</span>
+    <span class="pc-tip">Ctrl键 + 鼠标滚轮以缩放</span>
     <span class="mobile-tip">双指捏合屏幕以缩放</span>
   </div>
 </div>
@@ -751,7 +751,7 @@ This project is open-source and available under the **MIT License**. Click the b
     
     <div class="gesture-hud">
         <span>↺ 旋转：拖拽</span>
-  <span class="pc-only">缩放：Ctrl + 滚轮</span>
+  <span class="pc-only">缩放：Ctrl键 + 鼠标滚轮</span>
   <span class="mobile-only">缩放：双指捏合</span>
 </div>
 
@@ -766,7 +766,7 @@ This project is open-source and available under the **MIT License**. Click the b
     <div class="hand-icon hand-right">👈</div>
   </div>
   <div class="gesture-text">
-    <span class="pc-tip">Ctrl + 鼠标滚轮以缩放</span>
+    <span class="pc-tip">Ctrl键 + 鼠标滚轮以缩放</span>
     <span class="mobile-tip">双指捏合屏幕以缩放</span>
   </div>
 </div>
@@ -798,7 +798,7 @@ This project is open-source and available under the **MIT License**. Click the b
     
     <div class="gesture-hud">
       <span>↺ 旋转：拖拽</span>
-  <span class="pc-only">缩放：Ctrl + 滚轮</span>
+  <span class="pc-only">缩放：Ctrl键 + 鼠标滚轮</span>
   <span class="mobile-only">缩放：双指捏合</span>
 </div>
 
@@ -813,7 +813,7 @@ This project is open-source and available under the **MIT License**. Click the b
     <div class="hand-icon hand-right">👈</div>
   </div>
   <div class="gesture-text">
-    <span class="pc-tip">Ctrl + 鼠标滚轮以缩放</span>
+    <span class="pc-tip">Ctrl键 + 鼠标滚轮以缩放</span>
     <span class="mobile-tip">双指捏合屏幕以缩放</span>
   </div>
 </div>
