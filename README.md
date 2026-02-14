@@ -1,12 +1,12 @@
 
 <div class="lang-en" markdown="1">
-
-<div class="github-only">
-  <p align="center">
-    <a href="https://tianyu-bai.github.io/E-Link">
+  <div class="github-only" align="center">
+    <a href="https://tianyu-bai.github.io/E-Link" 
+       style="display:inline-block; padding:12px 24px; background-color:#4CAF50; color:white; 
+              font-weight:bold; font-size:1.2em; border-radius:8px; text-decoration:none;">
       🌐 Click here to view the interactive website
     </a>
-  </p>
+  </div>
 </div>
 
 <div align="center" class="nav-badges">
