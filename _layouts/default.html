@@ -94,8 +94,8 @@ body.video-active .cursor-outline {
   /* --- 1. 光标 & 进度条 --- */
   .cursor-dot, .cursor-outline {
     position: fixed; top: 0; left: 0; 
-    transform: translate(-50%, -50%); border-radius: 50%; z-index: 99999; pointer-events: none;
-    transition: opacity 0.2s ease, width 0.2s, height 0.2s, background-color 0.2s;
+    border-radius: 50%; z-index: 99999; pointer-events: none;
+    transition: opacity 0.1s ease, width 0.1s, height 0.1s, background-color 0.2s;
   }
   .cursor-dot { width: 8px; height: 8px; background-color: #3b82f6; }
   .cursor-outline { width: 40px; height: 40px; border: 1px solid rgba(59, 130, 246, 0.5); }
@@ -840,8 +840,13 @@ body.video-active .cursor-outline {
     function resizeCanvas() {
       width = window.innerWidth;
       height = window.innerHeight;
-      canvas.width = width;
-      canvas.height = height;
+     // 🟢 获取设备像素比，解决高分屏模糊问题
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+      ctx.scale(dpr, dpr); // 放大绘图上下文
     }
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
@@ -1034,11 +1039,20 @@ body.video-active .cursor-outline {
     let mouseX = window.innerWidth / 2;
     let mouseY = 100;
  
-    window.addEventListener('mousemove', (e) => {
+window.addEventListener('mousemove', (e) => {
       mouseX = e.clientX;
       mouseY = e.clientY;
-      if(cursorDot) { cursorDot.style.left = `${mouseX}px`; cursorDot.style.top = `${mouseY}px`; }
-      if(cursorOutline) { cursorOutline.animate({ left: `${mouseX}px`, top: `${mouseY}px` }, { duration: 100, fill: "forwards" }); }
+      
+      // 用 GPU 加速的 translate3d)
+      if(cursorDot) { 
+        cursorDot.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%)`; 
+      }
+      if(cursorOutline) { 
+        cursorOutline.animate({ 
+          transform: `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%)` 
+        }, { duration: 30, fill: "forwards" }); 
+      }
+
       if (window.innerWidth > 768 && container) {
         const rx = (window.innerWidth / 2 - mouseX) / 50;
         const ry = (window.innerHeight / 2 - mouseY) / 50;
@@ -1218,7 +1232,18 @@ body.video-active .cursor-outline {
         setTimeout(() => window.location.href = url, 500);
       });
     });
- 
+ // 🟢 全局光标悬停反馈
+    document.body.addEventListener('mouseover', (e) => {
+      if (e.target.closest('a, button, .ctrl-btn, .rpg-btn, #bot-container, .slider')) {
+        document.body.classList.add('hovering');
+      }
+    });
+    
+    document.body.addEventListener('mouseout', (e) => {
+      if (e.target.closest('a, button, .ctrl-btn, .rpg-btn, #bot-container, .slider')) {
+        document.body.classList.remove('hovering');
+      }
+    });
   });
 </script>
 </body>
