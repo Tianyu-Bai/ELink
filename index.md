@@ -211,14 +211,6 @@ title: E-Link Home
   animation: none !important;
 }
 
-/* 🔴 性能优化关键 3：强制继承暂停状态，直到 .gesture-active 激活 */
-.gesture-overlay, .gesture-overlay * { 
-  animation-play-state: paused !important; 
-}
-.gesture-overlay.gesture-active, .gesture-overlay.gesture-active * { 
-  animation-play-state: running !important; 
-}
-
 /* ===================== 复位按钮样式 ===================== */
 .reset-btn {
   position: absolute;
@@ -264,19 +256,26 @@ model-viewer::part(interaction-prompt),
   height: 460px;
   background: transparent;
   border-radius: 16px;
-  border: 1px solid rgba(96, 165, 250, 0.15); /* 边框变淡 */
-  box-shadow: 0 10px 30px -10px rgba(59, 130, 246, 0.15); /* 加一层柔和的蓝色辉光 */
-  outline: none;
   
+  /* 🌟 增强版：晶莹剔透的边框 + 内外双重辉光 */
+  border: 1px solid rgba(96, 165, 250, 0.4); 
+  box-shadow: 
+    0 0 20px -5px rgba(59, 130, 246, 0.3), /* 外侧悬浮光晕 */
+    inset 0 0 15px rgba(59, 130, 246, 0.1); /* 内侧玻璃质感发光 */
+    
+  outline: none;
   overflow: hidden; 
   transform: translateZ(0); 
   backface-visibility: hidden; 
-  transition: box-shadow 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); /* 动画更丝滑 */
 }
 
-/* 鼠标悬停时，光晕微微变亮 */
+/* 🌟 鼠标悬停时，光晕呼吸放大，极具互动感 */
 .custom-model-viewer:hover {
-  box-shadow: 0 10px 40px -10px rgba(59, 130, 246, 0.25);
+  border: 1px solid rgba(96, 165, 250, 0.8);
+  box-shadow: 
+    0 0 35px 0px rgba(59, 130, 246, 0.4), 
+    inset 0 0 25px rgba(59, 130, 246, 0.2);
 }
   
 /* 🟢 新增：专治电脑端边框闪烁的三板斧 */
@@ -288,7 +287,7 @@ model-viewer::part(interaction-prompt),
 /* 🟢 新增：给包裹模型的盒子加上防溢出限制 */
 .model-block {
   max-width: 100vw !important;
-  overflow: hidden; 
+
 }
 
 /* 隐藏自带的默认提示和进度条，防止与你的自定义 UI 冲突 */
