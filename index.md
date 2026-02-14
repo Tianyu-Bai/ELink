@@ -1123,6 +1123,8 @@ This project is open-source and available under the **MIT License**. Click the b
       viewer.setAttribute('min-camera-orbit', 'auto auto 1mm');
 // 👇 进一步缩小最小视野角度，相当于增加了“长焦放大镜”效果
       viewer.setAttribute('min-field-of-view', '10deg'); 
+// 👇 统一设置为松手后等待 3秒 (3000毫秒) 再自转
+      viewer.autoRotateDelay = 3000; 
       viewer.pause(); 
 
       let hudTimer = null;
