@@ -2,7 +2,6 @@
 layout: default
 title: E-Link Home
 ---
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 <div class="lang-en" markdown="1">
 
@@ -126,12 +125,13 @@ title: E-Link Home
     margin-bottom: 5px;
   }
   
+  /* 🔴 性能优化关键 1：移除极耗性能的 drop-shadow，改用轻量级 text-shadow */
   .hand-icon {
     font-size: 50px;
     position: absolute;
     top: 20px;
     left: 50%;
-    filter: drop-shadow(2px 4px 0px rgba(0,0,0,0.8)) drop-shadow(0 0 10px rgba(0,0,0,0.5));
+    text-shadow: 2px 4px 0px rgba(0,0,0,0.8), 0 0 10px rgba(0,0,0,0.5);
     will-change: transform, opacity;
   }
 
@@ -185,9 +185,24 @@ title: E-Link Home
 }
 
 .gesture-hud span { white-space: nowrap; }
-.gesture-hidden { opacity: 0 !important; }
-.gesture-overlay { animation-play-state: paused; }
-.gesture-active .gesture-overlay { animation-play-state: running; }
+
+/* 🔴 性能优化关键 2：彻底阻断隐藏元素的动画渲染，防止后台空转 */
+.gesture-hidden { 
+  opacity: 0 !important; 
+  pointer-events: none !important;
+  animation: none !important; 
+}
+.gesture-hidden * {
+  animation: none !important;
+}
+
+/* 🔴 性能优化关键 3：强制继承暂停状态，直到 .gesture-active 激活 */
+.gesture-overlay, .gesture-overlay * { 
+  animation-play-state: paused !important; 
+}
+.gesture-overlay.gesture-active, .gesture-overlay.gesture-active * { 
+  animation-play-state: running !important; 
+}
 
 /* ===================== 复位按钮样式 ===================== */
 .reset-btn {
@@ -232,11 +247,19 @@ title: E-Link Home
   border: 1px solid rgba(59,130,246,0.3);
   outline: none;
 }
+
+model-viewer::part(interaction-prompt),
+model-viewer::part(default-progress-bar) {
+  display: none !important;
+  height: 0 !important;
+  opacity: 0 !important;
+}
+  
 </style>
 
 ## 🔬 Interactive 3D Model: E-Link Headstage Integration
  
-<div class="model-block" align="center" style="position: relative; max-width: 760px; margin: 0 auto;">
+<div class="model-block" align="center" style="position: relative; max-width: 760px; margin: 0 auto; min-height: 460px;">
   <model-viewer
     class="custom-model-viewer"
     data-src="{{ '/Videos/On skull_3.16MB.glb' | relative_url }}"
@@ -279,7 +302,7 @@ title: E-Link Home
 
 ## 🔬 E-Link – 3D Interactive View
  
-<div class="model-block" align="center" style="position: relative; max-width: 760px; margin: 0 auto;">
+<div class="model-block" align="center" style="position: relative; max-width: 760px; margin: 0 auto; min-height: 460px;">
   <model-viewer
     class="custom-model-viewer"
     data-src="{{ '/Videos/Whole_2.34MB.glb' | relative_url }}"
@@ -322,7 +345,7 @@ title: E-Link Home
 
 ## 🔬 256Ch Customized Headstage – 3D Interactive View
 
-<div class="model-block" align="center" style="position: relative; max-width: 760px; margin: 0 auto;">
+<div class="model-block" align="center" style="position: relative; max-width: 760px; margin: 0 auto; min-height: 460px;">
   <model-viewer
     class="custom-model-viewer"
     data-src="{{ '/Videos/3D_1.85MB.glb' | relative_url }}"
@@ -696,7 +719,7 @@ This project is open-source and available under the **MIT License**. Click the b
 
 ## 🔬 **E-Link 脑机接口：3D 交互式集成视图**
  
-<div class="model-block" align="center" style="position: relative; max-width: 760px; margin: 0 auto;">
+<div class="model-block" align="center" style="position: relative; max-width: 760px; margin: 0 auto; min-height: 460px;">
   <model-viewer
     class="custom-model-viewer"
     data-src="{{ '/Videos/On skull_3.16MB.glb' | relative_url }}"
@@ -739,7 +762,7 @@ This project is open-source and available under the **MIT License**. Click the b
 
 ## 🔬 E-Link – 三维交互模型
 
-<div class="model-block" align="center" style="position: relative; max-width: 760px; margin: 0 auto;">
+<div class="model-block" align="center" style="position: relative; max-width: 760px; margin: 0 auto; min-height: 460px;">
   <model-viewer
     class="custom-model-viewer"
     data-src="{{ '/Videos/Whole_2.34MB.glb' | relative_url }}"
@@ -782,7 +805,7 @@ This project is open-source and available under the **MIT License**. Click the b
 
 ## 🔬 定制256通道放大器 – 三维交互模型
 
-<div class="model-block" align="center" style="position: relative; max-width: 760px; margin: 0 auto;">
+<div class="model-block" align="center" style="position: relative; max-width: 760px; margin: 0 auto; min-height: 460px;">
   <model-viewer
     class="custom-model-viewer"
     data-src="{{ '/Videos/3D_1.85MB.glb' | relative_url }}"
@@ -958,7 +981,7 @@ This project is open-source and available under the **MIT License**. Click the b
     <b> 顶部4层电路板的设计爆炸动图 </b>
   </p>
 </div>
-    
+     
 <div align="center">
   <table style="margin-left: auto; margin-right: auto; width: 90%; text-align: center; border-collapse: collapse; border: 1px solid #e1e4e8;">
     <thead>
@@ -1125,6 +1148,14 @@ This project is open-source and available under the **MIT License**. Click the b
           try {
             viewer.play();
             viewer.setAttribute('auto-rotate', '');
+            
+            // 🔴 性能优化关键 4：只有在进入视口时，才激活手势动画
+            viewer.querySelectorAll('.gesture-overlay').forEach(el => {
+              if(!el.classList.contains('gesture-hidden')) { // 没被用户关掉的情况下
+                el.classList.add('gesture-active');
+              }
+            });
+            
           } catch(e) {
             // 模型可能还在下载中，auto-rotate 属性会让它下载完后自动开始转
           }
@@ -1134,16 +1165,17 @@ This project is open-source and available under the **MIT License**. Click the b
           // 离开缓冲区：暂停渲染，释放 GPU (关键!)
           viewer.pause();
           viewer.removeAttribute('auto-rotate');
+          
+          // 🔴 性能优化关键 5：离开视口时彻底关闭手势动画，释放后台性能
+          viewer.querySelectorAll('.gesture-overlay').forEach(el => {
+            el.classList.remove('gesture-active');
+          });
         }
       });
     }, {
       root: null,
-      // 【关键修改】：上下增加 200px 的缓冲区
-      // 意味着：模型还没进入屏幕，距离屏幕还有 200px 时就开始悄悄加载。
-      // 这样当你滑到模型面前时，最卡的那一下已经过去了，体验会非常丝滑。
+      // 上下增加 200px 的缓冲区
       rootMargin: '200px 0px', 
-      
-      // 阈值设低一点，只要碰到缓冲区边缘就开始工作，不用等到露出 20%
       threshold: 0.01 
     });
 
