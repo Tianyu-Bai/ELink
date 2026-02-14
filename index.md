@@ -186,9 +186,19 @@ title: E-Link Home
 
 .gesture-hud span { white-space: nowrap; }
 
+/* 悬停高亮效果 (修复缩放动画冲突) */
+.reset-btn:hover {
+  background: rgba(59, 130, 246, 0.4);
+  color: #fff;
+  border-color: rgba(59, 130, 246, 0.8);
+  transform: scale(1.05) translateZ(0); /* 保持硬件分层不失效 */
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+}
+  
 /* 🔴 性能优化关键 2：彻底阻断隐藏元素的动画渲染，防止后台空转 */
 .gesture-hidden { 
   opacity: 0 !important; 
+   visibility: hidden !important; /* 🟢 彻底移出视觉渲染树，拔掉耗电根源 */
   pointer-events: none !important;
   animation: none !important; 
 }
@@ -252,7 +262,13 @@ model-viewer::part(interaction-prompt),
   border: 1px solid rgba(59,130,246,0.3);
   outline: none;
 }
-
+  
+/* 🟢 新增：专治电脑端边框闪烁的三板斧 */
+  overflow: hidden; 
+  transform: translateZ(0); 
+  backface-visibility: hidden; 
+}
+  
 /* 🟢 新增：给包裹模型的盒子加上防溢出限制 */
 .model-block {
   max-width: 100vw !important;
@@ -266,6 +282,7 @@ model-viewer::part(default-progress-bar) {
   height: 0 !important;
   opacity: 0 !important;
 }
+
   
 </style>
 
@@ -278,7 +295,7 @@ model-viewer::part(default-progress-bar) {
     alt="E Link on Skull 3D Model"
     loading="lazy"
     poster="{{ '/Images/poster.webp' | relative_url }}"
-    camera-controls bounds="tight" field-of-view="30deg" auto-rotate auto-rotate-delay="500" rotation-per-second="15deg"
+    camera-controls interpolation-decay="200" bounds="tight" field-of-view="30deg" auto-rotate auto-rotate-delay="500" rotation-per-second="15deg"
     interaction-prompt="none" environment-image="neutral" exposure="0.75" shadow-intensity="0" tone-mapping="commerce">
 
     <div slot="poster" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; background: #0a0a0f; color: #3b82f6; font-family: 'JetBrains Mono', monospace;">
@@ -321,7 +338,7 @@ model-viewer::part(default-progress-bar) {
     alt="E Link 3D Model"
     loading="lazy"
     poster="{{ '/Images/poster.webp' | relative_url }}"
-    camera-controls bounds="tight" field-of-view="30deg" auto-rotate auto-rotate-delay="500" rotation-per-second="15deg"
+    camera-controls interpolation-decay="200" bounds="tight" field-of-view="30deg" auto-rotate auto-rotate-delay="500" rotation-per-second="15deg"
     interaction-prompt="none" environment-image="neutral" exposure="0.75" shadow-intensity="0" tone-mapping="commerce">
 
     <div slot="poster" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; background: #0a0a0f; color: #3b82f6; font-family: 'JetBrains Mono', monospace;">
@@ -364,7 +381,7 @@ model-viewer::part(default-progress-bar) {
     alt="E Link 3D Model" 
     loading="lazy"
     poster="{{ '/Images/poster.webp' | relative_url }}"
-    camera-controls bounds="tight" field-of-view="30deg" auto-rotate auto-rotate-delay="500" rotation-per-second="15deg"
+    camera-controls interpolation-decay="200" bounds="tight" field-of-view="30deg" auto-rotate auto-rotate-delay="500" rotation-per-second="15deg"
     interaction-prompt="none" environment-image="neutral" exposure="0.75" shadow-intensity="0" tone-mapping="commerce">
 
     <div slot="poster" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; background: #0a0a0f; color: #3b82f6; font-family: 'JetBrains Mono', monospace;">
@@ -738,7 +755,7 @@ This project is open-source and available under the **MIT License**. Click the b
     alt="E Link on Skull 3D Model"
     loading="lazy"
     poster="{{ '/Images/poster.webp' | relative_url }}"
-    camera-controls bounds="tight" field-of-view="30deg" auto-rotate auto-rotate-delay="500" rotation-per-second="15deg"
+    camera-controls interpolation-decay="200" bounds="tight" field-of-view="30deg" auto-rotate auto-rotate-delay="500" rotation-per-second="15deg"
     interaction-prompt="none" environment-image="neutral" exposure="0.75" shadow-intensity="0" tone-mapping="commerce">
 
     <div slot="poster" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; background: #0a0a0f; color: #3b82f6; font-family: 'JetBrains Mono', monospace;">
@@ -781,7 +798,7 @@ This project is open-source and available under the **MIT License**. Click the b
     alt="E Link 3D Model" 
     loading="lazy"
     poster="{{ '/Images/poster.webp' | relative_url }}"
-    camera-controls bounds="tight" field-of-view="30deg" auto-rotate auto-rotate-delay="500" rotation-per-second="15deg"
+    camera-controls interpolation-decay="200" bounds="tight" field-of-view="30deg" auto-rotate auto-rotate-delay="500" rotation-per-second="15deg"
     interaction-prompt="none" environment-image="neutral" exposure="0.75" shadow-intensity="0" tone-mapping="commerce">
 
     <div slot="poster" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; background: #0a0a0f; color: #3b82f6; font-family: 'JetBrains Mono', monospace;">
@@ -824,7 +841,7 @@ This project is open-source and available under the **MIT License**. Click the b
     alt="E Link 3D Model"
     loading="lazy"
     poster="{{ '/Images/poster.webp' | relative_url }}"
-    camera-controls bounds="tight" field-of-view="30deg" auto-rotate auto-rotate-delay="500" rotation-per-second="15deg"
+    camera-controls interpolation-decay="200" bounds="tight" field-of-view="30deg" auto-rotate auto-rotate-delay="500" rotation-per-second="15deg"
     interaction-prompt="none" environment-image="neutral" exposure="0.75" shadow-intensity="0" tone-mapping="commerce">
 
     <div slot="poster" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; background: #0a0a0f; color: #3b82f6; font-family: 'JetBrains Mono', monospace;">
