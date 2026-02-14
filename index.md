@@ -1120,74 +1120,20 @@ This project is open-source and available under the **MIT License**. Click the b
 </div>
 
 <script>
-  // ===================== 性能优化最终版：带缓冲区的智能懒加载 =====================
-  // 1. [懒加载] 只有模型接近屏幕 (进入200px缓冲区) 时，才开始下载 3D 资源 (data-src -> src)。
-  // 2. [防卡顿] 提前加载，避免用户滑到模型时正好卡住。
-  // 3. [显存管理] 滑走后立即暂停，释放 GPU。
-
   document.addEventListener("DOMContentLoaded", () => {
-    const viewers = document.querySelectorAll('model-viewer');
+    const models = Array.from(document.querySelectorAll('model-viewer'));
+    if (!models.length) return;
 
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        const viewer = entry.target;
-        
-        if (entry.isIntersecting) {
-          // [进场逻辑]
+    // 1. 移动端与阈值判定
+    const isMobile = window.matchMedia('(max-width: 768px)').matches;
+    const ENTER_THRESHOLD = isMobile ? 0.4 : 0.25;
+    const EXIT_THRESHOLD  = isMobile ? 0.15 : 0.1;
 
-          // 1. 核心修改：检测 src 是否为空？如果是，把 data-src 赋值给它
-          // 这样浏览器直到这一刻才会发起网络请求下载模型，内存占用瞬间降低。
-          if (!viewer.getAttribute('src') && viewer.getAttribute('data-src')) {
-            viewer.setAttribute('src', viewer.getAttribute('data-src'));
-          }
+    // 2. 全局播放锁（保证同时只有 1 个模型在消耗 GPU）
+    let activeModel = null;
 
-          // 2. 唤醒渲染
-          viewer.dismissPoster(); // 隐藏海报
-          
-          // 3. 尝试播放 (加个 try-catch 防止模型还没下载完就报错)
-          try {
-            viewer.play();
-            viewer.setAttribute('auto-rotate', '');
-            
-            // 🔴 性能优化关键 4：只有在进入视口时，才激活手势动画
-            viewer.querySelectorAll('.gesture-overlay').forEach(el => {
-              if(!el.classList.contains('gesture-hidden')) { // 没被用户关掉的情况下
-                el.classList.add('gesture-active');
-              }
-            });
-            
-          } catch(e) {
-            // 模型可能还在下载中，auto-rotate 属性会让它下载完后自动开始转
-          }
-          
-        } else {
-          // [退场逻辑]
-          // 离开缓冲区：暂停渲染，释放 GPU (关键!)
-          viewer.pause();
-          viewer.removeAttribute('auto-rotate');
-          
-          // 🔴 性能优化关键 5：离开视口时彻底关闭手势动画，释放后台性能
-          viewer.querySelectorAll('.gesture-overlay').forEach(el => {
-            el.classList.remove('gesture-active');
-          });
-        }
-      });
-    }, {
-      root: null,
-      // 上下增加 200px 的缓冲区
-      rootMargin: '200px 0px', 
-      threshold: 0.01 
-    });
-
-    viewers.forEach(viewer => {
-      // 初始状态：先全部暂停，交给 Observer 唤醒
-      viewer.pause();
-      observer.observe(viewer);
-    });
-
-    // ===================== 交互提示逻辑 =====================
-    // 用户一旦开始操作，隐藏手势提示
-    document.querySelectorAll('model-viewer').forEach(viewer => {
+    // 3. 统一交互提示隐藏逻辑
+    models.forEach(viewer => {
       const hideAllHints = () => {
         viewer.querySelectorAll('.gesture-overlay, .gesture-hud')
           .forEach(el => el.classList.add('gesture-hidden'));
@@ -1195,6 +1141,67 @@ This project is open-source and available under the **MIT License**. Click the b
       viewer.addEventListener('mousedown', hideAllHints, { once: true });
       viewer.addEventListener('wheel', hideAllHints, { once: true });
       viewer.addEventListener('touchstart', hideAllHints, { once: true });
+      
+      // 初始冻结
+      viewer.pause();
     });
+
+    // 4. 终极合并版 Observer
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        const viewer = entry.target;
+        const ratio = entry.intersectionRatio;
+
+        // 【阶段 A：超前懒加载】只要触碰到 200px 缓冲区，立刻开始静默下载 3D 数据
+        if (entry.isIntersecting) {
+          if (!viewer.getAttribute('src') && viewer.getAttribute('data-src')) {
+            viewer.setAttribute('src', viewer.getAttribute('data-src'));
+            viewer.dismissPoster();
+          }
+        }
+
+        // 【阶段 B：精准播放控制】达到可见阈值才开始渲染动画
+        if (ratio >= ENTER_THRESHOLD) {
+          
+          // 如果有其他模型在播，先强制停掉（核心防发烫逻辑）
+          if (activeModel && activeModel !== viewer) {
+            activeModel.pause();
+            activeModel.removeAttribute('auto-rotate');
+            activeModel.querySelectorAll('.gesture-overlay').forEach(el => el.classList.remove('gesture-active'));
+          }
+
+          // 激活当前模型
+          activeModel = viewer;
+          try {
+            viewer.play();
+            viewer.setAttribute('auto-rotate', '');
+            
+            // 激活手势提示
+            viewer.querySelectorAll('.gesture-overlay').forEach(el => {
+              if(!el.classList.contains('gesture-hidden')) {
+                el.classList.add('gesture-active');
+              }
+            });
+          } catch(e) {}
+
+        } 
+        // 【阶段 C：退出视口】低于退出阈值，彻底暂停释放显存
+        else if (ratio <= EXIT_THRESHOLD) {
+          if (activeModel === viewer) {
+            activeModel = null;
+          }
+          viewer.pause();
+          viewer.removeAttribute('auto-rotate');
+          viewer.querySelectorAll('.gesture-overlay').forEach(el => el.classList.remove('gesture-active'));
+        }
+      });
+    }, {
+      root: null,
+      rootMargin: '200px 0px', // 200px 缓冲区用于提前触发懒加载
+      threshold: [0, EXIT_THRESHOLD, ENTER_THRESHOLD, 1] // 设置关键侦测点
+    });
+
+    // 启动监听
+    models.forEach(model => observer.observe(model));
   });
 </script>
