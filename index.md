@@ -48,6 +48,15 @@ title: E-Link Home
 </div>
 
 <style>
+
+  /* 默认隐藏手机提示 */
+.mobile-only { display: none; }
+
+/* 如果是触摸屏，隐藏电脑提示，显示手机提示 */
+@media (pointer: coarse) {
+  .pc-only { display: none; }
+  .mobile-only { display: inline; }
+}
   
   /* ========================================= 1. 复杂时间轴控制 (总周期 48秒) ========================================= */
    
@@ -158,6 +167,33 @@ title: E-Link Home
     border-radius: 12px;
     white-space: nowrap;
   }
+  
+/* 1. 默认逻辑：隐藏手机端文字，显示电脑端文字 */
+.mobile-tip { display: none; }
+.pc-tip { display: inline; }
+
+/* 2. 核心：如果识别到是触摸屏设备 (pointer: coarse) */
+@media (pointer: coarse) {
+  .pc-tip { display: none; }    /* 隐藏电脑提示 */
+  .mobile-tip { display: inline; } /* 显示手机提示 */
+}
+
+/* 顺手美化一下文字样式，防止太挤 */
+.gesture-text span {
+  display: block; /* 确保文字独占一行，不会和别的元素重叠 */
+}
+  
+  /* 默认显示电脑端的提示 */
+.gesture-text::after {
+  content: "Pinch / Ctrl + 🖱️Wheel to Zoom";
+}
+
+/* 🟢 核心：如果识别到是触摸屏（手机/平板），自动切换文字 */
+@media (pointer: coarse) {
+  .gesture-text::after {
+    content: "Pinch with two fingers to Zoom";
+  }
+}
 
   /* ===================== 弱交互 HUD ===================== */
 
@@ -319,24 +355,29 @@ model-viewer::part(default-progress-bar) {
     </div>
     
     <div class="model-watermark-text">Copyright © 2026 Tianyu Bai</div>
-    
-    <div class="gesture-hud">
-      <span>↺ Drag</span>
-      <span> <kbd>Ctrl</kbd> + 🖱 Zoom</span>
-    </div>
+
+<div class="gesture-hud">
+  <span>↺ Drag to Rotate</span>
+  <span class="pc-only"><kbd>Ctrl</kbd> + 🖱 Zoom</span>
+  <span class="mobile-only">✌️ Pinch Zoom</span>
+</div>
 
     <div class="gesture-overlay mode-drag">
       <div class="icon-box"><div class="hand-icon">👆</div></div>
       <div class="gesture-text">Drag to Rotate</div>
     </div>
 
-    <div class="gesture-overlay mode-zoom">
-      <div class="icon-box">
-        <div class="hand-icon hand-left">👉</div>
-        <div class="hand-icon hand-right">👈</div>
-      </div>
-      <div class="gesture-text">Pinch / <kbd>Ctrl</kbd> + 🖱️Wheel to Zoom</div>
-    </div>
+<div class="gesture-overlay mode-zoom">
+  <div class="icon-box">
+    <div class="hand-icon hand-left">👉</div>
+    <div class="hand-icon hand-right">👈</div>
+  </div>
+  <div class="gesture-text">
+    <span class="pc-tip"><kbd>Ctrl</kbd> + 🖱️Wheel to Zoom</span>
+    <span class="mobile-tip">Pinch to Zoom</span>
+  </div>
+</div>
+
     
     <button class="reset-btn" onclick="this.parentElement.cameraOrbit = '45deg 55deg auto'; this.parentElement.fieldOfView = '30deg';">
       ⟲ Reset View
@@ -364,9 +405,10 @@ model-viewer::part(default-progress-bar) {
     <div class="model-watermark-text">Copyright © 2026 Tianyu Bai</div>
     
     <div class="gesture-hud">
-      <span>↺ Drag</span>
-      <span>⌃ + 🖱 Zoom</span>
-    </div>
+     <span>↺ Drag to Rotate</span>
+  <span class="pc-only"><kbd>Ctrl</kbd> + 🖱 Zoom</span>
+  <span class="mobile-only">✌️ Pinch Zoom</span>
+</div>
 
     <div class="gesture-overlay mode-drag">
       <div class="icon-box"><div class="hand-icon">👆</div></div>
@@ -374,12 +416,15 @@ model-viewer::part(default-progress-bar) {
     </div>
 
     <div class="gesture-overlay mode-zoom">
-      <div class="icon-box">
-        <div class="hand-icon hand-left">👉</div>
-        <div class="hand-icon hand-right">👈</div>
-      </div>
-      <div class="gesture-text">Pinch / <kbd>Ctrl</kbd> + 🖱️Wheel to Zoom</div>
-    </div>
+  <div class="icon-box">
+    <div class="hand-icon hand-left">👉</div>
+    <div class="hand-icon hand-right">👈</div>
+  </div>
+  <div class="gesture-text">
+    <span class="pc-tip"><kbd>Ctrl</kbd> + 🖱️Wheel to Zoom</span>
+    <span class="mobile-tip">Pinch to Zoom</span>
+  </div>
+</div>
     
     <button class="reset-btn" onclick="this.parentElement.cameraOrbit = '45deg 55deg auto'; this.parentElement.fieldOfView = '30deg';">
       ⟲ Reset View
@@ -407,9 +452,10 @@ model-viewer::part(default-progress-bar) {
     <div class="model-watermark-text">Copyright © 2026 Tianyu Bai</div>
     
     <div class="gesture-hud">
-      <span>↺ Drag</span>
-      <span>⌃ + 🖱 Zoom</span>
-    </div>
+       <span>↺ Drag to Rotate</span>
+  <span class="pc-only"><kbd>Ctrl</kbd> + 🖱 Zoom</span>
+  <span class="mobile-only">✌️ Pinch Zoom</span>
+</div>
 
     <div class="gesture-overlay mode-drag">
       <div class="icon-box"><div class="hand-icon">👆</div></div>
@@ -417,12 +463,15 @@ model-viewer::part(default-progress-bar) {
     </div>
 
     <div class="gesture-overlay mode-zoom">
-      <div class="icon-box">
-        <div class="hand-icon hand-left">👉</div>
-        <div class="hand-icon hand-right">👈</div>
-      </div>
-      <div class="gesture-text">Pinch / <kbd>Ctrl</kbd> + 🖱️Wheel to Zoom</div>
-    </div>
+  <div class="icon-box">
+    <div class="hand-icon hand-left">👉</div>
+    <div class="hand-icon hand-right">👈</div>
+  </div>
+  <div class="gesture-text">
+    <span class="pc-tip"><kbd>Ctrl</kbd> + 🖱️Wheel to Zoom</span>
+    <span class="mobile-tip">Pinch to Zoom</span>
+  </div>
+</div>
     
     <button class="reset-btn" onclick="this.parentElement.cameraOrbit = '45deg 55deg auto'; this.parentElement.fieldOfView = '30deg';">
       ⟲ Reset View
@@ -782,8 +831,9 @@ This project is open-source and available under the **MIT License**. Click the b
     
     <div class="gesture-hud">
       <span>↺ 拖拽旋转</span>
-      <span>Ctrl + 滚轮缩放</span>
-    </div>
+  <span class="pc-only"><kbd>Ctrl</kbd> + 滚轮缩放</span>
+  <span class="mobile-only">双指捏合缩放</span>
+</div>
 
     <div class="gesture-overlay mode-drag">
       <div class="icon-box"><div class="hand-icon">👆</div></div>
@@ -791,12 +841,15 @@ This project is open-source and available under the **MIT License**. Click the b
     </div>
 
     <div class="gesture-overlay mode-zoom">
-      <div class="icon-box">
-        <div class="hand-icon hand-left">👉</div>
-        <div class="hand-icon hand-right">👈</div>
-      </div>
-      <div class="gesture-text">双指捏合 / <kbd>Ctrl</kbd> + 滚轮缩放</div>
-    </div>
+  <div class="icon-box">
+    <div class="hand-icon hand-left">👉</div>
+    <div class="hand-icon hand-right">👈</div>
+  </div>
+  <div class="gesture-text">
+    <span class="pc-tip"><kbd>Ctrl</kbd> + 鼠标滚轮以缩放</span>
+    <span class="mobile-tip">双指捏合屏幕以缩放</span>
+  </div>
+</div>
     
     <button class="reset-btn" onclick="this.parentElement.cameraOrbit = '45deg 55deg auto'; this.parentElement.fieldOfView = '30deg';">
       ⟲ 重置视角
@@ -824,9 +877,10 @@ This project is open-source and available under the **MIT License**. Click the b
     <div class="model-watermark-text">Copyright © 2026 Tianyu Bai</div>
     
     <div class="gesture-hud">
-      <span>↺ 拖拽旋转</span>
-      <span>Ctrl + 滚轮缩放</span>
-   </div>
+    <span>↺ 拖拽旋转</span>
+  <span class="pc-only"><kbd>Ctrl</kbd> + 滚轮缩放</span>
+  <span class="mobile-only">双指捏合缩放</span>
+</div>
 
     <div class="gesture-overlay mode-drag">
       <div class="icon-box"><div class="hand-icon">👆</div></div>
@@ -834,12 +888,15 @@ This project is open-source and available under the **MIT License**. Click the b
     </div>
 
     <div class="gesture-overlay mode-zoom">
-      <div class="icon-box">
-        <div class="hand-icon hand-left">👉</div>
-        <div class="hand-icon hand-right">👈</div>
-      </div>
-      <div class="gesture-text">双指捏合 / <kbd>Ctrl</kbd> + 滚轮缩放</div>
-    </div>
+  <div class="icon-box">
+    <div class="hand-icon hand-left">👉</div>
+    <div class="hand-icon hand-right">👈</div>
+  </div>
+  <div class="gesture-text">
+    <span class="pc-tip"><kbd>Ctrl</kbd> + 鼠标滚轮以缩放</span>
+    <span class="mobile-tip">双指捏合屏幕以缩放</span>
+  </div>
+</div>
     
     <button class="reset-btn" onclick="this.parentElement.cameraOrbit = '45deg 55deg auto'; this.parentElement.fieldOfView = '30deg';">
       ⟲ 重置视角
@@ -867,9 +924,10 @@ This project is open-source and available under the **MIT License**. Click the b
     <div class="model-watermark-text">Copyright © 2026 Tianyu Bai </div>
     
     <div class="gesture-hud">
-      <span>↺ 拖拽旋转</span>
-      <span>Ctrl + 滚轮缩放</span>
-   </div>
+ <span>↺ 拖拽旋转</span>
+  <span class="pc-only"><kbd>Ctrl</kbd> + 滚轮缩放</span>
+  <span class="mobile-only">双指捏合缩放</span>
+</div>
    
     <div class="gesture-overlay mode-drag">
       <div class="icon-box"><div class="hand-icon">👆</div></div>
@@ -877,12 +935,15 @@ This project is open-source and available under the **MIT License**. Click the b
     </div>
 
     <div class="gesture-overlay mode-zoom">
-      <div class="icon-box">
-        <div class="hand-icon hand-left">👉</div>
-        <div class="hand-icon hand-right">👈</div>
-      </div>
-      <div class="gesture-text">双指捏合 / <kbd>Ctrl</kbd> + 滚轮缩放</div>
-    </div>
+  <div class="icon-box">
+    <div class="hand-icon hand-left">👉</div>
+    <div class="hand-icon hand-right">👈</div>
+  </div>
+  <div class="gesture-text">
+    <span class="pc-tip"><kbd>Ctrl</kbd> + 鼠标滚轮以缩放</span>
+    <span class="mobile-tip">双指捏合屏幕以缩放</span>
+  </div>
+</div>
 
     <button class="reset-btn" onclick="this.parentElement.cameraOrbit = '45deg 55deg auto'; this.parentElement.fieldOfView = '30deg';">
       ⟲ 重置视角
