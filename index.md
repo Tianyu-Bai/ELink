@@ -239,7 +239,7 @@ title: E-Link Home
 <div class="model-block" align="center" style="position: relative; max-width: 760px; margin: 0 auto;">
   <model-viewer
     class="custom-model-viewer"
-    data-src="{{ '/Videos/On skull_3.16MB.glb' | relative_url }}"
+    data-src="{{ '/Videos/On skull_3.17MB.glb' | relative_url }}"
     alt="E Link on Skull 3D Model"
     loading="lazy"
     poster="{{ '/Images/poster.webp' | relative_url }}"
@@ -319,6 +319,7 @@ title: E-Link Home
     </button>
   </model-viewer>
 </div>
+
 ## 🔬 256Ch Customized Headstage – 3D Interactive View
 
 <div class="model-block" align="center" style="position: relative; max-width: 760px; margin: 0 auto;">
@@ -693,6 +694,49 @@ This project is open-source and available under the **MIT License**. Click the b
 </div>
 </div>
 
+## 🔬 **E-Link 脑机接口：3D 交互式集成视图**
+ 
+<div class="model-block" align="center" style="position: relative; max-width: 760px; margin: 0 auto;">
+  <model-viewer
+    class="custom-model-viewer"
+    data-src="{{ '/Videos/On skull_3.17MB.glb' | relative_url }}"
+    alt="E Link on Skull 3D Model"
+    loading="lazy"
+    poster="{{ '/Images/poster.webp' | relative_url }}"
+    camera-controls bounds="tight" field-of-view="30deg" auto-rotate auto-rotate-delay="2000"
+    interaction-prompt="none" environment-image="neutral" exposure="0.75" shadow-intensity="0" tone-mapping="commerce">
+
+    <div slot="poster" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; background: #0a0a0f; color: #3b82f6; font-family: 'JetBrains Mono', monospace;">
+      <div class="model-loader"></div>
+      <p style="margin-top: 20px; font-size: 0.9rem; letter-spacing: 2px; animation: blink 1.5s infinite;">INITIALIZING 3D SIGNAL...</p>
+    </div>
+    
+    <div class="model-watermark-text">Copyright © 2026 Tianyu Bai</div>
+    
+    <div class="gesture-hud">
+      <span>↺ Drag</span>
+      <span>⌃ + 🖱 Zoom</span>
+    </div>
+
+    <div class="gesture-overlay mode-drag">
+      <div class="icon-box"><div class="hand-icon">👆</div></div>
+      <div class="gesture-text">Drag to Rotate</div>
+    </div>
+
+    <div class="gesture-overlay mode-zoom">
+      <div class="icon-box">
+        <div class="hand-icon hand-left">👉</div>
+        <div class="hand-icon hand-right">👈</div>
+      </div>
+      <div class="gesture-text">Pinch / <kbd>Ctrl</kbd> + 🖱️Wheel to Zoom</div>
+    </div>
+    
+    <button class="reset-btn" onclick="this.parentElement.cameraOrbit = '45deg 55deg auto'; this.parentElement.fieldOfView = '30deg';">
+      ⟲ Reset View
+    </button>
+  </model-viewer>
+</div>
+
 ## 🔬 E-Link – 三维交互模型
 
 <div class="model-block" align="center" style="position: relative; max-width: 760px; margin: 0 auto;">
@@ -735,6 +779,7 @@ This project is open-source and available under the **MIT License**. Click the b
     </button>
   </model-viewer>
 </div> 
+
 ## 🔬 定制256通道放大器 – 三维交互模型
 
 <div class="model-block" align="center" style="position: relative; max-width: 760px; margin: 0 auto;">
