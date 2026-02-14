@@ -48,292 +48,146 @@ title: E-Link Home
 </div>
 
 <style>
+/* ===================== 1. 核心设备感知与显隐逻辑 (去重合并版) ===================== */
+/* 默认：全部隐藏 */
+.pc-tip, .mobile-tip, .pc-only, .mobile-only { 
+  display: none !important; 
+}
 
-  /* 默认隐藏手机提示 */
-.mobile-only { display: none; }
+/* 识别电脑 (检测到鼠标等精确指针) */
+@media (pointer: fine) {
+  .pc-tip, .pc-only { display: inline !important; }
+}
 
-/* 如果是触摸屏，隐藏电脑提示，显示手机提示 */
+/* 识别手机/平板 (检测到手指等粗略指针) */
 @media (pointer: coarse) {
-  .pc-only { display: none; }
-  .mobile-only { display: inline; }
-}
-  
-  /* ========================================= 1. 复杂时间轴控制 (总周期 48秒) ========================================= */
-   
-  /* Drag 容器显隐 */
-  @keyframes timeline-drag-container {
-    0%, 6.25%    { opacity: 1; z-index: 10; } 
-    6.35%, 12.4% { opacity: 0; z-index: -1; } 
-    12.5%, 18.75% { opacity: 1; z-index: 10; } 
-    18.85%, 56.15% { opacity: 0; z-index: -1; } 
-    56.25%, 62.5% { opacity: 1; z-index: 10; } 
-    62.6%, 100%   { opacity: 0; z-index: -1; } 
-  }
-
-  /* Zoom 容器显隐 */
-  @keyframes timeline-zoom-container {
-    0%, 6.15%    { opacity: 0; z-index: -1; }
-    6.25%, 12.5% { opacity: 1; z-index: 10; } 
-    12.6%, 18.65% { opacity: 0; z-index: -1; }
-    18.75%, 25%  { opacity: 1; z-index: 10; } 
-    25.1%, 62.4% { opacity: 0; z-index: -1; } 
-    62.5%, 68.75% { opacity: 1; z-index: 10; } 
-    68.85%, 100%  { opacity: 0; z-index: -1; } 
-  }
-  
-  /* ========================================= 2. 动作动画 ========================================= */
-  
-  /* 拖拽动作 */
-  @keyframes move-drag-hand {
-    0% { transform: translateX(-40px) rotate(-15deg); opacity: 0; }
-    20% { opacity: 1; }
-    80% { opacity: 1; }
-    100% { transform: translateX(40px) rotate(5deg); opacity: 0; }
-  }
-
-  /* 左手 (👉) */
-  @keyframes move-zoom-left-diagonal {
-    0% { transform: translate(-30px, 15px); opacity: 0; } 
-    20% { opacity: 1; }
-    80% { opacity: 1; }
-    100% { transform: translate(-90px, 65px); opacity: 0; } 
-  }
-  
-  /* 右手 (👈) */
-  @keyframes move-zoom-right-diagonal {
-    0% { transform: translate(30px, -15px); opacity: 0; } 
-    20% { opacity: 1; }
-    80% { opacity: 1; }
-    100% { transform: translate(90px, -65px); opacity: 0; } 
-  }
-    
- /* =========================================  3. 容器与图标样式  ========================================= */
-  
-  .gesture-overlay {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    pointer-events: none;
-    text-align: center;
-    width: 220px; 
-    height: 150px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .mode-drag { animation: timeline-drag-container 48s infinite; }
-  .mode-zoom { animation: timeline-zoom-container 48s infinite; }
-
-  .icon-box {
-    position: relative;
-    height: 80px;
-    width: 100%;
-    margin-bottom: 5px;
-  }
-  
-  .hand-icon {
-    font-size: 50px;
-    position: absolute;
-    top: 20px;
-    left: 50%;
-    text-shadow: 2px 4px 0px rgba(0,0,0,0.8), 0 0 10px rgba(0,0,0,0.5);
-    will-change: transform, opacity;
-  }
-
-  .mode-drag .hand-icon {
-    margin-left: -25px;
-    animation: move-drag-hand 1.5s infinite ease-in-out;
-  }
-  
-  .mode-zoom .hand-icon {
-     margin-left: -25px; 
-     top: 15px; 
-  }
-
-  .mode-zoom .hand-left { animation: move-zoom-left-diagonal 1.5s infinite ease-in-out; }
-  .mode-zoom .hand-right { animation: move-zoom-right-diagonal 1.5s infinite ease-in-out; }
-
-  .gesture-text {
-    color: white;
-    font-family: sans-serif;
-    font-weight: bold;
-    font-size: 16px;
-    text-shadow: 0 2px 4px black;
-    background: rgba(0,0,0,0.4);
-    padding: 4px 12px;
-    border-radius: 12px;
-    white-space: nowrap;
-  }
-  
-/* 1. 默认逻辑：隐藏手机端文字，显示电脑端文字 */
-.mobile-tip { display: none; }
-.pc-tip { display: inline; }
-
-/* 2. 核心：如果识别到是触摸屏设备 (pointer: coarse) */
-@media (pointer: coarse) {
-  .pc-tip { display: none; }    /* 隐藏电脑提示 */
-  .mobile-tip { display: inline; } /* 显示手机提示 */
+  .mobile-tip, .mobile-only { display: inline !important; }
 }
 
-/* 顺手美化一下文字样式，防止太挤 */
-.gesture-text span {
-  display: block; /* 确保文字独占一行，不会和别的元素重叠 */
-}
-  
-  /* 默认显示电脑端的提示 */
-.gesture-text::after {
-  content: "Pinch / Ctrl + 🖱️Wheel to Zoom";
-}
-
-/* 🟢 核心：如果识别到是触摸屏（手机/平板），自动切换文字 */
-@media (pointer: coarse) {
-  .gesture-text::after {
-    content: "Pinch with two fingers to Zoom";
-  }
+/* ========================================= 2. 复杂时间轴与动作动画 ========================================= */
+@keyframes timeline-drag-container {
+  0%, 6.25%    { opacity: 1; z-index: 10; } 
+  6.35%, 12.4% { opacity: 0; z-index: -1; } 
+  12.5%, 18.75% { opacity: 1; z-index: 10; } 
+  18.85%, 56.15% { opacity: 0; z-index: -1; } 
+  56.25%, 62.5% { opacity: 1; z-index: 10; } 
+  62.6%, 100%   { opacity: 0; z-index: -1; } 
 }
 
-  /* ===================== 弱交互 HUD ===================== */
+@keyframes timeline-zoom-container {
+  0%, 6.15%    { opacity: 0; z-index: -1; }
+  6.25%, 12.5% { opacity: 1; z-index: 10; } 
+  12.6%, 18.65% { opacity: 0; z-index: -1; }
+  18.75%, 25%  { opacity: 1; z-index: 10; } 
+  25.1%, 62.4% { opacity: 0; z-index: -1; } 
+  62.5%, 68.75% { opacity: 1; z-index: 10; } 
+  68.85%, 100%  { opacity: 0; z-index: -1; } 
+}
 
-.gesture-hud {
+@keyframes move-drag-hand {
+  0% { transform: translateX(-40px) rotate(-15deg); opacity: 0; }
+  20% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { transform: translateX(40px) rotate(5deg); opacity: 0; }
+}
+
+@keyframes move-zoom-left-diagonal {
+  0% { transform: translate(-30px, 15px); opacity: 0; } 
+  20% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { transform: translate(-90px, 65px); opacity: 0; } 
+}
+
+@keyframes move-zoom-right-diagonal {
+  0% { transform: translate(30px, -15px); opacity: 0; } 
+  20% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { transform: translate(90px, -65px); opacity: 0; } 
+}
+
+/* ========================================= 3. 容器与图标样式 ========================================= */
+.gesture-overlay {
   position: absolute;
-  top: 12px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 12px;
-  font-size: 13px;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  color: rgba(255, 255, 255, 0.65);
-  background: rgba(15, 23, 42, 0.45);
-  border: 1px solid rgba(59,130,246,0.25);
-  padding: 6px 10px;
-  border-radius: 20px;
-  white-space: nowrap;
-  -webkit-backdrop-filter: blur(6px);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
   pointer-events: none;
-  backdrop-filter: blur(6px);
-  transition: opacity 0.4s ease;
-  z-index: 5;
+  text-align: center;
+  width: 220px; height: 150px;
+  display: flex; flex-direction: column; justify-content: center; align-items: center;
 }
 
-.gesture-hud span { white-space: nowrap; }
+.mode-drag { animation: timeline-drag-container 48s infinite; }
+.mode-zoom { animation: timeline-zoom-container 48s infinite; }
 
-.gesture-hidden { 
-  opacity: 0 !important; 
-  visibility: hidden !important; 
-  pointer-events: none !important;
-  animation: none !important; 
-}
-.gesture-hidden * {
-  animation: none !important;
-}
-  
-  /* “动画锁”：不在屏幕里就暂停，进了屏幕再播放 */
-.gesture-overlay, .gesture-overlay * { 
-  animation-play-state: paused !important; 
-}
-.gesture-overlay.gesture-active, .gesture-overlay.gesture-active * { 
-  animation-play-state: running !important; 
+.icon-box { position: relative; height: 80px; width: 100%; margin-bottom: 5px; }
+
+.hand-icon {
+  font-size: 50px; position: absolute; top: 20px; left: 50%;
+  text-shadow: 2px 4px 0px rgba(0,0,0,0.8), 0 0 10px rgba(0,0,0,0.5);
+  will-change: transform, opacity;
 }
 
-/* ===================== 复位按钮样式 ===================== */
+.mode-drag .hand-icon { margin-left: -25px; animation: move-drag-hand 1.5s infinite ease-in-out; }
+.mode-zoom .hand-icon { margin-left: -25px; top: 15px; }
+.mode-zoom .hand-left { animation: move-zoom-left-diagonal 1.5s infinite ease-in-out; }
+.mode-zoom .hand-right { animation: move-zoom-right-diagonal 1.5s infinite ease-in-out; }
+
+.gesture-text {
+  color: white; font-family: sans-serif; font-weight: bold; font-size: 16px;
+  text-shadow: 0 2px 4px black; background: rgba(0,0,0,0.4);
+  padding: 4px 12px; border-radius: 12px; white-space: nowrap;
+}
+
+/* ===================== 4. HUD 与交互反馈 ===================== */
+.gesture-hud {
+  position: absolute; top: 12px; left: 50%;
+  transform: translateX(-50%); display: flex; gap: 12px;
+  font-size: 13px; font-family: system-ui, sans-serif;
+  color: rgba(255, 255, 255, 0.65); background: rgba(15, 23, 42, 0.45);
+  border: 1px solid rgba(59,130,246,0.25); padding: 6px 10px;
+  border-radius: 20px; white-space: nowrap; backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px); pointer-events: none; transition: opacity 0.4s ease; z-index: 5;
+}
+
+.gesture-hidden { opacity: 0 !important; visibility: hidden !important; pointer-events: none !important; animation: none !important; }
+.gesture-hidden * { animation: none !important; }
+
+/* 动画锁：不在屏幕里就暂停，进了屏幕再播放 */
+.gesture-overlay, .gesture-overlay * { animation-play-state: paused !important; }
+.gesture-overlay.gesture-active, .gesture-overlay.gesture-active * { animation-play-state: running !important; }
+
 .reset-btn {
-  position: absolute;
-  bottom: 16px;
-  left: 16px;
-  z-index: 10;
-  background: rgba(15, 23, 42, 0.6);
-  border: 1px solid rgba(59, 130, 246, 0.3);
-  color: rgba(255, 255, 255, 0.8);
-  border-radius: 8px;
-  padding: 6px 12px;
-  font-family: system-ui, sans-serif;
-  font-size: 12px;
-  cursor: pointer;
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  gap: 6px;
+  position: absolute; bottom: 16px; left: 16px; z-index: 10;
+  background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(59, 130, 246, 0.3);
+  color: rgba(255, 255, 255, 0.8); border-radius: 8px; padding: 6px 12px;
+  font-family: system-ui, sans-serif; font-size: 12px; cursor: pointer;
+  backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+  transition: all 0.3s ease; display: flex; align-items: center; gap: 6px;
+}
+.reset-btn:hover { background: rgba(59, 130, 246, 0.4); color: #fff; transform: scale(1.05); }
+
+kbd {
+  background-color: rgba(255, 255, 255, 0.1); border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.3); box-shadow: 0 1px 1px rgba(0,0,0,0.2);
+  font-family: inherit; font-size: 0.9em; font-weight: 600; padding: 1px 4px; margin: 0 2px; color: #60a5fa;
 }
 
-.reset-btn:hover {
-  background: rgba(59, 130, 246, 0.4);
-  color: #fff;
-  border-color: rgba(59, 130, 246, 0.8);
-  transform: scale(1.05); 
-  box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
-}
-
-.reset-btn:active {
-  transform: scale(0.95);
-}
-
-model-viewer::part(interaction-prompt),
-/* ===================== KBD键盘样式 ===================== */
-  kbd {
-  background-color: rgba(255, 255, 255, 0.1);
-  border-radius: 4px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 1px 1px rgba(0,0,0,0.2);
-  font-family: inherit; /* 🟢 强制继承网页的主字体，不再显示奇怪的等宽字体 */
-  font-size: 0.9em;
-  font-weight: 600;
-  padding: 1px 4px;
-  margin: 0 2px;
-  color: #60a5fa;
-}
-  
-/* ===================== 模型全局基础样式 ===================== */
+/* ===================== 5. 模型全局基础样式 ===================== */
 .custom-model-viewer {
-  width: 100%;
-  max-width: 100vw;
-  box-sizing: border-box;
-  height: 460px;
-  background: transparent;
-  border-radius: 16px;
-  border: 1px solid rgba(59,130,246,0.3); /* 安静的淡蓝色静态细边框 */
-  outline: none;
-  overflow: hidden; 
-  transform: translateZ(0); 
-  backface-visibility: hidden; 
+  width: 100%; max-width: 100vw; box-sizing: border-box; height: 460px;
+  background: transparent; border-radius: 16px; border: 1px solid rgba(59,130,246,0.3);
+  outline: none; overflow: hidden; transform: translateZ(0); backface-visibility: hidden; 
+}
+.custom-model-viewer:focus, .custom-model-viewer:active, .custom-model-viewer:focus-visible {
+  outline: none !important; box-shadow: none !important; border: 1px solid rgba(59,130,246,0.3) !important;
 }
 
-/*彻底干掉浏览器自带的点击/聚焦发光边框 */
-.custom-model-viewer:focus,
-.custom-model-viewer:focus-within,
-.custom-model-viewer:focus-visible,
-.custom-model-viewer:active {
-  outline: none !important;
-  box-shadow: none !important;
-  border: 1px solid rgba(59,130,246,0.3) !important; /* 强制锁定原本的边框，不许变！ */
-}
-  
-.model-block {
-  max-width: 100vw !important;
-}
-
-/* 隐藏自带的默认提示和进度条，防止与你的自定义 UI 冲突 */
-model-viewer::part(interaction-prompt),
-model-viewer::part(default-progress-bar) {
-  display: none !important;
-  height: 0 !important;
-  opacity: 0 !important;
-}
+.model-block { max-width: 100vw !important; }
+model-viewer::part(interaction-prompt), model-viewer::part(default-progress-bar) { display: none !important; }
 
 .model-watermark-text {
-  position: absolute;
-  bottom: 12px;
-  right: 16px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: rgba(255, 255, 255, 0.25);
-  pointer-events: none;
-  z-index: 5;
+  position: absolute; bottom: 12px; right: 16px; font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; color: rgba(255, 255, 255, 0.25); pointer-events: none; z-index: 5;
 }
 </style>
 
@@ -358,14 +212,9 @@ model-viewer::part(default-progress-bar) {
 
 <div class="gesture-hud">
   <span>↺ Drag to Rotate</span>
-  <span class="pc-only"><kbd>Ctrl</kbd> + 🖱 Zoom</span>
-  <span class="mobile-only">✌️ Pinch Zoom</span>
+  <span class="pc-only">Ctrl + 🖱 Zoom</span>
+  <span class="mobile-only">Pinch Zoom</span>
 </div>
-
-    <div class="gesture-overlay mode-drag">
-      <div class="icon-box"><div class="hand-icon">👆</div></div>
-      <div class="gesture-text">Drag to Rotate</div>
-    </div>
 
 <div class="gesture-overlay mode-zoom">
   <div class="icon-box">
@@ -373,11 +222,15 @@ model-viewer::part(default-progress-bar) {
     <div class="hand-icon hand-right">👈</div>
   </div>
   <div class="gesture-text">
-    <span class="pc-tip"><kbd>Ctrl</kbd> + 🖱️Wheel to Zoom</span>
-    <span class="mobile-tip">Pinch to Zoom</span>
+    <span class="pc-tip">Ctrl + 🖱️Wheel to Zoom</span>
+    <span class="mobile-tip">Pinch with two fingers to Zoom</span>
   </div>
 </div>
 
+    <div class="gesture-overlay mode-drag">
+      <div class="icon-box"><div class="hand-icon">👆</div></div>
+      <div class="gesture-text">Drag to Rotate</div>
+    </div>
     
     <button class="reset-btn" onclick="this.parentElement.cameraOrbit = '45deg 55deg auto'; this.parentElement.fieldOfView = '30deg';">
       ⟲ Reset View
@@ -404,27 +257,26 @@ model-viewer::part(default-progress-bar) {
     
     <div class="model-watermark-text">Copyright © 2026 Tianyu Bai</div>
     
-    <div class="gesture-hud">
-     <span>↺ Drag to Rotate</span>
-  <span class="pc-only"><kbd>Ctrl</kbd> + 🖱 Zoom</span>
-  <span class="mobile-only">✌️ Pinch Zoom</span>
+ <div class="gesture-hud">
+  <span>↺ Drag to Rotate</span>
+  <span class="pc-only">Ctrl + 🖱 Zoom</span>
+  <span class="mobile-only">Pinch Zoom</span>
 </div>
 
-    <div class="gesture-overlay mode-drag">
-      <div class="icon-box"><div class="hand-icon">👆</div></div>
-      <div class="gesture-text">Drag to Rotate</div>
-    </div>
-
-    <div class="gesture-overlay mode-zoom">
+<div class="gesture-overlay mode-zoom">
   <div class="icon-box">
     <div class="hand-icon hand-left">👉</div>
     <div class="hand-icon hand-right">👈</div>
   </div>
   <div class="gesture-text">
-    <span class="pc-tip"><kbd>Ctrl</kbd> + 🖱️Wheel to Zoom</span>
-    <span class="mobile-tip">Pinch to Zoom</span>
+    <span class="pc-tip">Ctrl + 🖱️Wheel to Zoom</span>
+    <span class="mobile-tip">Pinch with two fingers to Zoom</span>
   </div>
 </div>
+    <div class="gesture-overlay mode-drag">
+      <div class="icon-box"><div class="hand-icon">👆</div></div>
+      <div class="gesture-text">Drag to Rotate</div>
+    </div>
     
     <button class="reset-btn" onclick="this.parentElement.cameraOrbit = '45deg 55deg auto'; this.parentElement.fieldOfView = '30deg';">
       ⟲ Reset View
@@ -451,28 +303,26 @@ model-viewer::part(default-progress-bar) {
     
     <div class="model-watermark-text">Copyright © 2026 Tianyu Bai</div>
     
-    <div class="gesture-hud">
-       <span>↺ Drag to Rotate</span>
-  <span class="pc-only"><kbd>Ctrl</kbd> + 🖱 Zoom</span>
-  <span class="mobile-only">✌️ Pinch Zoom</span>
+  <div class="gesture-hud">
+  <span>↺ Drag to Rotate</span>
+  <span class="pc-only">Ctrl + 🖱 Zoom</span>
+  <span class="mobile-only">Pinch Zoom</span>
 </div>
 
-    <div class="gesture-overlay mode-drag">
-      <div class="icon-box"><div class="hand-icon">👆</div></div>
-      <div class="gesture-text">Drag to Rotate</div>
-    </div>
-
-    <div class="gesture-overlay mode-zoom">
+<div class="gesture-overlay mode-zoom">
   <div class="icon-box">
     <div class="hand-icon hand-left">👉</div>
     <div class="hand-icon hand-right">👈</div>
   </div>
   <div class="gesture-text">
-    <span class="pc-tip"><kbd>Ctrl</kbd> + 🖱️Wheel to Zoom</span>
-    <span class="mobile-tip">Pinch to Zoom</span>
+    <span class="pc-tip">Ctrl + 🖱️Wheel to Zoom</span>
+    <span class="mobile-tip">Pinch with two fingers to Zoom</span>
   </div>
 </div>
-    
+    <div class="gesture-overlay mode-drag">
+      <div class="icon-box"><div class="hand-icon">👆</div></div>
+      <div class="gesture-text">Drag to Rotate</div>
+ </div>
     <button class="reset-btn" onclick="this.parentElement.cameraOrbit = '45deg 55deg auto'; this.parentElement.fieldOfView = '30deg';">
       ⟲ Reset View
     </button>
@@ -831,7 +681,7 @@ This project is open-source and available under the **MIT License**. Click the b
     
     <div class="gesture-hud">
       <span>↺ 拖拽旋转</span>
-  <span class="pc-only"><kbd>Ctrl</kbd> + 滚轮缩放</span>
+  <span class="pc-only">Ctrl + 滚轮缩放</span>
   <span class="mobile-only">双指捏合缩放</span>
 </div>
 
@@ -846,7 +696,7 @@ This project is open-source and available under the **MIT License**. Click the b
     <div class="hand-icon hand-right">👈</div>
   </div>
   <div class="gesture-text">
-    <span class="pc-tip"><kbd>Ctrl</kbd> + 鼠标滚轮以缩放</span>
+    <span class="pc-tip">Ctrl + 鼠标滚轮以缩放</span>
     <span class="mobile-tip">双指捏合屏幕以缩放</span>
   </div>
 </div>
@@ -877,8 +727,8 @@ This project is open-source and available under the **MIT License**. Click the b
     <div class="model-watermark-text">Copyright © 2026 Tianyu Bai</div>
     
     <div class="gesture-hud">
-    <span>↺ 拖拽旋转</span>
-  <span class="pc-only"><kbd>Ctrl</kbd> + 滚轮缩放</span>
+         <span>↺ 拖拽旋转</span>
+  <span class="pc-only">Ctrl + 滚轮缩放</span>
   <span class="mobile-only">双指捏合缩放</span>
 </div>
 
@@ -893,7 +743,7 @@ This project is open-source and available under the **MIT License**. Click the b
     <div class="hand-icon hand-right">👈</div>
   </div>
   <div class="gesture-text">
-    <span class="pc-tip"><kbd>Ctrl</kbd> + 鼠标滚轮以缩放</span>
+    <span class="pc-tip">Ctrl + 鼠标滚轮以缩放</span>
     <span class="mobile-tip">双指捏合屏幕以缩放</span>
   </div>
 </div>
@@ -924,11 +774,11 @@ This project is open-source and available under the **MIT License**. Click the b
     <div class="model-watermark-text">Copyright © 2026 Tianyu Bai </div>
     
     <div class="gesture-hud">
- <span>↺ 拖拽旋转</span>
-  <span class="pc-only"><kbd>Ctrl</kbd> + 滚轮缩放</span>
+      <span>↺ 拖拽旋转</span>
+  <span class="pc-only">Ctrl + 滚轮缩放</span>
   <span class="mobile-only">双指捏合缩放</span>
 </div>
-   
+
     <div class="gesture-overlay mode-drag">
       <div class="icon-box"><div class="hand-icon">👆</div></div>
       <div class="gesture-text">单指拖拽 / 鼠标拉动以旋转</div>
@@ -940,7 +790,7 @@ This project is open-source and available under the **MIT License**. Click the b
     <div class="hand-icon hand-right">👈</div>
   </div>
   <div class="gesture-text">
-    <span class="pc-tip"><kbd>Ctrl</kbd> + 鼠标滚轮以缩放</span>
+    <span class="pc-tip">Ctrl + 鼠标滚轮以缩放</span>
     <span class="mobile-tip">双指捏合屏幕以缩放</span>
   </div>
 </div>
