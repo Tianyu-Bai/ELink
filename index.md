@@ -189,6 +189,29 @@ model-viewer::part(interaction-prompt), model-viewer::part(default-progress-bar)
   position: absolute; bottom: 12px; right: 16px; font-family: 'JetBrains Mono', monospace;
   font-size: 10px; color: rgba(255, 255, 255, 0.25); pointer-events: none; z-index: 5;
 }
+  
+/* 让指示语水平排列，并给后续的 span 增加间距 */
+.gesture-hud {
+  display: flex; /* 🟢 确保是横向排列 */
+  align-items: center;
+  gap: 25px; /* 🟢 设置元素之间的间距为 25px */
+}
+
+/* 加一根淡淡的分隔线 */
+.gesture-hud span + span {
+  position: relative;
+  padding-left: 5px;
+}
+
+.gesture-hud span + span::before {
+  content: "";
+  position: absolute;
+  left: -12px; /* 放在 gap 的中间 */
+  top: 20%;
+  height: 60%;
+  width: 1px;
+  background: rgba(255, 255, 255, 0.2); /* 淡淡的分隔线 */
+}
 </style>
 
 ## 🔬 Interactive 3D Model: E-Link Headstage Integration
@@ -210,10 +233,10 @@ model-viewer::part(interaction-prompt), model-viewer::part(default-progress-bar)
     
     <div class="model-watermark-text">Copyright © 2026 Tianyu Bai</div>
 
-  <div class="gesture-hud">
+<div class="gesture-hud">
   <span>↺ Rotate: Drag</span>
-  <span class="pc-only">Zoom:Ctrl + 🖱 </span>
-  <span class="mobile-only">Zoom:Pinch </span>
+  <span class="pc-only">Zoom: Ctrl + 🖱 Wheel</span>
+  <span class="mobile-only">Zoom: Pinch</span>
 </div>
 
 <div class="gesture-overlay mode-zoom">
@@ -257,10 +280,10 @@ model-viewer::part(interaction-prompt), model-viewer::part(default-progress-bar)
     
     <div class="model-watermark-text">Copyright © 2026 Tianyu Bai</div>
     
-  <div class="gesture-hud">
+<div class="gesture-hud">
   <span>↺ Rotate: Drag</span>
-  <span class="pc-only">Zoom:Ctrl + 🖱 </span>
-  <span class="mobile-only">Zoom:Pinch </span>
+  <span class="pc-only">Zoom: Ctrl + 🖱 Wheel</span>
+  <span class="mobile-only">Zoom: Pinch</span>
 </div>
 
 <div class="gesture-overlay mode-zoom">
@@ -303,10 +326,10 @@ model-viewer::part(interaction-prompt), model-viewer::part(default-progress-bar)
     
     <div class="model-watermark-text">Copyright © 2026 Tianyu Bai</div>
     
-  <div class="gesture-hud">
+<div class="gesture-hud">
   <span>↺ Rotate: Drag</span>
-  <span class="pc-only">Zoom:Ctrl + 🖱 </span>
-  <span class="mobile-only">Zoom:Pinch </span>
+  <span class="pc-only">Zoom: Ctrl + 🖱 Wheel</span>
+  <span class="mobile-only">Zoom: Pinch</span>
 </div>
 
 <div class="gesture-overlay mode-zoom">
