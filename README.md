@@ -1,13 +1,29 @@
-
 <div class="lang-en" markdown="1">
-  <div class="github-only" align="center">
-    <a href="https://tianyu-bai.github.io/E-Link" 
-       style="display:inline-block; padding:12px 24px; background-color:#4CAF50; color:white; 
-              font-weight:bold; font-size:1.2em; border-radius:8px; text-decoration:none;">
-      🌐 Click here to view the interactive website
-    </a>
-  </div>
+
+<div class="github-only" align="center" style="margin: 40px 0;">
+  <a href="https://tianyu-bai.github.io/E-Link">
+    <img src="https://img.shields.io/badge/✨_Experience_Full_3D_Interactive_Model_Here_✨-4CAF50?style=for-the-badge&logo=webgl&logoColor=white" alt="Interactive Website" width="850">
+  </a>
+  <p style="margin-top: 20px; font-size: 3.5em; font-weight: bold; color: #1e293b;">
+    <i>🚀 Click the banner above to interactively rotate, zoom, and explore the internal routing! 🚀</i>
+  </p>
 </div>
+
+<div align="center">
+  <h1 style="border-bottom: none; margin-bottom: 5px; color: #60a5fa; font-size: 2em;">🚀 E-Link(256)</h1>
+  
+  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=30&pause=100&color=60a5fa&center=true&vCenter=true&width=1100&lines=An+Open-Source,+Elastomer+Interconnection-based;Connector+for+Flexible+Neural+Interfaces" />
+</div>
+
+<div align="center" style="margin-top: 15px;">
+    <a href="https://sites.dartmouth.edu/fang-group/"><img src="https://img.shields.io/badge/Dartmouth-MINE--Lab-00693E?style=flat-square" alt="MINE Lab"></a>
+    <img src="https://img.shields.io/badge/Verified-256ch-FFA500?style=flat-square" alt="Verified" />
+    <a href="https://tianyu-bai.github.io/"><img src="https://img.shields.io/badge/Website-Tianyu%20Bai-0077B5?style=flat-square&logo=github&logoColor=white" alt="Website"></a>
+    <a href="https://www.linkedin.com/in/tianyubai/"><img src="https://img.shields.io/badge/LinkedIn-Profile-0A66C2?style=flat-square&logo=linkedin&logoColor=white" alt="LinkedIn"></a>
+    <a href="https://github.com/tianyu-bai/E-Link/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-A31F34?style=flat-square&logo=opensourceinitiative&logoColor=white" alt="License"></a>
+  </div>
+
+<br />
 
 <div align="center" class="nav-badges">
   <a href="#en-overview"><img src="https://img.shields.io/badge/📖_Overview-3b82f6?style=flat-square&logoColor=white" alt="Overview"></a>
@@ -17,22 +33,8 @@
   <a href="#en-bom"><img src="https://img.shields.io/badge/🛠_BOM-3b82f6?style=flat-square&logoColor=white" alt="BOM"></a>
   <a href="#en-downloads"><img src="https://img.shields.io/badge/🔗_Downloads-3b82f6?style=flat-square&logoColor=white" alt="Downloads"></a>
 </div>
-  
-<div align="center">
-  <h1 style="border-bottom: none; margin-bottom: 5px; color: #60a5fa; font-size: 2em;">🚀 E-Link(256)</h1>
-  
-<div align="center">
-    <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=30&pause=100&color=60a5fa&center=true&vCenter=true&width=1100&lines=An+Open-Source,+Elastomer+Interconnection-based;Connector+for+Flexible+Neural+Interfaces" />
-</div>
 
-  <div align="center" style="margin-top: 15px;">
-    <a href="https://sites.dartmouth.edu/fang-group/"><img src="https://img.shields.io/badge/Dartmouth-MINE--Lab-00693E?style=flat-square" alt="MINE Lab"></a>
-    <img src="https://img.shields.io/badge/Verified-256ch-FFA500?style=flat-square" alt="Verified" />
-    <a href="https://tianyu-bai.github.io/"><img src="https://img.shields.io/badge/Website-Tianyu%20Bai-0077B5?style=flat-square&logo=github&logoColor=white" alt="Website"></a>
-    <a href="https://www.linkedin.com/in/tianyubai/"><img src="https://img.shields.io/badge/LinkedIn-Profile-0A66C2?style=flat-square&logo=linkedin&logoColor=white" alt="LinkedIn"></a>
-     <a href="https://github.com/tianyu-bai/E-Link/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-A31F34?style=flat-square&logo=opensourceinitiative&logoColor=white" alt="License"></a>
-  </div>
-
+<div align="center">
   <br />
   <img src="Videos/Demo%20new%20new.gif" 
        alt="ELINK-256 Assembly Demo GIF" 
@@ -53,6 +55,8 @@
  </p>
 </div>
 
+> [!IMPORTANT]
+> **🎮 Interactive 3D View Available!** > GitHub doesn't support 3D models natively. <a href="https://tianyu-bai.github.io/E-Link">**Click here to interactively rotate, zoom, and explode this assembly directly in your browser!**</a>
 ---
 
 > [!NOTE]
@@ -161,7 +165,6 @@
 
 <span id="en-bom"></span>
 ### 🛠 Bill of Materials (BOM) of the headstage
-<span id="en-bom"></span>
 
 <div align="center">
   <img src="Images/256HD.png" 
@@ -183,6 +186,8 @@
   </p>
 </div>
 
+> [!TIP]
+> **🔍 Inspect the PCB Layers Up Close:** > Want to zoom in on the 0402 components or the BGA routing? <a href="https://tianyu-bai.github.io/E-Link">**Visit our interactive website**</a> to view the 3D PCBA model and examine the high-density layout!
 <div align="center">
  <table style="margin-left: auto; margin-right: auto; width: 90%; text-align: center; border-collapse: collapse; border: 1px solid #e1e4e8;">
    <thead>
@@ -329,13 +334,30 @@ This project is open-source and available under the **MIT License**. Click the b
 
 <div class="lang-zh" markdown="1">
 
-<div class="github-only">
-  <p align="center">
-    <a href="https://tianyu-bai.github.io/E-Link">
-      🌐 点击此处进入交互式网站
-    </a>
+<div class="github-only" align="center" style="margin: 40px 0;">
+  <a href="https://tianyu-bai.github.io/E-Link">
+    <img src="https://img.shields.io/badge/✨_点击此处_体验完整_3D_交互模型_✨-4CAF50?style=for-the-badge&logo=webgl&logoColor=white" alt="Interactive Website" width="850">
+  </a>
+  <p style="margin-top: 20px; font-size: 1.5em; font-weight: bold; color: #1e293b;">
+    <i>🚀 点击上方绿色横幅，在浏览器中亲自旋转、缩放，零死角探索 E-Link 细节！ 🚀</i>
   </p>
 </div>
+
+<div align="center">
+  <h1 style="border-bottom: none; margin-bottom: 5px; color: #60a5fa; font-size: 2em;">🚀 E-Link(易链256)</h1>
+  
+  <img src="https://readme-typing-svg.demolab.com?font=Noto+Sans+SC&size=30&pause=100&color=60a5fa&center=true&vCenter=true&width=1100&lines=%E4%B8%80%E7%A7%8D%E5%9F%BA%E4%BA%8E%E5%BC%B9%E6%80%A7%E4%B8%AD%E9%97%B4%E5%B1%82%E5%AF%BC%E7%94%B5%E4%BD%93%E7%9A%84;%E9%AB%98%E5%AF%86%E5%BA%A6%E7%A5%9E%E7%BB%8F%E5%85%83%E7%94%B5%E4%BF%A1%E5%8F%B7%E8%AE%B0%E5%BD%95%E8%BF%9E%E6%8E%A5%E5%99%A8" alt="Typing SVG" />
+</div>
+
+<div align="center" style="margin-top: 15px;">
+    <a href="https://sites.dartmouth.edu/fang-group/"><img src="https://img.shields.io/badge/达特茅斯学院-00693E?style=flat-square" alt="方辉组"></a>
+    <img src="https://img.shields.io/badge/已验证-256通道-FFA500?style=flat-square" alt="Verified" />
+    <a href="https://tianyu-bai.github.io/"><img src="https://img.shields.io/badge/个人主页-Tianyu%20Bai-0077B5?style=flat-square&logo=github&logoColor=white" alt="Website"></a>
+    <a href="https://www.linkedin.com/in/tianyubai/"><img src="https://img.shields.io/badge/领英-个人主页-0A66C2?style=flat-square&logo=linkedin&logoColor=white" alt="LinkedIn"></a>
+     <a href="https://github.com/tianyu-bai/E-Link/blob/main/LICENSE"><img src="https://img.shields.io/badge/开源协议-MIT-A31F34?style=flat-square&logo=opensourceinitiative&logoColor=white" alt="License"></a>
+  </div>
+
+  <br />
 
 <div align="center" class="nav-badges">
   <a href="#cn-overview"><img src="https://img.shields.io/badge/📖_概览-3b82f6?style=flat-square&logoColor=white" alt="Overview"></a>
@@ -347,20 +369,6 @@ This project is open-source and available under the **MIT License**. Click the b
 </div>
   
 <div align="center">
-  <h1 style="border-bottom: none; margin-bottom: 5px; color: #60a5fa; font-size: 2em;">🚀 E-Link(易链256)</h1>
-  
-<div align="center">
-  <img src="https://readme-typing-svg.demolab.com?font=Noto+Sans+SC&size=30&pause=100&color=60a5fa&center=true&vCenter=true&width=1100&lines=%E4%B8%80%E7%A7%8D%E5%9F%BA%E4%BA%8E%E5%BC%B9%E6%80%A7%E4%B8%AD%E9%97%B4%E5%B1%82%E5%AF%BC%E7%94%B5%E4%BD%93%E7%9A%84;%E9%AB%98%E5%AF%86%E5%BA%A6%E7%A5%9E%E7%BB%8F%E5%85%83%E7%94%B5%E4%BF%A1%E5%8F%B7%E8%AE%B0%E5%BD%95%E8%BF%9E%E6%8E%A5%E5%99%A8" alt="Typing SVG" />
-</div>
-
-  <div align="center" style="margin-top: 15px;">
-    <a href="https://sites.dartmouth.edu/fang-group/"><img src="https://img.shields.io/badge/达特茅斯学院-00693E?style=flat-square" alt="方辉组"></a>
-    <img src="https://img.shields.io/badge/已验证-256通道-FFA500?style=flat-square" alt="Verified" />
-    <a href="https://tianyu-bai.github.io/"><img src="https://img.shields.io/badge/个人主页-Tianyu%20Bai-0077B5?style=flat-square&logo=github&logoColor=white" alt="Website"></a>
-    <a href="https://www.linkedin.com/in/tianyubai/"><img src="https://img.shields.io/badge/领英-个人主页-0A66C2?style=flat-square&logo=linkedin&logoColor=white" alt="LinkedIn"></a>
-     <a href="https://github.com/tianyu-bai/E-Link/blob/main/LICENSE"><img src="https://img.shields.io/badge/开源协议-MIT-A31F34?style=flat-square&logo=opensourceinitiative&logoColor=white" alt="License"></a>
-  </div>
-
   <br />
   <img src="Videos/Demo%20new%20new.gif" 
        alt="ELINK-256 组装演示 GIF" 
@@ -382,6 +390,8 @@ This project is open-source and available under the **MIT License**. Click the b
   </p>
 </div>
 
+> [!IMPORTANT]
+> **🎮 支持在线 3D 交互！** > GitHub 原生无法展示 3D 动效。<a href="https://tianyu-bai.github.io/E-Link">**请点击此处前往独立网站，在浏览器中亲自旋转、缩放并拆解此模型！**</a>
 ---
 
 > [!NOTE]
@@ -511,6 +521,8 @@ This project is open-source and available under the **MIT License**. Click the b
   </p>
 </div>
     
+> [!TIP]
+> **🔍 在线放大查看 PCB 细节：** > 想要放大看清 0402 贴片或者 BGA 走线？<a href="https://tianyu-bai.github.io/E-Link">**访问我们的交互网站**</a>，即可在浏览器中与 3D 放大器模型互动，极其清晰地观察高密度布局！
 <div align="center">
   <table style="margin-left: auto; margin-right: auto; width: 90%; text-align: center; border-collapse: collapse; border: 1px solid #e1e4e8;">
     <thead>
@@ -647,4 +659,3 @@ This project is open-source and available under the **MIT License**. Click the b
 </div>
 
 </div>
-
