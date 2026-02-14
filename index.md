@@ -1111,32 +1111,29 @@ This project is open-source and available under the **MIT License**. Click the b
       viewer.setAttribute('auto-rotate', '');
       viewer.pause(); 
 
-      // 定义计时器变量
-      let reminderTimer = null;
-
-      const showHints = () => {
-        viewer.querySelectorAll('.gesture-overlay, .gesture-hud')
-          .forEach(el => el.classList.remove('gesture-hidden'));
-      };
+      let hudTimer = null;
 
       const hideHints = () => {
-        // 1. 立即隐藏
+        // 1. 立即隐藏所有（HUD 和 引导动画）
         viewer.querySelectorAll('.gesture-overlay, .gesture-hud')
           .forEach(el => el.classList.add('gesture-hidden'));
         
-        // 2. 清除之前的计时器，防止叠加
-        if (reminderTimer) clearTimeout(reminderTimer);
+        // 2. 标记：用户已经交互过，引导动画（overlay）从此封禁
+        viewer.dataset.overlayDisabled = "true";
 
-        // 3. 🟢 设置 6 秒后重新显示的逻辑
-        reminderTimer = setTimeout(() => {
-          // 只有当模型还在屏幕内时才重新显示
-          showHints();
-        }, 6000); 
+        // 3. 清除旧计时器，重置 6 秒倒计时
+        if (hudTimer) clearTimeout(hudTimer);
+
+        hudTimer = setTimeout(() => {
+          // 4. 重点：只找回顶部的 HUD 文字条，不找回引导动画
+          const hud = viewer.querySelector('.gesture-hud');
+          if (hud) hud.classList.remove('gesture-hidden');
+        }, 6000); // 6 秒后显示HUD
       };
       
-      // 监听所有交互动作：点击、滚动、触摸
+      // 监听所有交互动作
       ['mousedown', 'wheel', 'touchstart'].forEach(evt => {
-        viewer.addEventListener(evt, hideHints); // 注意：这里去掉了 {once: true}
+        viewer.addEventListener(evt, hideHints);
       });
     });
 
@@ -1147,10 +1144,13 @@ This project is open-source and available under the **MIT License**. Click the b
 
         if (entry.isIntersecting) {
           try { viewer.play(); } catch(e) {}
-          // 只要进入视野，就激活提示（如果当前没被 gesture-hidden 锁住的话）
-          viewer.querySelectorAll('.gesture-overlay').forEach(el => {
-            el.classList.add('gesture-active');
-          });
+          
+          // 🟢 只有当用户还没动过模型（即 overlay 没被封禁）时，才激活手指动画
+          if (viewer.dataset.overlayDisabled !== "true") {
+            viewer.querySelectorAll('.gesture-overlay').forEach(el => {
+              el.classList.add('gesture-active');
+            });
+          }
         } else {
           viewer.pause();
           viewer.querySelectorAll('.gesture-overlay').forEach(el => {
