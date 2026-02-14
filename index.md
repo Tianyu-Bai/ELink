@@ -238,9 +238,14 @@ title: E-Link Home
   transform: scale(0.95);
 }
 
+
+model-viewer::part(interaction-prompt),
+  
 /* ===================== 模型全局基础样式 ===================== */
 .custom-model-viewer {
   width: 100%;
+  max-width: 100vw; /* 🟢 新增：强制不超过屏幕宽度，防止横向滚动 */
+  box-sizing: border-box; /* 🟢 新增：保证边框不会撑破宽度 */
   height: 460px;
   background: transparent;
   border-radius: 16px;
@@ -248,6 +253,13 @@ title: E-Link Home
   outline: none;
 }
 
+/* 🟢 新增：给包裹模型的盒子加上防溢出限制 */
+.model-block {
+  max-width: 100vw !important;
+  overflow: hidden; 
+}
+
+/* 隐藏自带的默认提示和进度条，防止与你的自定义 UI 冲突 */
 model-viewer::part(interaction-prompt),
 model-viewer::part(default-progress-bar) {
   display: none !important;
@@ -266,7 +278,7 @@ model-viewer::part(default-progress-bar) {
     alt="E Link on Skull 3D Model"
     loading="lazy"
     poster="{{ '/Images/poster.webp' | relative_url }}"
-    camera-controls bounds="tight" field-of-view="30deg" auto-rotate auto-rotate-delay="500" rotation-per-second="20deg"
+    camera-controls bounds="tight" field-of-view="30deg" auto-rotate auto-rotate-delay="500" rotation-per-second="15deg"
     interaction-prompt="none" environment-image="neutral" exposure="0.75" shadow-intensity="0" tone-mapping="commerce">
 
     <div slot="poster" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; background: #0a0a0f; color: #3b82f6; font-family: 'JetBrains Mono', monospace;">
@@ -309,7 +321,7 @@ model-viewer::part(default-progress-bar) {
     alt="E Link 3D Model"
     loading="lazy"
     poster="{{ '/Images/poster.webp' | relative_url }}"
-    camera-controls bounds="tight" field-of-view="30deg" auto-rotate auto-rotate-delay="500" rotation-per-second="20deg"
+    camera-controls bounds="tight" field-of-view="30deg" auto-rotate auto-rotate-delay="500" rotation-per-second="15deg"
     interaction-prompt="none" environment-image="neutral" exposure="0.75" shadow-intensity="0" tone-mapping="commerce">
 
     <div slot="poster" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; background: #0a0a0f; color: #3b82f6; font-family: 'JetBrains Mono', monospace;">
@@ -352,7 +364,7 @@ model-viewer::part(default-progress-bar) {
     alt="E Link 3D Model" 
     loading="lazy"
     poster="{{ '/Images/poster.webp' | relative_url }}"
-    camera-controls bounds="tight" field-of-view="30deg" auto-rotate auto-rotate-delay="500" rotation-per-second="20deg"
+    camera-controls bounds="tight" field-of-view="30deg" auto-rotate auto-rotate-delay="500" rotation-per-second="15deg"
     interaction-prompt="none" environment-image="neutral" exposure="0.75" shadow-intensity="0" tone-mapping="commerce">
 
     <div slot="poster" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; background: #0a0a0f; color: #3b82f6; font-family: 'JetBrains Mono', monospace;">
@@ -726,7 +738,7 @@ This project is open-source and available under the **MIT License**. Click the b
     alt="E Link on Skull 3D Model"
     loading="lazy"
     poster="{{ '/Images/poster.webp' | relative_url }}"
-    camera-controls bounds="tight" field-of-view="30deg" auto-rotate auto-rotate-delay="500" rotation-per-second="20deg"
+    camera-controls bounds="tight" field-of-view="30deg" auto-rotate auto-rotate-delay="500" rotation-per-second="15deg"
     interaction-prompt="none" environment-image="neutral" exposure="0.75" shadow-intensity="0" tone-mapping="commerce">
 
     <div slot="poster" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; background: #0a0a0f; color: #3b82f6; font-family: 'JetBrains Mono', monospace;">
@@ -769,7 +781,7 @@ This project is open-source and available under the **MIT License**. Click the b
     alt="E Link 3D Model" 
     loading="lazy"
     poster="{{ '/Images/poster.webp' | relative_url }}"
-    camera-controls bounds="tight" field-of-view="30deg" auto-rotate auto-rotate-delay="500" rotation-per-second="20deg"
+    camera-controls bounds="tight" field-of-view="30deg" auto-rotate auto-rotate-delay="500" rotation-per-second="15deg"
     interaction-prompt="none" environment-image="neutral" exposure="0.75" shadow-intensity="0" tone-mapping="commerce">
 
     <div slot="poster" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; background: #0a0a0f; color: #3b82f6; font-family: 'JetBrains Mono', monospace;">
@@ -812,7 +824,7 @@ This project is open-source and available under the **MIT License**. Click the b
     alt="E Link 3D Model"
     loading="lazy"
     poster="{{ '/Images/poster.webp' | relative_url }}"
-    camera-controls bounds="tight" field-of-view="30deg" auto-rotate auto-rotate-delay="500" rotation-per-second="20deg"
+    camera-controls bounds="tight" field-of-view="30deg" auto-rotate auto-rotate-delay="500" rotation-per-second="15deg"
     interaction-prompt="none" environment-image="neutral" exposure="0.75" shadow-intensity="0" tone-mapping="commerce">
 
     <div slot="poster" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; background: #0a0a0f; color: #3b82f6; font-family: 'JetBrains Mono', monospace;">
@@ -1124,35 +1136,37 @@ This project is open-source and available under the **MIT License**. Click the b
     const models = Array.from(document.querySelectorAll('model-viewer'));
     if (!models.length) return;
 
-    // 1. 移动端与阈值判定
+    // 1. 设置单一阈值（杜绝逻辑打架）
     const isMobile = window.matchMedia('(max-width: 768px)').matches;
-    const ENTER_THRESHOLD = isMobile ? 0.4 : 0.25;
-    const EXIT_THRESHOLD  = isMobile ? 0.15 : 0.1;
+    const VISIBLE_THRESHOLD = isMobile ? 0.3 : 0.2;
 
-    // 2. 全局播放锁（保证同时只有 1 个模型在消耗 GPU）
+    // 2. 全局播放锁（防止手机发烫）
     let activeModel = null;
 
-    // 3. 统一交互提示隐藏逻辑
+    // 3. 统一交互提示隐藏逻辑，并修复 auto-rotate 丢失 Bug
     models.forEach(viewer => {
       const hideAllHints = () => {
         viewer.querySelectorAll('.gesture-overlay, .gesture-hud')
           .forEach(el => el.classList.add('gesture-hidden'));
       };
-      viewer.addEventListener('mousedown', hideAllHints, { once: true });
-      viewer.addEventListener('wheel', hideAllHints, { once: true });
-      viewer.addEventListener('touchstart', hideAllHints, { once: true });
       
-      // 初始冻结
-      viewer.pause();
+      // 用户一旦操作，就永久隐藏提示
+      ['mousedown', 'wheel', 'touchstart'].forEach(evt => {
+        viewer.addEventListener(evt, hideAllHints, { once: true });
+      });
+
+      // ⚠️ 重点修复：让模型保持 auto-rotate 属性，只通过 pause() 冻结它，千万别删属性
+      viewer.setAttribute('auto-rotate', '');
+      viewer.pause(); 
     });
 
-    // 4. 终极合并版 Observer
+    // 4. 极简极速版 Observer
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         const viewer = entry.target;
-        const ratio = entry.intersectionRatio;
+        const isVisible = entry.intersectionRatio >= VISIBLE_THRESHOLD;
 
-        // 【阶段 A：超前懒加载】只要触碰到 200px 缓冲区，立刻开始静默下载 3D 数据
+        // 【阶段 A：超前懒加载】只要进缓冲圈，就静默下载
         if (entry.isIntersecting) {
           if (!viewer.getAttribute('src') && viewer.getAttribute('data-src')) {
             viewer.setAttribute('src', viewer.getAttribute('data-src'));
@@ -1160,45 +1174,39 @@ This project is open-source and available under the **MIT License**. Click the b
           }
         }
 
-        // 【阶段 B：精准播放控制】达到可见阈值才开始渲染动画
-        if (ratio >= ENTER_THRESHOLD) {
-          
-          // 如果有其他模型在播，先强制停掉（核心防发烫逻辑）
+        // 【阶段 B：精确播放】露出超过阈值，才开始转动和播动画
+        if (isVisible) {
+          // 停掉正在播的旧模型，释放 GPU
           if (activeModel && activeModel !== viewer) {
             activeModel.pause();
-            activeModel.removeAttribute('auto-rotate');
             activeModel.querySelectorAll('.gesture-overlay').forEach(el => el.classList.remove('gesture-active'));
           }
-
-          // 激活当前模型
+          
+          // 激活新模型
           activeModel = viewer;
           try {
             viewer.play();
-            viewer.setAttribute('auto-rotate', '');
-            
-            // 激活手势提示
+            // 激活 UI 动画
             viewer.querySelectorAll('.gesture-overlay').forEach(el => {
               if(!el.classList.contains('gesture-hidden')) {
                 el.classList.add('gesture-active');
               }
             });
           } catch(e) {}
-
-        } 
-        // 【阶段 C：退出视口】低于退出阈值，彻底暂停释放显存
-        else if (ratio <= EXIT_THRESHOLD) {
+          
+        } else {
+          // 【阶段 C：滑出视口】直接暂停，回收性能
           if (activeModel === viewer) {
             activeModel = null;
           }
           viewer.pause();
-          viewer.removeAttribute('auto-rotate');
           viewer.querySelectorAll('.gesture-overlay').forEach(el => el.classList.remove('gesture-active'));
         }
       });
     }, {
       root: null,
-      rootMargin: '200px 0px', // 200px 缓冲区用于提前触发懒加载
-      threshold: [0, EXIT_THRESHOLD, ENTER_THRESHOLD, 1] // 设置关键侦测点
+      rootMargin: '100px 0px', 
+      threshold: [0, VISIBLE_THRESHOLD] // 极简触发点，不再漏判
     });
 
     // 启动监听
