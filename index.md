@@ -48,6 +48,7 @@ title: E-Link Home
 </div>
 
 <style>
+  
   /* ========================================= 1. 复杂时间轴控制 (总周期 48秒) ========================================= */
    
   /* Drag 容器显隐 */
@@ -237,6 +238,19 @@ title: E-Link Home
 }
 
 model-viewer::part(interaction-prompt),
+/* ===================== KBD键盘样式 ===================== */
+  kbd {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 1px 1px rgba(0,0,0,0.2);
+  font-family: inherit; /* 🟢 强制继承网页的主字体，不再显示奇怪的等宽字体 */
+  font-size: 0.9em;
+  font-weight: 600;
+  padding: 1px 4px;
+  margin: 0 2px;
+  color: #60a5fa;
+}
   
 /* ===================== 模型全局基础样式 ===================== */
 .custom-model-viewer {
@@ -246,13 +260,22 @@ model-viewer::part(interaction-prompt),
   height: 460px;
   background: transparent;
   border-radius: 16px;
-  border: 1px solid rgba(59,130,246,0.3); /* 🟢 恢复最原本的、安静的淡蓝色静态细边框 */
+  border: 1px solid rgba(59,130,246,0.3); /* 安静的淡蓝色静态细边框 */
   outline: none;
   overflow: hidden; 
   transform: translateZ(0); 
   backface-visibility: hidden; 
 }
-/* 🔴 已经去除了所有的 :hover 动态阴影和放大边框特效 */
+
+/*彻底干掉浏览器自带的点击/聚焦发光边框 */
+.custom-model-viewer:focus,
+.custom-model-viewer:focus-within,
+.custom-model-viewer:focus-visible,
+.custom-model-viewer:active {
+  outline: none !important;
+  box-shadow: none !important;
+  border: 1px solid rgba(59,130,246,0.3) !important; /* 强制锁定原本的边框，不许变！ */
+}
   
 .model-block {
   max-width: 100vw !important;
