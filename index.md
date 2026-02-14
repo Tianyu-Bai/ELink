@@ -1157,45 +1157,35 @@ This project is open-source and available under the **MIT License**. Click the b
     const models = Array.from(document.querySelectorAll('model-viewer'));
     if (!models.length) return;
 
-    // 1. 设置合理的触发阈值
-    const isMobile = window.matchMedia('(max-width: 768px)').matches;
-    const VISIBLE_THRESHOLD = isMobile ? 0.25 : 0.2;
-
-    // 2. 统一交互提示初始化
     models.forEach(viewer => {
+      // 交互后隐藏提示
       const hideAllHints = () => {
         viewer.querySelectorAll('.gesture-overlay, .gesture-hud')
           .forEach(el => el.classList.add('gesture-hidden'));
       };
-      
       ['mousedown', 'wheel', 'touchstart'].forEach(evt => {
         viewer.addEventListener(evt, hideAllHints, { once: true });
       });
 
+      // 确保它有自动旋转的属性
       viewer.setAttribute('auto-rotate', '');
-      viewer.pause(); 
     });
 
-    // 3. 动态快照柔性内存管理 Observer
+    // 🌟 “全屏共舞”版 Observer
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         const viewer = entry.target;
-        const isVisible = entry.intersectionRatio >= VISIBLE_THRESHOLD;
 
-        // 【阶段 A：超前加载】
+        // 只要模型进入屏幕（哪怕只露出一丁点），就让它转！
         if (entry.isIntersecting) {
+          
+          // 如果还没下载，把地址给它
           if (!viewer.getAttribute('src') && viewer.getAttribute('data-src')) {
             viewer.setAttribute('src', viewer.getAttribute('data-src'));
           }
-        }
-
-        // 【阶段 B：播放与休眠控制】
-        if (isVisible) {
+          
           try {
-            // 🟢 唤醒：撕掉 2D 贴纸，无缝启动 3D 引擎
-            viewer.dismissPoster();
-            viewer.play();
-            
+            viewer.play(); // 只要在屏幕里，就一直转
             viewer.querySelectorAll('.gesture-overlay').forEach(el => {
               if(!el.classList.contains('gesture-hidden')) {
                 el.classList.add('gesture-active');
@@ -1204,24 +1194,15 @@ This project is open-source and available under the **MIT License**. Click the b
           } catch(e) {}
           
         } else {
-          // 🔴 核心魔术：滑出视口前，如果模型已经加载完毕，拍一张当前视角的快照！
-          if (viewer.modelIsVisible) {
-             // toDataURL() 会生成当前 3D 画面的极速 2D 截图 (使用 jpeg 降低内存)
-             const snapshot = viewer.toDataURL('image/jpeg', 0.8);
-             viewer.setAttribute('poster', snapshot); 
-          }
-
-          // 🟢 盖上刚刚拍的快照，然后安心休眠释放 GPU！
+          // 只有当模型【彻底】滚出屏幕视线之外，才让它暂停休息（但不清空数据）
           viewer.pause();
-          viewer.showPoster(); 
-          
           viewer.querySelectorAll('.gesture-overlay').forEach(el => el.classList.remove('gesture-active'));
         }
       });
     }, {
       root: null,
-      rootMargin: '200px 0px', 
-      threshold: [0, VISIBLE_THRESHOLD] 
+      rootMargin: '100px 0px', // 上下多给 100px 的缓冲，模型还没完全进来就开始转，显得更自然
+      threshold: 0 // 触发线降到 0：只要有一丝在屏幕里，就是激活状态
     });
 
     // 启动监听
