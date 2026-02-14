@@ -239,7 +239,7 @@ title: E-Link Home
 <div class="model-block" align="center" style="position: relative; max-width: 760px; margin: 0 auto;">
   <model-viewer
     class="custom-model-viewer"
-    data-src="{{ '/Videos/On skull_3.17MB.glb' | relative_url }}"
+    data-src="{{ '/Videos/On skull_3.16MB.glb' | relative_url }}"
     alt="E Link on Skull 3D Model"
     loading="lazy"
     poster="{{ '/Images/poster.webp' | relative_url }}"
@@ -699,7 +699,7 @@ This project is open-source and available under the **MIT License**. Click the b
 <div class="model-block" align="center" style="position: relative; max-width: 760px; margin: 0 auto;">
   <model-viewer
     class="custom-model-viewer"
-    data-src="{{ '/Videos/On skull_3.17MB.glb' | relative_url }}"
+    data-src="{{ '/Videos/On skull_3.16MB.glb' | relative_url }}"
     alt="E Link on Skull 3D Model"
     loading="lazy"
     poster="{{ '/Images/poster.webp' | relative_url }}"
