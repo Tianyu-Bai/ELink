@@ -148,16 +148,21 @@ title: E-Link Home
   .mode-zoom .hand-left { animation: move-zoom-left-diagonal 1.5s infinite ease-in-out; }
   .mode-zoom .hand-right { animation: move-zoom-right-diagonal 1.5s infinite ease-in-out; }
 
-  .gesture-text {
-    color: white;
-    font-family: sans-serif;
-    font-weight: bold;
-    font-size: 16px;
-    text-shadow: 0 2px 4px black;
-    background: rgba(0,0,0,0.4);
-    padding: 4px 12px;
-    border-radius: 12px;
+ .gesture-text {
+    color: rgba(255, 255, 255, 0.9);
+    font-family: system-ui, -apple-system, sans-serif; /* 换成更现代的系统字体 */
+    font-weight: 500; /* 去掉粗体，变得更优雅 */
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+    background: rgba(30, 41, 59, 0.5); /* 柔和的深灰蓝 */
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.1); /* 加一圈极细的高光边框 */
+    padding: 6px 14px;
+    border-radius: 20px; /* 更圆润 */
     white-space: nowrap;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
   }
 
   /* ===================== 弱交互 HUD ===================== */
@@ -254,13 +259,24 @@ model-viewer::part(interaction-prompt),
 /* ===================== 模型全局基础样式 ===================== */
 .custom-model-viewer {
   width: 100%;
-  max-width: 100vw; /* 🟢 新增：强制不超过屏幕宽度，防止横向滚动 */
-  box-sizing: border-box; /* 🟢 新增：保证边框不会撑破宽度 */
+  max-width: 100vw;
+  box-sizing: border-box;
   height: 460px;
   background: transparent;
   border-radius: 16px;
-  border: 1px solid rgba(59,130,246,0.3);
+  border: 1px solid rgba(96, 165, 250, 0.15); /* 边框变淡 */
+  box-shadow: 0 10px 30px -10px rgba(59, 130, 246, 0.15); /* 加一层柔和的蓝色辉光 */
   outline: none;
+  
+  overflow: hidden; 
+  transform: translateZ(0); 
+  backface-visibility: hidden; 
+  transition: box-shadow 0.3s ease;
+}
+
+/* 鼠标悬停时，光晕微微变亮 */
+.custom-model-viewer:hover {
+  box-shadow: 0 10px 40px -10px rgba(59, 130, 246, 0.25);
 }
   
 /* 🟢 新增：专治电脑端边框闪烁的三板斧 */
