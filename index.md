@@ -1073,12 +1073,11 @@ This project is open-source and available under the **MIT License**. Click the b
 * **完整引用**：正式录用后，最终论文的永久链接将立即在此处更新。
 * **预印本/全文**：*即将推出。*
   
-* 欢迎神经工程科研社区的反馈与合作！
+* 🤝 **我们诚挚欢迎神经工程科研同行的反馈与合作！**
 
-* **咨询**：想在你的实验室使用 E-Link 吗？ 我们知道搭建新系统可能会遇到困难。如果你对 PCB 设计或 3D 打印有疑问，欢迎通过以下邮箱地址发邮件。我们非常乐意帮助！
+* **技术咨询**：有意部署 E-Link易链？作为开发者深知从零搭建一套新系统往往伴随诸多挑战。无论您在 PCB 设计、3D 打印制造，还是系统组装方面遇到任何问题，都欢迎随时通过邮件与我们取得联系。将为您提供技术支持！
     * **白天宇** ([<font color="#60a5fa">Tianyu.Bai.TH@Dartmouth.edu</font>](mailto:Tianyu.Bai.TH@Dartmouth.edu))
-    * **方辉教授** ([<font color="#60a5fa">Hui.Fang@Dartmouth.edu</font>](mailto:Hui.Fang@Dartmouth.edu))
-
+    * **方辉 教授** ([<font color="#60a5fa">Hui.Fang@Dartmouth.edu</font>](mailto:Hui.Fang@Dartmouth.edu))
 ---
 
 ## 📑 引用与 DOI
