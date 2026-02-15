@@ -120,18 +120,19 @@ body.video-active .cursor-outline {
    backdrop-filter: blur(2px); /* 让按钮底部有一点毛玻璃效果 */
  }
  
-  /* --- 🚀 升级：高能激光进度条 --- */
+/* --- 🚀 升级：高能激光进度条 --- */
  #progress-bar { 
    position: fixed; top: 0; left: 0; height: 3px; 
-   background: #fff; /* 核心亮白色 */
-   box-shadow: 0 0 10px #60a5fa, 0 0 20px #3b82f6, 0 0 30px #1d4ed8; /* 蓝色外发光晕 */
+   /* 主体变成柔和的深蓝色 */
+   background: #3b82f6; 
+   box-shadow: 0 0 10px #3b82f6, 0 0 20px #1d4ed8; 
    width: 0%; z-index: 99999; 
    transition: width 0.15s cubic-bezier(0.4, 0, 0.2, 1); 
  }
- /* 给激光头部加一个更亮的耀斑 */
+ /* 头部的点改成同色系的霓虹蓝，去掉刺眼的纯白 */
  #progress-bar::after {
-   content: ''; position: absolute; top: -2px; right: 0; width: 10px; height: 7px;
-   background: #fff; border-radius: 50%; box-shadow: 0 0 15px 5px #bfdbfe;
+   content: ''; position: absolute; top: -1px; right: 0; width: 8px; height: 5px;
+   background: #60a5fa; border-radius: 50%; box-shadow: 0 0 10px 2px #3b82f6;
  }
  
   /* --- 2. 背景 --- */
@@ -664,15 +665,13 @@ body.video-active .cursor-outline {
 <footer style="margin-top: 40px; padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.1); text-align: center; color: #94a3b8; font-size: 0.85rem;">
       <p> E-Link • COPYRIGHT © 2026 Tianyu Bai</p>
       
-      <div 
-        style="margin: 25px auto 15px auto; width: 100%; max-width: 650px; border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 12px; padding: 15px; background: rgba(10, 15, 30, 0.6); box-shadow: 0 0 15px rgba(59, 130, 246, 0.15); backdrop-filter: blur(5px); overflow: hidden; display: flex; justify-content: center; align-items: center; cursor: zoom-in;"
-        onmouseover="this.querySelector('.map-zoom').style.transform='scale(1.6)'" 
-        onmouseout="this.querySelector('.map-zoom').style.transform='scale(1)'"
-      >
+      <div style="margin: 25px auto 15px auto; width: 100%; max-width: 600px; border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 12px; padding: 15px; background: rgba(10, 15, 30, 0.6); box-shadow: 0 0 15px rgba(59, 130, 246, 0.15); backdrop-filter: blur(5px); display: flex; justify-content: center; align-items: center; pointer-events: none;">
         
-        <div class="map-zoom" style="width: 100%; pointer-events: none; transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1); transform-origin: center center;">
-          <script type="text/javascript" id="mapmyvisitors" src="//mapmyvisitors.com/map.js?d=m5eNlZmkObq22GMdcKlpWq0A9hkoWtNuOIvQwtMspNc&w=600&cl=1e293b&co=0a0a0f&cmo=ef4444&cmn=60a5fa&ct=64748b"></script>
-        </div>
+        <img 
+          src="https://mapmyvisitors.com/map.png?d=m5eNlZmkObq22GMdcKlpWq0A9hkoWtNuOIvQwtMspNc&cl=1e293b&co=0a0a0f&cmo=ef4444&cmn=60a5fa&ct=64748b" 
+          alt="Visitor Map" 
+          style="width: 100%; height: auto; border-radius: 8px;"
+        >
         
       </div>
     </footer>
