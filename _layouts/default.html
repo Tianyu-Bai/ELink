@@ -1200,7 +1200,7 @@ body.video-active .cursor-outline {
     function startIdleTips() {
       if(idleInterval) clearInterval(idleInterval);
       const enTips = ["Click me for guide!", "I'm here to help!"];
-      const zhTips = ["我是E-Link专属管家", "欢迎随时“敲”我哈！"];
+      const zhTips = ["我是E-Link专属管家", "来‘敲’我头提问吧🤖！"];
       const runCycle = () => {
          const tips = currentLang === 'en' ? enTips : zhTips;
          botSay(tips[tipIndex], 3000); 
