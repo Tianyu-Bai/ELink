@@ -96,6 +96,12 @@ body.video-active .cursor-outline {
 @keyframes spin { to { transform: rotate(360deg); } }
  
  /* --- 🚀 升级：磁性发光光标 --- */
+ .container, .cursor-dot, .cursor-outline, .bot-head, .bot-eye {
+    will-change: transform; /* 告诉浏览器提前分配 GPU 资源 */
+    backface-visibility: hidden; /* 防止闪烁 */
+    transform-style: preserve-3d;
+}
+ 
  .cursor-dot, .cursor-outline {
    position: fixed; top: 0; left: 0; border-radius: 50%; 
    z-index: 99999; pointer-events: none;
@@ -106,10 +112,10 @@ body.video-active .cursor-outline {
    box-shadow: 0 0 8px #60a5fa; 
    transition: opacity 0.2s ease;
  }
- .cursor-outline { 
-   width: 40px; height: 40px; border: 1.5px solid rgba(96, 165, 250, 0.6); 
-   transition: width 0.2s ease, height 0.2s ease, background-color 0.2s ease, border-color 0.2s ease; 
- }
+ .cursor-outline {
+   transition: width 0.2s, height 0.2s, background-color 0.2s, border-color 0.2s;
+    will-change: transform;
+}
  /* 悬停时的聚光灯效果 */
  body.hovering .cursor-dot { opacity: 0; } /* 隐藏中心小点 */
  body.hovering .cursor-outline { 
@@ -1024,6 +1030,9 @@ body.video-active .cursor-outline {
       if (window.VANTA) {
         vantaEffect = VANTA.NET({
           el: "#vanta-bg",
+         // ...其他设置
+         points: window.innerWidth < 768 ? 6.00 : 12.00, // 手机端点数减半
+         maxDistance: window.innerWidth < 768 ? 15.00 : 28.00,
           mouseControls: true, touchControls: true, gyroControls: false,
           minHeight: 200.00, minWidth: 200.00, scale: 1.00, scaleMobile: 1.00,
           color: 0x3b82f6, backgroundColor: 0x0a0a0f, points: 18.00, maxDistance: 28.00, spacing: 16.00, showDots: true
@@ -1092,7 +1101,7 @@ body.video-active .cursor-outline {
       width = window.innerWidth;
       height = window.innerHeight;
      // 🟢 获取设备像素比，解决高分屏模糊问题
-      const dpr = window.devicePixelRatio || 1;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2); // 限制最大为2
       canvas.width = width * dpr;
       canvas.height = height * dpr;
       canvas.style.width = `${width}px`;
@@ -1289,41 +1298,56 @@ body.video-active .cursor-outline {
  
     let mouseX = window.innerWidth / 2;
     let mouseY = 100;
-    
+    let ticking = false;
+// 预存容器位置，避免在 mousemove 里实时读取触发 Reflow
+let containerRect = container ? container.getBoundingClientRect() : null;
+window.addEventListener('resize', () => {
+    if(container) containerRect = container.getBoundingClientRect();
+});
+
+// --- 2. 唯一的鼠标监听器 ---
 window.addEventListener('mousemove', (e) => {
-    // 加上这行：如果是手机或平板端，直接不执行光标计算，节省性能
     if (window.innerWidth <= 768) return; 
 
     mouseX = e.clientX;
     mouseY = e.clientY;
-    // ... 后续计算代码保持不变
 
-      // 用 GPU 加速的 translate3d)
-      if(cursorDot) { 
-        cursorDot.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%)`; 
-      }
-      if(cursorOutline) { 
-        cursorOutline.animate({ 
-          transform: `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%)` 
-        }, { duration: 30, fill: "forwards" }); 
-      }
+    if (!ticking) {
+        window.requestAnimationFrame(() => {
+            updateUI();
+            ticking = false;
+        });
+        ticking = true;
+    }
+});
 
-      if (window.innerWidth > 768 && container) {
-        const rx = (window.innerWidth / 2 - mouseX) / 50;
-        const ry = (window.innerHeight / 2 - mouseY) / 50;
+// --- 3. 唯一的更新函数 ---
+function updateUI() {
+    // A. 光标控制 (GPU 加速)
+    if(cursorDot) cursorDot.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%)`;
+    if(cursorOutline) cursorOutline.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%)`;
+
+    // B. 容器 3D 旋转
+    if (container) {
+        const rx = (window.innerWidth / 2 - mouseX) / 80; 
+        const ry = (window.innerHeight / 2 - mouseY) / 80;
         container.style.transform = `rotateY(${rx * -1}deg) rotateX(${ry}deg)`;
-        const rect = container.getBoundingClientRect();
-        container.style.setProperty("--mouse-x", `${mouseX - rect.left}px`);
-        container.style.setProperty("--mouse-y", `${mouseY - rect.top}px`);
-      }
-      pupils.forEach(p => {
-        const rect = p.parentElement.getBoundingClientRect();
+        
+        if(containerRect) {
+            container.style.setProperty("--mouse-x", `${mouseX - containerRect.left}px`);
+            container.style.setProperty("--mouse-y", `${mouseY - containerRect.top}px`);
+        }
+    }
+
+    // C. 机器人眼睛
+    pupils.forEach(p => {
+        const rect = p.parentElement.getBoundingClientRect(); 
         const cx = rect.left + rect.width / 2, cy = rect.top + rect.height / 2;
         const angle = Math.atan2(mouseY - cy, mouseX - cx);
-        const dist = Math.min(6, Math.hypot(mouseX - cx, mouseY - cy) / 10);
+        const dist = Math.min(6, Math.hypot(mouseX - cx, mouseY - cy) / 15);
         p.style.transform = `translate(calc(-50% + ${Math.cos(angle) * dist}px), calc(-50% + ${Math.sin(angle) * dist}px))`;
-      });
     });
+}
  
     window.addEventListener('scroll', () => {
       const scrolled = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
