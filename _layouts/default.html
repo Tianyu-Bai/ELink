@@ -176,16 +176,86 @@ body.video-active .cursor-outline {
   #bot-container.interaction-done .pulse-ring { opacity: 0 !important; animation: none !important; }
   @keyframes pulse-ring-anim { 0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; } 30% { opacity: 0.6; } 100% { transform: translate(-50%, -50%) scale(2.5); opacity: 0; } }
  
-  .bot-head { width: 100px; height: 50px; background: #ffffff; border: 2px solid #e0e7ff; border-bottom: none; border-radius: 50px 50px 20px 20px; margin: 0 auto; position: relative; box-shadow: 0 -5px 15px rgba(59, 130, 246, 0.15); display: flex; justify-content: center; align-items: center; gap: 10px; padding-top: 5px; animation: float-bot 3s ease-in-out infinite; }
-  .bot-eye { width: 28px; height: 28px; background: #bfdbfe; border-radius: 50%; border: 1px solid #93c5fd; position: relative; overflow: hidden; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
-  .bot-pupil { width: 14px; height: 14px; background: #1e3a8a; border-radius: 50%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); transition: opacity 0.2s; }
-  .bot-lid { position: absolute; top: 0; left: 0; width: 100%; height: 0%; background: #ffffff; z-index: 10; animation: blink 4s infinite; }
-  #bot-container.speaking .bot-eye { background: transparent; border: none; box-shadow: none; width: 22px; height: 12px; border-top: 3px solid #3b82f6; border-radius: 22px 22px 0 0; margin-top: 8px; }
-  #bot-container.speaking .bot-pupil, #bot-container.speaking .bot-lid { opacity: 0; }
-  .bot-mouth { position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); width: 6px; height: 6px; background: #3b82f6; border-radius: 4px; opacity: 0; transition: all 0.2s; }
-  #bot-container.speaking .bot-mouth { opacity: 1; width: 14px; background: transparent; border: 2px solid #3b82f6; animation: mouth-talk 0.25s infinite alternate; }
-  .bot-antenna { position: absolute; top: -25px; left: 50%; transform: translateX(-50%); width: 2px; height: 25px; background: #e0e7ff; }
-  .bot-antenna::after { content: ''; position: absolute; top: -6px; left: -3px; width: 8px; height: 8px; border-radius: 50%; animation: pulse-antenna-breath 2s infinite ease-in-out; }
+ /* ==============================================================
+     🔥 全新高科技 AI 无人机风格 
+     ============================================================== */
+  
+  /* 1. 无人机舱体：深灰蓝色渐变底，悬浮玻璃质感 */
+  .bot-head { 
+    width: 76px; height: 50px; 
+    background: linear-gradient(145deg, #1e293b, #0f172a); 
+    border: 2px solid rgba(59, 130, 246, 0.4); 
+    border-radius: 38px; /* 圆润的胶囊形 */
+    margin: 0 auto; position: relative; 
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5), inset 0 2px 8px rgba(255,255,255,0.1), 0 0 15px rgba(59, 130, 246, 0.2); 
+    display: flex; justify-content: center; align-items: center; gap: 14px; 
+    animation: float-bot 3s ease-in-out infinite; 
+    overflow: hidden; 
+  }
+
+  /* 面罩屏幕：黑色的一体化显示屏区 */
+  .bot-head::before {
+    content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 60px; height: 26px; background: #020617; border-radius: 13px; z-index: 0;
+    box-shadow: inset 0 0 10px rgba(59, 130, 246, 0.2);
+  }
+
+  /* 2. 发光 LED 眼睛：两条亮蓝色光带 */
+  .bot-eye { 
+    width: 6px; height: 16px; background: #60a5fa; 
+    border-radius: 6px; position: relative; z-index: 1; 
+    box-shadow: 0 0 8px #60a5fa, 0 0 16px #3b82f6; 
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); 
+    animation: led-blink 4s infinite; 
+  }
+
+  /* 隐藏原来的黑眼珠、眼皮和嘴巴，不需要改HTML */
+  .bot-pupil, .bot-lid, .bot-mouth { display: none !important; }
+
+  /* 3. 说话时的动态表情：外壳脉冲发光 + 眼睛变成开心的弯弯眼 */
+  #bot-container.speaking .bot-head { 
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5), 0 0 25px rgba(59, 130, 246, 0.6); 
+    border-color: #60a5fa; 
+  }
+  #bot-container.speaking .bot-eye { 
+    height: 6px; width: 12px; 
+    border-radius: 12px 12px 0 0; /* 变成 ^^ 形状 */
+    background: transparent; border-top: 3px solid #93c5fd; 
+    box-shadow: 0 -5px 10px rgba(96, 165, 250, 0.8);
+    margin-top: -6px; 
+    animation: happy-bounce 0.4s infinite alternate; 
+  }
+  #bot-container.speaking .bot-eye:nth-child(2) { animation-delay: 0.1s; }
+
+  /* 4. 全息天线：变成一个向上发射的光锥 */
+  .bot-antenna { 
+    position: absolute; top: -14px; left: 50%; transform: translateX(-50%); 
+    width: 0; height: 0; 
+    border-left: 8px solid transparent; border-right: 8px solid transparent; 
+    border-bottom: 18px solid rgba(59, 130, 246, 0.2); 
+    filter: drop-shadow(0 -5px 5px rgba(59,130,246,0.6)); 
+  }
+  .bot-antenna::after { 
+    content: ''; position: absolute; top: 4px; left: -2px; 
+    width: 4px; height: 4px; background: #ffffff; border-radius: 50%; 
+    box-shadow: 0 0 8px #fff, 0 0 15px #60a5fa; 
+    animation: hologram-pulse 1.5s infinite alternate; 
+  }
+
+  /* --- 补充的关键帧动画 --- */
+  @keyframes led-blink { 
+    0%, 48%, 52%, 100% { transform: scaleY(1); } 
+    50% { transform: scaleY(0.1); } /* 瞬间压扁模拟眨眼 */
+  }
+  @keyframes happy-bounce { 
+    0% { transform: translateY(0); } 
+    100% { transform: translateY(-3px) scaleX(1.1); } 
+  }
+  @keyframes hologram-pulse { 
+    0% { opacity: 0.4; transform: scale(0.8); } 
+    100% { opacity: 1; transform: scale(1.5); } 
+  }
+ 
   #bot-speech { position: absolute; top: -45px; left: 50%; transform: translateX(-50%) scale(0); transform-origin: bottom center; background: rgba(30, 41, 59, 0.95); color: #fff; padding: 6px 14px; border-radius: 12px; font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; white-space: nowrap; pointer-events: none; border: 1px solid rgba(59, 130, 246, 0.4); box-shadow: 0 4px 15px rgba(0,0,0,0.3); transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s; z-index: 10000; opacity: 0; }
   #bot-speech::after { content: ''; position: absolute; bottom: -5px; left: 50%; width: 8px; height: 8px; background: inherit; transform: translateX(-50%) rotate(45deg); border-right: 1px solid rgba(59, 130, 246, 0.4); border-bottom: 1px solid rgba(59, 130, 246, 0.4); }
   #bot-container.speaking #bot-speech { transform: translateX(-50%) scale(1); opacity: 1; }
