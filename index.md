@@ -1281,9 +1281,9 @@ This project is open-source and available under the **MIT License**. Click the b
 
     let isScrolling = false;
     let scrollEndTimer = null;
-    let initCheckTimer = null; // 新增：用于处理模型并发进入视口的防抖锁
+    let initCheckTimer = null; 
 
-    // 🌟 核心大脑：无论何时，只找出最靠近屏幕中心的 1 个模型并唤醒
+    // 核心大脑：无论何时，只找出最靠近屏幕中心的 1 个模型并唤醒
     const checkAndActivateBestModel = () => {
         let bestModel = null;
         let minDistance = Infinity;
@@ -1312,11 +1312,11 @@ This project is open-source and available under the **MIT License**. Click the b
         isScrolling = true;
         clearTimeout(scrollEndTimer);
         
-        // 当滚动完全停止 250ms 后，进行中心点计算
+        // 🚀 提速点 1：将滚动判定停顿从 250ms 缩短到 120ms。只要手一停，瞬间反应！
         scrollEndTimer = setTimeout(() => {
             isScrolling = false;
             checkAndActivateBestModel();
-        }, 250);
+        }, 120);
     }, { passive: true });
 
     // 激活模型的专用函数
@@ -1328,22 +1328,20 @@ This project is open-source and available under the **MIT License**. Click the b
             if (m !== viewer) m.pause();
         });
 
-        // 执行繁重的解压渲染任务
+        // 🚀 提速点 2：去掉了 rAF 和 100ms 的人为延迟，一旦判定安全，瞬间下达解压指令！
         if (viewer.getAttribute('reveal') === 'manual' && viewer.dataset.loaded !== "true") {
-            requestAnimationFrame(() => {
-                viewer.dismissPoster();
-                viewer.dataset.loaded = "true";
-                setTimeout(() => { try { viewer.play(); } catch(e) {} }, 100);
-            });
-        } else {
-            viewer.play();
+            viewer.dismissPoster();
+            viewer.dataset.loaded = "true";
         }
+        try { viewer.play(); } catch(e) {}
 
         // 延迟展示手指交互动画
         if (viewer.dataset.overlayDisabled !== "true") {
+            clearTimeout(viewer.hudTimer); // 加锁防重复闪烁
+            // 🚀 提速点 3：手势提示也出得更快一点（从 800ms 改为 500ms）
             viewer.hudTimer = setTimeout(() => {
                 viewer.querySelectorAll('.gesture-overlay').forEach(el => el.classList.add('gesture-active'));
-            }, 800);
+            }, 500);
         }
     };
 
@@ -1377,7 +1375,6 @@ This project is open-source and available under the **MIT License**. Click the b
 
             if (entry.isIntersecting) {
                 viewer.dataset.inView = "true";
-                // 🌟 修复并发冲突：如果没在滚动（刚打开页面或切换语言），用极短的防抖把多个模型合并判定！
                 if (!isScrolling) {
                     clearTimeout(initCheckTimer);
                     initCheckTimer = setTimeout(() => {
