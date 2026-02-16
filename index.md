@@ -64,26 +64,38 @@ title: E-Link Home
   .mobile-tip, .mobile-only { display: inline !important; }
 }
 
-/* ========================================= 2. 复杂时间轴与动作动画 ========================================= */
+/* ========================================= 2. 复杂时间轴与动作动画 (丝滑防闪烁版) ========================================= */
 @keyframes timeline-drag-container {
-  0%, 6.25%    { opacity: 1; z-index: 10; } 
-  6.35%, 12.4% { opacity: 0; z-index: -1; } 
-  12.5%, 18.75% { opacity: 1; z-index: 10; } 
-  18.85%, 56.15% { opacity: 0; z-index: -1; } 
-  56.25%, 62.5% { opacity: 1; z-index: 10; } 
-  62.6%, 100%   { opacity: 0; z-index: -1; } 
+  /* 第一次出场: 0% 到 6.25% */
+  0%             { opacity: 0; z-index: 10; }
+  0.5%, 5.75%    { opacity: 1; z-index: 10; }
+  6.25%, 12%     { opacity: 0; z-index: -1; }
+  
+  /* 第二次出场: 12.5% 到 18.75% */
+  12.5%, 18.25%  { opacity: 1; z-index: 10; }
+  18.75%, 55.75% { opacity: 0; z-index: -1; }
+  
+  /* 第三次出场: 56.25% 到 62.5% */
+  56.25%, 62%    { opacity: 1; z-index: 10; }
+  62.5%, 100%    { opacity: 0; z-index: -1; }
 }
 
 @keyframes timeline-zoom-container {
-  0%, 6.15%    { opacity: 0; z-index: -1; }
-  6.25%, 12.5% { opacity: 1; z-index: 10; } 
-  12.6%, 18.65% { opacity: 0; z-index: -1; }
-  18.75%, 25%  { opacity: 1; z-index: 10; } 
-  25.1%, 62.4% { opacity: 0; z-index: -1; } 
-  62.5%, 68.75% { opacity: 1; z-index: 10; } 
-  68.85%, 100%  { opacity: 0; z-index: -1; } 
+  /* 第一次出场: 6.25% 到 12.5% */
+  0%, 5.75%      { opacity: 0; z-index: -1; }
+  6.25%, 12%     { opacity: 1; z-index: 10; }
+  12.5%, 18.25%  { opacity: 0; z-index: -1; }
+  
+  /* 第二次出场: 18.75% 到 25% */
+  18.75%, 24.5%  { opacity: 1; z-index: 10; }
+  25%, 62%       { opacity: 0; z-index: -1; }
+  
+  /* 第三次出场: 62.5% 到 68.75% */
+  62.5%, 68.25%  { opacity: 1; z-index: 10; }
+  68.75%, 100%   { opacity: 0; z-index: -1; }
 }
 
+/* --- 手指移动动画保持你原版的内容绝对不变 --- */
 @keyframes move-drag-hand {
   0% { transform: translateX(-40px) rotate(-15deg); opacity: 0; }
   20% { opacity: 1; }
@@ -1260,13 +1272,16 @@ This project is open-source and available under the **MIT License**. Click the b
       });
     });
 
-   // 滑动监听器
+// 滑动监听器
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         const viewer = entry.target;
 
-      if (entry.isIntersecting) {
-          // 👇 加上这个判断：如果不是自动显现的，才去手动隐藏封面
+        // 🌟 新增 1：清除之前的定时器。防止用户快速上下滑动时，动画指令打架
+        if (viewer.showGestureTimer) clearTimeout(viewer.showGestureTimer);
+
+        if (entry.isIntersecting) {
+          // 隐藏封面的逻辑保持不变
           if (viewer.getAttribute('reveal') === 'manual') {
               setTimeout(() => {
                   viewer.dismissPoster(); 
@@ -1276,12 +1291,16 @@ This project is open-source and available under the **MIT License**. Click the b
               try { viewer.play(); } catch(e) {}
           }
           
-          // 🟢 只有当用户还没动过模型时，才激活手指动画
-          if (viewer.dataset.overlayDisabled !== "true") {
-            viewer.querySelectorAll('.gesture-overlay').forEach(el => {
-              el.classList.add('gesture-active');
-            });
-          }
+          // 🌟 新增 2：把激活手指动画的代码，包在 800ms 的延迟里
+          // 效果：先等封面优雅消失，模型露出来，过大半秒，手指再缓缓浮现！
+          viewer.showGestureTimer = setTimeout(() => {
+              if (viewer.dataset.overlayDisabled !== "true") {
+                viewer.querySelectorAll('.gesture-overlay').forEach(el => {
+                  el.classList.add('gesture-active');
+                });
+              }
+          }, 800);
+
         } else {
           viewer.pause();
           viewer.querySelectorAll('.gesture-overlay').forEach(el => {
