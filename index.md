@@ -213,15 +213,23 @@ kbd {
 
 .model-block { 
   max-width: 100vw !important; 
-  margin-top: 40px !important;    
-  margin-bottom: 60px !important; /* 🌟 缩减到 60px，既能隔离显存，又不至于滑不到 */
+  /* 将原本的 40px 和 60px 缩减，消除视觉间隔 */
+  margin-top: 5px !important;  
+  margin-bottom: 15px !important; 
 }
 model-viewer::part(interaction-prompt), model-viewer::part(default-progress-bar) { display: none !important; }
 
 .model-watermark-text {
   position: absolute; bottom: 12px; right: 16px; font-family: 'JetBrains Mono', monospace;
   font-size: 10px; color: rgba(255, 255, 255, 0.25); pointer-events: none; z-index: 5;
+  system-ui, -apple-system, sans-serif;
+  font-weight: 400;
 }
+  @keyframes text-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
   
 
 /* 加一根淡淡的分隔线 */
@@ -240,16 +248,6 @@ model-viewer::part(interaction-prompt), model-viewer::part(default-progress-bar)
   background: rgba(255, 255, 255, 0.2); /* 淡淡的分隔线 */
 }
   
-  .model-watermark-text {
-  /* 在原有的样式里补上字重和辅助字体 */
-  font-family: 'JetBrains Mono', system-ui, -apple-system, sans-serif;
-  font-weight: 400;
-}
-  @keyframes text-blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.3; }
-}
-
   /* ===================== 高级 3D 封面特效 (HUD) ===================== */
 /* 1. 双环反向旋转加载器 */
 .cyber-loader {
@@ -331,7 +329,7 @@ model-viewer::part(interaction-prompt), model-viewer::part(default-progress-bar)
 
 <div class="gesture-hud">
   <span>↺ Rotate: Drag</span>
-  <span class="pc-only">Zoom: Ctrl + 🖱 Wheel</span>
+  <span class="pc-only">Zoom: Ctrl + 🖱 Wheel/Trackpad Pinch</span>
   <span class="mobile-only">Zoom: Pinch</span>
 </div>
 
@@ -351,7 +349,12 @@ model-viewer::part(interaction-prompt), model-viewer::part(default-progress-bar)
       <div class="gesture-text">Drag to Rotate</div>
     </div>
     
-    <button class="reset-btn" onclick="this.parentElement.cameraOrbit = '45deg 55deg auto'; this.parentElement.fieldOfView = '30deg';">
+    <button class="reset-btn"
+  onclick="
+    const mv = this.closest('model-viewer');
+    mv.setAttribute('camera-orbit','45deg 55deg auto');
+    mv.setAttribute('field-of-view','30deg');
+  ">
       ⟲ Reset View
     </button>
   </model-viewer>
@@ -387,7 +390,7 @@ model-viewer::part(interaction-prompt), model-viewer::part(default-progress-bar)
     
 <div class="gesture-hud">
   <span>↺ Rotate: Drag</span>
-  <span class="pc-only">Zoom: Ctrl + 🖱 Wheel</span>
+  <span class="pc-only">Zoom: Ctrl + 🖱 Wheel/Trackpad Pinch</span>
   <span class="mobile-only">Zoom: Pinch</span>
 </div>
 
@@ -406,7 +409,12 @@ model-viewer::part(interaction-prompt), model-viewer::part(default-progress-bar)
       <div class="gesture-text">Drag to Rotate</div>
     </div>
     
-    <button class="reset-btn" onclick="this.parentElement.cameraOrbit = '45deg 55deg auto'; this.parentElement.fieldOfView = '30deg';">
+   <button class="reset-btn"
+  onclick="
+    const mv = this.closest('model-viewer');
+    mv.setAttribute('camera-orbit','45deg 55deg auto');
+    mv.setAttribute('field-of-view','30deg');
+  ">
       ⟲ Reset View
     </button>
   </model-viewer>
@@ -442,7 +450,7 @@ model-viewer::part(interaction-prompt), model-viewer::part(default-progress-bar)
     
 <div class="gesture-hud">
   <span>↺ Rotate: Drag</span>
-  <span class="pc-only">Zoom: Ctrl + 🖱 Wheel</span>
+  <span class="pc-only">Zoom: Ctrl + 🖱 Wheel/Trackpad Pinch</span>
   <span class="mobile-only">Zoom: Pinch</span>
 </div>
 
@@ -460,13 +468,18 @@ model-viewer::part(interaction-prompt), model-viewer::part(default-progress-bar)
       <div class="icon-box"><div class="hand-icon">👆</div></div>
       <div class="gesture-text">Drag to Rotate</div>
  </div>
-    <button class="reset-btn" onclick="this.parentElement.cameraOrbit = '45deg 55deg auto'; this.parentElement.fieldOfView = '30deg';">
+   <button class="reset-btn"
+  onclick="
+    const mv = this.closest('model-viewer');
+    mv.setAttribute('camera-orbit','45deg 55deg auto');
+    mv.setAttribute('field-of-view','30deg');
+  ">
       ⟲ Reset View
     </button>
   </model-viewer>
 </div> 
-<span id="en-overview"></span>
 
+<span id="en-overview"></span>
 ## 📖 Overview
 
 **E-Link** (Elastomer Interconnection-based connector) is an open-source, miniature pedestal connector system based on elastomer interconnection. It provides a robust, scalable interface for flexible neural probes, specifically engineered for chronic applications in freely moving animals.
@@ -827,7 +840,7 @@ This project is open-source and available under the **MIT License**. Click the b
     
     <div class="gesture-hud">
       <span>↺ 旋转：拖拽</span>
-  <span class="pc-only">缩放：Ctrl键 + 鼠标滚轮</span>
+  <span class="pc-only">缩放：Ctrl键 + 鼠标滚轮/触控板捏合</span>
   <span class="mobile-only">缩放：双指捏合</span>
 </div>
 
@@ -847,7 +860,12 @@ This project is open-source and available under the **MIT License**. Click the b
   </div>
 </div>
     
-    <button class="reset-btn" onclick="this.parentElement.cameraOrbit = '45deg 55deg auto'; this.parentElement.fieldOfView = '30deg';">
+    <button class="reset-btn"
+  onclick="
+    const mv = this.closest('model-viewer');
+    mv.setAttribute('camera-orbit','45deg 55deg auto');
+    mv.setAttribute('field-of-view','30deg');
+  ">
       ⟲ 重置视角
     </button>
   </model-viewer>
@@ -883,7 +901,7 @@ This project is open-source and available under the **MIT License**. Click the b
     
     <div class="gesture-hud">
         <span>↺ 旋转：拖拽</span>
-  <span class="pc-only">缩放：Ctrl键 + 鼠标滚轮</span>
+  <span class="pc-only">缩放：Ctrl键 + 鼠标滚轮/触控板捏合</span>
   <span class="mobile-only">缩放：双指捏合</span>
 </div>
 
@@ -903,7 +921,12 @@ This project is open-source and available under the **MIT License**. Click the b
   </div>
 </div>
     
-    <button class="reset-btn" onclick="this.parentElement.cameraOrbit = '45deg 55deg auto'; this.parentElement.fieldOfView = '30deg';">
+    <button class="reset-btn"
+  onclick="
+    const mv = this.closest('model-viewer');
+    mv.setAttribute('camera-orbit','45deg 55deg auto');
+    mv.setAttribute('field-of-view','30deg');
+  ">
       ⟲ 重置视角
     </button>
   </model-viewer>
@@ -939,7 +962,7 @@ This project is open-source and available under the **MIT License**. Click the b
     
     <div class="gesture-hud">
       <span>↺ 旋转：拖拽</span>
-  <span class="pc-only">缩放：Ctrl键 + 鼠标滚轮</span>
+  <span class="pc-only">缩放：Ctrl键 + 鼠标滚轮/触控板捏合</span>
   <span class="mobile-only">缩放：双指捏合</span>
 </div>
 
@@ -959,7 +982,12 @@ This project is open-source and available under the **MIT License**. Click the b
   </div>
 </div>
 
-    <button class="reset-btn" onclick="this.parentElement.cameraOrbit = '45deg 55deg auto'; this.parentElement.fieldOfView = '30deg';">
+    <button class="reset-btn"
+  onclick="
+    const mv = this.closest('model-viewer');
+    mv.setAttribute('camera-orbit','45deg 55deg auto');
+    mv.setAttribute('field-of-view','30deg');
+  ">
       ⟲ 重置视角
     </button>
   </model-viewer>
@@ -1249,79 +1277,123 @@ This project is open-source and available under the **MIT License**. Click the b
     const models = Array.from(document.querySelectorAll('model-viewer'));
     if (!models.length) return;
 
-    // 性能补丁：检测是否为移动端
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
+    let isScrolling = false;
+    let scrollEndTimer = null;
+    let initCheckTimer = null; // 新增：用于处理模型并发进入视口的防抖锁
+
+    // 🌟 核心大脑：无论何时，只找出最靠近屏幕中心的 1 个模型并唤醒
+    const checkAndActivateBestModel = () => {
+        let bestModel = null;
+        let minDistance = Infinity;
+        const viewportCenter = window.innerHeight / 2;
+
+        models.forEach(viewer => {
+            if (viewer.dataset.inView === "true") {
+                const rect = viewer.getBoundingClientRect();
+                const modelCenter = rect.top + rect.height / 2;
+                const distance = Math.abs(modelCenter - viewportCenter);
+                
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    bestModel = viewer;
+                }
+            }
+        });
+
+        if (bestModel) {
+            activateViewer(bestModel);
+        }
+    };
+
+    // 监听滚动：只要屏幕在滑动，就锁定 3D 加载
+    window.addEventListener('scroll', () => {
+        isScrolling = true;
+        clearTimeout(scrollEndTimer);
+        
+        // 当滚动完全停止 250ms 后，进行中心点计算
+        scrollEndTimer = setTimeout(() => {
+            isScrolling = false;
+            checkAndActivateBestModel();
+        }, 250);
+    }, { passive: true });
+
+    // 激活模型的专用函数
+    const activateViewer = (viewer) => {
+        if (isScrolling) return; 
+
+        // 彻底暂停视野外的模型，确保 GPU 显存独占
+        models.forEach(m => {
+            if (m !== viewer) m.pause();
+        });
+
+        // 执行繁重的解压渲染任务
+        if (viewer.getAttribute('reveal') === 'manual' && viewer.dataset.loaded !== "true") {
+            requestAnimationFrame(() => {
+                viewer.dismissPoster();
+                viewer.dataset.loaded = "true";
+                setTimeout(() => { try { viewer.play(); } catch(e) {} }, 100);
+            });
+        } else {
+            viewer.play();
+        }
+
+        // 延迟展示手指交互动画
+        if (viewer.dataset.overlayDisabled !== "true") {
+            viewer.hudTimer = setTimeout(() => {
+                viewer.querySelectorAll('.gesture-overlay').forEach(el => el.classList.add('gesture-active'));
+            }, 800);
+        }
+    };
+
+    // 初始化模型基础设置
     models.forEach((viewer) => {
-      // 基础设置优化
-      viewer.setAttribute('auto-rotate', '');
-      viewer.minimumRenderScale = isMobile ? 0.5 : 1; 
-      viewer.autoRotateDelay = 1000;
-      
-      // 🌟 物理引擎降维打击：移动端强制将阻尼从 200 降到 30
-      if (isMobile) {
-        viewer.setAttribute('interpolation-decay', '30'); 
-      }
-      
-      // 事件锁：防止每次触摸都在查询 DOM 导致主线程卡死
-      let hintsHidden = false; 
-      const hideHints = () => {
-        if (hintsHidden) return; 
-        hintsHidden = true;
-        viewer.querySelectorAll('.gesture-overlay, .gesture-hud').forEach(el => el.classList.add('gesture-hidden'));
-        viewer.dataset.overlayDisabled = "true";
-      };
-      
-      ['mousedown', 'wheel', 'touchstart'].forEach(evt => {
-        viewer.addEventListener(evt, hideHints, { passive: true });
-      });
+        viewer.setAttribute('auto-rotate', '');
+        viewer.minimumRenderScale = isMobile ? 0.5 : 1; 
+        viewer.autoRotateDelay = 1000;
+        
+        if (isMobile) {
+            viewer.setAttribute('interpolation-decay', '30'); 
+        }
+        
+        let hintsHidden = false; 
+        const hideHints = () => {
+            if (hintsHidden) return; 
+            hintsHidden = true;
+            viewer.querySelectorAll('.gesture-overlay, .gesture-hud').forEach(el => el.classList.add('gesture-hidden'));
+            viewer.dataset.overlayDisabled = "true";
+        };
+        
+        ['mousedown', 'wheel', 'touchstart'].forEach(evt => {
+            viewer.addEventListener(evt, hideHints, { passive: true });
+        });
     });
 
-    // 高性能观察者
+    // 视口交叉观察者
     const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        const viewer = entry.target;
+        entries.forEach(entry => {
+            const viewer = entry.target;
 
-        if (entry.isIntersecting) {
-          // 显存排他：暂停视野外所有模型的动画渲染
-          models.forEach(m => {
-            if (m !== viewer) m.pause();
-          });
-
-          // 🌟 安全锁 1：稍微延长一点点缓冲期，彻底过滤掉“快速划过”的操作
-          viewer.loadTimer = setTimeout(() => {
-            if (viewer.getAttribute('reveal') === 'manual' && viewer.dataset.loaded !== "true") {
-                requestAnimationFrame(() => {
-                  viewer.dismissPoster();
-                  viewer.dataset.loaded = "true";
-                  // 🌟 安全锁 2：模型解压也需要时间，给 300ms 缓冲后再 play
-                  viewer.playTimer = setTimeout(() => { try { viewer.play(); } catch(e) {} }, 300);
-                });
+            if (entry.isIntersecting) {
+                viewer.dataset.inView = "true";
+                // 🌟 修复并发冲突：如果没在滚动（刚打开页面或切换语言），用极短的防抖把多个模型合并判定！
+                if (!isScrolling) {
+                    clearTimeout(initCheckTimer);
+                    initCheckTimer = setTimeout(() => {
+                        checkAndActivateBestModel();
+                    }, 50);
+                }
             } else {
-                viewer.play();
+                viewer.dataset.inView = "false";
+                clearTimeout(viewer.hudTimer);
+                viewer.pause();
+                viewer.querySelectorAll('.gesture-overlay').forEach(el => el.classList.remove('gesture-active'));
             }
-          }, 250); // 从 150 提升到 250，给快速滚动留出判定空间
-
-          // 手势动画启动
-          if (viewer.dataset.overlayDisabled !== "true") {
-            viewer.hudTimer = setTimeout(() => {
-              viewer.querySelectorAll('.gesture-overlay').forEach(el => el.classList.add('gesture-active'));
-            }, 1000);
-          }
-
-        } else {
-          // 🌟 核心防闪退修复：一旦离开视口，必须立刻销毁所有未执行的加载和动画定时器！
-          clearTimeout(viewer.loadTimer);
-          clearTimeout(viewer.playTimer);
-          clearTimeout(viewer.hudTimer);
-          
-          viewer.pause();
-          viewer.querySelectorAll('.gesture-overlay').forEach(el => el.classList.remove('gesture-active'));
-        }
-      });
+        });
     }, {
-      threshold: 0.1, 
-      rootMargin: "100px 0px 100px 0px" 
+        threshold: 0.05, 
+        rootMargin: "50px 0px" 
     });
 
     models.forEach(model => observer.observe(model));
