@@ -1265,14 +1265,16 @@ This project is open-source and available under the **MIT License**. Click the b
       entries.forEach(entry => {
         const viewer = entry.target;
 
-       if (entry.isIntersecting) {
-          // 延迟 300 毫秒唤醒模型，错开首屏渲染的内存峰值
-          setTimeout(() => {
-              viewer.dismissPoster(); 
+      if (entry.isIntersecting) {
+          // 👇 加上这个判断：如果不是自动显现的，才去手动隐藏封面
+          if (viewer.getAttribute('reveal') === 'manual') {
+              setTimeout(() => {
+                  viewer.dismissPoster(); 
+                  try { viewer.play(); } catch(e) {}
+              }, 300);
+          } else {
               try { viewer.play(); } catch(e) {}
-          }, 300);
-          
-          try { viewer.play(); } catch(e) {}
+          }
           
           // 🟢 只有当用户还没动过模型时，才激活手指动画
           if (viewer.dataset.overlayDisabled !== "true") {
