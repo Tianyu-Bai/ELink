@@ -1423,7 +1423,7 @@ function updateUI() {
                  btn.style.transform = 'translateX(0)';
                  btn.style.animation = 'none'; 
              } else {
-                 btn.style.animationDelay = `${idx * 0.1}s`;
+                 btn.style.animationDelay = `${idx * 0.05}s`;
              }
  
              btn.onclick = (e) => { 
@@ -1446,7 +1446,7 @@ function updateUI() {
                clearInterval(typeTimer);
                showButtons();
              }
-           }, 30);
+           }, 10);
       }
     }
  
