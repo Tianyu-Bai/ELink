@@ -1237,96 +1237,84 @@ This project is open-source and available under the **MIT License**. Click the b
 
 <script>
   document.addEventListener("DOMContentLoaded", () => {
+    // 1. 确保获取到所有模型
     const models = Array.from(document.querySelectorAll('model-viewer'));
     if (!models.length) return;
 
     models.forEach(viewer => {
       viewer.setAttribute('auto-rotate', '');
-// 👇 强制模型在运动时保持 100% 渲染精度
       viewer.minimumRenderScale = 1; 
-// 👇 解锁极限放大倍率（允许相机极其靠近模型中心）
       viewer.setAttribute('min-camera-orbit', 'auto auto 1mm');
-// 👇 进一步缩小最小视野角度，相当于增加了“长焦放大镜”效果
       viewer.setAttribute('min-field-of-view', '10deg'); 
-// 👇 统一设置为松手后等待 0.5秒 (500毫秒) 再自转
       viewer.autoRotateDelay = 500; 
-      viewer.pause(); 
+      
+      // 初始状态：除了第一个，其他都暂停
+      if (viewer.getAttribute('reveal') === 'manual') {
+        viewer.pause(); 
+      }
 
       let hudTimer = null;
-
       const hideHints = () => {
-        // 1. 立即隐藏所有（HUD 和 引导动画）
-        viewer.querySelectorAll('.gesture-overlay, .gesture-hud')
-          .forEach(el => el.classList.add('gesture-hidden'));
-        
-        // 2. 标记：用户已经交互过，引导动画（overlay）从此封禁
+        viewer.querySelectorAll('.gesture-overlay, .gesture-hud').forEach(el => el.classList.add('gesture-hidden'));
         viewer.dataset.overlayDisabled = "true";
-
-        // 3. 清除旧计时器，重置 10 秒倒计时
         if (hudTimer) clearTimeout(hudTimer);
-
         hudTimer = setTimeout(() => {
-          // 4. 重点：只找回顶部的 HUD 文字条，不找回引导动画
           const hud = viewer.querySelector('.gesture-hud');
           if (hud) hud.classList.remove('gesture-hidden');
-        }, 10000); // 10 秒后显示HUD
+        }, 10000);
       };
       
-      // 监听所有交互动作
       ['mousedown', 'wheel', 'touchstart'].forEach(evt => {
         viewer.addEventListener(evt, hideHints);
       });
     });
 
-// 滑动监听器 (丝滑稳定版)
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    const viewer = entry.target;
+    // 2. 核心滑动监听器 (防死循环版)
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        const viewer = entry.target;
 
-    if (viewer.showGestureTimer) clearTimeout(viewer.showGestureTimer);
+        if (viewer.showGestureTimer) clearTimeout(viewer.showGestureTimer);
 
-    if (entry.isIntersecting) {
-      // 强制让其他模型暂停
-      models.forEach(m => {
-        if (m !== viewer) m.pause();
-      });
+        if (entry.isIntersecting) {
+          // A. 显存排他性：让别人暂停
+          models.forEach(m => {
+            if (m !== viewer) m.pause();
+          });
 
-      // 🌟 重点修正：显式解锁封面并更新属性
-      if (viewer.getAttribute('reveal') === 'manual') {
-          viewer.dismissPoster();
-          // 改为 auto 确保它不会被重复触发
-          viewer.setAttribute('reveal', 'auto'); 
-      }
-      
-      try { 
-        viewer.play(); 
-      } catch(e) {
-        console.error("3D Playback failed:", e);
-      }
+          // B. 唤醒逻辑：增加一个 [data-loaded] 锁，防止重复执行 setAttribute
+          if (viewer.getAttribute('reveal') === 'manual' && viewer.dataset.loaded !== "true") {
+              viewer.dismissPoster();
+              viewer.dataset.loaded = "true"; // 🌟 锁定，只执行一次
+              setTimeout(() => {
+                try { viewer.play(); } catch(e) {}
+              }, 100);
+          } else {
+              try { viewer.play(); } catch(e) {}
+          }
+          
+          // C. 手指动画延迟出场
+          viewer.showGestureTimer = setTimeout(() => {
+              if (viewer.dataset.overlayDisabled !== "true") {
+                viewer.querySelectorAll('.gesture-overlay').forEach(el => {
+                  el.classList.add('gesture-active');
+                });
+              }
+          }, 800);
 
-      // 手指动画延迟出场
-      viewer.showGestureTimer = setTimeout(() => {
-        if (viewer.dataset.overlayDisabled !== "true") {
+        } else {
+          // 离开视口：停止自转
+          viewer.pause();
           viewer.querySelectorAll('.gesture-overlay').forEach(el => {
-            el.classList.add('gesture-active');
+            el.classList.remove('gesture-active');
           });
         }
-      }, 800);
-
-    } else {
-      // 滑出屏幕时，只做暂停，不做物理抹除，保住边框
-      viewer.pause();
-      viewer.querySelectorAll('.gesture-overlay').forEach(el => {
-        el.classList.remove('gesture-active');
       });
-    }
-  });
-}, {
-  // 🌟 调整：放宽阈值到 0.4，去掉 rootMargin，改用 margin-bottom 物理隔离
-  threshold: 0.1,
-  rootMargin: "100px 0px 100px 0px"
-});
+    }, {
+      threshold: 0.15, // 稍微提高一点点，防止误触
+      rootMargin: "50px 0px 50px 0px"
+    });
 
-models.forEach(model => observer.observe(model));
-  
+    models.forEach(model => observer.observe(model));
+  });
 </script>
