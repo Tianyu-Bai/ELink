@@ -198,8 +198,8 @@ kbd {
 
 .model-block { 
   max-width: 100vw !important; 
-  margin-top: 60px !important;    /* 🌟 上方加空隙 */
-  margin-bottom: 120px !important; /* 🌟 下方加空隙，防止两个模型同时挤在屏幕里 */
+  margin-top: 40px !important;    
+  margin-bottom: 60px !important; /* 🌟 缩减到 60px，既能隔离显存，又不至于滑不到 */
 }
 model-viewer::part(interaction-prompt), model-viewer::part(default-progress-bar) { display: none !important; }
 
@@ -1286,25 +1286,22 @@ const observer = new IntersectionObserver((entries) => {
     if (viewer.showGestureTimer) clearTimeout(viewer.showGestureTimer);
 
     if (entry.isIntersecting) {
-      // 🌟 核心：只有当模型真正进入核心区且不在播放时才动作
-      // 强制让其他模型暂停，确保独占显存
+      // 强制让其他模型暂停
       models.forEach(m => {
-        if (m !== viewer) {
-          m.pause();
-        }
+        if (m !== viewer) m.pause();
       });
 
-      // 唤醒当前模型
+      // 🌟 重点修正：显式解锁封面并更新属性
       if (viewer.getAttribute('reveal') === 'manual') {
-        setTimeout(() => {
-          // 这里多做一个判断，防止已经解锁的再次触发导致的频闪
-          if (viewer.getAttribute('reveal') === 'manual') {
-             viewer.dismissPoster();
-          }
-          try { viewer.play(); } catch(e) {}
-        }, 300);
-      } else {
-        try { viewer.play(); } catch(e) {}
+          viewer.dismissPoster();
+          // 改为 auto 确保它不会被重复触发
+          viewer.setAttribute('reveal', 'auto'); 
+      }
+      
+      try { 
+        viewer.play(); 
+      } catch(e) {
+        console.error("3D Playback failed:", e);
       }
 
       // 手指动画延迟出场
@@ -1326,8 +1323,8 @@ const observer = new IntersectionObserver((entries) => {
   });
 }, {
   // 🌟 调整：放宽阈值到 0.4，去掉 rootMargin，改用 margin-bottom 物理隔离
-  threshold: 0.4,
-  rootMargin: "0px" 
+  threshold: 0.1,
+  rootMargin: "100px 0px 100px 0px"
 });
 
 models.forEach(model => observer.observe(model));
