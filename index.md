@@ -1589,6 +1589,7 @@ This project is open-source and available under the **MIT License**. Click the b
   document.addEventListener("DOMContentLoaded", () => {
   
 // ===================== E-Link 动态数据面板逻辑 (完美绝对同步版) =====================
+    // ===================== E-Link 动态数据面板逻辑 (单向循环瞬间归零版) =====================
     const dashboardObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         const card = entry.target;
@@ -1604,37 +1605,33 @@ This project is open-source and available under the **MIT License**. Click the b
           let startTimestamp = null;
           
           const cycleTime = 6000;  // 动画总循环：6秒
-          const growTime = 1200;   // 增长耗时：1.2秒
-          const shrinkTime = 600;  // 结尾退回耗时：0.6秒
+          const growTime = 1200;   // 增长耗时：1.2秒。剩余的4.8秒一直保持满状态。
 
           const step = (timestamp) => {
             // 只要滑出屏幕，立刻终止动画循环，节省手机性能
             if (card.dataset.dashboardInView !== "true") return; 
 
             if (!startTimestamp) startTimestamp = timestamp;
+            // 🚨 核心魔法：使用 % 取余数。当到了第6秒(6000ms)，elapsed 瞬间变成 0！
             const elapsed = (timestamp - startTimestamp) % cycleTime;
             
             let progress = 0;
             
             if (elapsed < growTime) {
-              // 1. 增长阶段：使用平滑减速曲线 (easeOutExpo)
+              // 1. 顺时针增长阶段：从 0 开始平滑减速到 100%
               let p = elapsed / growTime;
               progress = p === 1 ? 1 : 1 - Math.pow(2, -10 * p);
-            } else if (elapsed > cycleTime - shrinkTime) {
-              // 3. 退回阶段：最后0.6秒平滑缩回，准备下一次循环
-              let p = (elapsed - (cycleTime - shrinkTime)) / shrinkTime;
-              progress = 1 - Math.pow(p, 2); // easeIn 曲线
             } else {
-              // 2. 保持阶段：处于满状态
+              // 2. 保持阶段：剩余时间全部保持在 100% 满状态 (显示256, 2.8g等目标值)
+              // 不需要后退代码，因为到了6秒钟循环结束，elapsed 会自动变成 0，progress 也会瞬间变回 0
               progress = 1;
             }
 
-            // 🎯 核心同步点：用同一个 progress 同时控制数字和圆环！
-            // 更新数字
+            // 更新数字：瞬间归零，平滑涨满
             const currentValue = progress * targetValue;
             numberEl.innerText = isFloat ? currentValue.toFixed(1) : Math.floor(currentValue);
 
-            // 更新圆环
+            // 更新圆环：没有 CSS transition 干扰，progress=0时会直接瞬间变成空环
             fgRing.style.strokeDashoffset = circumference - (circumference * progress);
 
             // 继续下一帧
