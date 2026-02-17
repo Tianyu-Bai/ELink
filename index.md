@@ -248,6 +248,116 @@ model-viewer::part(interaction-prompt), model-viewer::part(default-progress-bar)
   background: rgba(255, 255, 255, 0.2); /* 淡淡的分隔线 */
 }
   
+/* ===================== E-Link 动态仪表盘样式 ===================== */
+.elink-dynamic-dashboard {
+  width: 100%;
+  max-width: 760px;
+  margin: 20px auto;
+  padding: 10px;
+}
+
+.metrics-grid {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.metric-card.glass-panel {
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  border-radius: 16px;
+  padding: 20px;
+  width: 200px;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.metric-card.glass-panel:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 40px 0 rgba(59, 130, 246, 0.4);
+}
+
+.chart-box {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  margin: 0 auto;
+}
+
+.chart-box svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg); /* 从顶部开始绘制 */
+}
+
+.bg-ring {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.1);
+  stroke-width: 6;
+}
+
+.fg-ring {
+  fill: none;
+  stroke-width: 6;
+  stroke-linecap: round;
+  stroke-dasharray: 283; /* 2 * pi * r (r=45) */
+  stroke-dashoffset: 283; /* 初始隐藏 */
+  transition: stroke-dashoffset 2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* 颜色定义：结合 E-link 的蓝、橙以及达特茅斯的绿色 */
+.weight-color { stroke: #10b981; filter: drop-shadow(0 0 6px rgba(16, 185, 129, 0.6)); } /* 绿色代表轻量/安全 */
+.channel-color { stroke: #3b82f6; filter: drop-shadow(0 0 6px rgba(59, 130, 246, 0.6)); } /* 主题蓝 */
+.pcb-color { stroke: #f59e0b; filter: drop-shadow(0 0 6px rgba(245, 158, 11, 0.6)); }    /* 橙色代表硬件/多层 */
+
+.inner-content {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.inner-content .label {
+  font-size: 10px;
+  font-weight: 700;
+  color: #94a3b8;
+  letter-spacing: 1px;
+  margin-bottom: 2px;
+}
+
+.inner-content .number-container {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+}
+
+.inner-content .number {
+  font-family: 'JetBrains Mono', monospace, sans-serif;
+  font-size: 32px;
+  font-weight: 800;
+  color: #ffffff;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+.inner-content .unit {
+  font-size: 16px;
+  font-weight: bold;
+  color: #cbd5e1;
+  margin-left: 2px;
+}
+
+.inner-content .sub {
+  font-size: 10px;
+  color: rgba(148, 163, 184, 0.8);
+  margin-top: 2px;
+}
+    
   /* ===================== 高级 3D 封面特效 (HUD) ===================== */
 /* 1. 双环反向旋转加载器 */
 .cyber-loader {
@@ -494,6 +604,60 @@ model-viewer::part(interaction-prompt), model-viewer::part(default-progress-bar)
 </div>
 
 ---
+
+<div class="elink-dynamic-dashboard" align="center">
+  <div class="metrics-grid">
+    
+    <div class="metric-card glass-panel" data-percent="100" data-value="2.8" data-is-float="true">
+      <div class="chart-box">
+        <svg viewBox="0 0 100 100">
+          <circle class="bg-ring" cx="50" cy="50" r="45"></circle>
+          <circle class="fg-ring weight-color" cx="50" cy="50" r="45"></circle>
+        </svg>
+        <div class="inner-content">
+          <div class="label">WEIGHT</div>
+          <div class="number-container">
+            <span class="number count-up">0</span><span class="unit">g</span>
+          </div>
+          <div class="sub">Ultra-light</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="metric-card glass-panel" data-percent="100" data-value="256" data-is-float="false">
+      <div class="chart-box">
+        <svg viewBox="0 0 100 100">
+          <circle class="bg-ring" cx="50" cy="50" r="45"></circle>
+          <circle class="fg-ring channel-color" cx="50" cy="50" r="45"></circle>
+        </svg>
+        <div class="inner-content">
+          <div class="label">CHANNELS</div>
+          <div class="number-container">
+            <span class="number count-up">0</span>
+          </div>
+          <div class="sub">High-Density</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="metric-card glass-panel" data-percent="100" data-value="4" data-is-float="false">
+      <div class="chart-box">
+        <svg viewBox="0 0 100 100">
+          <circle class="bg-ring" cx="50" cy="50" r="45"></circle>
+          <circle class="fg-ring pcb-color" cx="50" cy="50" r="45"></circle>
+        </svg>
+        <div class="inner-content">
+          <div class="label">PCB LAYERS</div>
+          <div class="number-container">
+            <span class="number count-up">0</span>
+          </div>
+          <div class="sub">Custom Routing</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
 
 > [!NOTE]
 > **Key Innovation:** The system integrates two high-density PCBs, an anisotropic elastomeric contact interface, and a lightweight pedestal housing into a fully integrated, headstage-ready solution.
@@ -1008,6 +1172,60 @@ This project is open-source and available under the **MIT License**. Click the b
 
 ---
 
+<div class="elink-dynamic-dashboard" align="center">
+  <div class="metrics-grid">
+    
+    <div class="metric-card glass-panel" data-percent="100" data-value="2.8" data-is-float="true">
+      <div class="chart-box">
+        <svg viewBox="0 0 100 100">
+          <circle class="bg-ring" cx="50" cy="50" r="45"></circle>
+          <circle class="fg-ring weight-color" cx="50" cy="50" r="45"></circle>
+        </svg>
+        <div class="inner-content">
+          <div class="label" style="font-family: sans-serif; letter-spacing: 2px;">重量</div>
+          <div class="number-container">
+            <span class="number count-up">0</span><span class="unit">g</span>
+          </div>
+          <div class="sub">轻量级</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="metric-card glass-panel" data-percent="100" data-value="256" data-is-float="false">
+      <div class="chart-box">
+        <svg viewBox="0 0 100 100">
+          <circle class="bg-ring" cx="50" cy="50" r="45"></circle>
+          <circle class="fg-ring channel-color" cx="50" cy="50" r="45"></circle>
+        </svg>
+        <div class="inner-content">
+          <div class="label" style="font-family: sans-serif; letter-spacing: 2px;">通道数</div>
+          <div class="number-container">
+            <span class="number count-up">0</span>
+          </div>
+          <div class="sub">高密度采集</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="metric-card glass-panel" data-percent="100" data-value="4" data-is-float="false">
+      <div class="chart-box">
+        <svg viewBox="0 0 100 100">
+          <circle class="bg-ring" cx="50" cy="50" r="45"></circle>
+          <circle class="fg-ring pcb-color" cx="50" cy="50" r="45"></circle>
+        </svg>
+        <div class="inner-content">
+          <div class="label" style="font-family: sans-serif; letter-spacing: 2px;">PCB 层数</div>
+          <div class="number-container">
+            <span class="number count-up">0</span>
+          </div>
+          <div class="sub">定制化布线</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 > [!NOTE]
 > **核心创新：** 我们打造了一种完全一体化的 “即拧即用” 数据采集方案。该系统利用弹性导电介质连接高密度 PCB，并封装于轻量级基座中。其最大的突破在于实现了“零力插拔”。免去使用者用力插拔的动作，有效规避了高密度引脚连接器常见的断针和弯针风险。
 
@@ -1274,6 +1492,65 @@ This project is open-source and available under the **MIT License**. Click the b
 
 <script>
   document.addEventListener("DOMContentLoaded", () => {
+    // ===================== E-Link 动态数据面板逻辑 =====================
+const dashboardObserver = new IntersectionObserver((entries, observer) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const card = entry.target;
+      const fgRing = card.querySelector('.fg-ring');
+      const numberEl = card.querySelector('.count-up');
+      
+      const targetValue = parseFloat(card.dataset.value);
+      const isFloat = card.dataset.isFloat === "true";
+      const targetPercent = parseInt(card.dataset.percent);
+      
+      // 1. 触发圆环动画
+      const circumference = 283; // 2 * pi * 45
+      const offset = circumference - (targetPercent / 100) * circumference;
+      // 增加一点小延迟，让动画显得更有节奏感
+      setTimeout(() => {
+        fgRing.style.strokeDashoffset = offset;
+      }, 100);
+
+      // 2. 触发数字滚动动画 (easeOutExpo 效果)
+      let startTimestamp = null;
+      const duration = 2000; // 动画时长 2 秒
+
+      const step = (timestamp) => {
+        if (!startTimestamp) startTimestamp = timestamp;
+        const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+        
+        // 缓动函数
+        const easeProgress = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+        const currentValue = easeProgress * targetValue;
+
+        if (isFloat) {
+          numberEl.innerText = currentValue.toFixed(1);
+        } else {
+          numberEl.innerText = Math.floor(currentValue);
+        }
+
+        if (progress < 1) {
+          window.requestAnimationFrame(step);
+        } else {
+          // 确保最终数字完全一致
+          numberEl.innerText = isFloat ? targetValue.toFixed(1) : targetValue;
+        }
+      };
+      
+      window.requestAnimationFrame(step);
+
+      // 动画执行一次后取消监听，避免重复触发。如果希望每次滑动回来都重新播放，可以注释掉下面这行
+      observer.unobserve(card);
+    }
+  });
+}, { threshold: 0.3 }); // 元素露出 30% 时触发动画
+
+// 绑定所有的 metric-card
+document.querySelectorAll('.metric-card').forEach(card => {
+  dashboardObserver.observe(card);
+});
+    
     const models = Array.from(document.querySelectorAll('model-viewer'));
     if (!models.length) return;
 
