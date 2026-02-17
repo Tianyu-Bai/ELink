@@ -250,113 +250,70 @@ model-viewer::part(interaction-prompt), model-viewer::part(default-progress-bar)
 }
   
 /* ===================== E-Link 动态仪表盘样式 ===================== */
+/* ===================== 0. 全局防频闪保护 ===================== */
+.nav-badges img, .github-only img, a img {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ===================== E-Link 动态仪表盘样式 (响应式 + 6秒循环版) ===================== */
 .elink-dynamic-dashboard {
-  width: 100%;
-  max-width: 760px;
-  margin: 20px auto;
-  padding: 10px;
+  width: 100%; max-width: 760px; margin: 20px auto; padding: 5px;
 }
-
 .metrics-grid {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 20px;
+  display: flex; justify-content: space-around; align-items: center; 
+  flex-wrap: nowrap; /* 🚨 核心：强制不换行，实现手机端并排 */
+  gap: 15px; width: 100%;
 }
-
 .metric-card.glass-panel {
   background: rgba(15, 23, 42, 0.6);
-  border: 1px solid rgba(59, 130, 246, 0.3);
-  border-radius: 16px;
-  padding: 20px;
-  width: 200px;
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 12px;
+  padding: 15px 5px; width: 32%; /* 强制三等分 */
+  box-sizing: border-box; box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  transition: transform 0.3s ease; text-align: center;
 }
+.chart-box { position: relative; width: 120px; height: 120px; margin: 0 auto; }
+.chart-box svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+.bg-ring { fill: none; stroke: rgba(255, 255, 255, 0.1); stroke-width: 6; }
 
-.metric-card.glass-panel:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 12px 40px 0 rgba(59, 130, 246, 0.4);
-}
-
-.chart-box {
-  position: relative;
-  width: 140px;
-  height: 140px;
-  margin: 0 auto;
-}
-
-.chart-box svg {
-  width: 100%;
-  height: 100%;
-  transform: rotate(-90deg); /* 从顶部开始绘制 */
-}
-
-.bg-ring {
-  fill: none;
-  stroke: rgba(255, 255, 255, 0.1);
-  stroke-width: 6;
-}
-
+/* 🚨 核心：纯 CSS 实现 6秒无限循环圆环绘制，不吃 JS 性能 */
 .fg-ring {
-  fill: none;
-  stroke-width: 6;
-  stroke-linecap: round;
-  stroke-dasharray: 283; /* 2 * pi * r (r=45) */
-  stroke-dashoffset: 283; /* 初始隐藏 */
-  transition: stroke-dashoffset 2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  fill: none; stroke-width: 6; stroke-linecap: round;
+  stroke-dasharray: 283; stroke-dashoffset: 283; 
+  animation: ring-loop 6s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+@keyframes ring-loop {
+  0% { stroke-dashoffset: 283; }
+  15%, 85% { stroke-dashoffset: 0; } /* 1秒多画满，停留，最后退回 */
+  100% { stroke-dashoffset: 283; }
 }
 
-/* 颜色定义：结合 E-link 的蓝、橙以及达特茅斯的绿色 */
-.weight-color { stroke: #10b981; filter: drop-shadow(0 0 6px rgba(16, 185, 129, 0.6)); } /* 绿色代表轻量/安全 */
-.channel-color { stroke: #3b82f6; filter: drop-shadow(0 0 6px rgba(59, 130, 246, 0.6)); } /* 主题蓝 */
-.pcb-color { stroke: #f59e0b; filter: drop-shadow(0 0 6px rgba(245, 158, 11, 0.6)); }    /* 橙色代表硬件/多层 */
+.weight-color { stroke: #10b981; filter: drop-shadow(0 0 6px rgba(16, 185, 129, 0.6)); } 
+.channel-color { stroke: #3b82f6; filter: drop-shadow(0 0 6px rgba(59, 130, 246, 0.6)); } 
+.pcb-color { stroke: #f59e0b; filter: drop-shadow(0 0 6px rgba(245, 158, 11, 0.6)); }    
+.inner-content { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+.inner-content .label { font-size: 10px; font-weight: 700; color: #94a3b8; margin-bottom: 2px; }
+.inner-content .number-container { display: flex; align-items: baseline; justify-content: center; }
+.inner-content .number { font-family: 'JetBrains Mono', monospace; font-size: 32px; font-weight: 800; color: #ffffff; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+.inner-content .unit { font-size: 16px; font-weight: bold; color: #cbd5e1; margin-left: 2px; }
+.inner-content .sub { font-size: 10px; color: rgba(148, 163, 184, 0.8); margin-top: 2px; }
 
-.inner-content {
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.inner-content .label {
-  font-size: 10px;
-  font-weight: 700;
-  color: #94a3b8;
-  letter-spacing: 1px;
-  margin-bottom: 2px;
-}
-
-.inner-content .number-container {
-  display: flex;
-  align-items: baseline;
-  justify-content: center;
-}
-
-.inner-content .number {
-  font-family: 'JetBrains Mono', monospace, sans-serif;
-  font-size: 32px;
-  font-weight: 800;
-  color: #ffffff;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-}
-
-.inner-content .unit {
-  font-size: 16px;
-  font-weight: bold;
-  color: #cbd5e1;
-  margin-left: 2px;
-}
-
-.inner-content .sub {
-  font-size: 10px;
-  color: rgba(148, 163, 184, 0.8);
-  margin-top: 2px;
+/* 🚨 核心：手机端极限优化 (解决卡顿与尺寸问题) */
+@media (max-width: 600px) {
+  .metrics-grid { gap: 8px; }
+  .metric-card.glass-panel {
+    padding: 10px 2px;
+    background: rgba(15, 23, 42, 0.85); /* 稍微调暗背景 */
+    backdrop-filter: none; /* 🔴 关闭毛玻璃，彻底解决手机端滚动卡顿闪烁 */
+    -webkit-backdrop-filter: none;
+  }
+  .chart-box { width: 75px; height: 75px; } /* 缩小圆环，适应手机三列 */
+  .inner-content .number { font-size: 20px; }
+  .inner-content .unit { font-size: 12px; }
+  .inner-content .label { font-size: 8px; font-family: sans-serif !important; letter-spacing: 0 !important; }
+  .inner-content .sub { display: none; /* 隐藏副标题，让主数据在手机上更清晰 */ }
 }
     
   /* ===================== 高级 3D 封面特效 (HUD) ===================== */
@@ -1493,38 +1450,27 @@ This project is open-source and available under the **MIT License**. Click the b
 
 <script>
   document.addEventListener("DOMContentLoaded", () => {
-    // ===================== E-Link 动态数据面板逻辑 =====================
-    const dashboardObserver = new IntersectionObserver((entries, observer) => {
+  
+// ===================== E-Link 动态数据面板逻辑 (6秒循环同步版) =====================
+    const dashboardObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const card = entry.target;
-          const fgRing = card.querySelector('.fg-ring');
-          const numberEl = card.querySelector('.count-up');
-          
-          const targetValue = parseFloat(card.dataset.value);
-          const isFloat = card.dataset.isFloat === "true";
-          const targetPercent = parseInt(card.dataset.percent);
-          
-          const circumference = 283; 
-          const offset = circumference - (targetPercent / 100) * circumference;
-          setTimeout(() => {
-            fgRing.style.strokeDashoffset = offset;
-          }, 100);
-
+        const card = entry.target;
+        const numberEl = card.querySelector('.count-up');
+        const targetValue = parseFloat(card.dataset.value);
+        const isFloat = card.dataset.isFloat === "true";
+        
+        // 执行一次数字滚动动画的函数
+        const runNumberAnim = () => {
           let startTimestamp = null;
-          const duration = 2000; 
-
+          const duration = 900; // 1.2秒滚完，与 CSS 圆环动画的 15% 节点完美同步
+          
           const step = (timestamp) => {
             if (!startTimestamp) startTimestamp = timestamp;
             const progress = Math.min((timestamp - startTimestamp) / duration, 1);
             const easeProgress = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
             const currentValue = easeProgress * targetValue;
 
-            if (isFloat) {
-              numberEl.innerText = currentValue.toFixed(1);
-            } else {
-              numberEl.innerText = Math.floor(currentValue);
-            }
+            numberEl.innerText = isFloat ? currentValue.toFixed(1) : Math.floor(currentValue);
 
             if (progress < 1) {
               window.requestAnimationFrame(step);
@@ -1533,10 +1479,24 @@ This project is open-source and available under the **MIT License**. Click the b
             }
           };
           window.requestAnimationFrame(step);
-          observer.unobserve(card);
+        };
+
+        if (entry.isIntersecting) {
+          // 滑入屏幕：立即重置为0并播放一次
+          numberEl.innerText = "0";
+          runNumberAnim();
+          
+          // 设置 6 秒死循环，保持与 CSS 圆环动画完全同步！
+          card.loopInterval = setInterval(() => {
+            numberEl.innerText = "0";
+            runNumberAnim();
+          }, 6000);
+        } else {
+          // 滑出屏幕：立即清除定时器，绝不浪费手机后台 CPU 和电池！
+          clearInterval(card.loopInterval);
         }
       });
-    }, { threshold: 0.3 }); 
+    }, { threshold: 0.1 }); 
 
     document.querySelectorAll('.metric-card').forEach(card => {
       dashboardObserver.observe(card);
