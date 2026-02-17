@@ -56,8 +56,8 @@ title: E-Link Home
   text-align: center;
   margin-top: 10px;
   
-  /* 4. 触发动画：8秒循环，线性匀速 */
-  animation: shimmer-gradient 8s linear infinite;
+  /* 4. 触发动画：16秒循环，线性匀速 */
+  animation: shimmer-gradient 16s linear infinite;
 }
 
 /* 定义背景位移的动画 */
@@ -286,8 +286,6 @@ model-viewer::part(interaction-prompt), model-viewer::part(default-progress-bar)
   0%, 100% { opacity: 1; }
   50% { opacity: 0.3; }
 }
-
-  
 
 /* 加一根淡淡的分隔线 */
 .gesture-hud span + span {
@@ -607,8 +605,6 @@ model-viewer::part(interaction-prompt), model-viewer::part(default-progress-bar)
   </model-viewer>
 </div> 
 
----
-
 <div class="elink-dynamic-dashboard" align="center">
   <div class="metrics-grid">
     
@@ -728,16 +724,16 @@ model-viewer::part(interaction-prompt), model-viewer::part(default-progress-bar)
   <h3 style="color: #60a5fa; margin-bottom: 20px; font-family: sans-serif;">🌍 Cross-Species Scalability</h3>
   
   <div class="species-glass-box">
-    <svg class="connection-lines" viewBox="0 0 600 300" preserveAspectRatio="none">
-      <path class="base-line" d="M300,150 L100,220" />
-      <path class="base-line" d="M300,150 L300,250" />
-      <path class="base-line" d="M300,150 L500,220" />
+<svg class="connection-lines" viewBox="0 0 600 300" preserveAspectRatio="none">
+  <path class="base-line" d="M300,100 L115,225" /> 
+  <path class="base-line" d="M300,100 L300,240" /> 
+  <path class="base-line" d="M300,100 L485,225" /> 
+  
+  <path class="pulse-line" d="M300,100 L115,225" />
+  <path class="pulse-line" d="M300,100 L300,240" />
+  <path class="pulse-line" d="M300,100 L485,225" />
+</svg>
       
-      <path class="pulse-line" d="M300,150 L100,220" />
-      <path class="pulse-line" d="M300,150 L300,250" />
-      <path class="pulse-line" d="M300,150 L500,220" />
-    </svg>
-
     <div class="node center-node">
       <div class="hex-border">
         <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
