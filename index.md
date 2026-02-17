@@ -1087,10 +1087,20 @@ This project is open-source and available under the **MIT License**. Click the b
   
 <div align="center">
   <h1 style="border-bottom: none; margin-bottom: 5px; color: #60a5fa; font-size: 2em;">🚀 E-Link(易链256)</h1>
-  
-<div align="center">
-  <img src="https://readme-typing-svg.demolab.com?font=Noto+Sans+SC&size=30&pause=100&color=60a5fa&center=true&vCenter=true&width=1100&lines=%E4%B8%80%E7%A7%8D%E5%9F%BA%E4%BA%8E%E5%BC%B9%E6%80%A7%E4%B8%AD%E9%97%B4%E5%B1%82%E5%AF%BC%E7%94%B5%E4%BD%93%E7%9A%84;%E9%AB%98%E5%AF%86%E5%BA%A6%E7%A5%9E%E7%BB%8F%E5%85%83%E7%94%B5%E4%BF%A1%E5%8F%B7%E8%AE%B0%E5%BD%95%E8%BF%9E%E6%8E%A5%E5%99%A8" alt="Typing SVG" />
-</div>
+
+<h2 style="
+  background: -webkit-linear-gradient(0deg, #60a5fa, #a78bfa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 1.5em;
+  letter-spacing: -0.5px;
+  text-align: center;
+  margin-top: 0;
+">
+  一种基于弹性导电体互连技术的<br>高密度柔性神经接口连接器
+</h2>
 
   <div align="center" style="margin-top: 15px;">
     <a href="https://sites.dartmouth.edu/fang-group/"><img src="https://img.shields.io/badge/达特茅斯学院-00693E?style=flat-square" alt="方辉组"></a>
