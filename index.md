@@ -282,13 +282,6 @@ model-viewer::part(interaction-prompt), model-viewer::part(default-progress-bar)
 .fg-ring {
   fill: none; stroke-width: 6; stroke-linecap: round;
   stroke-dasharray: 283; stroke-dashoffset: 283; 
-  animation: ring-loop 6s cubic-bezier(0.16, 1, 0.3, 1) infinite;
-}
-@keyframes ring-loop {
-  0% { stroke-dashoffset: 283; }
-  15%, 85% { stroke-dashoffset: 0; } /* 1秒多画满，停留，最后退回 */
-  100% { stroke-dashoffset: 283; }
-}
 
 .weight-color { stroke: #10b981; filter: drop-shadow(0 0 6px rgba(16, 185, 129, 0.6)); } 
 .channel-color { stroke: #3b82f6; filter: drop-shadow(0 0 6px rgba(59, 130, 246, 0.6)); } 
@@ -1451,49 +1444,68 @@ This project is open-source and available under the **MIT License**. Click the b
 <script>
   document.addEventListener("DOMContentLoaded", () => {
   
-// ===================== E-Link 动态数据面板逻辑 (6秒循环同步版) =====================
+// ===================== E-Link 动态数据面板逻辑 (完美绝对同步版) =====================
     const dashboardObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         const card = entry.target;
+        const fgRing = card.querySelector('.fg-ring');
         const numberEl = card.querySelector('.count-up');
+        
         const targetValue = parseFloat(card.dataset.value);
         const isFloat = card.dataset.isFloat === "true";
+        const circumference = 283; 
         
-        // 执行一次数字滚动动画的函数
-        const runNumberAnim = () => {
+        if (entry.isIntersecting) {
+          card.dataset.dashboardInView = "true";
           let startTimestamp = null;
-          const duration = 900; // 1.2秒滚完，与 CSS 圆环动画的 15% 节点完美同步
           
-          const step = (timestamp) => {
-            if (!startTimestamp) startTimestamp = timestamp;
-            const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-            const easeProgress = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
-            const currentValue = easeProgress * targetValue;
+          const cycleTime = 6000;  // 动画总循环：6秒
+          const growTime = 1200;   // 增长耗时：1.2秒
+          const shrinkTime = 600;  // 结尾退回耗时：0.6秒
 
+          const step = (timestamp) => {
+            // 只要滑出屏幕，立刻终止动画循环，节省手机性能
+            if (card.dataset.dashboardInView !== "true") return; 
+
+            if (!startTimestamp) startTimestamp = timestamp;
+            const elapsed = (timestamp - startTimestamp) % cycleTime;
+            
+            let progress = 0;
+            
+            if (elapsed < growTime) {
+              // 1. 增长阶段：使用平滑减速曲线 (easeOutExpo)
+              let p = elapsed / growTime;
+              progress = p === 1 ? 1 : 1 - Math.pow(2, -10 * p);
+            } else if (elapsed > cycleTime - shrinkTime) {
+              // 3. 退回阶段：最后0.6秒平滑缩回，准备下一次循环
+              let p = (elapsed - (cycleTime - shrinkTime)) / shrinkTime;
+              progress = 1 - Math.pow(p, 2); // easeIn 曲线
+            } else {
+              // 2. 保持阶段：处于满状态
+              progress = 1;
+            }
+
+            // 🎯 核心同步点：用同一个 progress 同时控制数字和圆环！
+            // 更新数字
+            const currentValue = progress * targetValue;
             numberEl.innerText = isFloat ? currentValue.toFixed(1) : Math.floor(currentValue);
 
-            if (progress < 1) {
-              window.requestAnimationFrame(step);
-            } else {
-              numberEl.innerText = isFloat ? targetValue.toFixed(1) : targetValue;
-            }
-          };
-          window.requestAnimationFrame(step);
-        };
+            // 更新圆环
+            fgRing.style.strokeDashoffset = circumference - (circumference * progress);
 
-        if (entry.isIntersecting) {
-          // 滑入屏幕：立即重置为0并播放一次
-          numberEl.innerText = "0";
-          runNumberAnim();
+            // 继续下一帧
+            card.dashboardAnimFrame = window.requestAnimationFrame(step);
+          };
+
+          // 启动动画
+          card.dashboardAnimFrame = window.requestAnimationFrame(step);
           
-          // 设置 6 秒死循环，保持与 CSS 圆环动画完全同步！
-          card.loopInterval = setInterval(() => {
-            numberEl.innerText = "0";
-            runNumberAnim();
-          }, 6000);
         } else {
-          // 滑出屏幕：立即清除定时器，绝不浪费手机后台 CPU 和电池！
-          clearInterval(card.loopInterval);
+          // 滑出屏幕时清理状态
+          card.dataset.dashboardInView = "false";
+          window.cancelAnimationFrame(card.dashboardAnimFrame);
+          fgRing.style.strokeDashoffset = circumference;
+          numberEl.innerText = "0";
         }
       });
     }, { threshold: 0.1 }); 
