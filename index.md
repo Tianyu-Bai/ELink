@@ -683,17 +683,17 @@ model-viewer::part(interaction-prompt), model-viewer::part(default-progress-bar)
 <span id="en-features"></span>
 ## ✨ Key Features
 <div class="species-compatibility-container" align="center" style="margin: 40px auto; max-width: 760px;">
-  <h3 style="color: #60a5fa; margin-bottom: 20px; font-family: sans-serif;">🌍 Cross-Species Scalability</h3>
+  <h3 style="color: #60a5fa; margin-bottom: 20px; font-family: sans-serif;">🌍 Future Application Roadmap </h3>
   
   <div class="species-glass-box">
-    <svg class="connection-lines" viewBox="0 0 600 300" preserveAspectRatio="none">
-      <path class="base-line" d="M300,150 L100,220" />
-      <path class="base-line" d="M300,150 L300,250" />
-      <path class="base-line" d="M300,150 L500,220" />
+    <svg class="connection-lines" viewBox="0 0 600 300" preserveAspectRatio="none" style="z-index: 1;">
+      <path class="base-line" d="M300,120 L125,230" stroke="rgba(255,255,255,0.1)" fill="none" /> 
+      <path class="base-line" d="M300,120 L300,245" stroke="rgba(255,255,255,0.1)" fill="none" /> 
+      <path class="base-line" d="M300,120 L475,230" stroke="rgba(255,255,255,0.1)" fill="none" /> 
       
-      <path class="pulse-line" d="M300,150 L100,220" />
-      <path class="pulse-line" d="M300,150 L300,250" />
-      <path class="pulse-line" d="M300,150 L500,220" />
+      <path class="pulse-line" d="M300,120 L125,230" />
+      <path class="pulse-line" d="M300,120 L300,245" />
+      <path class="pulse-line" d="M300,120 L475,230" />
     </svg>
 
     <div class="node center-node">
@@ -758,10 +758,13 @@ model-viewer::part(interaction-prompt), model-viewer::part(default-progress-bar)
   fill: none; stroke: rgba(255, 255, 255, 0.1); stroke-width: 2;
 }
 
-.pulse-line {
-  fill: none; stroke: #60a5fa; stroke-width: 3;
-  stroke-dasharray: 15 100; /* 光点长度和间距 */
-  animation: data-flow 2s linear infinite;
+  .pulse-line {
+  fill: none; 
+  stroke: #60a5fa; 
+  stroke-width: 3;
+  /* 调整光点长度和间距，让它在到达图标时正好处于间隙位置，看起来像射入了图标 */
+  stroke-dasharray: 20 120; 
+  animation: data-flow 2.5s linear infinite;
   filter: drop-shadow(0 0 5px rgba(96, 165, 250, 0.8));
 }
 
@@ -802,10 +805,16 @@ model-viewer::part(interaction-prompt), model-viewer::part(default-progress-bar)
 }
 
 .icon-circle {
-  width: 60px; height: 60px; border-radius: 50%;
-  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2);
+ width: 60px; height: 60px; border-radius: 50%;
+  /* 🚨 核心修改：改为不透明背景，挡住后面的线 */
+  background: #0f172a; /* 确保这与 body 背景色完全相同 */
+  isolation: isolate; /* 确保层级独立 */
+  border: 1px solid rgba(255,255,255,0.2);
   display: flex; justify-content: center; align-items: center;
   transition: all 0.3s ease;
+  /* 🚨 核心修改：确保图标在连线上方 */
+  position: relative; 
+  z-index: 5; 
 }
 .icon-circle:hover { transform: scale(1.1); border-color: #60a5fa; background: rgba(96, 165, 250, 0.1); }
 
@@ -1398,7 +1407,112 @@ This project is open-source and available under the **MIT License**. Click the b
 
 <span id="cn-features"></span>
 ## ✨ 关键特性
+<div style="width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 10px;">
+  <table style="margin-left: auto; margin-right: auto; width: 90%; min-width: 600px; text-align: center; border-collapse: collapse; border: 1px solid #e1e4e8;">
+    <thead>
+      <tr style="background-color: #f6f8fa; border-bottom: 2px solid #e1e4e8;">
+        <th style="padding: 10px; border: 1px solid #e1e4e8;">核心规格指标</th>
+        <th style="padding: 10px; border: 1px solid #e1e4e8;">E-Link(256)_V1.0</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #e1e4e8;"><b>通道数量</b></td>
+        <td style="padding: 8px; border: 1px solid #e1e4e8;">128 或 256 通道 (支持单/双 SPI 端口)</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #e1e4e8;"><b>总质量 (重量)</b></td>
+        <td style="padding: 8px; border: 1px solid #e1e4e8;">6.6 g (含外壳)<br>2.8 g (仅核心组件)</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #e1e4e8;"><b>互连技术</b></td>
+        <td style="padding: 8px; border: 1px solid #e1e4e8;">免焊接各向异性导电弹性体</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #e1e4e8;"><b>兼容采集系统</b></td>
+        <td style="padding: 8px; border: 1px solid #e1e4e8;">Intan 控制器 (512ch/1024ch)<br>Open-Ephys / NeuroNexus Smartbox / OmniPlex</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #e1e4e8;"><b>外壳材质</b></td>
+        <td style="padding: 8px; border: 1px solid #e1e4e8;">3D 打印 PEEK / 医疗级树脂</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
+---
+
+<span id="cn-features"></span>
+## ✨ 核心特性
+
+<div class="species-compatibility-container" align="center" style="margin: 40px auto; max-width: 760px;">
+  <h3 style="color: #60a5fa; margin-bottom: 20px; font-family: sans-serif;">🌍 跨物种适用性展望 </h3>
+  
+  <div class="species-glass-box">
+    <svg class="connection-lines" viewBox="0 0 600 300" preserveAspectRatio="none" style="z-index: 1;">
+      <path class="base-line" d="M300,120 L125,230" stroke="rgba(255,255,255,0.1)" fill="none" /> 
+      <path class="base-line" d="M300,120 L300,245" stroke="rgba(255,255,255,0.1)" fill="none" /> 
+      <path class="base-line" d="M300,120 L475,230" stroke="rgba(255,255,255,0.1)" fill="none" /> 
+      
+      <path class="pulse-line" d="M300,120 L125,230" />
+      <path class="pulse-line" d="M300,120 L300,245" />
+      <path class="pulse-line" d="M300,120 L475,230" />
+    </svg>
+
+    <div class="node center-node">
+      <div class="hex-border">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M7 2V4M12 2V4M17 2V4M22 7H20M22 12H20M22 17H20M17 22V20M12 22V20M7 22V20M2 17H4M2 12H4M2 7H4M6 6H18V18H6V6ZM9 9V15H15V9H9Z" stroke="#60a5fa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="node-text pulse-text">E-Link (256)</div>
+    </div>
+
+    <div class="animal-nodes">
+      
+      <div class="node sub-node">
+        <div class="icon-circle mouse-glow">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 3H8a4 4 0 0 0-4 4v10a4 4 0 0 0 4 4h8a4 4 0 0 0 4-4V7a4 4 0 0 0-4-4z"/>
+                <path d="M12 10a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/>
+                <path d="M12 18a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/>
+                <path d="M16 12H8"/>
+            </svg>
+        </div>
+        <div class="node-title"><i>Rattus norvegicus</i></div>
+        <div class="node-desc"><b>大鼠</b><br>标准体内实验</div>
+      </div>
+
+      <div class="node sub-node" style="margin-top: 30px;">
+        <div class="icon-circle rat-glow">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
+                <line x1="9" y1="9" x2="9.01" y2="9"/>
+                <line x1="15" y1="9" x2="15.01" y2="9"/>
+            </svg>
+        </div>
+        <div class="node-title"><i>Macaca mulatta</i></div>
+        <div class="node-desc"><b>猕猴 (NHP)</b><br>长期神经记录</div>
+      </div>
+
+      <div class="node sub-node">
+        <div class="icon-circle monkey-glow">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22a7 7 0 1 0 0-14 7 7 0 0 0 0 14Z"/>
+                <circle cx="12" cy="15" r="3"/>
+                <path d="M10 15h.01M14 15h.01"/>
+                <path d="M7 11c-1-1-2-4-1-6s5 1 5 1"/>
+                <path d="M17 11c1-1 2-4 1-6s-5 1-5 1"/>
+            </svg>
+        </div>
+        <div class="node-title"><i>Sus scrofa</i></div>
+        <div class="node-desc"><b>实验猪</b><br>大尺度神经接口</div>
+      </div>
+
+    </div>
+  </div>
+</div>
 * **⚡ 256 通道高密度接口**
   紧凑的基座占地面积，支持高密度采集，且不增加手术负担。
 * **🔌 弹性导电体互连**
@@ -1660,8 +1774,16 @@ This project is open-source and available under the **MIT License**. Click the b
             }
 
             // 更新数字：瞬间归零，平滑涨满
-            const currentValue = progress * targetValue;
-            numberEl.innerText = isFloat ? currentValue.toFixed(1) : Math.floor(currentValue);
+           const currentValue = progress * targetValue;
+if (isFloat || targetValue < 10) {
+    // 💡 针对 PCB Layers 等小数字，保留一位小数滚动
+    // 这样当进度是 3.1, 3.2 时，圆环和数字会完美同步
+    numberEl.innerText = currentValue.toFixed(1); 
+    // 当动画跑完 100% 时，强制显示整数 4
+    if (progress === 1 && !isFloat) numberEl.innerText = Math.round(targetValue);
+} else {
+    numberEl.innerText = Math.round(currentValue);
+}
 
             // 更新圆环：没有 CSS transition 干扰，progress=0时会直接瞬间变成空环
             fgRing.style.strokeDashoffset = circumference - (circumference * progress);
