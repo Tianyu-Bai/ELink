@@ -29,6 +29,20 @@ title: E-Link Home
     <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=30&pause=100&color=60a5fa&center=true&vCenter=true&width=1100&lines=An+Open-Source,+Elastomer+Interconnection-based;Connector+for+Flexible+Neural+Interfaces" />
 </div>
 
+<h2 style="
+  background: -webkit-linear-gradient(0deg, #60a5fa, #a78bfa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 1.5em;
+  letter-spacing: -0.5px;
+  text-align: center;
+  margin-top: 0;
+">
+  An Open-Source, Elastomer Interconnection-based<br>Connector for Flexible Neural Interfaces
+</h2>
+
   <div align="center" style="margin-top: 15px;">
     <a href="https://sites.dartmouth.edu/fang-group/"><img src="https://img.shields.io/badge/Dartmouth-MINE--Lab-00693E?style=flat-square" alt="MINE Lab"></a>
     <img src="https://img.shields.io/badge/Verified-256ch-FFA500?style=flat-square" alt="Verified" />
@@ -48,6 +62,12 @@ title: E-Link Home
 </div>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap');
+
+body, div, p, span, td, th {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+  
 /* ===================== 1. 核心设备感知与显隐逻辑 (去重合并版) ===================== */
 /* 默认：全部隐藏 */
 .pc-tip, .mobile-tip, .pc-only, .mobile-only { 
