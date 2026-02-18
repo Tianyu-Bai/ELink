@@ -655,14 +655,14 @@ model-viewer::part(interaction-prompt), model-viewer::part(default-progress-bar)
   <h3 style="color: #60a5fa; margin-bottom: 20px; font-family: sans-serif;">🌍 Future Application Roadmap </h3>
   
   <div class="species-glass-box">
-<svg class="connection-lines" viewBox="0 0 600 300" preserveAspectRatio="none" style="z-index: 1;">
-  <path class="base-line" d="M300,120 L135,195" stroke="rgba(255,255,255,0.1)" fill="none" /> 
-  <path class="base-line" d="M300,120 L300,210" stroke="rgba(255,255,255,0.1)" fill="none" /> 
-  <path class="base-line" d="M300,120 L465,195" stroke="rgba(255,255,255,0.1)" fill="none" /> 
+  <svg class="connection-lines" viewBox="0 0 600 300" preserveAspectRatio="none" style="z-index: 1;">
+  <path class="base-line" d="M300,145 L135,195" stroke="rgba(255,255,255,0.1)" fill="none" /> 
+  <path class="base-line" d="M300,145 L300,210" stroke="rgba(255,255,255,0.1)" fill="none" /> 
+  <path class="base-line" d="M300,145 L465,195" stroke="rgba(255,255,255,0.1)" fill="none" /> 
   
-  <path class="pulse-line line-to-mouse" d="M300,120 L135,195" />
-  <path class="pulse-line" d="M300,120 L300,210" />
-  <path class="pulse-line line-to-monkey" d="M300,120 L465,195" />
+  <path class="pulse-line line-to-mouse" d="M300,145 L135,195" />
+  <path class="pulse-line" d="M300,145 L300,210" />
+  <path class="pulse-line line-to-monkey" d="M300,145 L465,195" />
 </svg>
 
     <div class="node center-node">
@@ -711,11 +711,11 @@ model-viewer::part(interaction-prompt), model-viewer::part(default-progress-bar)
   background: rgba(15, 23, 42, 0.4);
   border: 1px solid rgba(59, 130, 246, 0.2);
   border-radius: 16px;
-  padding: 30px 20px;
-  min-height: 320px;
+  padding: 30px 20px 40px 20px; /* 🚨 修改点：底部增加到 40px 内边距，防止文字贴底 */
+  min-height: 380px;            /* 🚨 修改点：从 320px 增加到 380px，给大鼠腾出空间 */
   overflow: hidden;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-  transform: translateZ(0); /* 开启 GPU 加速，防止抖动 */
+  transform: translateZ(0); 
   backface-visibility: hidden;
   perspective: 1000;
   will-change: transform;
@@ -775,7 +775,7 @@ model-viewer::part(interaction-prompt), model-viewer::part(default-progress-bar)
 .node-desc { margin-top: 4px; color: #94a3b8; font-size: 11px; text-align: center; line-height: 1.4; font-family: sans-serif; }
 
 @media (max-width: 600px) {
-  .species-glass-box { padding: 20px 5px; min-height: 250px; }
+  .species-glass-box { padding: 20px 5px 30px 5px; min-height: 320px; } 
   .icon-circle { width: 45px; height: 45px; }
   .icon-circle span { font-size: 24px !important; }
   .node-title { font-size: 12px; }
@@ -1389,14 +1389,14 @@ This project is open-source and available under the **MIT License**. Click the b
   <h3 style="color: #60a5fa; margin-bottom: 20px; font-family: sans-serif;">🌍 跨物种适用性展望 </h3>
   
   <div class="species-glass-box">
-<svg class="connection-lines" viewBox="0 0 600 300" preserveAspectRatio="none" style="z-index: 1;">
-  <path class="base-line" d="M300,120 L135,195" stroke="rgba(255,255,255,0.1)" fill="none" /> 
-  <path class="base-line" d="M300,120 L300,210" stroke="rgba(255,255,255,0.1)" fill="none" /> 
-  <path class="base-line" d="M300,120 L465,195" stroke="rgba(255,255,255,0.1)" fill="none" /> 
+  <svg class="connection-lines" viewBox="0 0 600 300" preserveAspectRatio="none" style="z-index: 1;">
+  <path class="base-line" d="M300,145 L135,195" stroke="rgba(255,255,255,0.1)" fill="none" /> 
+  <path class="base-line" d="M300,145 L300,210" stroke="rgba(255,255,255,0.1)" fill="none" /> 
+  <path class="base-line" d="M300,145 L465,195" stroke="rgba(255,255,255,0.1)" fill="none" /> 
   
-  <path class="pulse-line line-to-mouse" d="M300,120 L135,195" />
-  <path class="pulse-line" d="M300,120 L300,210" />
-  <path class="pulse-line line-to-monkey" d="M300,120 L465,195" />
+  <path class="pulse-line line-to-mouse" d="M300,145 L135,195" />
+  <path class="pulse-line" d="M300,145 L300,210" />
+  <path class="pulse-line line-to-monkey" d="M300,145 L465,195" />
 </svg>
 
     <div class="node center-node">
