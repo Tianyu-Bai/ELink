@@ -856,6 +856,10 @@ model-viewer::part(interaction-prompt), model-viewer::part(default-progress-bar)
   min-height: 320px;
   overflow: hidden;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  transform: translateZ(0); /* 开启 GPU 加速 */
+  backface-visibility: hidden;
+  perspective: 1000;
+  will-change: transform; /* 预告浏览器这里会有动画 */
 }
 
 .connection-lines {
@@ -886,6 +890,7 @@ model-viewer::part(interaction-prompt), model-viewer::part(default-progress-bar)
   position: relative; z-index: 2;
   display: flex; flex-direction: column; align-items: center;
   flex: 1; /* 强制三个节点等宽，确保绝对中心 */
+  min-width: 0; /* 防止内容撑开容器导致偏移 */
 }
 
 .center-node { margin-bottom: 20px; flex: none; width: 100%; }
@@ -920,7 +925,7 @@ model-viewer::part(interaction-prompt), model-viewer::part(default-progress-bar)
 
 /* 核心修复：使用 transform 代替 margin-top 避免容器偏移 */
 .rat-node-adjust {
-  transform: translateY(30px);
+  transform: translateY(30px) translateZ(0); /* 同样加上 translateZ */
 }
 
 .icon-circle {
@@ -936,6 +941,7 @@ model-viewer::part(interaction-prompt), model-viewer::part(default-progress-bar)
   transition: all 0.3s ease;
   position: relative; 
   z-index: 5;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
 }
 
 .icon-circle:hover { transform: scale(1.1); border-color: #60a5fa; background: rgba(96, 165, 250, 0.1); }
@@ -1617,7 +1623,7 @@ This project is open-source and available under the **MIT License**. Click the b
 </div>
 
 <style>
-/* ===================== 跨物种拓扑动画 CSS ===================== */
+/* ===================== 跨物种拓扑动画 CSS - 居中修正版 ===================== */
 .species-glass-box {
   position: relative;
   background: rgba(15, 23, 42, 0.4);
@@ -1627,6 +1633,10 @@ This project is open-source and available under the **MIT License**. Click the b
   min-height: 320px;
   overflow: hidden;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  transform: translateZ(0); /* 开启 GPU 加速 */
+  backface-visibility: hidden;
+  perspective: 1000;
+  will-change: transform; /* 预告浏览器这里会有动画 */
 }
 
 .connection-lines {
@@ -1639,11 +1649,10 @@ This project is open-source and available under the **MIT License**. Click the b
   fill: none; stroke: rgba(255, 255, 255, 0.1); stroke-width: 2;
 }
 
-  .pulse-line {
+.pulse-line {
   fill: none; 
   stroke: #60a5fa; 
   stroke-width: 3;
-  /* 调整光点长度和间距，让它在到达图标时正好处于间隙位置，看起来像射入了图标 */
   stroke-dasharray: 20 120; 
   animation: data-flow 2.5s linear infinite;
   filter: drop-shadow(0 0 5px rgba(96, 165, 250, 0.8));
@@ -1657,9 +1666,11 @@ This project is open-source and available under the **MIT License**. Click the b
 .node {
   position: relative; z-index: 2;
   display: flex; flex-direction: column; align-items: center;
+  flex: 1; /* 强制三个节点等宽，确保绝对中心 */
+  min-width: 0; /* 防止内容撑开容器导致偏移 */
 }
 
-.center-node { margin-bottom: 20px; }
+.center-node { margin-bottom: 20px; flex: none; width: 100%; }
 
 .hex-border {
   width: 70px; height: 70px;
@@ -1683,10 +1694,15 @@ This project is open-source and available under the **MIT License**. Click the b
 
 .animal-nodes {
   display: flex; 
-  justify-content: space-around; 
+  justify-content: space-between; 
   width: 100%;
-  align-items: flex-start; /* 🚨 确保所有节点从顶部对齐，高度一致 */
+  align-items: flex-start; /* 顶部对齐是实现等分的关键 */
   margin-top: 10px;
+}
+
+/* 核心修复：使用 transform 代替 margin-top 避免容器偏移 */
+.rat-node-adjust {
+  transform: translateY(30px) translateZ(0); /* 同样加上 translateZ */
 }
 
 .icon-circle {
@@ -1702,37 +1718,28 @@ This project is open-source and available under the **MIT License**. Click the b
   transition: all 0.3s ease;
   position: relative; 
   z-index: 5;
-  /* 🚨 添加 margin 修正，确保圆心在布局中更稳定 */
-  margin: 0 auto; 
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
 }
 
-/* 针对中间那个节点（猴子/大鼠）之前的 margin-top 逻辑做微调 */
-/* 如果你之前用了 margin-top: 30px，坐标 L300,225 已经包含了这个偏移 */
 .icon-circle:hover { transform: scale(1.1); border-color: #60a5fa; background: rgba(96, 165, 250, 0.1); }
 
-/* 三种动物的不同光环标识 */
-.mouse-glow { box-shadow: 0 0 10px rgba(16, 185, 129, 0.3); }
-.rat-glow { box-shadow: 0 0 10px rgba(59, 130, 246, 0.3); }
-.monkey-glow { box-shadow: 0 0 10px rgba(245, 158, 11, 0.3); }
+.mouse-glow { box-shadow: 0 0 10px rgba(16, 185, 129, 0.5); }
+.rat-glow { box-shadow: 0 0 10px rgba(59, 130, 246, 0.5); }
+.monkey-glow { box-shadow: 0 0 10px rgba(245, 158, 11, 0.5); }
 
 .node-title { margin-top: 8px; font-weight: bold; color: #e2e8f0; font-size: 14px; }
 .node-desc { margin-top: 4px; color: #94a3b8; font-size: 11px; text-align: center; line-height: 1.4; font-family: sans-serif; }
 
-/* 手机端响应式调整 */
 @media (max-width: 600px) {
   .species-glass-box { padding: 20px 5px; min-height: 250px; }
-  .animal-nodes { padding: 0; } /* 去掉内边距，让图标充分散开 */
   .icon-circle { width: 45px; height: 45px; }
   .icon-circle span { font-size: 24px !important; }
   .node-title { font-size: 12px; }
   .node-desc { font-size: 9px; }
-  
-  /* 🚨 核心修改：解除隐藏，并在手机上把光线稍微调细一点点，显得更精致 */
-  .connection-lines { display: block; opacity: 0.8; }
+  .connection-lines { opacity: 0.8; }
   .pulse-line { stroke-width: 2; }
 }
 </style>
-
 * **⚡ 256 通道高密度接口**
   紧凑的基座占地面积，支持高密度采集，且不增加手术负担。
 * **🔌 弹性导电体互连**
