@@ -37,15 +37,19 @@ title: E-Link Home
     </svg>
     E-Link(256)
   </h1>
+  
+  <h2 class="sub-title">
+    An Open-Source, Elastomer Interconnection-based<br class="pc-only-br">Connector for Flexible Neural Interfaces
+  </h2>
 </div>
 
 <style>
-/* 1. 外层容器与间距 */
+/* 1. 外层容器 */
 .main-title-wrapper {
   margin-bottom: 20px;
 }
 
-/* 2. 核心：大标题双色横向渐变逻辑 + 布局 */
+/* 2. 主标题逻辑：保持 2.2em 大小不变，防止图标被挤压 */
 .bi-color-title {
   background: linear-gradient(90deg, #60a5fa 0%, #a78bfa 50%, #f472b6 100%);
   -webkit-background-clip: text;
@@ -57,36 +61,59 @@ title: E-Link Home
   justify-content: center;
   border-bottom: none;
   margin-bottom: 5px;
-  font-size: 2.2em;
+  font-size: 2.2em; /* 🚨 保持你原本的霸气大小 */
   font-weight: 800;
   letter-spacing: -1px;
-  white-space: nowrap; /* 🚨 魔法属性 1：强制文本在一行内显示，绝不换行 */
+  white-space: nowrap; /* 强制不换行 */
 }
 
-/* 3. SVG 图标独立样式 */
 .title-icon {
   width: 45px;
   height: 45px;
   margin-right: 15px;
-  flex-shrink: 0; /* 🚨 魔法属性 2：防止屏幕变窄时图标被挤压成椭圆 */
+  flex-shrink: 0;
 }
 
-/* 4. 🚨 手机端专属压缩优化 */
+/* 3. 🚨 新增：副标题样式 (替代原来的内联 style) */
+.sub-title {
+  background: -webkit-linear-gradient(0deg, #60a5fa, #a78bfa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 1.5em; /* 电脑端保持原大小 */
+  letter-spacing: -0.5px;
+  text-align: center;
+  margin-top: 0;
+  line-height: 1.3;
+}
+
+/* 4. 手机端专属压缩优化 */
 @media (max-width: 600px) {
   .main-title-wrapper {
-    margin-bottom: 10px; /* 减小手机端底部留白 */
+    margin-bottom: 10px; 
   }
-  .bi-color-title {
-    font-size: 1.6em; /* 缩小字体以适应小屏幕 */
-  }
+  
+  /* 微调大标题图标间距，让超大字体也能居中放得下 */
   .title-icon {
-    width: 30px; /* 缩小图标 */
-    height: 30px;
-    margin-right: 8px; /* 缩小图标与文字的间距 */
+    margin-right: 8px;
+    width: 38px;
+    height: 38px;
+  }
+
+  /* 🚨 核心魔法：缩小副标题字体 */
+  .sub-title {
+    font-size: 1.05em; /* 缩小字体，让它不再霸占屏幕 */
+    padding: 0 5px;
+  }
+  
+  /* 🚨 核心魔法：在手机端隐藏强制换行，让它自然平铺，省出垂直空间 */
+  .pc-only-br {
+    display: none;
   }
 }
 
-/* 5. 同步呼吸动画：包含缩放和动态发光 */
+/* 5. 呼吸动画逻辑 (不变) */
 .header-sync-pulse {
   animation: sync-pulse 3s ease-in-out infinite;
   will-change: transform, filter;
@@ -100,15 +127,13 @@ title: E-Link Home
   }
   50% { 
     transform: scale(1.03); 
-    /* 呼吸到顶点时，发光范围扩大，增加蓝紫色氛围感 */
     filter: drop-shadow(0 0 20px rgba(167, 139, 250, 0.55));
   }
 }
 
-/* 6. 修正：确保 SVG 图标渲染不受文字裁剪属性的影响 */
 .header-sync-pulse svg {
   -webkit-text-fill-color: initial;
-  filter: saturate(1.1); /* 提升图标色彩饱和度，使其更有精神 */
+  filter: saturate(1.1); 
 }
 </style>
 
@@ -470,6 +495,21 @@ model-viewer::part(interaction-prompt), model-viewer::part(default-progress-bar)
   10% { opacity: 0.6; }
   90% { opacity: 0.6; }
   100% { top: 100%; opacity: 0; }
+}
+
+/* 顶部徽章悬浮微交互动画 */
+.nav-badges a {
+  display: inline-block;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  margin: 0 2px;
+}
+.nav-badges a:hover {
+  transform: translateY(-3px) scale(1.05); /* 上浮并微微放大 */
+  filter: drop-shadow(0 5px 8px rgba(59, 130, 246, 0.4)); /* 产生蓝色光晕 */
+}
+/* 点击时的按压反馈 */
+.nav-badges a:active {
+  transform: translateY(0) scale(0.98);
 }
 </style>
 
