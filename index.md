@@ -400,7 +400,7 @@ model-viewer::part(interaction-prompt), model-viewer::part(default-progress-bar)
   perspective: 1000px;
 }
 .chart-box { position: relative; width: 145px; height: 145px; margin: 0 auto; }
-.chart-box svg { width: 100%; height: 100%; transform: rotate(-90deg); 
+.chart-box svg { width: 100%; height: 100%;
                /* 新增：防止 SVG 渲染抖动 */
   transform: rotate(-90deg) translateZ(0);
   will-change: stroke-dashoffset;}
@@ -856,13 +856,16 @@ model-viewer::part(interaction-prompt), model-viewer::part(default-progress-bar)
 /* ===================== 跨物种拓扑动画 CSS ===================== */
 .species-glass-box {
   position: relative;
-  background: rgba(15, 23, 42, 0.4);
+  background: rgba(15, 23, 42, 0.7); 
   border: 1px solid rgba(59, 130, 246, 0.2);
   border-radius: 16px;
   padding: 30px 20px;
   min-height: 320px;
   overflow: hidden;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  transform: translateZ(0);
+  will-change: transform, backdrop-filter; 
+  backface-visibility: hidden;
 }
 
 .base-line {
@@ -877,6 +880,8 @@ model-viewer::part(interaction-prompt), model-viewer::part(default-progress-bar)
   stroke-dasharray: 20 120; 
   animation: data-flow 2.5s linear infinite;
   filter: drop-shadow(0 0 5px rgba(96, 165, 250, 0.8));
+  will-change: stroke-dashoffset;
+  transform: translateZ(0);
 }
 
 @keyframes data-flow {
@@ -934,6 +939,8 @@ model-viewer::part(interaction-prompt), model-viewer::part(default-progress-bar)
   z-index: 5;
   /* 🚨 添加 margin 修正，确保圆心在布局中更稳定 */
   margin: 0 auto; 
+  transform: translateZ(0);
+  will-change: transform, box-shadow;
 }
 
 .icon-circle:hover { transform: scale(1.1); border-color: #60a5fa; background: rgba(96, 165, 250, 0.1); }
@@ -947,17 +954,71 @@ model-viewer::part(interaction-prompt), model-viewer::part(default-progress-bar)
 .node-desc { margin-top: 4px; color: #94a3b8; font-size: 11px; text-align: center; line-height: 1.4; font-family: sans-serif; }
 
 /* 手机端响应式调整 */
-@media (max-width: 600px) {
-  .species-glass-box { padding: 20px 5px; min-height: 250px; }
-  .animal-nodes { padding: 0; } /* 去掉内边距，让图标充分散开 */
-  .icon-circle { width: 45px; height: 45px; }
-  .icon-circle span { font-size: 24px !important; }
-  .node-title { font-size: 12px; }
-  .node-desc { font-size: 9px; }
+/* 🚨 针对手机端的暴力优化 */
+@media (max-width: 768px) {
+  .species-glass-box {
+    /* ❌ 彻底关闭毛玻璃，它是闪烁的元凶 */
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    
+    /* ✅ 换成深色半透明背景，视觉上几乎没区别，但性能提升 10 倍 */
+    background: rgba(15, 23, 42, 0.95) !important;
+    
+    /* ❌ 移除复杂的盒子阴影 */
+    box-shadow: none !important;
+    border: 1px solid rgba(59, 130, 246, 0.3);
+  }
+
+  /* ⚡️ 如果还是闪烁，把背景里的 SVG 动画也降级 */
+  .pulse-line {
+    /* 降低动画频率或透明度，减轻计算压力 */
+    opacity: 0.6;
+  }
   
-  /* 🚨 核心修改：解除隐藏，并在手机上把光线稍微调细一点点，显得更精致 */
-  .connection-lines { display: block; opacity: 0.8; }
-  .pulse-line { stroke-width: 2; }
+  /* ⚡️ 修正动物图标的光晕，改用简单的边框代替昂贵的 box-shadow */
+  .mouse-glow, .rat-glow, .monkey-glow {
+    box-shadow: none !important; /* 关掉光晕 */
+    border: 2px solid rgba(96, 165, 250, 0.5) !important; /* 用边框代替 */
+  }
+}
+  /* ===================== 电脑端防闪烁核心补丁 ===================== */
+
+/* 1. 隔离容器：告诉浏览器这个盒子是独立的，不要重绘整个页面 */
+.species-glass-box {
+  /* 开启 3D 引擎 */
+  transform: translate3d(0, 0, 0); 
+  /* 锁定背面可见性，防止翻转闪烁 */
+  backface-visibility: hidden; 
+  /* 告诉浏览器这个元素的内容不会影响外部布局，请独立渲染 */
+  contain: paint layout; 
+  /* 关键：防止高分屏下的亚像素抖动 */
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 2. SVG 线条：从主文档流中剥离，单独走 GPU 通道 */
+.pulse-line {
+  /* 强制硬件加速 */
+  transform: translateZ(0); 
+  /* 告诉浏览器只有这个属性在变 */
+  will-change: stroke-dashoffset; 
+  /* 降低渲染精度以换取稳定性（肉眼看不出区别，但能救命） */
+  shape-rendering: optimizeSpeed; 
+}
+
+/* 3. 动物图标：优化阴影渲染 */
+.icon-circle {
+  /* 防止 hover 动画导致父级容器重绘 */
+  transform: translateZ(0);
+  /* 限制重绘区域 */
+  will-change: transform; 
+}
+
+/* 4. 🚨 终极绝招：如果还在闪，请添加这行 */
+/* 这行代码会强制 SVG 不参与复杂的抗锯齿计算，极大降低 GPU 负担 */
+.connection-lines {
+  transform: translateZ(0);
+  pointer-events: none; /* 确保鼠标事件不干扰渲染 */
+  mix-blend-mode: normal; /* 防止混合模式导致的闪烁 */
 }
 </style>
 
@@ -1958,156 +2019,110 @@ This project is open-source and available under the **MIT License**. Click the b
 <script>
   document.addEventListener("DOMContentLoaded", () => {
 
-// ===================== E-Link 动态数据面板逻辑 (单向循环瞬间归零版) =====================
-  const dashboardObserver = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    const card = entry.target;
-    const fgRing = card.querySelector('.fg-ring');
-    const numberEl = card.querySelector('.count-up');
-    
-    // 获取目标值
-    const targetValue = parseFloat(card.dataset.value);
-    const isFloat = card.dataset.isFloat === "true";
-    const circumference = 283; 
-    
-    if (entry.isIntersecting) {
-      // 只有当完全进入视野且没有在运行时才启动
-      if (card.dataset.animating === "true") return;
-      card.dataset.animating = "true";
-
-      let startTime = null;
-      const duration = 2000; // 动画持续 2 秒
-      
-      // 使用 requestAnimationFrame 但配合时间戳控制频率
-      const animate = (timestamp) => {
-        if (!startTime) startTime = timestamp;
-        const runtime = timestamp - startTime;
+    // ===================== 1. 仪表盘动画逻辑 (防抖+防重绘版) =====================
+    const dashboardObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        const card = entry.target;
+        const fgRing = card.querySelector('.fg-ring');
+        const numberEl = card.querySelector('.count-up');
         
-        // 计算进度 (0 到 1)
-        let progress = runtime / duration;
+        const targetValue = parseFloat(card.dataset.value);
+        const isFloat = card.dataset.isFloat === "true";
+        const circumference = 283; 
         
-        // 缓动效果 (Ease Out Cubic) - 让动画先快后慢，更自然
-        progress = 1 - Math.pow(1 - progress, 3);
+        if (entry.isIntersecting) {
+          if (card.dataset.animating === "true") return;
+          card.dataset.animating = "true";
 
-        if (runtime >= duration) {
-            progress = 1;
-            card.dataset.animating = "false"; // 动画结束
-        }
+          let startTime = null;
+          const duration = 2000; // 2秒完成动画
+          
+          const animate = (timestamp) => {
+            if (!startTime) startTime = timestamp;
+            const runtime = timestamp - startTime;
+            let progress = runtime / duration;
+            progress = 1 - Math.pow(1 - progress, 3); // Ease Out Cubic 缓动
 
-        // 1. 更新圆环 (减少 DOM 操作精度，避免微小变动触发重绘)
-        const offset = circumference - (circumference * progress);
-        fgRing.style.strokeDashoffset = offset.toFixed(1); // 限制小数位
+            if (runtime >= duration) {
+                progress = 1;
+                card.dataset.animating = "false";
+            }
 
-        // 2. 更新数字
-        const currentValue = progress * targetValue;
-        if (isFloat) {
-          numberEl.innerText = currentValue.toFixed(1);
-        } else {
-          numberEl.innerText = Math.round(currentValue);
-        }
+            // DOM 更新优化：限制小数位，减少布局抖动
+            const offset = circumference - (circumference * progress);
+            fgRing.style.strokeDashoffset = offset.toFixed(1); 
 
-        // 如果还没结束，继续下一帧
-        if (runtime < duration) {
+            const currentValue = progress * targetValue;
+            if (isFloat) {
+              numberEl.innerText = currentValue.toFixed(1);
+            } else {
+              numberEl.innerText = Math.round(currentValue);
+            }
+
+            if (runtime < duration) {
+              requestAnimationFrame(animate);
+            }
+          };
           requestAnimationFrame(animate);
+
+        } else {
+          // 离开视口重置，方便下次再次触发
+          card.dataset.animating = "false";
+          fgRing.style.strokeDashoffset = circumference;
+          numberEl.innerText = "0";
         }
-      };
-      
-      requestAnimationFrame(animate);
+      });
+    }, { threshold: 0.2 });
 
-    } else {
-      // 离开视野时，重置状态，方便下次回来再播（可选）
-      card.dataset.animating = "false";
-      fgRing.style.strokeDashoffset = circumference;
-      numberEl.innerText = "0";
-    }
-  });
-}, { threshold: 0.2 }); // 阈值调高，确保看到 20% 再开始，避免边缘误触
-
-document.querySelectorAll('.metric-card').forEach(card => {
-  dashboardObserver.observe(card);
-});
+    document.querySelectorAll('.metric-card').forEach(card => {
+      dashboardObserver.observe(card);
+    });
     
-    // ===================== 3D 模型交互与防闪退逻辑 =====================
+    // ===================== 2. 3D 模型智能调度逻辑 =====================
     const models = Array.from(document.querySelectorAll('model-viewer'));
     if (!models.length) return;
 
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    let isAnyModelLoading = false; // 全局锁，防止并发解压崩溃
 
-    let isScrolling = false;
-    let scrollEndTimer = null;
-    let initCheckTimer = null; 
-
-    const checkAndActivateBestModel = () => {
-        let bestModel = null;
-        let minDistance = Infinity;
-        const viewportCenter = window.innerHeight / 2;
-
-        models.forEach(viewer => {
-            if (viewer.dataset.inView === "true") {
-                const rect = viewer.getBoundingClientRect();
-                const modelCenter = rect.top + rect.height / 2;
-                const distance = Math.abs(modelCenter - viewportCenter);
-                
-                if (distance < minDistance) {
-                    minDistance = distance;
-                    bestModel = viewer;
-                }
-            }
-        });
-
-        if (bestModel) {
-            activateViewer(bestModel);
-        }
-    };
-
-    window.addEventListener('scroll', () => {
-        isScrolling = true;
-        clearTimeout(scrollEndTimer);
-        scrollEndTimer = setTimeout(() => {
-            isScrolling = false;
-            checkAndActivateBestModel();
-        }, 120);
-    }, { passive: true });
-
-    // 增加一个全局锁，防止多个 3D 模型同时解压撑爆显存
-    let isAnyModelLoading = false;
-
-    // 激活模型的专用函数 (防 OOM 闪退版)
+    // 核心激活函数
     const activateViewer = async (viewer) => {
-        if (isScrolling) return; 
+        // 🚨 修复点：删除了之前的 if (isScrolling) return; 检查
 
-        // 严格暂停非当前模型，释放 GPU 活跃算力
+        // 1. 暂停所有其他模型，独占 GPU
         models.forEach(m => {
             if (m !== viewer && !m.paused) {
                 m.pause();
             }
         });
 
-        // 如果该模型还没有解压加载
+        // 2. 如果是第一次加载 (Lazy Load)
         if (viewer.getAttribute('reveal') === 'manual' && viewer.dataset.loaded !== "true") {
-            if (isAnyModelLoading) return; 
+            if (isAnyModelLoading) return; // 有人在加载，排队等待
             
             isAnyModelLoading = true;
             try {
-                viewer.dismissPoster();
+                viewer.dismissPoster(); // 触发加载
                 viewer.dataset.loaded = "true";
                 
                 await new Promise(resolve => {
+                    // 监听加载完成，或者最长等待 2.5秒
                     viewer.addEventListener('load', resolve, { once: true });
                     setTimeout(resolve, 2500); 
                 });
             } catch (e) {
-                console.warn("3D 模型加载被打断:", e);
+                console.warn("Model load interrupted", e);
             } finally {
                 isAnyModelLoading = false;
             }
         }
         
-        // 确保 WebGL 上下文安全后再播放
+        // 3. 播放旋转
         if (viewer.paused && !isAnyModelLoading) {
             try { viewer.play(); } catch(e) {}
         }
 
+        // 4. 显示手势提示
         if (viewer.dataset.overlayDisabled !== "true") {
             clearTimeout(viewer.hudTimer); 
             viewer.hudTimer = setTimeout(() => {
@@ -2116,54 +2131,48 @@ document.querySelectorAll('.metric-card').forEach(card => {
         }
     };
 
-    // 初始化模型基础设置
+    // 初始化模型基础属性
     models.forEach((viewer) => {
         viewer.setAttribute('auto-rotate', '');
         viewer.minimumRenderScale = isMobile ? 0.5 : 1; 
         viewer.autoRotateDelay = 1000;
+        if (isMobile) viewer.setAttribute('interpolation-decay', '30'); 
         
-        if (isMobile) {
-            viewer.setAttribute('interpolation-decay', '30'); 
-        }
-        
-        let hintsHidden = false; 
+        // 交互时隐藏提示
         const hideHints = () => {
-            if (hintsHidden) return; 
-            hintsHidden = true;
             viewer.querySelectorAll('.gesture-overlay, .gesture-hud').forEach(el => el.classList.add('gesture-hidden'));
             viewer.dataset.overlayDisabled = "true";
         };
-        
         ['mousedown', 'wheel', 'touchstart'].forEach(evt => {
             viewer.addEventListener(evt, hideHints, { passive: true });
         });
     });
 
-    // 视口交叉观察者
-    const observer = new IntersectionObserver((entries) => {
+    // ===================== 3. “C位” 自动激活控制器 =====================
+    // 代替了旧的 scroll 监听，性能极高
+    const activationObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             const viewer = entry.target;
 
             if (entry.isIntersecting) {
-                viewer.dataset.inView = "true";
-                if (!isScrolling) {
-                    clearTimeout(initCheckTimer);
-                    initCheckTimer = setTimeout(() => {
-                        checkAndActivateBestModel();
-                    }, 50);
-                }
+                // 模型进入屏幕中间区域 -> 激活
+                activateViewer(viewer); 
             } else {
-                viewer.dataset.inView = "false";
-                clearTimeout(viewer.hudTimer);
+                // 模型离开中间区域 -> 暂停
                 viewer.pause();
+                // 移除手势提示动画
                 viewer.querySelectorAll('.gesture-overlay').forEach(el => el.classList.remove('gesture-active'));
             }
         });
     }, {
-        threshold: 0.05, 
-        rootMargin: "50px 0px" 
+        // 核心魔法：只关注屏幕垂直方向中间 20% 的区域
+        // 上下各缩减 40%，只有进入正中间才触发
+        rootMargin: "-40% 0px -40% 0px", 
+        threshold: 0
     });
 
-    models.forEach(model => observer.observe(model));
+    models.forEach(model => {
+        activationObserver.observe(model);
+    });
   });
 </script>
