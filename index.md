@@ -656,13 +656,13 @@ model-viewer::part(interaction-prompt), model-viewer::part(default-progress-bar)
   
   <div class="species-glass-box">
   <svg class="connection-lines" viewBox="0 0 600 300" preserveAspectRatio="none" style="z-index: 1;">
-  <path class="base-line" d="M300,145 L135,195" stroke="rgba(255,255,255,0.1)" fill="none" /> 
-  <path class="base-line" d="M300,145 L300,210" stroke="rgba(255,255,255,0.1)" fill="none" /> 
-  <path class="base-line" d="M300,145 L465,195" stroke="rgba(255,255,255,0.1)" fill="none" /> 
+  <path class="base-line" d="M300,126 L135,195" stroke="rgba(255,255,255,0.1)" fill="none" /> 
+  <path class="base-line" d="M300,126 L300,210" stroke="rgba(255,255,255,0.1)" fill="none" /> 
+  <path class="base-line" d="M300,126 L465,195" stroke="rgba(255,255,255,0.1)" fill="none" /> 
   
-  <path class="pulse-line line-to-mouse" d="M300,145 L135,195" />
-  <path class="pulse-line" d="M300,145 L300,210" />
-  <path class="pulse-line line-to-monkey" d="M300,145 L465,195" />
+  <path class="pulse-line line-to-mouse" d="M300,126 L135,195" />
+  <path class="pulse-line" d="M300,126 L300,210" />
+  <path class="pulse-line line-to-monkey" d="M300,126 L465,195" />
 </svg>
 
     <div class="node center-node">
@@ -775,7 +775,7 @@ model-viewer::part(interaction-prompt), model-viewer::part(default-progress-bar)
 .node-desc { margin-top: 4px; color: #94a3b8; font-size: 11px; text-align: center; line-height: 1.4; font-family: sans-serif; }
 
 @media (max-width: 600px) {
-  .species-glass-box { padding: 20px 5px 30px 5px; min-height: 320px; } 
+  .species-glass-box { padding: 20px 5px 20px 5px; min-height: 310px; } 
   .icon-circle { width: 45px; height: 45px; }
   .icon-circle span { font-size: 24px !important; }
   .node-title { font-size: 12px; }
@@ -1390,13 +1390,13 @@ This project is open-source and available under the **MIT License**. Click the b
   
   <div class="species-glass-box">
   <svg class="connection-lines" viewBox="0 0 600 300" preserveAspectRatio="none" style="z-index: 1;">
-  <path class="base-line" d="M300,145 L135,195" stroke="rgba(255,255,255,0.1)" fill="none" /> 
-  <path class="base-line" d="M300,145 L300,210" stroke="rgba(255,255,255,0.1)" fill="none" /> 
-  <path class="base-line" d="M300,145 L465,195" stroke="rgba(255,255,255,0.1)" fill="none" /> 
+  <path class="base-line" d="M300,126 L135,195" stroke="rgba(255,255,255,0.1)" fill="none" /> 
+  <path class="base-line" d="M300,126 L300,210" stroke="rgba(255,255,255,0.1)" fill="none" /> 
+  <path class="base-line" d="M300,126 L465,195" stroke="rgba(255,255,255,0.1)" fill="none" /> 
   
-  <path class="pulse-line line-to-mouse" d="M300,145 L135,195" />
-  <path class="pulse-line" d="M300,145 L300,210" />
-  <path class="pulse-line line-to-monkey" d="M300,145 L465,195" />
+  <path class="pulse-line line-to-mouse" d="M300,126 L135,195" />
+  <path class="pulse-line" d="M300,126 L300,210" />
+  <path class="pulse-line line-to-monkey" d="M300,126 L465,195" />
 </svg>
 
     <div class="node center-node">
