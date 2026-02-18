@@ -109,7 +109,6 @@ title: E-Link Home
    <b>Mating Dynamics (left) and Structural Breakdown (right) of the E-Link(256) </b>
  </p>
 </div>
-</div>
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap');
@@ -1111,8 +1110,7 @@ This project is open-source and available under the **MIT License**. Click the b
  </a>
 </div>
 
-
-<div class="github-only">
+</div> <div class="github-only">
   <br>
   <hr>
   <p align="center" style="font-size: 1.5em; font-weight: bold; margin: 20px 0;">
@@ -1214,7 +1212,6 @@ This project is open-source and available under the **MIT License**. Click the b
   <p style="margin-top: 5px; font-size: 0.95em; color: #3b82f6;">
     <b>E-Link易链(256) 的插拔动态（左）和结构分解（右）</b>
   </p>
-</div>
 </div>
 
 ## 🔬 **E-Link ：3D 交互式集成视图**
