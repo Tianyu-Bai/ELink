@@ -802,16 +802,6 @@ model-viewer::part(interaction-prompt), model-viewer::part(default-progress-bar)
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
 }
 
-<svg class="connection-lines" viewBox="0 0 600 300" preserveAspectRatio="none" style="z-index: 1;">
-  <path class="base-line" d="M300,120 L135,205" stroke="rgba(255,255,255,0.1)" fill="none" /> 
-  <path class="base-line" d="M300,120 L300,225" stroke="rgba(255,255,255,0.1)" fill="none" /> 
-  <path class="base-line" d="M300,120 L465,205" stroke="rgba(255,255,255,0.1)" fill="none" /> 
-  
-  <path class="pulse-line" d="M300,120 L135,205" />
-  <path class="pulse-line" d="M300,120 L300,225" />
-  <path class="pulse-line" d="M300,120 L465,205" />
-</svg>
-
 .base-line {
   fill: none; stroke: rgba(255, 255, 255, 0.1); stroke-width: 2;
 }
@@ -1413,7 +1403,7 @@ This project is open-source and available under the **MIT License**. Click the b
 <div class="elink-dynamic-dashboard" align="center">
   <div class="metrics-grid">
     
-    <div class="metric-card glass-panel" data-percent="100" data-value="2.8" data-is-float="true">
+    <div class="metric-card glass-panel" data-percent="100" data-value="2.8" data-is-float="False">
       <div class="chart-box">
         <svg viewBox="0 0 100 100">
           <circle class="bg-ring" cx="50" cy="50" r="45"></circle>
@@ -1515,43 +1505,6 @@ This project is open-source and available under the **MIT License**. Click the b
       <tr>
         <td style="padding: 8px; border: 1px solid #e1e4e8;"><b>外壳材料</b></td>
         <td style="padding: 8px; border: 1px solid #e1e4e8;">3D 打印 PEEK / 手术级树脂</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
----
-
-<span id="cn-features"></span>
-## ✨ 关键特性
-<div style="width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 10px;">
-  <table style="margin-left: auto; margin-right: auto; width: 90%; min-width: 600px; text-align: center; border-collapse: collapse; border: 1px solid #e1e4e8;">
-    <thead>
-      <tr style="background-color: #f6f8fa; border-bottom: 2px solid #e1e4e8;">
-        <th style="padding: 10px; border: 1px solid #e1e4e8;">核心规格指标</th>
-        <th style="padding: 10px; border: 1px solid #e1e4e8;">E-Link(256)_V1.0</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td style="padding: 8px; border: 1px solid #e1e4e8;"><b>通道数量</b></td>
-        <td style="padding: 8px; border: 1px solid #e1e4e8;">128 或 256 通道 (支持单/双 SPI 端口)</td>
-      </tr>
-      <tr>
-        <td style="padding: 8px; border: 1px solid #e1e4e8;"><b>总质量 (重量)</b></td>
-        <td style="padding: 8px; border: 1px solid #e1e4e8;">6.6 g (含外壳)<br>2.8 g (仅核心组件)</td>
-      </tr>
-      <tr>
-        <td style="padding: 8px; border: 1px solid #e1e4e8;"><b>互连技术</b></td>
-        <td style="padding: 8px; border: 1px solid #e1e4e8;">免焊接各向异性导电弹性体</td>
-      </tr>
-      <tr>
-        <td style="padding: 8px; border: 1px solid #e1e4e8;"><b>兼容采集系统</b></td>
-        <td style="padding: 8px; border: 1px solid #e1e4e8;">Intan 控制器 (512ch/1024ch)<br>Open-Ephys / NeuroNexus Smartbox / OmniPlex</td>
-      </tr>
-      <tr>
-        <td style="padding: 8px; border: 1px solid #e1e4e8;"><b>外壳材质</b></td>
-        <td style="padding: 8px; border: 1px solid #e1e4e8;">3D 打印 PEEK / 医疗级树脂</td>
       </tr>
     </tbody>
   </table>
