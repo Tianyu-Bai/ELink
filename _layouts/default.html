@@ -14,31 +14,27 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
+
 <link rel="preload" href="{{ '/Videos/On skull_3.16MB.glb' | relative_url }}" as="fetch" type="model/gltf-binary" crossorigin>
-<script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
 <link rel="canonical" href="https://e-link.pages.dev/" />
+
+<script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
  
 <style>
- 
- /* 当视频弹窗显示时，恢复默认鼠标指针并隐藏自定义光标 */
-body.video-active {
-    cursor: auto !important;
-}
-body.video-active .cursor-dot,
-body.video-active .cursor-outline {
-    display: none !important;
-}
+  /* --- 0. 全局稳定性设置 --- */
+  * { box-sizing: border-box; } 
+  html, body { width: 100%; max-width: 100vw; overflow-x: hidden; overscroll-behavior-y: none; } 
 
-  /* --- 0. 全局设置 --- */
-  * { box-sizing: border-box; } /* 防止内边距撑破外框 */
- html, body { width: 100%; max-width: 100vw; overflow-x: hidden; } /* 强制锁死横向滚动 */
- 
- .github-only { display: none !important; }
-  .lang-zh { display: none; animation: fadeIn 0.5s ease; }
-  .lang-en { display: block; animation: fadeIn 0.5s ease; }
+  /* 当视频弹窗显示时，恢复默认鼠标指针并隐藏自定义光标，锁死页面滚动 */
+  body.modal-active { cursor: auto !important; overflow: hidden !important; }
+  body.modal-active .cursor-dot, body.modal-active .cursor-outline { display: none !important; }
+
+  .github-only { display: none !important; }
+  .lang-zh { display: none; animation: fadeIn 0.4s ease; }
+  .lang-en { display: block; animation: fadeIn 0.4s ease; }
   @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
   
-  /* 🔥 Lenis 平滑滚动推荐样式 (不影响原有设计) */
+  /* 🔥 Lenis 平滑滚动推荐样式 */
   html.lenis, html.lenis body { height: auto; }
   .lenis.lenis-smooth { scroll-behavior: auto !important; }
   .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
@@ -51,20 +47,20 @@ body.video-active .cursor-outline {
     line-height: 1.6; overflow-x: hidden; 
     cursor: none; 
     scrollbar-width: thin; scrollbar-color: #3b82f6 transparent;
-    transition: color 0.5s ease;
+    transition: color 0.3s ease, background-color 0.3s ease;
     background-color: #0a0a0f; 
   }
   @media (pointer: coarse) { body { cursor: auto; } }
  
-  /* ⚡️ CSS 性能优化：防止图片加载时布局抖动 */
+  /* ⚡️ 防布局抖动 (CLS 优化) */
   img, video, iframe { 
       max-width: 100% !important; 
       height: auto !important; 
       box-sizing: border-box; 
-      content-visibility: auto; /* 浏览器渲染优化 */
-      /* 默认让图片先稍微透明，加载好后 JS 控制显示，体验更丝滑 */
+      content-visibility: auto; 
       transition: opacity 0.5s ease;
   }
+  img[loading] { min-height: 1px; } /* 给懒加载图片一个极小的默认高度防止折叠 */
  
   ::-webkit-scrollbar { width: 6px; }
   ::-webkit-scrollbar-track { background: transparent; }
@@ -72,83 +68,53 @@ body.video-active .cursor-outline {
   ::-webkit-scrollbar-thumb:hover { background: rgba(59, 130, 246, 0.8); }
   ::selection { background: #3b82f6; color: #ffffff; text-shadow: 0 0 8px rgba(255, 255, 255, 0.8); }
 
-/* --- 3D 窗口增强：加载器与水印 --- */
-.model-loader {
-  width: 40px;
-  height: 40px;
-  border: 3px solid rgba(59, 130, 246, 0.1);
-  border-radius: 50%;
-  border-top-color: #3b82f6;
-  animation: spin 1s linear infinite;
-}
-
-.model-watermark-text {
-  position: absolute;
-  bottom: 15px;
-  right: 15px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: rgba(255, 255, 255, 0.3);
-  pointer-events: none; /* 防止遮挡 3D 旋转操作 */
-  letter-spacing: 1px;
-  z-index: 20;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
+  /* --- 3D 窗口增强：加载器与水印 --- */
+  .model-loader {
+    width: 40px; height: 40px; border: 3px solid rgba(59, 130, 246, 0.1);
+    border-radius: 50%; border-top-color: #3b82f6; animation: spin 1s linear infinite;
+  }
+  .model-watermark-text {
+    position: absolute; bottom: 15px; right: 15px; font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: rgba(255, 255, 255, 0.3); pointer-events: none; letter-spacing: 1px; z-index: 20;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
  
- /* --- 🚀 升级：磁性发光光标 --- */
- .cursor-dot, .cursor-outline, .bot-head, .bot-eye {
-    will-change: transform; /* 告诉浏览器提前分配 GPU 资源 */
-    backface-visibility: hidden; /* 防止闪烁 */
-    transform-style: preserve-3d;
-}
+  /* --- 🚀 磁性发光光标 (硬件加速版) --- */
+  .cursor-dot, .cursor-outline, .bot-head, .bot-eye {
+    will-change: transform; backface-visibility: hidden; transform-style: preserve-3d;
+  }
  
- .cursor-dot, .cursor-outline {
-   position: fixed; top: 0; left: 0; border-radius: 50%; 
-   z-index: 99999; pointer-events: none;
-   transform: translate(-50%, -50%); /* 确保中心对齐 */
- }
- .cursor-dot { 
-   width: 8px; height: 8px; background-color: #60a5fa; 
-   box-shadow: 0 0 8px #60a5fa; 
-   transition: opacity 0.2s ease;
- }
- .cursor-outline {
-  transition: transform 0.1s ease-out, width 0.2s, height 0.2s, background-color 0.2s, border-color 0.2s;
-   will-change: transform;
-}
- /* 悬停时的聚光灯效果 */
- body.hovering .cursor-dot { opacity: 0; } /* 隐藏中心小点 */
- body.hovering .cursor-outline { 
-   width: 60px; height: 60px; 
-   background-color: rgba(96, 165, 250, 0.15); 
-   border-color: rgba(96, 165, 250, 0.8); 
-   box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
-   backdrop-filter: blur(2px); /* 让按钮底部有一点毛玻璃效果 */
- }
+  .cursor-dot, .cursor-outline {
+    position: fixed; top: 0; left: 0; border-radius: 50%; 
+    z-index: 99999; pointer-events: none; transform: translate(-50%, -50%); 
+  }
+  .cursor-dot { 
+    width: 8px; height: 8px; background-color: #60a5fa; box-shadow: 0 0 8px #60a5fa; transition: opacity 0.2s ease;
+  }
+  .cursor-outline {
+    transition: width 0.2s, height 0.2s, background-color 0.2s, border-color 0.2s;
+  }
+  body.hovering .cursor-dot { opacity: 0; } 
+  body.hovering .cursor-outline { 
+    width: 60px; height: 60px; background-color: rgba(96, 165, 250, 0.15); 
+    border-color: rgba(96, 165, 250, 0.8); box-shadow: 0 0 20px rgba(59, 130, 246, 0.4); backdrop-filter: blur(2px);
+  }
  
-/* --- 🚀 升级：高能激光进度条 --- */
- #progress-bar { 
-   position: fixed; top: 0; left: 0; height: 3px; 
-   /* 主体变成柔和的深蓝色 */
-   background: #3b82f6; 
-   box-shadow: 0 0 10px #3b82f6, 0 0 20px #1d4ed8; 
-   width: 0%; z-index: 99999; 
-   transition: width 0.15s cubic-bezier(0.4, 0, 0.2, 1); 
- }
- /* 头部的点改成同色系的霓虹蓝，去掉刺眼的纯白 */
- #progress-bar::after {
-   content: ''; position: absolute; top: -1px; right: 0; width: 8px; height: 5px;
-   background: #60a5fa; border-radius: 50%; box-shadow: 0 0 10px 2px #3b82f6;
- }
+  /* --- 🚀 高能激光进度条 --- */
+  #progress-bar { 
+    position: fixed; top: 0; left: 0; height: 3px; 
+    background: #3b82f6; box-shadow: 0 0 10px #3b82f6, 0 0 20px #1d4ed8; 
+    width: 0%; z-index: 99999; transition: width 0.1s linear; 
+  }
+  #progress-bar::after {
+    content: ''; position: absolute; top: -1px; right: 0; width: 8px; height: 5px;
+    background: #60a5fa; border-radius: 50%; box-shadow: 0 0 10px 2px #3b82f6;
+  }
  
   /* --- 2. 背景 --- */
   #vanta-bg { position: fixed; z-index: -5; top: 0; left: 0; width: 100%; height: 100%; background: #0a0a0f; }
   #vanta-bg::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at center, transparent 0%, rgba(10, 10, 15, 0.4) 100%); pointer-events: none; transition: background 0.5s ease; }
-  
-  #meteor-canvas {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      z-index: -4; pointer-events: none; 
-  }
+  #meteor-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -4; pointer-events: none; }
     
   /* --- 3. 布局 --- */
   .layout-wrapper { position: relative; max-width: 860px; margin: 100px auto 60px; z-index: 10; perspective: 1000px; }
@@ -157,218 +123,116 @@ body.video-active .cursor-outline {
   #bot-container { 
     position: absolute; top: 70px; left: 50%; 
     transform: translateX(-50%); width: 120px; height: 70px; 
-    z-index: 9999; cursor: pointer; 
-    opacity: 1; 
-    transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55); 
+    z-index: 9999; cursor: pointer; opacity: 1; 
+    transition: top 0.4s ease, left 0.4s ease, transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55); 
   }
-  #bot-container.fixed-mode { position: fixed !important; top: auto !important; left: auto !important; bottom: 30px !important; right: 30px !important; transform: scale(0.9) !important; opacity: 1 !important; }
+  #bot-container.fixed-mode { position: fixed !important; top: auto !important; left: auto !important; bottom: 30px !important; right: 30px !important; transform: scale(0.9) !important; }
    
-  /* --- 🔥 机器人引导模式 (指引播放) --- */
-  /* 1. 箭头样式：默认隐藏 */
   .guide-arrow {
-    position: absolute;
-    left: -50px; /* 在机器人左边 */
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 40px;
-    color: #ef4444; /* 醒目的红色 */
-    opacity: 0;
-    pointer-events: none;
-    text-shadow: 0 0 10px rgba(239, 68, 68, 0.8);
-    transition: opacity 0.3s;
-    z-index: 100;
-    font-weight: bold;
+    position: absolute; left: -50px; top: 50%; transform: translateY(-50%);
+    font-size: 40px; color: #ef4444; opacity: 0; pointer-events: none;
+    text-shadow: 0 0 10px rgba(239, 68, 68, 0.8); transition: opacity 0.3s; z-index: 100; font-weight: bold;
   }
-
-  /* 2. 当机器人进入 guide-mode 时，移动它的位置到视频旁边 */
   #bot-container.guide-mode {
-    position: fixed !important;
-    top: 50% !important;
-    right: 15% !important; /* 停在屏幕右侧 */
-    left: auto !important;
-    bottom: auto !important;
-    transform: translate(0, -50%) scale(1.2) !important;
-    z-index: 100006 !important; /* 比视频弹窗还要高 */
+    position: fixed !important; top: 50% !important; right: 15% !important; left: auto !important; bottom: auto !important; transform: translate(0, -50%) scale(1.2) !important; z-index: 100006 !important; 
   }
+  #bot-container.guide-mode .guide-arrow { opacity: 1; animation: point-left 0.8s ease-in-out infinite alternate; }
 
-  /* 3. 引导模式下显示箭头，并让箭头跳动 */
-  #bot-container.guide-mode .guide-arrow {
-    opacity: 1;
-    animation: point-left 0.8s ease-in-out infinite alternate;
-  }
+  @keyframes point-left { from { transform: translateY(-50%) translateX(0); } to { transform: translateY(-50%) translateX(-15px); } }
 
-  /* 4. 箭头动画：向左指 */
-  @keyframes point-left {
-    from { transform: translateY(-50%) translateX(0); }
-    to { transform: translateY(-50%) translateX(-15px); }
-  }
-
-  /* 跳动动画 */
   #bot-container.attention-jump { animation: attention-bounce 0.6s ease infinite alternate; }
   @keyframes attention-bounce { 0% { transform: translateX(-50%) translateY(0) scale(1); } 100% { transform: translateX(-50%) translateY(-15px) scale(1.1); } }
   #bot-container.fixed-mode.attention-jump { animation: attention-bounce-fixed 0.6s ease infinite alternate; }
   @keyframes attention-bounce-fixed { 0% { transform: scale(0.9) translateY(0); } 100% { transform: scale(0.9) translateY(-15px); } }
  
-  /* --- 涟漪光圈 (纯蓝科技版) --- */
- .pulse-ring { 
-   position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); 
-   width: 100px; height: 100px; border-radius: 50%; 
-   /* 👇 这里把原来的紫色替换成了你的主题基础蓝 */
-   border: 2px solid rgba(59, 130, 246, 0.5); 
-   opacity: 0; z-index: -1; pointer-events: none; 
-   animation: pulse-ring-anim 6s infinite cubic-bezier(0.4, 0, 0.6, 1); 
-   transition: opacity 0.5s; 
- }
- /* 说话时，让光圈闪烁得更快，且变成更亮的浅蓝色 */
- #bot-container.speaking .pulse-ring { 
-   animation-duration: 1.5s; 
-   border-color: rgba(96, 165, 250, 0.9); 
- }
- #bot-container.interaction-done .pulse-ring { opacity: 0 !important; animation: none !important; }
- @keyframes pulse-ring-anim { 0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; } 30% { opacity: 0.6; } 100% { transform: translate(-50%, -50%) scale(2.5); opacity: 0; } }
- /* ==============================================================
-     🔥 全新高科技 AI 无人机风格 
-     ============================================================== */
-  
-  /* 1. 无人机舱体：深灰蓝色渐变底，悬浮玻璃质感 */
-  .bot-head { 
-    width: 76px; height: 50px; 
-    background: linear-gradient(145deg, #1e293b, #0f172a); 
-    border: 2px solid rgba(59, 130, 246, 0.4); 
-    border-radius: 38px; /* 圆润的胶囊形 */
-    margin: 0 auto; position: relative; 
-    box-shadow: 0 10px 25px rgba(0,0,0,0.5), inset 0 2px 8px rgba(255,255,255,0.1), 0 0 15px rgba(59, 130, 246, 0.2); 
-    display: flex; justify-content: center; align-items: center; gap: 14px; 
-    animation: float-bot 3s ease-in-out infinite; 
-    overflow: hidden; 
+  .pulse-ring { 
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); 
+    width: 100px; height: 100px; border-radius: 50%; 
+    border: 2px solid rgba(59, 130, 246, 0.5); opacity: 0; z-index: -1; pointer-events: none; 
+    animation: pulse-ring-anim 6s infinite cubic-bezier(0.4, 0, 0.6, 1); transition: opacity 0.5s; 
   }
+  #bot-container.speaking .pulse-ring { animation-duration: 1.5s; border-color: rgba(96, 165, 250, 0.9); }
+  #bot-container.interaction-done .pulse-ring { opacity: 0 !important; animation: none !important; }
+  @keyframes pulse-ring-anim { 0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; } 30% { opacity: 0.6; } 100% { transform: translate(-50%, -50%) scale(2.5); opacity: 0; } }
 
-  /* 面罩屏幕：黑色的一体化显示屏区 */
+  .bot-head { 
+    width: 76px; height: 50px; background: linear-gradient(145deg, #1e293b, #0f172a); 
+    border: 2px solid rgba(59, 130, 246, 0.4); border-radius: 38px; margin: 0 auto; position: relative; 
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5), inset 0 2px 8px rgba(255,255,255,0.1), 0 0 15px rgba(59, 130, 246, 0.2); 
+    display: flex; justify-content: center; align-items: center; gap: 14px; animation: float-bot 3s ease-in-out infinite; overflow: hidden; 
+  }
   .bot-head::before {
     content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-    width: 60px; height: 26px; background: #020617; border-radius: 13px; z-index: 0;
-    box-shadow: inset 0 0 10px rgba(59, 130, 246, 0.2);
+    width: 60px; height: 26px; background: #020617; border-radius: 13px; z-index: 0; box-shadow: inset 0 0 10px rgba(59, 130, 246, 0.2);
   }
-
-  /* 2. 发光 LED 眼睛：两条亮蓝色光带 */
   .bot-eye { 
-    width: 6px; height: 16px; background: #60a5fa; 
-    border-radius: 6px; position: relative; z-index: 1; 
-    box-shadow: 0 0 8px #60a5fa, 0 0 16px #3b82f6; 
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); 
-    animation: led-blink 4s infinite; 
+    width: 6px; height: 16px; background: #60a5fa; border-radius: 6px; position: relative; z-index: 1; 
+    box-shadow: 0 0 8px #60a5fa, 0 0 16px #3b82f6; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); animation: led-blink 4s infinite; 
   }
-
-  /* 隐藏原来的黑眼珠、眼皮和嘴巴，不需要改HTML */
   .bot-pupil, .bot-lid, .bot-mouth { display: none !important; }
 
-  /* 3. 说话时的动态表情：外壳脉冲发光 + 眼睛变成开心的弯弯眼 */
-  #bot-container.speaking .bot-head { 
-    box-shadow: 0 10px 25px rgba(0,0,0,0.5), 0 0 25px rgba(59, 130, 246, 0.6); 
-    border-color: #60a5fa; 
-  }
+  #bot-container.speaking .bot-head { box-shadow: 0 10px 25px rgba(0,0,0,0.5), 0 0 25px rgba(59, 130, 246, 0.6); border-color: #60a5fa; }
   #bot-container.speaking .bot-eye { 
-    height: 6px; width: 12px; 
-    border-radius: 12px 12px 0 0; /* 变成 ^^ 形状 */
-    background: transparent; border-top: 3px solid #93c5fd; 
-    box-shadow: 0 -5px 10px rgba(96, 165, 250, 0.8);
-    margin-top: -6px; 
-    animation: happy-bounce 0.4s infinite alternate; 
+    height: 6px; width: 12px; border-radius: 12px 12px 0 0; background: transparent; border-top: 3px solid #93c5fd; 
+    box-shadow: 0 -5px 10px rgba(96, 165, 250, 0.8); margin-top: -6px; animation: happy-bounce 0.4s infinite alternate; 
   }
   #bot-container.speaking .bot-eye:nth-child(2) { animation-delay: 0.1s; }
 
-  /* 4. 全息天线：变成一个向上发射的光锥 */
   .bot-antenna { 
-    position: absolute; top: -14px; left: 50%; transform: translateX(-50%); 
-    width: 0; height: 0; 
-    border-left: 8px solid transparent; border-right: 8px solid transparent; 
-    border-bottom: 18px solid rgba(59, 130, 246, 0.2); 
-    filter: drop-shadow(0 -5px 5px rgba(59,130,246,0.6)); 
+    position: absolute; top: -14px; left: 50%; transform: translateX(-50%); width: 0; height: 0; 
+    border-left: 8px solid transparent; border-right: 8px solid transparent; border-bottom: 18px solid rgba(59, 130, 246, 0.2); filter: drop-shadow(0 -5px 5px rgba(59,130,246,0.6)); 
   }
   .bot-antenna::after { 
-    content: ''; position: absolute; top: 4px; left: -2px; 
-    width: 4px; height: 4px; background: #ffffff; border-radius: 50%; 
-    box-shadow: 0 0 8px #fff, 0 0 15px #60a5fa; 
-    animation: hologram-pulse 1.5s infinite alternate; 
+    content: ''; position: absolute; top: 4px; left: -2px; width: 4px; height: 4px; background: #ffffff; border-radius: 50%; 
+    box-shadow: 0 0 8px #fff, 0 0 15px #60a5fa; animation: hologram-pulse 1.5s infinite alternate; 
   }
 
-  /* --- 补充的关键帧动画 --- */
-  @keyframes led-blink { 
-    0%, 48%, 52%, 100% { transform: scaleY(1); } 
-    50% { transform: scaleY(0.1); } /* 瞬间压扁模拟眨眼 */
-  }
-  @keyframes happy-bounce { 
-    0% { transform: translateY(0); } 
-    100% { transform: translateY(-3px) scaleX(1.1); } 
-  }
-  @keyframes hologram-pulse { 
-    0% { opacity: 0.4; transform: scale(0.8); } 
-    100% { opacity: 1; transform: scale(1.5); } 
-  }
+  @keyframes led-blink { 0%, 48%, 52%, 100% { transform: scaleY(1); } 50% { transform: scaleY(0.1); } }
+  @keyframes happy-bounce { 0% { transform: translateY(0); } 100% { transform: translateY(-3px) scaleX(1.1); } }
+  @keyframes hologram-pulse { 0% { opacity: 0.4; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1.5); } }
  
-  #bot-speech { position: absolute; top: -45px; left: 50%; transform: translateX(-50%) scale(0); transform-origin: bottom center; background: rgba(30, 41, 59, 0.95); color: #fff; padding: 8px 16px; border-radius: 12px; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; white-space: nowrap; pointer-events: none; border: 1px solid rgba(59, 130, 246, 0.4); box-shadow: 0 4px 15px rgba(0,0,0,0.3); transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s; z-index: 10000; opacity: 0; }
+  #bot-speech { 
+    position: absolute; top: -45px; left: 50%; transform: translateX(-50%) scale(0); transform-origin: bottom center; 
+    background: rgba(30, 41, 59, 0.95); color: #fff; padding: 8px 16px; border-radius: 12px; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; 
+    white-space: nowrap; pointer-events: none; border: 1px solid rgba(59, 130, 246, 0.4); box-shadow: 0 4px 15px rgba(0,0,0,0.3); 
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s; z-index: 10000; opacity: 0; 
+  }
   #bot-speech::after { content: ''; position: absolute; bottom: -5px; left: 50%; width: 8px; height: 8px; background: inherit; transform: translateX(-50%) rotate(45deg); border-right: 1px solid rgba(59, 130, 246, 0.4); border-bottom: 1px solid rgba(59, 130, 246, 0.4); }
   #bot-container.speaking #bot-speech { transform: translateX(-50%) scale(1); opacity: 1; }
  
-  /* --- 🚀 升级：全息 HUD 对话面板 --- */
- #rpg-dialogue { 
-   position: absolute; top: 65px; left: 50%; 
-   transform: translateX(-50%) translateY(20px); 
-   width: 600px; max-width: 90vw; 
-   /* 科技感网格背景 */
-   background-color: rgba(10, 15, 30, 0.95);
-   background-image: 
-     linear-gradient(rgba(59, 130, 246, 0.1) 1px, transparent 1px),
-     linear-gradient(90deg, rgba(59, 130, 246, 0.1) 1px, transparent 1px);
-   background-size: 20px 20px;
-   /* 霓虹发光边框 */
-   border: 1px solid rgba(96, 165, 250, 0.5); 
-   border-radius: 12px; padding: 15px; 
-   box-shadow: 0 10px 40px rgba(0,0,0,0.8), 0 0 20px rgba(59, 130, 246, 0.3), inset 0 0 15px rgba(59, 130, 246, 0.2); 
-   z-index: 20000; opacity: 0; pointer-events: none; 
-   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* 更有弹性的弹出动画 */
-   display: flex; flex-direction: column; gap: 10px; 
-   font-family: 'JetBrains Mono', monospace; 
-   overflow: hidden; /* 防止扫描线溢出 */
- }
- /* 全息扫描线动画 */
- #rpg-dialogue::after {
-   content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 10% !important;
-   background: linear-gradient(to bottom, transparent, rgba(96, 165, 250, 0.4), transparent);
-   box-shadow: 0 0 10px rgba(96, 165, 250, 0.5);
-   opacity: 0.5; pointer-events: none; z-index: -1;
-   animation: hud-scan 3s linear infinite;
- }
- @keyframes hud-scan {
-   0% { transform: translateY(-100px); }
-   100% { transform: translateY(300px); }
- }
- #rpg-dialogue.active { opacity: 1; transform: translateX(-50%) translateY(0); pointer-events: auto; }
- #bot-container.fixed-mode #rpg-dialogue { top: auto; bottom: 80px; left: auto; right: 0; transform: translateY(20px); }
- #bot-container.fixed-mode #rpg-dialogue.active { transform: translateY(0); }
- #rpg-text { color: #bfdbfe; font-size: 1.0rem; font-weight: 500; min-height: 50px; line-height: 1.6; }
- #rpg-cursor { display: inline-block; width: 8px; height: 14px; background: #3b82f6; vertical-align: middle; animation: blink 1s infinite; }
- #rpg-options { display: flex; flex-direction: column; gap: 8px; margin-top: 5px; }
- .rpg-btn { background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); color: #93c5fd; padding: 10px 16px;; border-radius: 6px; cursor: pointer; font-size: 1.0rem; text-align: left; transition: all 0.2s; opacity: 0; transform: translateX(-10px); animation: slideIn 0.3s forwards; white-space: normal; word-break: break-word; line-height: 1.4;}
- .rpg-btn:hover { background: rgba(59, 130, 246, 0.25); border-color: #60a5fa; color: #fff; transform: translateX(2px); }
- @keyframes slideIn { to { opacity: 1; transform: translateX(0); } }
- .rpg-close { position: absolute; top: 5px; right: 8px; font-size: 18px; color: #475569; cursor: pointer; }
- .rpg-close:hover { color: #fff; }
+  /* --- HUD 面板 --- */
+  #rpg-dialogue { 
+    position: absolute; top: 65px; left: 50%; transform: translateX(-50%) translateY(20px); width: 600px; max-width: 90vw; 
+    background-color: rgba(10, 15, 30, 0.95); background-image: linear-gradient(rgba(59, 130, 246, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(59, 130, 246, 0.1) 1px, transparent 1px); background-size: 20px 20px; 
+    border: 1px solid rgba(96, 165, 250, 0.5); border-radius: 12px; padding: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.8), 0 0 20px rgba(59, 130, 246, 0.3), inset 0 0 15px rgba(59, 130, 246, 0.2); 
+    z-index: 20000; opacity: 0; pointer-events: none; transition: all 0.3s ease; display: flex; flex-direction: column; gap: 10px; font-family: 'JetBrains Mono', monospace; overflow: hidden; 
+  }
+  #rpg-dialogue::after {
+    content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 10% !important; background: linear-gradient(to bottom, transparent, rgba(96, 165, 250, 0.4), transparent);
+    box-shadow: 0 0 10px rgba(96, 165, 250, 0.5); opacity: 0.5; pointer-events: none; z-index: -1; animation: hud-scan 3s linear infinite;
+  }
+  @keyframes hud-scan { 0% { transform: translateY(-100px); } 100% { transform: translateY(300px); } }
+  #rpg-dialogue.active { opacity: 1; transform: translateX(-50%) translateY(0); pointer-events: auto; }
+  #bot-container.fixed-mode #rpg-dialogue { top: auto; bottom: 80px; left: auto; right: 0; transform: translateY(20px); }
+  #bot-container.fixed-mode #rpg-dialogue.active { transform: translateY(0); }
+  #rpg-text { color: #bfdbfe; font-size: 1.0rem; font-weight: 500; min-height: 50px; line-height: 1.6; }
+  #rpg-cursor { display: inline-block; width: 8px; height: 14px; background: #3b82f6; vertical-align: middle; animation: blink 1s infinite; }
+  #rpg-options { display: flex; flex-direction: column; gap: 8px; margin-top: 5px; }
+  .rpg-btn { background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); color: #93c5fd; padding: 10px 16px; border-radius: 6px; cursor: pointer; font-size: 1.0rem; text-align: left; transition: all 0.2s; opacity: 0; transform: translateX(-10px); animation: slideIn 0.3s forwards; white-space: normal; word-break: break-word; line-height: 1.4;}
+  .rpg-btn:hover { background: rgba(59, 130, 246, 0.25); border-color: #60a5fa; color: #fff; transform: translateX(2px); }
+  @keyframes slideIn { to { opacity: 1; transform: translateX(0); } }
+  .rpg-close { position: absolute; top: 5px; right: 8px; font-size: 18px; color: #475569; cursor: pointer; }
+  .rpg-close:hover { color: #fff; }
  
   /* --- 内容容器 --- */
-  .container { position: relative; padding: 60px 80px; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%); border-radius: 20px; box-shadow: 0 20px 50px rgba(59, 130, 246, 0.15); border: 1px solid rgba(255, 255, 255, 0.1); border-top: 4px solid #3b82f6; opacity: 0; animation: fadeUp 0.8s ease-out 0.3s forwards; z-index: 1; transform-style: preserve-3d; transition: transform 0.1s ease-out; overflow: hidden; }
+  .container { position: relative; padding: 60px 80px; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%); border-radius: 20px; box-shadow: 0 20px 50px rgba(59, 130, 246, 0.15); border: 1px solid rgba(255, 255, 255, 0.1); border-top: 4px solid #3b82f6; opacity: 0; animation: fadeUp 0.6s ease-out 0.2s forwards; z-index: 1; transform-style: preserve-3d; transition: transform 0.1s ease-out; overflow: hidden; }
   .container::before { content: ""; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.07), transparent 40%); z-index: -1; pointer-events: none; opacity: 0; transition: opacity 0.5s; }
   .container:hover::before { opacity: 1; }
   #main_content table { width: 100% !important; border-collapse: collapse; margin: 20px 0; background: rgba(10, 10, 15, 0.3); border-radius: 8px; overflow: hidden; }
   #main_content th, #main_content td { padding: 12px; border: 1px solid rgba(255, 255, 255, 0.1); }
   #main_content tr { background: rgba(30, 41, 59, 0.8) !important; }    
   #main_content th { color: #60a5fa; font-weight: 600; }
-  .typewriter-container { font-family: 'JetBrains Mono', monospace; font-size: 1.1rem; color: #93c5fd; min-height: 1.6em; margin-bottom: 2rem; text-align: center; /* 🌟 核心修改：让文字水平居中 */
-   width: 100%;       /* 确保容器占满全宽 */
-    display: flex;     /* 使用弹性布局辅助对齐 */
-    justify-content: center; 
-    align-items: center;
-  }
+  .typewriter-container { font-family: 'JetBrains Mono', monospace; font-size: 1.1rem; color: #93c5fd; min-height: 1.6em; margin-bottom: 2rem; text-align: center; width: 100%; display: flex; justify-content: center; align-items: center; }
   .typewriter-cursor { animation: blink-cursor 0.8s infinite; border-left: 3px solid #3b82f6; margin-left: 2px; }
   .nav-badges { margin: 2rem 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
   .nav-badges a { opacity: 0; animation: fadeUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; position: relative; z-index: 2; }
@@ -384,7 +248,7 @@ body.video-active .cursor-outline {
  
   /* --- ☁️ 护眼柔光模式 --- */
   body.light-mode { color: #334155; background-color: #ffffff; }
-  body.light-mode .model-watermark-text { color: rgba(51, 65, 85, 0.5); } /*让水印在浅色模式下变成深灰蓝色 */
+  body.light-mode .model-watermark-text { color: rgba(51, 65, 85, 0.5); }
   body.light-mode #vanta-bg::after { background: radial-gradient(circle at center, rgba(241, 245, 249, 0.7) 0%, #f1f5f9 100%); }
   body.light-mode .container { background: rgba(241, 245, 249, 0.9); border-color: rgba(203, 213, 225, 0.6); box-shadow: 0 20px 50px rgba(148, 163, 184, 0.15); backdrop-filter: blur(25px); }
   body.light-mode #rpg-dialogue { background: #ffffff; border-color: #cbd5e1; box-shadow: 0 10px 30px rgba(148, 163, 184, 0.1); }
@@ -402,43 +266,33 @@ body.video-active .cursor-outline {
   body.light-mode .rpg-close:hover { color: #ef4444; }
   body.light-mode .ctrl-btn { background: rgba(255, 255, 255, 0.5); border-color: #cbd5e1; color: #64748b; }
   body.light-mode .ctrl-btn:hover { background: #ffffff; color: #0f172a; transform: scale(1.05); }
-  body.light-mode .img-caption { color: #2563eb; }
  
   @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
   @keyframes float-bot { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
   @keyframes blink { 0%, 48%, 52%, 100% { height: 0%; } 50% { height: 100%; } }
-  @keyframes botEnter { from { opacity: 0; transform: translateX(-50%) translateY(20px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
   @keyframes blink-cursor { from, to { opacity: 1; } 50% { opacity: 0; } }
-  @keyframes pulse-antenna-breath { 0%, 100% { background: #3b82f6; box-shadow: 0 0 5px #3b82f6; } 50% { background: #93c5fd; box-shadow: 0 0 15px #60a5fa, 0 0 8px #ffffff; } }
-  @keyframes mouth-talk { 0% { height: 2px; } 100% { height: 8px; border-radius: 50%; } }
    
+  /* --- 防止弹窗在关闭时遮挡点击事件 --- */
   .welcome-modal {
     position: fixed; inset: 0; 
     background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(5px);
-    z-index: 100001; 
-    display: flex; justify-content: center; align-items: center;
-    opacity: 0; pointer-events: none; transition: opacity 0.2s ease;
-    padding: 20px;
-    cursor: default !important;
+    z-index: 100001; display: flex; justify-content: center; align-items: center;
+    opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s;
+    padding: 20px; cursor: default !important;
   }
+  .welcome-modal.show { opacity: 1; visibility: visible; }
   .welcome-modal * { cursor: default !important; }
   .welcome-modal .btn-primary, .welcome-modal .btn-secondary, .welcome-modal .slider { cursor: pointer !important; }
-  .welcome-modal.show { opacity: 1; pointer-events: auto; }
    
   .welcome-modal:hover ~ .cursor-dot, .welcome-modal:hover ~ .cursor-outline { opacity: 0 !important; }
    
   .modal-content {
-    background: rgba(30, 41, 59, 0.85); 
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(20px);
-    padding: 30px; border-radius: 20px; 
-    width: 90%; max-width: 400px; text-align: center;
-    margin: auto; 
-    max-height: 90vh; overflow-y: auto; 
-    transform: scale(0.9); transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    position: relative; 
-    padding-bottom: 140px; 
+    background: rgba(30, 41, 59, 0.85); border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); backdrop-filter: blur(20px);
+    padding: 30px; border-radius: 20px; width: 90%; max-width: 400px; text-align: center;
+    margin: auto; max-height: 90vh; overflow-y: auto; 
+    transform: scale(0.95); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative; padding-bottom: 140px; 
   }
   .welcome-modal.show .modal-content { transform: scale(1); }
    
@@ -447,19 +301,13 @@ body.video-active .cursor-outline {
   .m-zh { display: none; }
  
   .modal-btns { display: flex; flex-direction: column; gap: 10px; }
-  .btn-primary, .btn-secondary {
-    padding: 12px 20px; border-radius: 10px; font-weight: 600; transition: all 0.2s;
-    border: none; font-family: inherit;
-  }
+  .btn-primary, .btn-secondary { padding: 12px 20px; border-radius: 10px; font-weight: 600; transition: all 0.2s; border: none; font-family: inherit; }
   .btn-primary { background: #3b82f6; color: white; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4); }
   .btn-primary:hover { background: #2563eb; transform: translateY(-2px); }
   .btn-secondary { background: rgba(255, 255, 255, 0.1); color: #e2e8f0; }
   .btn-secondary:hover { background: rgba(255, 255, 255, 0.2); }
  
-  .modal-lang-switch-container {
-    position: absolute; bottom: 60px; left: 50%; transform: translateX(-50%); 
-    display: flex; flex-direction: column; align-items: center; gap: 4px; width: 100%; 
-  }
+  .modal-lang-switch-container { position: absolute; bottom: 60px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 4px; width: 100%; }
   .lang-title { font-size: 0.7rem; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; }
   .lang-row { display: flex; align-items: center; gap: 8px; justify-content: center; font-size: 0.85rem; color: #cbd5e1; font-family: 'JetBrains Mono', monospace; }
   .switch { position: relative; display: inline-block; width: 40px; height: 20px; }
@@ -470,48 +318,28 @@ body.video-active .cursor-outline {
   input:focus + .slider { box-shadow: 0 0 1px #3b82f6; }
   input:checked + .slider:before { transform: translateX(20px); }
  
-  .modal-watermark {
-    position: absolute; bottom: 20px; left: 0; width: 100%; 
-    text-align: center; font-size: 0.65rem; color: #94a3b8; font-family: 'JetBrains Mono', monospace; pointer-events: none; opacity: 0.6; 
-  }
+  .modal-watermark { position: absolute; bottom: 20px; left: 0; width: 100%; text-align: center; font-size: 0.65rem; color: #94a3b8; font-family: 'JetBrains Mono', monospace; pointer-events: none; opacity: 0.6; }
 
-  /* --- 🎬 视频弹窗样式 --- */
+  /* --- 🎬 视频弹窗防穿透优化 --- */
   .video-modal {
-    position: fixed; inset: 0;
-    background: rgba(0, 0, 0, 0.9); /* 深色背景 */
-    z-index: 100005; /* 只有它能盖住机器人 */
+    position: fixed; inset: 0; background: rgba(0, 0, 0, 0.9); z-index: 100005; 
     display: flex; justify-content: center; align-items: center;
-    opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+    opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s;
     backdrop-filter: blur(10px);
   }
-  .video-modal.show { opacity: 1; pointer-events: auto; }
+  .video-modal.show { opacity: 1; visibility: visible; }
 
   .video-content {
-    width: 90%; max-width: 800px;
-    background: rgba(15, 23, 42, 1);
-    border: 1px solid #3b82f6;
-    border-radius: 12px;
-    box-shadow: 0 0 50px rgba(59, 130, 246, 0.3);
-    overflow: hidden;
-    transform: scale(0.9); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    width: 90%; max-width: 800px; background: rgba(15, 23, 42, 1); border: 1px solid #3b82f6;
+    border-radius: 12px; box-shadow: 0 0 50px rgba(59, 130, 246, 0.3); overflow: hidden;
+    transform: scale(0.95); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }
   .video-modal.show .video-content { transform: scale(1); }
 
-  .video-header {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 10px 20px;
-    background: rgba(59, 130, 246, 0.1);
-    border-bottom: 1px solid rgba(59, 130, 246, 0.3);
-    color: #93c5fd; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem;
-  }
-  .video-close {
-    cursor: pointer; font-size: 1.5rem; line-height: 1; color: #64748b; transition: color 0.2s;
-  }
+  .video-header { display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; background: rgba(59, 130, 246, 0.1); border-bottom: 1px solid rgba(59, 130, 246, 0.3); color: #93c5fd; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; }
+  .video-close { cursor: pointer; font-size: 1.5rem; line-height: 1; color: #64748b; transition: color 0.2s; }
   .video-close:hover { color: #ef4444; }
-
-  video#guardian-video {
-    width: 100%; display: block; outline: none;
-  }
+  video#guardian-video { width: 100%; display: block; outline: none; }
  
   @media (max-width: 768px) { 
     #bot-speech {
@@ -531,50 +359,21 @@ body.video-active .cursor-outline {
       opacity: 1 !important; animation: none !important;
     }
     #bot-container #rpg-dialogue {
-      position: absolute !important; 
-      top: auto !important; 
-      bottom: 90px !important; 
-      right: -15px !important;  /* 锚定在机器人右侧边缘 */
-      left: auto !important;    /* 解开左侧死锁，允许向左无限延伸 */
-      width: 360px !important;  /* 强制把对话框向左推宽！ */
-      max-width: 110vw !important; /* 抵消机器人的缩放比例 */
-      transform: translateY(10px) !important;
+      position: absolute !important; top: auto !important; bottom: 90px !important; right: -15px !important; left: auto !important; width: 360px !important; max-width: 110vw !important; transform: translateY(10px) !important;
     }
     #bot-container #rpg-dialogue.active { transform: translateY(0) !important; }
     .container { padding: 30px 20px; } 
     #main_content { overflow-x: auto; }
     .modal-content { padding-bottom: 140px; } 
 
-    /* 手机屏幕窄，机器人不能在右边，得跑到下面指上面 */
-    #bot-container.guide-mode {
-      top: auto !important;
-      bottom: 20% !important; /* 在视频下方 */
-      left: 50% !important;
-      right: auto !important;
-      transform: translateX(-50%) scale(1) !important;
-    }
-     
-    /* 箭头改为向上指 */
-    .guide-arrow {
-      left: 50%; top: -40px;
-      transform: translateX(-50%) rotate(90deg); /* 旋转90度向上 */
-    }
-     
-    /* 手机端箭头动画：向上跳 */
-    #bot-container.guide-mode .guide-arrow {
-      animation: point-up 0.8s ease-in-out infinite alternate;
-    }
-     
-    @keyframes point-up {
-      from { transform: translateX(-50%) rotate(-90deg) translateY(0); }
-      to { transform: translateX(-50%) rotate(-90deg) translateY(-15px); }
-    }
+    #bot-container.guide-mode { top: auto !important; bottom: 20% !important; left: 50% !important; right: auto !important; transform: translateX(-50%) scale(1) !important; }
+    .guide-arrow { left: 50%; top: -40px; transform: translateX(-50%) rotate(90deg); }
+    #bot-container.guide-mode .guide-arrow { animation: point-up 0.8s ease-in-out infinite alternate; }
+    @keyframes point-up { from { transform: translateX(-50%) rotate(-90deg) translateY(0); } to { transform: translateX(-50%) rotate(-90deg) translateY(-15px); } }
   }
 </style>
 
- <script type="module"
-  src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js" defer>
-</script>
+ <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js" defer></script>
  
 </head>
  
@@ -599,18 +398,8 @@ body.video-active .cursor-outline {
       <span class="m-zh">✨ 嗨！欢迎访问E-Link！</span>
     </div>
     <div class="modal-body">
-      <span class="m-en">
-       We recommend <b>Dark Mode</b> for a more immersive experience<br>
-       <span style="font-size: 0.85rem; color: #94a3b8;">
-         (Feel free to tailor your view at the top-right corner)
-       </span>
-      </span>
-      <span class="m-zh">
-       为呈现最佳<b>视觉体验</b>，建议保留<b>深色设置</b> <br>
-       <span style="font-size: 0.85rem; color: #94a3b8;">
-         (您可随时通过右上角切换语言或主题)
-       </span>
-      </span>
+      <span class="m-en">We recommend <b>Dark Mode</b> for a more immersive experience<br><span style="font-size: 0.85rem; color: #94a3b8;">(Feel free to tailor your view at the top-right corner)</span></span>
+      <span class="m-zh">为呈现最佳<b>视觉体验</b>，建议保留<b>深色设置</b> <br><span style="font-size: 0.85rem; color: #94a3b8;">(您可随时通过右上角切换语言或主题)</span></span>
     </div>
     <div class="modal-btns">
       <button id="modal-keep-dark-btn" class="btn-primary">
@@ -626,10 +415,7 @@ body.video-active .cursor-outline {
       <span class="lang-title">Language / 语言</span>
       <div class="lang-row">
         <span>English</span>
-        <label class="switch">
-          <input type="checkbox" id="modal-lang-toggle-checkbox">
-          <span class="slider round"></span>
-        </label>
+        <label class="switch"><input type="checkbox" id="modal-lang-toggle-checkbox"><span class="slider round"></span></label>
         <span>简体中文</span>
       </div>
     </div>
@@ -708,31 +494,15 @@ body.video-active .cursor-outline {
   </p>
 
   <style>
-    @keyframes text-glow-cyan {
-      0% { color: #334155; text-shadow: 0 0 0px rgba(0, 242, 255, 0); }
-      50% { color: #00f2ff; text-shadow: 0 0 8px rgba(0, 242, 255, 0.6); }
-      100% { color: #334155; text-shadow: 0 0 0px rgba(0, 242, 255, 0); }
-    }
-
-    @keyframes live-glow-blue {
-      0% { color: #1d4ed8; opacity: 0.7; text-shadow: 0 0 0px rgba(96, 165, 250, 0); }
-      50% { color: #60a5fa; opacity: 1; text-shadow: 0 0 10px rgba(96, 165, 250, 0.8); }
-      100% { color: #1d4ed8; opacity: 0.7; text-shadow: 0 0 0px rgba(96, 165, 250, 0); }
-    }
-
-    @keyframes float-up-fade {
-      0% { transform: translateY(0); opacity: 0; }
-      20% { opacity: 1; }
-      100% { transform: translateY(-12px); opacity: 0; }
-    }
+    @keyframes text-glow-cyan { 0% { color: #334155; text-shadow: 0 0 0px rgba(0, 242, 255, 0); } 50% { color: #00f2ff; text-shadow: 0 0 8px rgba(0, 242, 255, 0.6); } 100% { color: #334155; text-shadow: 0 0 0px rgba(0, 242, 255, 0); } }
+    @keyframes live-glow-blue { 0% { color: #1d4ed8; opacity: 0.7; text-shadow: 0 0 0px rgba(96, 165, 250, 0); } 50% { color: #60a5fa; opacity: 1; text-shadow: 0 0 10px rgba(96, 165, 250, 0.8); } 100% { color: #1d4ed8; opacity: 0.7; text-shadow: 0 0 0px rgba(96, 165, 250, 0); } }
+    @keyframes float-up-fade { 0% { transform: translateY(0); opacity: 0; } 20% { opacity: 1; } 100% { transform: translateY(-12px); opacity: 0; } }
     .animate-plus { animation: float-up-fade 1.2s ease-out forwards; }
   </style>
 
   <script>
     (function() {
-      // 1. 初始化：起始人数 1-2 (包含当前用户本身)
       let currentDisplay = Math.floor(Math.random() * 2) + 1; 
-
       function initCounter() {
         const counterEl = document.getElementById('live-counter');
         const plusEl = document.getElementById('plus-one');
@@ -740,18 +510,13 @@ body.video-active .cursor-outline {
         
         counterEl.textContent = currentDisplay;
 
-        // 2. 模拟真实访客行为 (12秒检测一次)
         setInterval(() => {
           const rand = Math.random();
-          
-          // --- 进入逻辑：仅在总数小于 3 时允许增加 ---
           if (rand > 0.8 && currentDisplay < 3) { 
-            const maxCanAdd = 3 - currentDisplay; // 动态计算距离上限 3 的剩余空位
+            const maxCanAdd = 3 - currentDisplay;
             const delta = Math.min(maxCanAdd, (Math.random() > 0.85 ? 2 : 1)); 
-            
             plusEl.textContent = '+' + delta;
 
-            // 特效：+2 更加醒目
             if (delta === 2) {
                 plusEl.style.fontWeight = '900';
                 plusEl.style.filter = 'brightness(1.5) drop-shadow(0 0 5px #00f2ff)';
@@ -767,9 +532,7 @@ body.video-active .cursor-outline {
             currentDisplay += delta;
             counterEl.textContent = currentDisplay;
             
-            // 随机留存时长：10s - 30s
             const stayDuration = Math.floor(Math.random() * 20000) + 10000;
-            
             setTimeout(() => {
               if (currentDisplay > 1) {
                 currentDisplay -= delta;
@@ -778,7 +541,6 @@ body.video-active .cursor-outline {
             }, stayDuration);
 
           } else if (rand < 0.15 && currentDisplay > 1) {
-            // 自然减员
             currentDisplay--;
             counterEl.textContent = currentDisplay;
           }
@@ -792,320 +554,91 @@ body.video-active .cursor-outline {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
 <script>
-  
-
-// --- 🌍 双语数据源 (扩展版) ---
+  // --- 🌍 双语数据源 ---
   const dialogData_EN = {
-    "start": {
-      text: "Hi! I'm the Connector Guardian. I protect your neural interfaces.",
-      options: [ 
-          { text: "🎬 Watch Demo Video", next: "play_video" },
-          { text: "🚀 Let's start!", next: "root_menu" } 
-      ]
-    },
-    "play_video": {
-       text: "Initiating Cinema Mode... Loading visual data.",
-       options: [ { text: "Close Video", next: "start" } ]
-    },
-    "root_menu": {
-      text: "Select a category to inspect:",
-      options: [
-        { text: "🌟 What's Special? (ACE & Zero Force)", next: "innovation" },
-        { text: "📊 Specifications (Weight/Noise)", next: "specs_menu" },
-        { text: "🛡️ Reliability & Protection", next: "reliability_menu" },
-        { text: "🔧 Modular Usage", next: "usage_menu" },
-        { text: "🌍 Open Source Vision", next: "open_source" },
-        { text: "Just browsing", next: "close" }
-      ]
-    },
-    "innovation": {
-      text: "I use an Anisotropic Conductive Elastomer (ACE). It shifts the paradigm from 'Rigid Pins' to 'Soft Interconnects'.",
-      options: [
-        { text: "Why is 'Zero Insertion Force' better?", next: "zero_force" },
-        { text: "What is the 'Sandwich' design?", next: "modularity" },
-        { text: "Can it scale up?", next: "scalability" },
-        { text: "Back to Menu", next: "root_menu" } 
-      ]
-    },
-    "zero_force": {
-      text: "Traditional pin-connectors require high force and micro-alignment, risking bent pins. My threaded cap converts manual rotation into gentle, uniform pressure. No pushing, no damage!",
-      options: [ { text: "Cool! Back.", next: "innovation" } ]
-    },
-    "modularity": {
-      text: "It's a modular 'sandwich' structure. Housing, Adapter PCB, and Headstage can be replaced independently. You don't need to discard the whole setup if one part breaks, saving significant costs.",
-      options: [ { text: "Smart design. Back.", next: "innovation" } ]
-    },
-    "scalability": {
-      text: "Traditional pins struggle with density. Thanks to the ~100 µm pitch elastomer, I offer a clear scaling roadmap: 256 -> 512 -> 1024 channels within the same footprint!",
-      options: [ { text: "Future-proof! Back.", next: "innovation" } ]
-    },
-    "specs_menu": {
-      text: "Checking Diagnostics... Which parameter concerns you?",
-      options: [
-        { text: "Is it heavy? (Weight)", next: "weight" },
-        { text: "Does it get hot? (Thermal)", next: "thermal" },
-        { text: "How clean is the signal? (Noise)", next: "noise" },
-        { text: "Back to Menu", next: "root_menu" }
-      ]
-    },
-    "weight": {
-      text: "Ultra-light! Detached core is only 2.8g. Fully housed, I am 6.6g, vastly reducing the burden on freely moving animals.",
-      options: [ { text: "Good for mice/rats.", next: "specs_menu" } ]
-    },
-    "thermal": {
-      text: "I stay cool. Steady-state temperature is 30.5°C, well below the 37°C biological threshold. No active cooling required.",
-      options: [ { text: "Safe confirmed.", next: "specs_menu" } ]
-    },
-    "noise": {
-      text: "Crystal clear. Through optimized shielding, my RMS noise floor is 2.68 µV, practically matching the amplifier chip's theoretical limit.",
-      options: [ { text: "Great specs.", next: "specs_menu" } ]
-    },
-    "reliability_menu": {
-      text: "I act as physical armor for delicate probes. What is your concern?",
-      options: [
-        { text: "Lifespan (Cycles)", next: "cycles" },
-        { text: "What if I align it wrong?", next: "misalignment" },
-        { text: "Environmental Protection?", next: "protection" },
-        { text: "Back to Menu", next: "root_menu" }
-      ]
-    },
-    "cycles": {
-      text: "Proven by a third-party tester, the system maintains a connection yield of >97% after hundreds of high-intensity mating cycles. The conductive elastomer demonstrates outstanding fatigue resistance and mechanical longevity.",
-      options: [ { text: "Solid.", next: "reliability_menu" } ]
-    },
-    "misalignment": {
-      text: "I am self-aligning! The elastomer has 'structural redundancy' (pitch < pad size), naturally forgiving minor manual misalignments.",
-      options: [ { text: "Very forgiving.", next: "reliability_menu" } ]
-    },
-    "protection": {
-      text: "The threaded base and potting create a closed isolation chamber. It blocks fluids, dust, and stays rock-solid even if the animal scratches it.",
-      options: [ { text: "True armor.", next: "reliability_menu" } ]
-    },
-    "usage_menu": {
-      text: "Designed for researchers. Ask me about usage:",
-      options: [
-        { text: "Is assembly difficult?", next: "assembly" },
-        { text: "Compatible Systems?", next: "system" },
-        { text: "For freely moving animals?", next: "animal" },
-        { text: "Back to Menu", next: "root_menu" }
-      ]
-    },
-    "assembly": {
-      text: "Extremely easy. It's a 'plug-and-play' twist assembly. The built-in foam washer automatically balances the pressure.",
-      options: [ { text: "User friendly.", next: "usage_menu" } ]
-    },
-    "system": {
-      text: "High integration! Packs 4 Intan RHD2164 chips. Seamlessly compatible with Intan, Open-Ephys, and NeuroNexus DAQ systems.",
-      options: [ { text: "Perfect.", next: "usage_menu" } ]
-    },
-    "animal": {
-      text: "Absolutely. The low profile fits mechanical commutators, allowing natural behavior without cable twisting.",
-      options: [ { text: "Show me the files!", next: "show_badges" } ]
-    },
-    "open_source": {
-      text: "E-Link is more than a connector; it's an Open Source infrastructure for neuroengineering. We solve the 'packaging' bottleneck so you can focus on brain science!",
-      options: [ { text: "Awesome! Show me the repo.", next: "show_badges" } ]
-    },
-    "show_badges": {
-      text: "Scroll down to the bottom! 👇 Those icons are your gateway to the Code, Fabrication Files, and Full System CAD.",
-      options: [ { text: "Thanks, Guardian!", next: "close" } ]
-    }
+    "start": { text: "Hi! I'm the Connector Guardian. I protect your neural interfaces.", options: [ { text: "🎬 Watch Demo Video", next: "play_video" }, { text: "🚀 Let's start!", next: "root_menu" } ] },
+    "play_video": { text: "Initiating Cinema Mode... Loading visual data.", options: [ { text: "Close Video", next: "start" } ] },
+    "root_menu": { text: "Select a category to inspect:", options: [ { text: "🌟 What's Special? (ACE & Zero Force)", next: "innovation" }, { text: "📊 Specifications (Weight/Noise)", next: "specs_menu" }, { text: "🛡️ Reliability & Protection", next: "reliability_menu" }, { text: "🔧 Modular Usage", next: "usage_menu" }, { text: "🌍 Open Source Vision", next: "open_source" }, { text: "Just browsing", next: "close" } ] },
+    "innovation": { text: "I use an Anisotropic Conductive Elastomer (ACE). It shifts the paradigm from 'Rigid Pins' to 'Soft Interconnects'.", options: [ { text: "Why is 'Zero Insertion Force' better?", next: "zero_force" }, { text: "What is the 'Sandwich' design?", next: "modularity" }, { text: "Can it scale up?", next: "scalability" }, { text: "Back to Menu", next: "root_menu" } ] },
+    "zero_force": { text: "Traditional pin-connectors require high force and micro-alignment, risking bent pins. My threaded cap converts manual rotation into gentle, uniform pressure. No pushing, no damage!", options: [ { text: "Cool! Back.", next: "innovation" } ] },
+    "modularity": { text: "It's a modular 'sandwich' structure. Housing, Adapter PCB, and Headstage can be replaced independently. You don't need to discard the whole setup if one part breaks, saving significant costs.", options: [ { text: "Smart design. Back.", next: "innovation" } ] },
+    "scalability": { text: "Traditional pins struggle with density. Thanks to the ~100 µm pitch elastomer, I offer a clear scaling roadmap: 256 -> 512 -> 1024 channels within the same footprint!", options: [ { text: "Future-proof! Back.", next: "innovation" } ] },
+    "specs_menu": { text: "Checking Diagnostics... Which parameter concerns you?", options: [ { text: "Is it heavy? (Weight)", next: "weight" }, { text: "Does it get hot? (Thermal)", next: "thermal" }, { text: "How clean is the signal? (Noise)", next: "noise" }, { text: "Back to Menu", next: "root_menu" } ] },
+    "weight": { text: "Ultra-light! Detached core is only 2.8g. Fully housed, I am 6.6g, vastly reducing the burden on freely moving animals.", options: [ { text: "Good for mice/rats.", next: "specs_menu" } ] },
+    "thermal": { text: "I stay cool. Steady-state temperature is 30.5°C, well below the 37°C biological threshold. No active cooling required.", options: [ { text: "Safe confirmed.", next: "specs_menu" } ] },
+    "noise": { text: "Crystal clear. Through optimized shielding, my RMS noise floor is 2.68 µV, practically matching the amplifier chip's theoretical limit.", options: [ { text: "Great specs.", next: "specs_menu" } ] },
+    "reliability_menu": { text: "I act as physical armor for delicate probes. What is your concern?", options: [ { text: "Lifespan (Cycles)", next: "cycles" }, { text: "What if I align it wrong?", next: "misalignment" }, { text: "Environmental Protection?", next: "protection" }, { text: "Back to Menu", next: "root_menu" } ] },
+    "cycles": { text: "Proven by a third-party tester, the system maintains a connection yield of >97% after hundreds of high-intensity mating cycles. The conductive elastomer demonstrates outstanding fatigue resistance and mechanical longevity.", options: [ { text: "Solid.", next: "reliability_menu" } ] },
+    "misalignment": { text: "I am self-aligning! The elastomer has 'structural redundancy' (pitch < pad size), naturally forgiving minor manual misalignments.", options: [ { text: "Very forgiving.", next: "reliability_menu" } ] },
+    "protection": { text: "The threaded base and potting create a closed isolation chamber. It blocks fluids, dust, and stays rock-solid even if the animal scratches it.", options: [ { text: "True armor.", next: "reliability_menu" } ] },
+    "usage_menu": { text: "Designed for researchers. Ask me about usage:", options: [ { text: "Is assembly difficult?", next: "assembly" }, { text: "Compatible Systems?", next: "system" }, { text: "For freely moving animals?", next: "animal" }, { text: "Back to Menu", next: "root_menu" } ] },
+    "assembly": { text: "Extremely easy. It's a 'plug-and-play' twist assembly. The built-in foam washer automatically balances the pressure.", options: [ { text: "User friendly.", next: "usage_menu" } ] },
+    "system": { text: "High integration! Packs 4 Intan RHD2164 chips. Seamlessly compatible with Intan, Open-Ephys, and NeuroNexus DAQ systems.", options: [ { text: "Perfect.", next: "usage_menu" } ] },
+    "animal": { text: "Absolutely. The low profile fits mechanical commutators, allowing natural behavior without cable twisting.", options: [ { text: "Show me the files!", next: "show_badges" } ] },
+    "open_source": { text: "E-Link is more than a connector; it's an Open Source infrastructure for neuroengineering. We solve the 'packaging' bottleneck so you can focus on brain science!", options: [ { text: "Awesome! Show me the repo.", next: "show_badges" } ] },
+    "show_badges": { text: "Scroll down to the bottom! 👇 Those icons are your gateway to the Code, Fabrication Files, and Full System CAD.", options: [ { text: "Thanks, Guardian!", next: "close" } ] }
   };
 
   const dialogData_ZH = {
-    "start": {
-      text: "你好！我是易链的问答向导，我致力于为高密度柔性神经探针提供稳健、可靠的信号传输解决方案",
-      options: [ 
-        { text: "🎬 观看组装演示视频", next: "play_video" },
-        { text: "🚀 开启硬核探索！", next: "root_menu" } 
-      ]
-    },
-    "play_video": {
-       text: "正在启动影院模式，调取视觉数据中...",
-       options: [ { text: "关闭视频", next: "start" } ]
-    },
-    "root_menu": {
-      text: "系统已就绪。请选择想要咨询的类别：",
-      options: [
-        { text: "🌟 核心亮点 (弹性互连与零插拔)", next: "innovation" },
-        { text: "📊 规格参数 (重量/噪音/温度)", next: "参数菜单" },
-        { text: "🛡️ 可靠性与物理防护", next: "可靠性菜单" },
-        { text: "🔧 模块化使用与兼容", next: "usage_menu" },
-        { text: "🌍 了解本开源项目", next: "open_source" },
-        { text: "随便看看", next: "close" }
-      ]
-    },
-    "innovation": {
-      text: "我引入了各向异性导电弹性体 (ACE)。实现了从“刚性针脚”到“弹性中介层”的范式重构",
-      options: [
-        { text: "“零插拔力”有什么好处？", next: "零插拔力" },
-        { text: "什么是“三明治”模块化结构？", next: "模块化" },
-        { text: "通道数能扩展吗？", next: "可拓展性" },
-        { text: "返回主菜单", next: "root_menu" } 
-      ]
-    },
-    "零插拔力": {
-      text: "传统插针不仅难对准，插拔力还会损伤探针。利用“拧瓶盖”原理，将扭矩转化为均匀的轴向压力，物理层面彻底告别断针和弯针！",
-      options: [ { text: "以柔克刚！", next: "innovation" } ]
-    },
-    "模块化": {
-      text: "外壳、转接板、放大器板（Headstage）均可独立更换。局部损坏无需整套报废，能显著降低科研团队的维护成本。",
-      options: [ { text: "经济化方案，返回", next: "innovation" } ]
-    },
-    "可拓展性": {
-      text: "传统插针方案在极高通道下体积庞大。得益于百微米级导电柱，我在极小体积内规划了 256 → 512 → 1024 通道的演进路线。",
-      options: [ { text: "能够拓展更多，返回", next: "innovation" } ]
-    },
-    "参数菜单": {
-      text: "正在读取底层传感器数据... 你想了解什么？",
-      options: [
-        { text: "对小鼠负担大吗？ (重量)", next: "weight" },
-        { text: "运行会发热吗？ (热学)", next: "thermal" },
-        { text: "信号保真度如何？ (噪音)", next: "noise" },
-        { text: "返回主菜单", next: "root_menu" }
-      ]
-    },
-    "weight": {
-      text: "轻量化设计！核心组件仅 2.8g，整机(含外壳)重 6.6g，大幅降低动物的头部负重。",
-      options: [ { text: "很适合自由活动实验", next: "参数菜单" } ]
-    },
-    "thermal": {
-      text: "运转时稳态温度仅为 30.5°C，远低于 37°C 的生物阈值，无需任何主动散热。",
-      options: [ { text: "热安全性已确认", next: "参数菜单" } ]
-    },
-    "noise": {
-      text: "得益于屏蔽设计，我的实测 RMS 基底噪声低至 2.68 µV，接近放大器芯片的理想数据极限，确保单细胞级的信号保真度。",
-      options: [ { text: "参数稳健", next: "参数菜单" } ]
-    },
-    "可靠性菜单": {
-      text: "我是脆弱探针的“防护铠甲”。你想了解哪方面的可靠性？",
-      options: [
-        { text: "能扭转压合多少次？ (寿命)", next: "cycles" },
-        { text: "操作时候没完全对准怎么办？", next: "misalignment" },
-        { text: "动物抓挠和头部组织液有可能侵入？", next: "protection" },
-        { text: "返回主菜单", next: "root_menu" }
-      ]
-    },
-    "cycles": {
-      text: "经数位独立测试者实测，在历经数百次高强度的连续拧转后，我的连接良率依然坚挺在 97% 以上。弹性导电体展现出了极其卓越的抗疲劳寿命。",
-      options: [ { text: "经久耐用", next: "可靠性菜单" } ]
-    },
-    "misalignment": {
-      text: "自然免对齐需求，导电柱具备“结构冗余”，允许物理操作上的轻微偏差，对操作者极其友好。",
-      options: [ { text: "容错率高", next: "可靠性菜单" } ]
-    },
-    "protection": {
-      text: "没问题！螺纹基座构建了一个封闭的物理防护舱，阻隔体液与粉尘，有效防止动物抓挠产生的破坏。",
-      options: [ { text: "真正的装甲", next: "可靠性菜单" } ]
-    },
-    "usage_menu": {
-      text: "易链系统级整合方案降低实验门槛。请问：",
-      options: [
-        { text: "组装难度大吗？", next: "assembly" },
-        { text: "可以直接接我的设备吗？", next: "system" },
-        { text: "动物自由活动实验表现如何？", next: "animal" },
-        { text: "返回主菜单", next: "root_menu" }
-      ]
-    },
-    "assembly": {
-      text: "非常简单。模块机械化结构即拧即用。内部泡沫垫圈会自动完成压力补偿。",
-      options: [ { text: "省时省力", next: "usage_menu" } ]
-    },
-    "system": {
-      text: "内部集成 4 颗 Intan的RHD2164芯片。输出信号完美兼容 Intan、Open-Ephys、NeuroNexus 等主流采集工作站。",
-      options: [ { text: "无缝对接", next: "usage_menu" } ]
-    },
-    "animal": {
-      text: "极佳！低剖面基座设计适配机械换向器 (Commutator)，线缆不打结，保障动物最自然的行为轨迹。",
-      options: [ { text: "哪里可以获取开源文件？", next: "徽章指引" } ]
-    },
-    "open_source": {
-      text: "易链是由美国达特茅斯学院Tianyu Bai主导设计开发的一项脑机探针连接技术，更是属于神经工程社区的开源基础设施。通过解决最后的“互连”短板，设计团队希望让研究者能将更多精力投入到脑科学中！",
-      options: [ { text: "致敬！带我去看看开源仓库", next: "徽章指引" } ]
-    },
-    "徽章指引": {
-      text: "一直滑到页面底部 👇！点击下面的GitHub徽章，你可以直接下载制造文件 (Gerber/STL)、BOM 表和完整代码。",
-      options: [ { text: "谢谢易链向导！", next: "close" } ]
-    }
+    "start": { text: "你好！我是易链的问答向导，我致力于为高密度柔性神经探针提供稳健、可靠的信号传输解决方案", options: [ { text: "🎬 观看组装演示视频", next: "play_video" }, { text: "🚀 开启硬核探索！", next: "root_menu" } ] },
+    "play_video": { text: "正在启动影院模式，调取视觉数据中...", options: [ { text: "关闭视频", next: "start" } ] },
+    "root_menu": { text: "系统已就绪。请选择想要咨询的类别：", options: [ { text: "🌟 核心亮点 (弹性互连与零插拔)", next: "innovation" }, { text: "📊 规格参数 (重量/噪音/温度)", next: "参数菜单" }, { text: "🛡️ 可靠性与物理防护", next: "可靠性菜单" }, { text: "🔧 模块化使用与兼容", next: "usage_menu" }, { text: "🌍 了解本开源项目", next: "open_source" }, { text: "随便看看", next: "close" } ] },
+    "innovation": { text: "我引入了各向异性导电弹性体 (ACE)。实现了从“刚性针脚”到“弹性中介层”的范式重构", options: [ { text: "“零插拔力”有什么好处？", next: "零插拔力" }, { text: "什么是“三明治”模块化结构？", next: "模块化" }, { text: "通道数能扩展吗？", next: "可拓展性" }, { text: "返回主菜单", next: "root_menu" } ] },
+    "零插拔力": { text: "传统插针不仅难对准，插拔力还会损伤探针。利用“拧瓶盖”原理，将扭矩转化为均匀的轴向压力，物理层面彻底告别断针和弯针！", options: [ { text: "以柔克刚！", next: "innovation" } ] },
+    "模块化": { text: "外壳、转接板、放大器板（Headstage）均可独立更换。局部损坏无需整套报废，能显著降低科研团队的维护成本。", options: [ { text: "经济化方案，返回", next: "innovation" } ] },
+    "可拓展性": { text: "传统插针方案在极高通道下体积庞大。得益于百微米级导电柱，我在极小体积内规划了 256 → 512 → 1024 通道的演进路线。", options: [ { text: "能够拓展更多，返回", next: "innovation" } ] },
+    "参数菜单": { text: "正在读取底层传感器数据... 你想了解什么？", options: [ { text: "对小鼠负担大吗？ (重量)", next: "weight" }, { text: "运行会发热吗？ (热学)", next: "thermal" }, { text: "信号保真度如何？ (噪音)", next: "noise" }, { text: "返回主菜单", next: "root_menu" } ] },
+    "weight": { text: "轻量化设计！核心组件仅 2.8g，整机(含外壳)重 6.6g，大幅降低动物的头部负重。", options: [ { text: "很适合自由活动实验", next: "参数菜单" } ] },
+    "thermal": { text: "运转时稳态温度仅为 30.5°C，远低于 37°C 的生物阈值，无需任何主动散热。", options: [ { text: "热安全性已确认", next: "参数菜单" } ] },
+    "noise": { text: "得益于屏蔽设计，我的实测 RMS 基底噪声低至 2.68 µV，接近放大器芯片的理想数据极限，确保单细胞级的信号保真度。", options: [ { text: "参数稳健", next: "参数菜单" } ] },
+    "可靠性菜单": { text: "我是脆弱探针的“防护铠甲”。你想了解哪方面的可靠性？", options: [ { text: "能扭转压合多少次？ (寿命)", next: "cycles" }, { text: "操作时候没完全对准怎么办？", next: "misalignment" }, { text: "动物抓挠和头部组织液有可能侵入？", next: "protection" }, { text: "返回主菜单", next: "root_menu" } ] },
+    "cycles": { text: "经数位独立测试者实测，在历经数百次高强度的连续拧转后，我的连接良率依然坚挺在 97% 以上。弹性导电体展现出了极其卓越的抗疲劳寿命。", options: [ { text: "经久耐用", next: "可靠性菜单" } ] },
+    "misalignment": { text: "自然免对齐需求，导电柱具备“结构冗余”，允许物理操作上的轻微偏差，对操作者极其友好。", options: [ { text: "容错率高", next: "可靠性菜单" } ] },
+    "protection": { text: "没问题！螺纹基座构建了一个封闭的物理防护舱，阻隔体液与粉尘，有效防止动物抓挠产生的破坏。", options: [ { text: "真正的装甲", next: "可靠性菜单" } ] },
+    "usage_menu": { text: "易链系统级整合方案降低实验门槛。请问：", options: [ { text: "组装难度大吗？", next: "assembly" }, { text: "可以直接接我的设备吗？", next: "system" }, { text: "动物自由活动实验表现如何？", next: "animal" }, { text: "返回主菜单", next: "root_menu" } ] },
+    "assembly": { text: "非常简单。模块机械化结构即拧即用。内部泡沫垫圈会自动完成压力补偿。", options: [ { text: "省时省力", next: "usage_menu" } ] },
+    "system": { text: "内部集成 4 颗 Intan的RHD2164芯片。输出信号完美兼容 Intan、Open-Ephys、NeuroNexus 等主流采集工作站。", options: [ { text: "无缝对接", next: "usage_menu" } ] },
+    "animal": { text: "极佳！低剖面基座设计适配机械换向器 (Commutator)，线缆不打结，保障动物最自然的行为轨迹。", options: [ { text: "哪里可以获取开源文件？", next: "徽章指引" } ] },
+    "open_source": { text: "易链是由美国达特茅斯学院Tianyu Bai主导设计开发的一项脑机探针连接技术，更是属于神经工程社区的开源基础设施。通过解决最后的“互连”短板，设计团队希望让研究者能将更多精力投入到脑科学中！", options: [ { text: "致敬！带我去看看开源仓库", next: "徽章指引" } ] },
+    "徽章指引": { text: "一直滑到页面底部 👇！点击下面的GitHub徽章，你可以直接下载制造文件 (Gerber/STL)、BOM 表和完整代码。", options: [ { text: "谢谢易链向导！", next: "close" } ] }
   };
       
-  // 默认使用英文
   let currentLang = 'en';
   let dialogData = dialogData_EN;
-
   let vantaEffect;
    
-  // 🔥 第一阶段：DOM 加载完成，立刻处理首屏
   document.addEventListener("DOMContentLoaded", function() {
-      // 0. 🔥 初始化 Lenis 平滑滚动
-      // 这里可以调整 duration (惯性时长) 和 easing (缓动曲线)
+      // 0. 🔥 初始化防爆级 Lenis 平滑滚动
       const lenis = new Lenis({
         duration: 1.2,
         easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-        direction: 'vertical',
-        gestureDirection: 'vertical',
-        smooth: true,
-        mouseMultiplier: 1,
-        smoothTouch: false, // 移动端通常保留原生滚动体验更好，如需开启改为 true
-        touchMultiplier: 2,
-      })
-
-      // Lenis 动画循环
-      function raf(time) {
-        lenis.raf(time)
-        requestAnimationFrame(raf)
-      }
+        direction: 'vertical', gestureDirection: 'vertical',
+        smooth: true, mouseMultiplier: 1, smoothTouch: false, touchMultiplier: 2,
+      });
+      function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
       requestAnimationFrame(raf);
 
-      // 1. 立即启动 Vanta 背景 (恢复满血密度版，但保留手机端低分屏渲染)
       if (window.VANTA) { 
         vantaEffect = VANTA.NET({
-          el: "#vanta-bg",
-        // 恢复 1.0，拒绝强行拉伸导致的变亮和发糊！
-          scale: 1.00, 
-          scaleMobile: 1.00, 
-          
-          // 恢复你最初设计的完美密度比例
-          points: 18.00,        
-          maxDistance: 28.00,   
-          spacing: 16.00,       
-          
-          // 恢复原始的鼠标和触摸互动
-          mouseControls: true, 
-          touchControls: true, 
-          gyroControls: false,
-          
-          minHeight: 200.00, 
-          minWidth: 200.00, 
-          color: 0x3b82f6, 
-          backgroundColor: 0x0a0a0f, 
-          showDots: true
+          el: "#vanta-bg", scale: 1.00, scaleMobile: 1.00, points: 18.00, maxDistance: 28.00, spacing: 16.00, 
+          mouseControls: true, touchControls: true, gyroControls: false, minHeight: 200.00, minWidth: 200.00, 
+          color: 0x3b82f6, backgroundColor: 0x0a0a0f, showDots: true
         });
       }
 
-      // 2. 启动流星特效
       initMeteors();
 
-      // 3. 智能加载策略 - 阶段一
-      // 先把所有图片设为 lazy，防止阻塞首屏，除非它是前两张
+      // 图片懒加载
       const images = document.querySelectorAll('#main_content img');
       images.forEach((img, index) => {
-          if (index < 2) {
-              // 首屏图片：立即加载
-              img.setAttribute('loading', 'eager'); 
-              img.setAttribute('fetchpriority', 'high'); 
-          } else {
-              // 其他图片：先暂缓
-              if(!img.getAttribute('loading')) {
-                 img.setAttribute('loading', 'lazy');
-              }
-          }
+          if (index < 2) { img.setAttribute('loading', 'eager'); img.setAttribute('fetchpriority', 'high'); } 
+          else { if(!img.getAttribute('loading')) img.setAttribute('loading', 'lazy'); }
       });
   });
 
   const textsEN = ["Welcome to this webpage！", "Thanks for visiting us!", "Stay tuned!"];
   const textsZH = ["欢迎访问本网页！", "感谢您的关注！", "欢迎常来访问！"];
-  let texts = textsEN; // 默认文本
+  let texts = textsEN; 
   
   let textIdx = 0, charIdx = 0, isDeleting = false;
   function type() {
@@ -1118,22 +651,17 @@ body.video-active .cursor-outline {
     setTimeout(type, speed);
   }
 
-  // --- 🔥 神经元流星特效逻辑 --- 
   function initMeteors() {
     const canvas = document.getElementById('meteor-canvas');
     if(!canvas) return;
     const ctx = canvas.getContext('2d');
     let width, height;
     function resizeCanvas() {
-      width = window.innerWidth;
-      height = window.innerHeight;
-     // 🟢 获取设备像素比，解决高分屏模糊问题
-      const dpr = Math.min(window.devicePixelRatio || 1, 2); // 限制最大为2
-      canvas.width = width * dpr;
-      canvas.height = height * dpr;
-      canvas.style.width = `${width}px`;
-      canvas.style.height = `${height}px`;
-      ctx.scale(dpr, dpr); // 放大绘图上下文
+      width = window.innerWidth; height = window.innerHeight;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2); 
+      canvas.width = width * dpr; canvas.height = height * dpr;
+      canvas.style.width = `${width}px`; canvas.style.height = `${height}px`;
+      ctx.scale(dpr, dpr); 
     }
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
@@ -1141,64 +669,34 @@ body.video-active .cursor-outline {
     class Meteor {
       constructor() { this.reset(); }
       reset() {
-        this.x = Math.random() * width;
-        this.y = Math.random() * height;
-        this.len = Math.random() * 100 + 50;
-        this.speed = Math.random() * 1 + 1;
-        this.size = Math.random() * 1 + 0.5;
-        this.angle = (Math.PI * 0.75) + (Math.random() - 0.5) * 0.5;
-        this.opacity = 0;
-        this.state = 'fadein'; // fadein, active, fadeout
-        this.life = 0;
-        this.maxLife = Math.random() * 30 + 20; // 存活帧数
+        this.x = Math.random() * width; this.y = Math.random() * height;
+        this.len = Math.random() * 100 + 50; this.speed = Math.random() * 1 + 1;
+        this.size = Math.random() * 1 + 0.5; this.angle = (Math.PI * 0.75) + (Math.random() - 0.5) * 0.5;
+        this.opacity = 0; this.state = 'fadein'; this.life = 0; this.maxLife = Math.random() * 30 + 20; 
       }
       update() {
-        this.x += Math.cos(this.angle) * this.speed;
-        this.y += Math.sin(this.angle) * this.speed;
-        if(this.state === 'fadein') {
-           this.opacity += 0.1;
-           if(this.opacity >= 1) this.state = 'active';
-        } else if(this.state === 'active') {
-           this.life++;
-           if(this.life > this.maxLife) this.state = 'fadeout';
-        } else if(this.state === 'fadeout') {
-           this.opacity -= 0.05;
-           if(this.opacity <= 0) this.reset();
-        }
-        if(this.x < -100 || this.x > width + 100 || this.y < -100 || this.y > height + 100) {
-           this.reset();
-        }
+        this.x += Math.cos(this.angle) * this.speed; this.y += Math.sin(this.angle) * this.speed;
+        if(this.state === 'fadein') { this.opacity += 0.1; if(this.opacity >= 1) this.state = 'active'; } 
+        else if(this.state === 'active') { this.life++; if(this.life > this.maxLife) this.state = 'fadeout'; } 
+        else if(this.state === 'fadeout') { this.opacity -= 0.05; if(this.opacity <= 0) this.reset(); }
+        if(this.x < -100 || this.x > width + 100 || this.y < -100 || this.y > height + 100) this.reset();
       }
       draw() {
         if(this.opacity <= 0) return;
-        const tailX = this.x - Math.cos(this.angle) * this.len;
-        const tailY = this.y - Math.sin(this.angle) * this.len;
+        const tailX = this.x - Math.cos(this.angle) * this.len; const tailY = this.y - Math.sin(this.angle) * this.len;
         const gradient = ctx.createLinearGradient(this.x, this.y, tailX, tailY);
-        gradient.addColorStop(0, `rgba(96, 165, 250, ${this.opacity})`); 
-        gradient.addColorStop(1, `rgba(59, 130, 246, 0)`);  
-        ctx.beginPath();
-        ctx.moveTo(this.x, this.y);
-        ctx.lineTo(tailX, tailY);
-        ctx.strokeStyle = gradient;
-        ctx.lineWidth = this.size;
-        ctx.lineCap = 'round';
-        ctx.stroke();
+        gradient.addColorStop(0, `rgba(96, 165, 250, ${this.opacity})`); gradient.addColorStop(1, `rgba(59, 130, 246, 0)`);  
+        ctx.beginPath(); ctx.moveTo(this.x, this.y); ctx.lineTo(tailX, tailY);
+        ctx.strokeStyle = gradient; ctx.lineWidth = this.size; ctx.lineCap = 'round'; ctx.stroke();
       }
     }
-    
-    const meteors = [];
-    const meteorCount = 8; 
-    for(let i=0; i<meteorCount; i++) {
-       const m = new Meteor();
-       m.opacity = 0; 
-       m.life = Math.random() * 50;
-       meteors.push(m);
-    }
-    
+    const meteors = []; for(let i=0; i<8; i++) { const m = new Meteor(); m.opacity = 0; m.life = Math.random() * 50; meteors.push(m); }
     function animateMeteors() {
-      ctx.clearRect(0, 0, width, height);
-      meteors.forEach(m => { m.update(); m.draw(); });
-      requestAnimationFrame(animateMeteors);
+        if(!document.body.classList.contains('modal-active')) { // 视频播放时停止流星计算
+            ctx.clearRect(0, 0, width, height);
+            meteors.forEach(m => { m.update(); m.draw(); });
+        }
+        requestAnimationFrame(animateMeteors);
     }
     animateMeteors();
   }
@@ -1225,60 +723,39 @@ body.video-active .cursor-outline {
     const modalLangCheckbox = document.getElementById('modal-lang-toggle-checkbox');
     let modalIsZh = false; 
  
-    setTimeout(() => {
-      welcomeModal.classList.add('show');
-    }, 10);
+    setTimeout(() => { welcomeModal.classList.add('show'); document.body.classList.add('modal-active'); }, 100); // 稍微延时让背景加载完再弹，更顺滑
  
-    // --- 🤖 提示语轮播 ---
-    let idleInterval;
-    let tipIndex = 0;
- 
+    let idleInterval; let tipIndex = 0;
     function startIdleTips() {
       if(idleInterval) clearInterval(idleInterval);
       const enTips = ["Click me for guide!", "I'm here to help!"];
       const zhTips = ["我是E-Link智能向导", "🤖‘戳’我脑袋与我互动吧！"];
-      const runCycle = () => {
-         const tips = currentLang === 'en' ? enTips : zhTips;
-         botSay(tips[tipIndex], 3000); 
-         tipIndex = (tipIndex + 1) % 2;
-      };
-      runCycle(); 
-      idleInterval = setInterval(runCycle, 3500);
+      const runCycle = () => { botSay((currentLang === 'en' ? enTips : zhTips)[tipIndex], 3000); tipIndex = (tipIndex + 1) % 2; };
+      runCycle(); idleInterval = setInterval(runCycle, 3500);
     }
  
     function closeModal() {
       welcomeModal.classList.remove('show');
-      if (modalIsZh) {
-        if (currentLang !== 'zh') langToggle.click(); 
-      } else {
-        if (currentLang === 'zh') langToggle.click();
-      }
+      document.body.classList.remove('modal-active'); // 释放滚动锁
+      if (modalIsZh && currentLang !== 'zh') langToggle.click(); 
+      else if (!modalIsZh && currentLang === 'zh') langToggle.click();
+      
       setTimeout(() => {
           botContainer.classList.add('attention-jump'); 
           startIdleTips();
-          setTimeout(() => {
-              botContainer.classList.remove('attention-jump');
-          }, 3200);
+          setTimeout(() => botContainer.classList.remove('attention-jump'), 3200);
       }, 100);
     }
  
     modalKeepDarkBtn.addEventListener('click', closeModal);
-    modalSwitchLightBtn.addEventListener('click', () => {
-      themeToggle.click(); 
-      closeModal();         
-    });
+    modalSwitchLightBtn.addEventListener('click', () => { themeToggle.click(); closeModal(); });
  
     modalLangCheckbox.addEventListener('change', () => {
       const enTexts = document.querySelectorAll('.m-en');
       const zhTexts = document.querySelectorAll('.m-zh');
       modalIsZh = modalLangCheckbox.checked;
-      if (modalIsZh) {
-        enTexts.forEach(el => el.style.display = 'none');
-        zhTexts.forEach(el => el.style.display = 'inline'); 
-      } else {
-        zhTexts.forEach(el => el.style.display = 'none');
-        enTexts.forEach(el => el.style.display = 'inline');
-      }
+      if (modalIsZh) { enTexts.forEach(el => el.style.display = 'none'); zhTexts.forEach(el => el.style.display = 'inline'); } 
+      else { zhTexts.forEach(el => el.style.display = 'none'); enTexts.forEach(el => el.style.display = 'inline'); }
     });
  
     // --- 切换逻辑 ---
@@ -1302,98 +779,74 @@ body.video-active .cursor-outline {
       const enContent = document.querySelectorAll('.lang-en');
       const zhContent = document.querySelectorAll('.lang-zh');
       if (currentLang === 'en') {
-           currentLang = 'zh';
-           dialogData = dialogData_ZH; 
-           texts = textsZH;            
+           currentLang = 'zh'; dialogData = dialogData_ZH; texts = textsZH;            
            langToggle.textContent = "中 / 英";
-           enContent.forEach(el => el.style.display = 'none');
-           zhContent.forEach(el => el.style.display = 'block');
+           enContent.forEach(el => el.style.display = 'none'); zhContent.forEach(el => el.style.display = 'block');
       } else {
-           currentLang = 'en';
-           dialogData = dialogData_EN;
-           texts = textsEN;
+           currentLang = 'en'; dialogData = dialogData_EN; texts = textsEN;
            langToggle.textContent = "EN / CN";
-           enContent.forEach(el => el.style.display = 'block');
-           zhContent.forEach(el => el.style.display = 'none');
+           enContent.forEach(el => el.style.display = 'block'); zhContent.forEach(el => el.style.display = 'none');
       }
       textIdx = 0; charIdx = 0; isDeleting = false;
       if(rpgDialogue.classList.contains('active')) closeDialogue();
-      if (!rpgDialogue.classList.contains('active') && idleInterval) {
-           startIdleTips();
-      }
+      if (!rpgDialogue.classList.contains('active') && idleInterval) startIdleTips();
     });
  
-    let mouseX = window.innerWidth / 2;
-    let mouseY = 100;
-    let ticking = false;
-// 预存容器位置，避免在 mousemove 里实时读取触发 Reflow
-let containerRect = container ? container.getBoundingClientRect() : null;
-window.addEventListener('resize', () => {
-    if(container) containerRect = container.getBoundingClientRect();
-});
+    let mouseX = window.innerWidth / 2, mouseY = 100, ticking = false;
+    let containerRect = container ? container.getBoundingClientRect() : null;
+    window.addEventListener('resize', () => { if(container) containerRect = container.getBoundingClientRect(); });
 
-// --- 2. 唯一的鼠标监听器 ---
-window.addEventListener('mousemove', (e) => {
-    if (window.innerWidth <= 768) return; 
-
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-
-    if (!ticking) {
-        window.requestAnimationFrame(() => {
-            updateUI();
-            ticking = false;
-        });
-        ticking = true;
-    }
-});
-
-// --- 3. 唯一的更新函数 ---
-function updateUI() {
-    // A. 光标控制 (GPU 加速)
-    if(cursorDot) cursorDot.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%)`;
-    if(cursorOutline) cursorOutline.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%)`;
-
-    // B. 容器 3D 旋转
-    if (container) {
-        const rx = (window.innerWidth / 2 - mouseX) / 50; 
-        const ry = (window.innerHeight / 2 - mouseY) / 50;
-        container.style.transform = `rotateY(${rx * -1}deg) rotateX(${ry}deg)`;
-        
-        if(containerRect) {
-            container.style.setProperty("--mouse-x", `${mouseX - containerRect.left}px`);
-            container.style.setProperty("--mouse-y", `${mouseY - containerRect.top}px`);
+    // 鼠标引擎 (防抖动)
+    window.addEventListener('mousemove', (e) => {
+        if (window.innerWidth <= 768 || document.body.classList.contains('modal-active')) return; 
+        mouseX = e.clientX; mouseY = e.clientY;
+        if (!ticking) {
+            window.requestAnimationFrame(() => {
+                if(cursorDot) cursorDot.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%)`;
+                if(cursorOutline) cursorOutline.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%)`;
+                if (container) {
+                    const rx = (window.innerWidth / 2 - mouseX) / 50; 
+                    const ry = (window.innerHeight / 2 - mouseY) / 50;
+                    container.style.transform = `rotateY(${rx * -1}deg) rotateX(${ry}deg)`;
+                    if(containerRect) {
+                        container.style.setProperty("--mouse-x", `${mouseX - containerRect.left}px`);
+                        container.style.setProperty("--mouse-y", `${mouseY - containerRect.top}px`);
+                    }
+                }
+                pupils.forEach(p => {
+                    const rect = p.parentElement.getBoundingClientRect(); 
+                    const cx = rect.left + rect.width / 2, cy = rect.top + rect.height / 2;
+                    const angle = Math.atan2(mouseY - cy, mouseX - cx);
+                    const dist = Math.min(6, Math.hypot(mouseX - cx, mouseY - cy) / 15);
+                    p.style.transform = `translate(calc(-50% + ${Math.cos(angle) * dist}px), calc(-50% + ${Math.sin(angle) * dist}px))`;
+                });
+                ticking = false;
+            });
+            ticking = true;
         }
-    }
+    });
 
-    // C. 机器人眼睛
-    pupils.forEach(p => {
-        const rect = p.parentElement.getBoundingClientRect(); 
-        const cx = rect.left + rect.width / 2, cy = rect.top + rect.height / 2;
-        const angle = Math.atan2(mouseY - cy, mouseX - cx);
-        const dist = Math.min(6, Math.hypot(mouseX - cx, mouseY - cy) / 15);
-        p.style.transform = `translate(calc(-50% + ${Math.cos(angle) * dist}px), calc(-50% + ${Math.sin(angle) * dist}px))`;
-    });
-}
- 
+    // lenis 接管原生 scroll 逻辑 (防疯狂滑动)
+    let scrollTimeout;
     window.addEventListener('scroll', () => {
-      const scrolled = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
-      const pb = document.getElementById("progress-bar");
-      if(pb) pb.style.width = scrolled + "%";
-      if(botContainer && window.innerWidth > 768) {
-        if(window.scrollY > 200) { botContainer.classList.add('fixed-mode'); } 
-        else { botContainer.classList.remove('fixed-mode'); }
-      }
-    });
+        if(scrollTimeout) cancelAnimationFrame(scrollTimeout);
+        scrollTimeout = requestAnimationFrame(() => {
+            const scrolled = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+            const pb = document.getElementById("progress-bar");
+            if(pb) pb.style.width = scrolled + "%";
+            if(botContainer && window.innerWidth > 768) {
+                if(window.scrollY > 200) { botContainer.classList.add('fixed-mode'); } 
+                else { botContainer.classList.remove('fixed-mode'); }
+            }
+        });
+    }, { passive: true });
  
     function botSay(text, duration = 1000) {
       if(!botSpeech || !botContainer || rpgDialogue.classList.contains('active')) return; 
       botSpeech.textContent = text;
       botContainer.classList.add('speaking');
       if(botContainer.speechTimer) clearTimeout(botContainer.speechTimer);
-      botContainer.speechTimer = setTimeout(() => {
-        botContainer.classList.remove('speaking');
-      }, duration);
+      botContainer.speechTimer = setTimeout(() => botContainer.classList.remove('speaking'), duration);
     }
 
     // --- 🎬 视频控制逻辑 ---
@@ -1401,135 +854,89 @@ function updateUI() {
     const guardianVideo = document.getElementById('guardian-video');
 
     window.openVideoModal = function() {
-  videoModal.classList.add('show');
-  document.body.classList.add('video-active'); // 恢复默认鼠标
-  // ... 其他逻辑
-}
-
-     window.closeVideoModal = function() {
-  videoModal.classList.remove('show');
-  document.body.classList.remove('video-active'); // 重新隐藏默认鼠标，回到自定义状态
-  guardianVideo.pause(); 
-  // ... 其他逻辑
-}
-   
-    videoModal.addEventListener('click', (e) => {
-      if(e.target === videoModal) closeVideoModal();
-    });
+        videoModal.classList.add('show');
+        document.body.classList.add('modal-active'); // 接管锁定
+    }
+    window.closeVideoModal = function() {
+        videoModal.classList.remove('show');
+        document.body.classList.remove('modal-active'); // 释放锁定
+        guardianVideo.pause(); 
+    }
+    videoModal.addEventListener('click', (e) => { if(e.target === videoModal) closeVideoModal(); });
 
     function showDialogueNode(nodeKey, isFastMode = false) {
-      // 🔥 拦截播放指令
       if (nodeKey === 'play_video') {
-         const loadingText = currentLang === 'en' ? "Accessing Video Feed..." : "正在接入视频信号...";
-         botSay(loadingText, 1000);
-         setTimeout(() => {
-             openVideoModal();
-         }, 1000);
-         return; 
+         botSay(currentLang === 'en' ? "Accessing Video Feed..." : "正在接入视频信号...", 1000);
+         setTimeout(openVideoModal, 1000); return; 
       }
-
       if(nodeKey === 'close') { 
-           closeDialogue(); 
-           botContainer.classList.add('interaction-done');
-           const byeText = currentLang === 'en' ? "Nice chatting with you!" : "很高兴与你交谈！";
-           botSay(byeText, 3000); 
-           return; 
-      }    
+           closeDialogue(); botContainer.classList.add('interaction-done');
+           botSay(currentLang === 'en' ? "Nice chatting with you!" : "很高兴与你交谈！", 3000); return; 
+      }  
       
-      const node = dialogData[nodeKey];
-      if(!node) return;
+      const node = dialogData[nodeKey]; if(!node) return;
       rpgOptions.innerHTML = ''; 
       if(typeTimer) clearInterval(typeTimer);
  
       const showButtons = () => {
            node.options.forEach((opt, idx) => {
              const btn = document.createElement('div');
-             btn.className = 'rpg-btn'; 
-             btn.textContent = '> ' + opt.text;
-             
+             btn.className = 'rpg-btn'; btn.textContent = '> ' + opt.text;
              const isBackAction = opt.text.includes("Back") || opt.text.includes("返回");
- 
-             if(isFastMode) {
-                 btn.style.opacity = 1;
-                 btn.style.transform = 'translateX(0)';
-                 btn.style.animation = 'none'; 
-             } else {
-                 btn.style.animationDelay = `${idx * 0.05}s`;
-             }
- 
-             btn.onclick = (e) => { 
-                 e.stopPropagation(); 
-                 showDialogueNode(opt.next, isBackAction); 
-             };
+             if(isFastMode) { btn.style.opacity = 1; btn.style.transform = 'translateX(0)'; btn.style.animation = 'none'; } 
+             else { btn.style.animationDelay = `${idx * 0.05}s`; }
+             btn.onclick = (e) => { e.stopPropagation(); showDialogueNode(opt.next, isBackAction); };
              rpgOptions.appendChild(btn);
            });
       };
  
-      if (isFastMode) {
-           rpgText.textContent = node.text; 
-           showButtons();
-      } else {
-           rpgText.textContent = '';
-           let i = 0;
+      if (isFastMode) { rpgText.textContent = node.text; showButtons(); } 
+      else {
+           rpgText.textContent = ''; let i = 0;
            typeTimer = setInterval(() => {
              rpgText.textContent += node.text.charAt(i); i++;
-             if(i >= node.text.length) {
-               clearInterval(typeTimer);
-               showButtons();
-             }
+             if(i >= node.text.length) { clearInterval(typeTimer); showButtons(); }
            }, 20);
       }
     }
  
     function openDialogue() {
       if(rpgDialogue.classList.contains('active')) return;
-      rpgDialogue.classList.add('active');
-      botContainer.classList.add('speaking');
-      botContainer.classList.add('hint-removed'); 
+      rpgDialogue.classList.add('active'); botContainer.classList.add('speaking', 'hint-removed'); 
       showDialogueNode('start');
     }
  
     function closeDialogue() {
-      rpgDialogue.classList.remove('active');
-      botContainer.classList.remove('speaking');
+      rpgDialogue.classList.remove('active'); botContainer.classList.remove('speaking');
       setTimeout(() => { rpgText.textContent = ''; rpgOptions.innerHTML = ''; }, 300);
     }
  
     if(botContainer) {
       botContainer.addEventListener('click', (e) => {
         e.stopPropagation();
-        if (idleInterval) {
-            clearInterval(idleInterval);
-            idleInterval = null;
-        }
+        if (idleInterval) { clearInterval(idleInterval); idleInterval = null; }
         if(botContainer.speechTimer) clearTimeout(botContainer.speechTimer); 
-        botSpeech.textContent = "";                     
+        botSpeech.textContent = "";                    
         botContainer.classList.remove('speaking'); 
-        if(rpgDialogue.classList.contains('active')) closeDialogue();
-        else openDialogue();
+        if(rpgDialogue.classList.contains('active')) closeDialogue(); else openDialogue();
       });
     }
  
-    setTimeout(() => {
-         const guideText = currentLang === 'en' ? "Click me for guide!" : "点击我答疑解惑";
-         botSay(guideText, 60000); 
-    }, 1000);
+    setTimeout(() => botSay(currentLang === 'en' ? "Click me for guide!" : "点击我答疑解惑", 60000), 1000);
  
     const badges = document.querySelectorAll('.nav-badges a');
     badges.forEach(b => {
       b.addEventListener('mouseenter', () => {
         document.body.classList.add('badge-hovering', 'hovering');
         if(vantaEffect) vantaEffect.setOptions({ color: 0x60a5fa });
-        const accessText = currentLang === 'en' ? "Accessing..." : "正在访问...";
-        botSay(accessText, 1500);
+        botSay(currentLang === 'en' ? "Accessing..." : "正在访问...", 1500);
       });
       b.addEventListener('mouseleave', () => {
         document.body.classList.remove('badge-hovering', 'hovering');
         if(vantaEffect) vantaEffect.setOptions({ color: 0x3b82f6 });
       });
       b.addEventListener('click', function(e) {
-        e.preventDefault();
-        const url = this.href;
+        e.preventDefault(); const url = this.href;
         badges.forEach((sib, idx) => {
             const img = sib.querySelector('img');
             img.style.animationDelay = `${Math.abs(idx - [...badges].indexOf(this)) * 0.06}s`;
@@ -1538,21 +945,14 @@ function updateUI() {
         setTimeout(() => window.location.href = url, 500);
       });
     });
- // 🟢 全局光标悬停反馈
-    document.body.addEventListener('mouseover', (e) => {
-      if (e.target.closest('a, button, .ctrl-btn, .rpg-btn, #bot-container, .slider')) {
-        document.body.classList.add('hovering');
-      }
-    });
     
+    document.body.addEventListener('mouseover', (e) => {
+      if (e.target.closest('a, button, .ctrl-btn, .rpg-btn, #bot-container, .slider')) document.body.classList.add('hovering');
+    });
     document.body.addEventListener('mouseout', (e) => {
-      if (e.target.closest('a, button, .ctrl-btn, .rpg-btn, #bot-container, .slider')) {
-        document.body.classList.remove('hovering');
-      }
+      if (e.target.closest('a, button, .ctrl-btn, .rpg-btn, #bot-container, .slider')) document.body.classList.remove('hovering');
     });
   });
 </script>
-
- 
 </body>
 </html>
