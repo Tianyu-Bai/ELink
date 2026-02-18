@@ -23,7 +23,7 @@ title: E-Link Home
 </div>
   
 <div align="center" style="margin-bottom: 20px;">
-  <h1 class="header-sync-pulse" style="display: flex; align-items: center; justify-content: center; border-bottom: none; margin-bottom: 5px; color: #ffffff; font-size: 2.2em; font-weight: 800; letter-spacing: -1px;">
+  <h1 class="header-sync-pulse bi-color-title" style="display: flex; align-items: center; justify-content: center; border-bottom: none; margin-bottom: 5px; font-size: 2.2em; font-weight: 800; letter-spacing: -1px;">
     
     <svg width="45" height="45" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 15px;">
       <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" stroke="url(#icon-gradient)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -42,42 +42,40 @@ title: E-Link Home
 </div>
 
 <style>
-/* 100分同步呼吸动画 */
+/* 核心：大标题双色横向渐变逻辑 */
+.bi-color-title {
+  /* 90deg 确保从左到右蓝色过渡到粉色 */
+  background: linear-gradient(90deg, #60a5fa 0%, #a78bfa 50%, #f472b6 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  display: flex !important;
+}
+
+/* 同步呼吸动画：包含缩放和动态发光 */
 .header-sync-pulse {
-  /* 初始阴影，增加文字和图标的厚度感 */
-  filter: drop-shadow(0 0 5px rgba(96, 165, 250, 0.2));
-  /* 3秒循环，缓入缓出，无限循环 */
   animation: sync-pulse 3s ease-in-out infinite;
   will-change: transform, filter;
+  contain: layout style;
 }
 
 @keyframes sync-pulse {
   0%, 100% { 
     transform: scale(1); 
-    opacity: 0.9;
-    filter: drop-shadow(0 0 5px rgba(96, 165, 250, 0.2));
+    filter: drop-shadow(0 0 8px rgba(96, 165, 250, 0.3));
   }
   50% { 
-    /* 极致轻微的放大，增加灵动感而不晃眼 */
     transform: scale(1.03); 
-    opacity: 1;
-    /* 增强整体发光效果，包含图标和文字 */
-    filter: drop-shadow(0 0 15px rgba(167, 139, 250, 0.5));
+    /* 呼吸到顶点时，发光范围扩大，增加蓝紫色氛围感 */
+    filter: drop-shadow(0 0 20px rgba(167, 139, 250, 0.55));
   }
 }
 
-/* 文字渐变质感优化 */
-h1.header-sync-pulse {
-  background: linear-gradient(to bottom, #ffffff 65%, #cbd5e1 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  /* 确保 SVG 不受 background-clip 影响 */
-  display: flex !important; 
-}
-
-/* 强制让 SVG 渲染，不受文字裁剪影响 */
-h1.header-sync-pulse svg {
+/* 修正：确保 SVG 图标渲染不受文字裁剪属性的影响 */
+.header-sync-pulse svg {
   -webkit-text-fill-color: initial;
+  filter: saturate(1.1); /* 提升图标色彩饱和度，使其更有精神 */
 }
 </style>
 
@@ -742,9 +740,10 @@ model-viewer::part(interaction-prompt), model-viewer::part(default-progress-bar)
   <h3 style="color: #60a5fa; margin-bottom: 20px; font-family: sans-serif;">🌍 Future Application Roadmap </h3>
   
   <div class="species-glass-box">
-  <svg class="connection-lines" viewBox="0 0 600 300" preserveAspectRatio="none" style="z-index: 1;">
+<svg class="connection-lines" viewBox="0 0 600 300" preserveAspectRatio="none" style="z-index: 1;">
   <path class="base-line" d="M300,120 L135,195" stroke="rgba(255,255,255,0.1)" fill="none" /> 
-  <path class="base-line" d="M300,120 L300,210" stroke="rgba(255,255,255,0.1)" fill="none" /> <path class="base-line" d="M300,120 L465,195" stroke="rgba(255,255,255,0.1)" fill="none" /> 
+  <path class="base-line" d="M300,120 L300,210" stroke="rgba(255,255,255,0.1)" fill="none" /> 
+  <path class="base-line" d="M300,120 L465,195" stroke="rgba(255,255,255,0.1)" fill="none" /> 
   
   <path class="pulse-line" d="M300,120 L135,195" />
   <path class="pulse-line" d="M300,120 L300,210" />
@@ -1153,8 +1152,49 @@ This project is open-source and available under the **MIT License**. Click the b
   <a href="#cn-downloads"><img src="https://img.shields.io/badge/🔗_下载-3b82f6?style=flat-square&logoColor=white" alt="Downloads"></a>
 </div>
   
-<div align="center">
-  <h1 style="border-bottom: none; margin-bottom: 5px; color: #60a5fa; font-size: 2em;">🚀 E-Link(易链256)</h1>
+<div align="center" style="margin-bottom: 20px;">
+  <h1 class="header-sync-pulse bi-color-title" style="display: flex; align-items: center; justify-content: center; border-bottom: none; margin-bottom: 5px; font-size: 2.2em; font-weight: 800; letter-spacing: -1px; font-family: 'Inter', 'Noto Sans SC', sans-serif;">
+    
+    <svg width="45" height="45" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 15px;">
+      <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" stroke="url(#icon-gradient-zh)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" stroke="url(#icon-gradient-zh)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <defs>
+        <linearGradient id="icon-gradient-zh" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#60a5fa" />
+          <stop offset="50%" stop-color="#a78bfa" />
+          <stop offset="100%" stop-color="#f472b6" />
+        </linearGradient>
+      </defs>
+    </svg>
+
+    E-Link(易链256)
+  </h1>
+</div>
+
+<style>
+.bi-color-title {
+  /* 1. 渐变优化：55% 处让紫色刚好覆盖“易链”两个字，色彩最丰富 */
+  background: linear-gradient(90deg, #60a5fa 0%, #a78bfa 55%, #f472b6 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  display: flex !important;
+
+  /* 2. 🚨质感补丁：开启硬件级抗锯齿，消除深色背景下渐变文字的白边和毛刺 */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  
+  /* 3. 性能优化：强制开启 GPU 加速渲染 */
+  transform: translateZ(0);
+}
+
+/* 确保 SVG 图标色彩不受文字裁剪影响，且颜色更鲜亮 */
+.header-sync-pulse svg {
+  -webkit-text-fill-color: initial;
+  filter: saturate(1.2) drop-shadow(0 0 2px rgba(167, 139, 250, 0.4));
+}
+</style>
 
 <h2 style="
   background: -webkit-linear-gradient(0deg, #60a5fa, #a78bfa);
@@ -1527,9 +1567,10 @@ This project is open-source and available under the **MIT License**. Click the b
   <h3 style="color: #60a5fa; margin-bottom: 20px; font-family: sans-serif;">🌍 跨物种适用性展望 </h3>
   
   <div class="species-glass-box">
-   <svg class="connection-lines" viewBox="0 0 600 300" preserveAspectRatio="none" style="z-index: 1;">
+  <svg class="connection-lines" viewBox="0 0 600 300" preserveAspectRatio="none" style="z-index: 1;">
   <path class="base-line" d="M300,120 L135,195" stroke="rgba(255,255,255,0.1)" fill="none" /> 
-  <path class="base-line" d="M300,120 L300,210" stroke="rgba(255,255,255,0.1)" fill="none" /> <path class="base-line" d="M300,120 L465,195" stroke="rgba(255,255,255,0.1)" fill="none" /> 
+  <path class="base-line" d="M300,120 L300,210" stroke="rgba(255,255,255,0.1)" fill="none" /> 
+  <path class="base-line" d="M300,120 L465,195" stroke="rgba(255,255,255,0.1)" fill="none" /> 
   
   <path class="pulse-line" d="M300,120 L135,195" />
   <path class="pulse-line" d="M300,120 L300,210" />
@@ -1953,15 +1994,25 @@ This project is open-source and available under the **MIT License**. Click the b
             }
 
            // 更新数字：瞬间归零，平滑涨满
-            const currentValue = isNaN(progress * targetValue) ? 0 : progress * targetValue;
+           const currentValue = isNaN(progress * targetValue) ? 0 : progress * targetValue;
             
             if (isFloat) {
-              // 只有重量（2.8g）显示一位小数
+              // 重量 (2.8g) 保持一位小数滚动
               numberEl.innerText = currentValue.toFixed(1);
             } else {
-              // 通道数（256）和层数（4）严格保持整数，四舍五入
-              // 这样 3.5 之后会跳到 4，既解决了卡顿，又保证了专业度
-              numberEl.innerText = Math.round(currentValue);
+              // 🚨 针对 256 这种大数值的丝滑处理
+              if (targetValue > 100) {
+                // 如果是通道数 (256)，在最后 99% 的阶段强制显示目标值，
+                // 解决 255 到 256 之间微小进度导致的渲染延迟感
+                if (progress > 0.99) {
+                    numberEl.innerText = targetValue;
+                } else {
+                    numberEl.innerText = Math.round(currentValue);
+                }
+              } else {
+                // PCB层数 (4) 保持四舍五入
+                numberEl.innerText = Math.round(currentValue);
+              }
             }
 
             // 更新圆环：没有 CSS transition 干扰，progress=0时会直接瞬间变成空环
@@ -1977,7 +2028,7 @@ This project is open-source and available under the **MIT License**. Click the b
         } else {
           // 滑出屏幕时清理状态
           card.dataset.dashboardInView = "false";
-          // 🚨 100分优化：彻底杀掉该卡片的动画进程，防止内存溢出
+          // 优化：彻底杀掉该卡片的动画进程，防止内存溢出
           if (card.dashboardAnimFrame) {
             window.cancelAnimationFrame(card.dashboardAnimFrame);
             card.dashboardAnimFrame = null;
