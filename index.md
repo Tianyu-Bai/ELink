@@ -22,8 +22,42 @@ title: E-Link Home
   <a href="#en-downloads"><img src="https://img.shields.io/badge/🔗_Downloads-3b82f6?style=flat-square&logoColor=white" alt="Downloads"></a>
 </div>
   
-<div align="center">
-  <h1 style="border-bottom: none; margin-bottom: 5px; color: #60a5fa; font-size: 2em;">🚀 E-Link(256)</h1>
+<div align="center" style="margin-bottom: 20px;">
+  <h1 style="display: flex; align-items: center; justify-content: center; border-bottom: none; margin-bottom: 5px; color: #ffffff; font-size: 2.2em; font-weight: 800; letter-spacing: -1px;">
+    <svg class="header-icon-svg" width="45" height="45" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 15px;">
+      <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" stroke="url(#icon-gradient)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" stroke="url(#icon-gradient)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <defs>
+        <linearGradient id="icon-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#60a5fa" />
+          <stop offset="50%" stop-color="#a78bfa" />
+          <stop offset="100%" stop-color="#f472b6" />
+        </linearGradient>
+      </defs>
+    </svg>
+    E-Link(256)
+  </h1>
+</div>
+
+<style>
+/* 图标呼吸灯特效 */
+.header-icon-svg {
+  filter: drop-shadow(0 0 8px rgba(96, 165, 250, 0.4));
+  animation: icon-pulse 3s ease-in-out infinite;
+}
+
+@keyframes icon-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.9; filter: drop-shadow(0 0 8px rgba(96, 165, 250, 0.4)); }
+  50% { transform: scale(1.05); opacity: 1; filter: drop-shadow(0 0 15px rgba(167, 139, 250, 0.7)); }
+}
+
+/* 标题文字微调：让文字本身也带一点点淡淡的灰白渐变，更有质感 */
+h1 {
+  background: linear-gradient(to bottom, #ffffff 60%, #cbd5e1 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+</style>
 
 <h2 style="
   background: -webkit-linear-gradient(0deg, #60a5fa, #a78bfa);
@@ -570,7 +604,7 @@ model-viewer::part(interaction-prompt), model-viewer::part(default-progress-bar)
 <div class="elink-dynamic-dashboard" align="center">
   <div class="metrics-grid">
     
-    <div class="metric-card glass-panel" data-percent="100" data-value="2.8" data-is-float="true">
+    <div class="metric-card glass-panel" data-percent="100" data-value="2.8" data-is-float="false">
       <div class="chart-box">
         <svg viewBox="0 0 100 100">
           <circle class="bg-ring" cx="50" cy="50" r="45"></circle>
@@ -686,15 +720,14 @@ model-viewer::part(interaction-prompt), model-viewer::part(default-progress-bar)
   <h3 style="color: #60a5fa; margin-bottom: 20px; font-family: sans-serif;">🌍 Future Application Roadmap </h3>
   
   <div class="species-glass-box">
-    <svg class="connection-lines" viewBox="0 0 600 300" preserveAspectRatio="none" style="z-index: 1;">
-      <path class="base-line" d="M300,120 L125,230" stroke="rgba(255,255,255,0.1)" fill="none" /> 
-      <path class="base-line" d="M300,120 L300,245" stroke="rgba(255,255,255,0.1)" fill="none" /> 
-      <path class="base-line" d="M300,120 L475,230" stroke="rgba(255,255,255,0.1)" fill="none" /> 
-      
-      <path class="pulse-line" d="M300,120 L125,230" />
-      <path class="pulse-line" d="M300,120 L300,245" />
-      <path class="pulse-line" d="M300,120 L475,230" />
-    </svg>
+  <svg class="connection-lines" viewBox="0 0 600 300" preserveAspectRatio="none" style="z-index: 1;">
+  <path class="base-line" d="M300,120 L135,195" stroke="rgba(255,255,255,0.1)" fill="none" /> 
+  <path class="base-line" d="M300,120 L300,210" stroke="rgba(255,255,255,0.1)" fill="none" /> <path class="base-line" d="M300,120 L465,195" stroke="rgba(255,255,255,0.1)" fill="none" /> 
+  
+  <path class="pulse-line" d="M300,120 L135,195" />
+  <path class="pulse-line" d="M300,120 L300,210" />
+  <path class="pulse-line" d="M300,120 L465,195" />
+</svg>
 
     <div class="node center-node">
       <div class="hex-border">
@@ -711,7 +744,7 @@ model-viewer::part(interaction-prompt), model-viewer::part(default-progress-bar)
         <div class="icon-circle mouse-glow">
           <span style="font-size: 30px;">🐁</span>
         </div>
-        <div class="node-title">Mouse</div>
+        <div class="node-title"><i>Mouse</i></div>
         <div class="node-desc">Housing Removed<br><b><font color="#10b981">2.8g</font> Payload</b></div>
       </div>
 
@@ -719,7 +752,7 @@ model-viewer::part(interaction-prompt), model-viewer::part(default-progress-bar)
         <div class="icon-circle rat-glow">
           <span style="font-size: 30px;">🐀</span>
         </div>
-        <div class="node-title">Rat</div>
+        <div class="node-title"><i>Rat</i></div>
         <div class="node-desc">Standard Implant<br><b><font color="#3b82f6">6.6g</font> Total</b></div>
       </div>
 
@@ -727,7 +760,7 @@ model-viewer::part(interaction-prompt), model-viewer::part(default-progress-bar)
         <div class="icon-circle monkey-glow">
           <span style="font-size: 30px;">🐒</span>
         </div>
-        <div class="node-title">Macaque</div>
+        <div class="node-title"><i>Macaque</i></div>
         <div class="node-desc">High Durability<br><b>Multi-Array Scalable</b></div>
       </div>
 
@@ -748,11 +781,15 @@ model-viewer::part(interaction-prompt), model-viewer::part(default-progress-bar)
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
 }
 
-.connection-lines {
-  position: absolute;
-  top: 0; left: 0; width: 100%; height: 100%;
-  z-index: 1; pointer-events: none;
-}
+<svg class="connection-lines" viewBox="0 0 600 300" preserveAspectRatio="none" style="z-index: 1;">
+  <path class="base-line" d="M300,120 L135,205" stroke="rgba(255,255,255,0.1)" fill="none" /> 
+  <path class="base-line" d="M300,120 L300,225" stroke="rgba(255,255,255,0.1)" fill="none" /> 
+  <path class="base-line" d="M300,120 L465,205" stroke="rgba(255,255,255,0.1)" fill="none" /> 
+  
+  <path class="pulse-line" d="M300,120 L135,205" />
+  <path class="pulse-line" d="M300,120 L300,225" />
+  <path class="pulse-line" d="M300,120 L465,205" />
+</svg>
 
 .base-line {
   fill: none; stroke: rgba(255, 255, 255, 0.1); stroke-width: 2;
@@ -801,21 +838,30 @@ model-viewer::part(interaction-prompt), model-viewer::part(default-progress-bar)
 .pulse-text { text-shadow: 0 0 8px rgba(96, 165, 250, 0.8); }
 
 .animal-nodes {
-  display: flex; justify-content: space-around; width: 100%;
+  display: flex; 
+  justify-content: space-around; 
+  width: 100%;
+  align-items: flex-start; /* 🚨 确保所有节点从顶部对齐，高度一致 */
+  margin-top: 10px;
 }
 
 .icon-circle {
- width: 60px; height: 60px; border-radius: 50%;
-  /* 🚨 核心修改：改为不透明背景，挡住后面的线 */
-  background: #0f172a; /* 确保这与 body 背景色完全相同 */
-  isolation: isolate; /* 确保层级独立 */
+  width: 60px; 
+  height: 60px; 
+  border-radius: 50%;
+  background: #0f172a; 
+  isolation: isolate; 
   border: 1px solid rgba(255,255,255,0.2);
-  display: flex; justify-content: center; align-items: center;
+  display: flex; 
+  justify-content: center; 
+  align-items: center;
   transition: all 0.3s ease;
-  /* 🚨 核心修改：确保图标在连线上方 */
   position: relative; 
-  z-index: 5; 
+  z-index: 5;
+  /* 🚨 添加 margin 修正，确保圆心在布局中更稳定 */
+  margin: 0 auto; 
 }
+
 .icon-circle:hover { transform: scale(1.1); border-color: #60a5fa; background: rgba(96, 165, 250, 0.1); }
 
 /* 三种动物的不同光环标识 */
@@ -1459,15 +1505,14 @@ This project is open-source and available under the **MIT License**. Click the b
   <h3 style="color: #60a5fa; margin-bottom: 20px; font-family: sans-serif;">🌍 跨物种适用性展望 </h3>
   
   <div class="species-glass-box">
-    <svg class="connection-lines" viewBox="0 0 600 300" preserveAspectRatio="none" style="z-index: 1;">
-      <path class="base-line" d="M300,120 L125,230" stroke="rgba(255,255,255,0.1)" fill="none" /> 
-      <path class="base-line" d="M300,120 L300,245" stroke="rgba(255,255,255,0.1)" fill="none" /> 
-      <path class="base-line" d="M300,120 L475,230" stroke="rgba(255,255,255,0.1)" fill="none" /> 
-      
-      <path class="pulse-line" d="M300,120 L125,230" />
-      <path class="pulse-line" d="M300,120 L300,245" />
-      <path class="pulse-line" d="M300,120 L475,230" />
-    </svg>
+   <svg class="connection-lines" viewBox="0 0 600 300" preserveAspectRatio="none" style="z-index: 1;">
+  <path class="base-line" d="M300,120 L135,195" stroke="rgba(255,255,255,0.1)" fill="none" /> 
+  <path class="base-line" d="M300,120 L300,210" stroke="rgba(255,255,255,0.1)" fill="none" /> <path class="base-line" d="M300,120 L465,195" stroke="rgba(255,255,255,0.1)" fill="none" /> 
+  
+  <path class="pulse-line" d="M300,120 L135,195" />
+  <path class="pulse-line" d="M300,120 L300,210" />
+  <path class="pulse-line" d="M300,120 L465,195" />
+</svg>
 
     <div class="node center-node">
       <div class="hex-border">
@@ -1482,47 +1527,149 @@ This project is open-source and available under the **MIT License**. Click the b
       
       <div class="node sub-node">
         <div class="icon-circle mouse-glow">
-            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M16 3H8a4 4 0 0 0-4 4v10a4 4 0 0 0 4 4h8a4 4 0 0 0 4-4V7a4 4 0 0 0-4-4z"/>
-                <path d="M12 10a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/>
-                <path d="M12 18a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/>
-                <path d="M16 12H8"/>
-            </svg>
+          <span style="font-size: 30px;">🐁</span>
         </div>
-        <div class="node-title"><i>Rattus norvegicus</i></div>
-        <div class="node-desc"><b>大鼠</b><br>标准体内实验</div>
+        <div class="node-title">Mouse</div>
+        <div class="node-desc">Housing Removed<br><b><font color="#10b981">2.8g</font> Payload</b></div>
       </div>
 
       <div class="node sub-node" style="margin-top: 30px;">
         <div class="icon-circle rat-glow">
-            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="10"/>
-                <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
-                <line x1="9" y1="9" x2="9.01" y2="9"/>
-                <line x1="15" y1="9" x2="15.01" y2="9"/>
-            </svg>
+          <span style="font-size: 30px;">🐀</span>
         </div>
-        <div class="node-title"><i>Macaca mulatta</i></div>
-        <div class="node-desc"><b>猕猴 (NHP)</b><br>长期神经记录</div>
+        <div class="node-title">Rat</div>
+        <div class="node-desc">Standard Implant<br><b><font color="#3b82f6">6.6g</font> Total</b></div>
       </div>
 
       <div class="node sub-node">
         <div class="icon-circle monkey-glow">
-            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 22a7 7 0 1 0 0-14 7 7 0 0 0 0 14Z"/>
-                <circle cx="12" cy="15" r="3"/>
-                <path d="M10 15h.01M14 15h.01"/>
-                <path d="M7 11c-1-1-2-4-1-6s5 1 5 1"/>
-                <path d="M17 11c1-1 2-4 1-6s-5 1-5 1"/>
-            </svg>
+          <span style="font-size: 30px;">🐒</span>
         </div>
-        <div class="node-title"><i>Sus scrofa</i></div>
-        <div class="node-desc"><b>实验猪</b><br>大尺度神经接口</div>
+        <div class="node-title">Macaque</div>
+        <div class="node-desc">High Durability<br><b>Multi-Array Scalable</b></div>
       </div>
 
     </div>
   </div>
 </div>
+
+<style>
+/* ===================== 跨物种拓扑动画 CSS ===================== */
+.species-glass-box {
+  position: relative;
+  background: rgba(15, 23, 42, 0.4);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  border-radius: 16px;
+  padding: 30px 20px;
+  min-height: 320px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.connection-lines {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  z-index: 1; pointer-events: none;
+}
+
+.base-line {
+  fill: none; stroke: rgba(255, 255, 255, 0.1); stroke-width: 2;
+}
+
+  .pulse-line {
+  fill: none; 
+  stroke: #60a5fa; 
+  stroke-width: 3;
+  /* 调整光点长度和间距，让它在到达图标时正好处于间隙位置，看起来像射入了图标 */
+  stroke-dasharray: 20 120; 
+  animation: data-flow 2.5s linear infinite;
+  filter: drop-shadow(0 0 5px rgba(96, 165, 250, 0.8));
+}
+
+@keyframes data-flow {
+  from { stroke-dashoffset: 115; }
+  to { stroke-dashoffset: 0; }
+}
+
+.node {
+  position: relative; z-index: 2;
+  display: flex; flex-direction: column; align-items: center;
+}
+
+.center-node { margin-bottom: 20px; }
+
+.hex-border {
+  width: 70px; height: 70px;
+  background: radial-gradient(circle, rgba(59,130,246,0.3) 0%, transparent 70%);
+  border: 2px solid #3b82f6; border-radius: 12px;
+  display: flex; justify-content: center; align-items: center;
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.node-text {
+  margin-top: 10px; font-weight: bold; color: #fff;
+  font-family: 'JetBrains Mono', monospace; font-size: 14px;
+}
+.pulse-text { text-shadow: 0 0 8px rgba(96, 165, 250, 0.8); }
+
+.animal-nodes {
+  display: flex; 
+  justify-content: space-around; 
+  width: 100%;
+  align-items: flex-start; /* 🚨 确保所有节点从顶部对齐，高度一致 */
+  margin-top: 10px;
+}
+
+.icon-circle {
+  width: 60px; 
+  height: 60px; 
+  border-radius: 50%;
+  background: #0f172a; 
+  isolation: isolate; 
+  border: 1px solid rgba(255,255,255,0.2);
+  display: flex; 
+  justify-content: center; 
+  align-items: center;
+  transition: all 0.3s ease;
+  position: relative; 
+  z-index: 5;
+  /* 🚨 添加 margin 修正，确保圆心在布局中更稳定 */
+  margin: 0 auto; 
+}
+
+/* 针对中间那个节点（猴子/大鼠）之前的 margin-top 逻辑做微调 */
+/* 如果你之前用了 margin-top: 30px，坐标 L300,225 已经包含了这个偏移 */
+.icon-circle:hover { transform: scale(1.1); border-color: #60a5fa; background: rgba(96, 165, 250, 0.1); }
+
+/* 三种动物的不同光环标识 */
+.mouse-glow { box-shadow: 0 0 10px rgba(16, 185, 129, 0.3); }
+.rat-glow { box-shadow: 0 0 10px rgba(59, 130, 246, 0.3); }
+.monkey-glow { box-shadow: 0 0 10px rgba(245, 158, 11, 0.3); }
+
+.node-title { margin-top: 8px; font-weight: bold; color: #e2e8f0; font-size: 14px; }
+.node-desc { margin-top: 4px; color: #94a3b8; font-size: 11px; text-align: center; line-height: 1.4; font-family: sans-serif; }
+
+/* 手机端响应式调整 */
+@media (max-width: 600px) {
+  .species-glass-box { padding: 20px 5px; min-height: 250px; }
+  .animal-nodes { padding: 0; } /* 去掉内边距，让图标充分散开 */
+  .icon-circle { width: 45px; height: 45px; }
+  .icon-circle span { font-size: 24px !important; }
+  .node-title { font-size: 12px; }
+  .node-desc { font-size: 9px; }
+  
+  /* 🚨 核心修改：解除隐藏，并在手机上把光线稍微调细一点点，显得更精致 */
+  .connection-lines { display: block; opacity: 0.8; }
+  .pulse-line { stroke-width: 2; }
+}
+</style>
+
 * **⚡ 256 通道高密度接口**
   紧凑的基座占地面积，支持高密度采集，且不增加手术负担。
 * **🔌 弹性导电体互连**
@@ -1783,17 +1930,17 @@ This project is open-source and available under the **MIT License**. Click the b
               progress = 1;
             }
 
-            // 更新数字：瞬间归零，平滑涨满
-           const currentValue = progress * targetValue;
-if (isFloat || targetValue < 10) {
-    // 💡 针对 PCB Layers 等小数字，保留一位小数滚动
-    // 这样当进度是 3.1, 3.2 时，圆环和数字会完美同步
-    numberEl.innerText = currentValue.toFixed(1); 
-    // 当动画跑完 100% 时，强制显示整数 4
-    if (progress === 1 && !isFloat) numberEl.innerText = Math.round(targetValue);
-} else {
-    numberEl.innerText = Math.round(currentValue);
-}
+           // 更新数字：瞬间归零，平滑涨满
+            const currentValue = isNaN(progress * targetValue) ? 0 : progress * targetValue;
+            
+            if (isFloat) {
+              // 只有重量（2.8g）显示一位小数
+              numberEl.innerText = currentValue.toFixed(1);
+            } else {
+              // 通道数（256）和层数（4）严格保持整数，四舍五入
+              // 这样 3.5 之后会跳到 4，既解决了卡顿，又保证了专业度
+              numberEl.innerText = Math.round(currentValue);
+            }
 
             // 更新圆环：没有 CSS transition 干扰，progress=0时会直接瞬间变成空环
             fgRing.style.strokeDashoffset = circumference - (circumference * progress);
