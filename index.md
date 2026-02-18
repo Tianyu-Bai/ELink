@@ -394,9 +394,16 @@ model-viewer::part(interaction-prompt), model-viewer::part(default-progress-bar)
   box-sizing: border-box; box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
   transition: transform 0.3s ease; text-align: center;
+  transform: translateZ(0); 
+  will-change: transform, opacity; 
+  backface-visibility: hidden;
+  perspective: 1000px;
 }
 .chart-box { position: relative; width: 145px; height: 145px; margin: 0 auto; }
-.chart-box svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+.chart-box svg { width: 100%; height: 100%; transform: rotate(-90deg); 
+               /* 新增：防止 SVG 渲染抖动 */
+  transform: rotate(-90deg) translateZ(0);
+  will-change: stroke-dashoffset;}
 .bg-ring { fill: none; stroke: rgba(255, 255, 255, 0.1); stroke-width: 6; }
 
 /* 纯 CSS 实现 6秒无限循环圆环绘制 */
@@ -411,7 +418,7 @@ model-viewer::part(interaction-prompt), model-viewer::part(default-progress-bar)
 .inner-content { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; }
 .inner-content .label { font-size: 10px; font-weight: 700; color: #94a3b8; margin-bottom: 2px; }
 .inner-content .number-container { display: flex; align-items: baseline; justify-content: center; }
-.inner-content .number { font-family: 'JetBrains Mono', monospace; font-size: 32px; font-weight: 800; color: #ffffff; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+.inner-content .number { font-family: 'JetBrains Mono', monospace; font-size: 32px; font-weight: 800; color: #ffffff; text-shadow: 0 2px 4px rgba(0,0,0,0.5); will-change: contents;}
 .inner-content .unit { font-size: 16px; font-weight: bold; color: #cbd5e1; margin-left: 2px; }
 .inner-content .sub { font-size: 10px; color: rgba(148, 163, 184, 0.8); margin-top: 2px; }
 
@@ -1950,95 +1957,75 @@ This project is open-source and available under the **MIT License**. Click the b
 
 <script>
   document.addEventListener("DOMContentLoaded", () => {
-  
-// ===================== E-Link 动态数据面板逻辑 (完美绝对同步版) =====================
-    // ===================== E-Link 动态数据面板逻辑 (单向循环瞬间归零版) =====================
-    const dashboardObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        const card = entry.target;
-        const fgRing = card.querySelector('.fg-ring');
-        const numberEl = card.querySelector('.count-up');
+
+// ===================== E-Link 动态数据面板逻辑 (单向循环瞬间归零版) =====================
+  const dashboardObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    const card = entry.target;
+    const fgRing = card.querySelector('.fg-ring');
+    const numberEl = card.querySelector('.count-up');
+    
+    // 获取目标值
+    const targetValue = parseFloat(card.dataset.value);
+    const isFloat = card.dataset.isFloat === "true";
+    const circumference = 283; 
+    
+    if (entry.isIntersecting) {
+      // 只有当完全进入视野且没有在运行时才启动
+      if (card.dataset.animating === "true") return;
+      card.dataset.animating = "true";
+
+      let startTime = null;
+      const duration = 2000; // 动画持续 2 秒
+      
+      // 使用 requestAnimationFrame 但配合时间戳控制频率
+      const animate = (timestamp) => {
+        if (!startTime) startTime = timestamp;
+        const runtime = timestamp - startTime;
         
-        const targetValue = parseFloat(card.dataset.value);
-        const isFloat = card.dataset.isFloat === "true";
-        const circumference = 283; 
+        // 计算进度 (0 到 1)
+        let progress = runtime / duration;
         
-        if (entry.isIntersecting) {
-          card.dataset.dashboardInView = "true";
-          let startTimestamp = null;
-          
-          const cycleTime = 6000;  // 动画总循环：6秒
-          const growTime = 2500;   // 🚨 增长耗时：改成 2.5 秒，让动画变慢变顺滑
+        // 缓动效果 (Ease Out Cubic) - 让动画先快后慢，更自然
+        progress = 1 - Math.pow(1 - progress, 3);
 
-          const step = (timestamp) => {
-            // 只要滑出屏幕，立刻终止动画循环，节省手机性能
-            if (card.dataset.dashboardInView !== "true") return; 
-
-            if (!startTimestamp) startTimestamp = timestamp;
-            // 🚨 核心魔法：使用 % 取余数。当到了第6秒(6000ms)，elapsed 瞬间变成 0！
-            const elapsed = (timestamp - startTimestamp) % cycleTime;
-            
-            let progress = 0;
-            
-            if (elapsed < growTime) {
-              // 1. 顺时针增长阶段：从 0 开始平滑减速到 100%
-              let p = elapsed / growTime;
-              progress = p === 1 ? 1 : 1 - Math.pow(2, -10 * p);
-            } else {
-              // 2. 保持阶段：剩余时间全部保持在 100% 满状态 (显示256, 2.8g等目标值)
-              // 不需要后退代码，因为到了6秒钟循环结束，elapsed 会自动变成 0，progress 也会瞬间变回 0
-              progress = 1;
-            }
-
-           // 更新数字：瞬间归零，平滑涨满
-           const currentValue = isNaN(progress * targetValue) ? 0 : progress * targetValue;
-            
-            if (isFloat) {
-              // 重量 (2.8g) 保持一位小数滚动
-              numberEl.innerText = currentValue.toFixed(1);
-            } else {
-              // 🚨 针对 256 这种大数值的丝滑处理
-              if (targetValue > 100) {
-                // 如果是通道数 (256)，在最后 99% 的阶段强制显示目标值，
-                // 解决 255 到 256 之间微小进度导致的渲染延迟感
-                if (progress > 0.99) {
-                    numberEl.innerText = targetValue;
-                } else {
-                    numberEl.innerText = Math.round(currentValue);
-                }
-              } else {
-                // PCB层数 (4) 保持四舍五入
-                numberEl.innerText = Math.round(currentValue);
-              }
-            }
-
-            // 更新圆环：没有 CSS transition 干扰，progress=0时会直接瞬间变成空环
-            fgRing.style.strokeDashoffset = circumference - (circumference * progress);
-
-            // 继续下一帧
-            card.dashboardAnimFrame = window.requestAnimationFrame(step);
-          };
-
-          // 启动动画
-          card.dashboardAnimFrame = window.requestAnimationFrame(step);
-          
-        } else {
-          // 滑出屏幕时清理状态
-          card.dataset.dashboardInView = "false";
-          // 优化：彻底杀掉该卡片的动画进程，防止内存溢出
-          if (card.dashboardAnimFrame) {
-            window.cancelAnimationFrame(card.dashboardAnimFrame);
-            card.dashboardAnimFrame = null;
-          }
-          fgRing.style.strokeDashoffset = circumference;
-          numberEl.innerText = "0";
+        if (runtime >= duration) {
+            progress = 1;
+            card.dataset.animating = "false"; // 动画结束
         }
-      });
-    }, { threshold: 0.1 }); 
 
-    document.querySelectorAll('.metric-card').forEach(card => {
-      dashboardObserver.observe(card);
-    });
+        // 1. 更新圆环 (减少 DOM 操作精度，避免微小变动触发重绘)
+        const offset = circumference - (circumference * progress);
+        fgRing.style.strokeDashoffset = offset.toFixed(1); // 限制小数位
+
+        // 2. 更新数字
+        const currentValue = progress * targetValue;
+        if (isFloat) {
+          numberEl.innerText = currentValue.toFixed(1);
+        } else {
+          numberEl.innerText = Math.round(currentValue);
+        }
+
+        // 如果还没结束，继续下一帧
+        if (runtime < duration) {
+          requestAnimationFrame(animate);
+        }
+      };
+      
+      requestAnimationFrame(animate);
+
+    } else {
+      // 离开视野时，重置状态，方便下次回来再播（可选）
+      card.dataset.animating = "false";
+      fgRing.style.strokeDashoffset = circumference;
+      numberEl.innerText = "0";
+    }
+  });
+}, { threshold: 0.2 }); // 阈值调高，确保看到 20% 再开始，避免边缘误触
+
+document.querySelectorAll('.metric-card').forEach(card => {
+  dashboardObserver.observe(card);
+});
     
     // ===================== 3D 模型交互与防闪退逻辑 =====================
     const models = Array.from(document.querySelectorAll('model-viewer'));
