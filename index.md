@@ -1121,8 +1121,6 @@ This project is open-source and available under the **MIT License**. Click the b
  </a>
 </div>
 
-</div>
-</div>
 
 <div class="github-only">
   <br>
