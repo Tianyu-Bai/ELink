@@ -655,14 +655,14 @@ model-viewer::part(interaction-prompt), model-viewer::part(default-progress-bar)
   <h3 style="color: #60a5fa; margin-bottom: 20px; font-family: sans-serif;">🌍 Future Application Roadmap </h3>
   
   <div class="species-glass-box">
-  <svg class="connection-lines" viewBox="0 0 600 380" preserveAspectRatio="none" style="z-index: 1;">
-  <path class="base-line" d="M300,126 L135,190" stroke="rgba(255,255,255,0.1)" fill="none" /> 
-  <path class="base-line" d="M300,126 L300,220" stroke="rgba(255,255,255,0.1)" fill="none" /> 
-  <path class="base-line" d="M300,126 L465,190" stroke="rgba(255,255,255,0.1)" fill="none" /> 
+ <svg class="connection-lines" viewBox="0 0 600 380" preserveAspectRatio="none" style="z-index: 1;">
+  <path class="base-line" d="M300,126 L135,200" stroke="rgba(255,255,255,0.1)" fill="none" /> 
+  <path class="base-line" d="M300,126 L300,230" stroke="rgba(255,255,255,0.1)" fill="none" /> 
+  <path class="base-line" d="M300,126 L465,200" stroke="rgba(255,255,255,0.1)" fill="none" /> 
   
-  <path class="pulse-line line-to-mouse" d="M300,126 L135,190" />
-  <path class="pulse-line" d="M300,126 L300,220" />
-  <path class="pulse-line line-to-monkey" d="M300,126 L465,190" />
+  <path class="pulse-line line-to-mouse" d="M300,126 L135,200" />
+  <path class="pulse-line" d="M300,126 L300,230" />
+  <path class="pulse-line line-to-monkey" d="M300,126 L465,200" />
 </svg>
 
     <div class="node center-node">
@@ -753,7 +753,8 @@ model-viewer::part(interaction-prompt), model-viewer::part(default-progress-bar)
 .pulse-text { text-shadow: 0 0 8px rgba(96, 165, 250, 0.8); }
 
 .animal-nodes {
-  display: flex; justify-content: space-between; width: 100%; align-items: flex-start; margin-top: 10px;
+  display: flex; justify-content: space-between; width: 100%; align-items: flex-start; 
+  margin-top: 20px; /* 👈 这里从 10px 改为 20px，让三个圈整体下移 10px */
 }
 
 /* 核心修复：使用 transform 代替 margin-top */
@@ -1390,13 +1391,13 @@ This project is open-source and available under the **MIT License**. Click the b
   
   <div class="species-glass-box">
   <svg class="connection-lines" viewBox="0 0 600 380" preserveAspectRatio="none" style="z-index: 1;">
-  <path class="base-line" d="M300,126 L135,190" stroke="rgba(255,255,255,0.1)" fill="none" /> 
-  <path class="base-line" d="M300,126 L300,220" stroke="rgba(255,255,255,0.1)" fill="none" /> 
-  <path class="base-line" d="M300,126 L465,190" stroke="rgba(255,255,255,0.1)" fill="none" /> 
+  <path class="base-line" d="M300,126 L135,200" stroke="rgba(255,255,255,0.1)" fill="none" /> 
+  <path class="base-line" d="M300,126 L300,230" stroke="rgba(255,255,255,0.1)" fill="none" /> 
+  <path class="base-line" d="M300,126 L465,200" stroke="rgba(255,255,255,0.1)" fill="none" /> 
   
-  <path class="pulse-line line-to-mouse" d="M300,126 L135,190" />
-  <path class="pulse-line" d="M300,126 L300,220" />
-  <path class="pulse-line line-to-monkey" d="M300,126 L465,190" />
+  <path class="pulse-line line-to-mouse" d="M300,126 L135,200" />
+  <path class="pulse-line" d="M300,126 L300,230" />
+  <path class="pulse-line line-to-monkey" d="M300,126 L465,200" />
 </svg>
 
     <div class="node center-node">
