@@ -22,10 +22,9 @@ title: E-Link Home
   <a href="#en-downloads"><img src="https://img.shields.io/badge/🔗_Downloads-3b82f6?style=flat-square&logoColor=white" alt="Downloads"></a>
 </div>
   
-<div align="center" style="margin-bottom: 20px;">
-  <h1 class="header-sync-pulse bi-color-title" style="display: flex; align-items: center; justify-content: center; border-bottom: none; margin-bottom: 5px; font-size: 2.2em; font-weight: 800; letter-spacing: -1px;">
-    
-    <svg width="45" height="45" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 15px;">
+<div class="main-title-wrapper" align="center">
+  <h1 class="header-sync-pulse bi-color-title">
+    <svg class="title-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" stroke="url(#icon-gradient)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
       <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" stroke="url(#icon-gradient)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
       <defs>
@@ -36,24 +35,58 @@ title: E-Link Home
         </linearGradient>
       </defs>
     </svg>
-
     E-Link(256)
   </h1>
 </div>
 
 <style>
-/* 核心：大标题双色横向渐变逻辑 */
+/* 1. 外层容器与间距 */
+.main-title-wrapper {
+  margin-bottom: 20px;
+}
+
+/* 2. 核心：大标题双色横向渐变逻辑 + 布局 */
 .bi-color-title {
-  /* 90deg 确保从左到右蓝色过渡到粉色 */
   background: linear-gradient(90deg, #60a5fa 0%, #a78bfa 50%, #f472b6 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   color: transparent;
   display: flex !important;
+  align-items: center;
+  justify-content: center;
+  border-bottom: none;
+  margin-bottom: 5px;
+  font-size: 2.2em;
+  font-weight: 800;
+  letter-spacing: -1px;
+  white-space: nowrap; /* 🚨 魔法属性 1：强制文本在一行内显示，绝不换行 */
 }
 
-/* 同步呼吸动画：包含缩放和动态发光 */
+/* 3. SVG 图标独立样式 */
+.title-icon {
+  width: 45px;
+  height: 45px;
+  margin-right: 15px;
+  flex-shrink: 0; /* 🚨 魔法属性 2：防止屏幕变窄时图标被挤压成椭圆 */
+}
+
+/* 4. 🚨 手机端专属压缩优化 */
+@media (max-width: 600px) {
+  .main-title-wrapper {
+    margin-bottom: 10px; /* 减小手机端底部留白 */
+  }
+  .bi-color-title {
+    font-size: 1.6em; /* 缩小字体以适应小屏幕 */
+  }
+  .title-icon {
+    width: 30px; /* 缩小图标 */
+    height: 30px;
+    margin-right: 8px; /* 缩小图标与文字的间距 */
+  }
+}
+
+/* 5. 同步呼吸动画：包含缩放和动态发光 */
 .header-sync-pulse {
   animation: sync-pulse 3s ease-in-out infinite;
   will-change: transform, filter;
@@ -72,7 +105,7 @@ title: E-Link Home
   }
 }
 
-/* 修正：确保 SVG 图标渲染不受文字裁剪属性的影响 */
+/* 6. 修正：确保 SVG 图标渲染不受文字裁剪属性的影响 */
 .header-sync-pulse svg {
   -webkit-text-fill-color: initial;
   filter: saturate(1.1); /* 提升图标色彩饱和度，使其更有精神 */
@@ -1110,7 +1143,9 @@ This project is open-source and available under the **MIT License**. Click the b
  </a>
 </div>
 
-</div> <div class="github-only">
+</div> 
+
+<div class="github-only">
   <br>
   <hr>
   <p align="center" style="font-size: 1.5em; font-weight: bold; margin: 20px 0;">
