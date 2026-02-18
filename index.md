@@ -1242,19 +1242,9 @@ This project is open-source and available under the **MIT License**. Click the b
 }
 </style>
 
-<h2 style="
-  background: -webkit-linear-gradient(0deg, #60a5fa, #a78bfa);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  font-family: 'Inter', system-ui, sans-serif;
-  font-weight: 700;
-  font-size: 1.5em;
-  letter-spacing: -0.5px;
-  text-align: center;
-  margin-top: 0;
-">
-  一种基于弹性导电体互连技术的<br>高密度柔性神经接口连接器
-</h2>
+<h2 class="sub-title">
+    一种基于弹性导电体互连技术的高密度柔性神经接口连接器
+  </h2>
 
   <div align="center" style="margin-top: 15px;">
     <a href="https://sites.dartmouth.edu/fang-group/"><img src="https://img.shields.io/badge/达特茅斯学院-00693E?style=flat-square" alt="方辉组"></a>
