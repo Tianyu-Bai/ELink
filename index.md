@@ -594,6 +594,17 @@ model-viewer::part(interaction-prompt), model-viewer::part(default-progress-bar)
 
 **E-Link** (Elastomer Interconnection-based connector) is an open-source, miniature pedestal connector system based on elastomer interconnection. It provides a robust, scalable interface for flexible neural probes, specifically engineered for chronic applications in freely moving animals.
 
+<div align="center">
+ <br>
+ <img data-src="Videos/Demo%20new%20new.gif" 
+       src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+       alt="ELINK-256 Assembly Demo GIF" 
+       width="750" 
+       class="gif-blend lazy-gif" 
+       decoding="async"
+       style="border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); display: block;">
+</div>
+
 ---
 
 > [!NOTE]
@@ -791,6 +802,7 @@ model-viewer::part(interaction-prompt), model-viewer::part(default-progress-bar)
  Separable housing, PCBs, and protective cap for rapid iteration and troubleshooting.
 * **🧪 Surgical-Grade Design**
  Textured sidewalls for superior adhesion with dental cement or UV-curable resin.
+
 <div align="center">
 <img data-src="Videos/Animation%20repeat.gif" 
      src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
@@ -799,16 +811,6 @@ model-viewer::part(interaction-prompt), model-viewer::part(default-progress-bar)
      width="500" 
      decoding="async"
      style="border-radius: 6px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); display: block;">
-</div>
-<div align="center">
- <br>
- <img data-src="Videos/Demo%20new%20new.gif" 
-       src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
-       alt="ELINK-256 Assembly Demo GIF" 
-       width="750" 
-       class="gif-blend lazy-gif" 
-       decoding="async"
-       style="border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); display: block;">
 </div>
 
 ---
@@ -1337,6 +1339,16 @@ This project is open-source and available under the **MIT License**. Click the b
 
 **E-Link易链**，是一款基于弹性体互连技术（Elastomer Interconnection）的开源微型基座连接系统。它为柔性神经探针提供了稳固且可扩展的接口，专为自由活动动物的长期实验而优化设计
 
+<div align="center">
+<img data-src="Videos/Demo%20new%20new.gif" 
+       src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+       alt="ELINK-256 组装演示 GIF" 
+       width="750" 
+       class="gif-blend lazy-gif" 
+       decoding="async"
+       style="border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); display: block;">
+</div>
+
 ---
 
 > [!NOTE]
@@ -1447,6 +1459,7 @@ This project is open-source and available under the **MIT License**. Click the b
   外壳、PCB 和保护盖均可分离，便于快速迭代和故障排查。
 * **🧪 手术级设计**
   纹理化侧壁设计，增强了与牙科水泥或紫外光固化树脂的附着力。
+  
 <div align="center">
   <img data-src="Videos/Animation%20repeat.gif" 
        src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
@@ -1455,16 +1468,6 @@ This project is open-source and available under the **MIT License**. Click the b
        width="500" 
        decoding="async"
        style="border-radius: 6px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); display: block;">
-</div>
-
-<div align="center">
-<img data-src="Videos/Demo%20new%20new.gif" 
-       src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
-       alt="ELINK-256 组装演示 GIF" 
-       width="750" 
-       class="gif-blend lazy-gif" 
-       decoding="async"
-       style="border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); display: block;">
 </div>
 
 ---
