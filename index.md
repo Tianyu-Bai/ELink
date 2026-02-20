@@ -99,7 +99,7 @@ title: E-Link Home
 <div class="main-title-wrapper" align="center">
   <h1 class="logo-container">
     <img 
-      src="{{ '/images/ELink Logo.png' | relative_url }}" 
+      src="{{ '/Images/ELink Logo.png' | relative_url }}" 
       alt="E-Link Logo" 
       class="main-logo header-sync-pulse"
     >
