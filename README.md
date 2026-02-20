@@ -270,10 +270,8 @@ The hardware designs and visual assets in this repository correspond directly to
   
 * We welcome feedback and collaboration from the neuroengineering community!
 
-* **Inquiries**: For access to the technical design files or questions, please contact:
-    * **Tianyu Bai** ([<font color="#60a5fa">Tianyu.Bai.TH@Dartmouth.edu</font>](mailto:Tianyu.Bai.TH@Dartmouth.edu))
-    * **Prof. Hui Fang** ([<font color="#60a5fa">Hui.Fang@Dartmouth.edu</font>](mailto:Hui.Fang@Dartmouth.edu))
-
+* **Inquiries**: Thinking about using E-Link in your lab? We know setting up a new system can be tricky. If you have questions about the PCB design or 3D printing, drop us an email or open an issue. We'd love to help you get started!
+  * **Email**: [<font color="#60a5fa">support@ephys.tech</font>](mailto:support@ephys.tech)
 ---
 
 ## 📑 Citation & DOI
@@ -606,8 +604,7 @@ This project is open-source and available under the **MIT License**. Click the b
 * 我们欢迎神经工程科研社区的反馈与合作！
 
 * **咨询**：如需获取技术设计文件或有任何相关疑问，请邮件联系：
-    * **白天宇** ([<font color="#60a5fa">Tianyu.Bai.TH@Dartmouth.edu</font>](mailto:Tianyu.Bai.TH@Dartmouth.edu))
-    * **方辉教授** ([<font color="#60a5fa">Hui.Fang@Dartmouth.edu</font>](mailto:Hui.Fang@Dartmouth.edu))
+   * **技术支持**: [<font color="#60a5fa">support@ephys.tech</font>](mailto:support@ephys.tech)
 
 ---
 
