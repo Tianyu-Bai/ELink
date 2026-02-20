@@ -27,27 +27,21 @@ title: E-Link Home
 
 <style>
 /* 1. 外层容器 */
-.main-title-wrapper { margin-bottom: 20px; }
-
-/* 2. 主标题逻辑 */
-.bi-color-title {
-  background: linear-gradient(90deg, #60a5fa 0%, #a78bfa 50%, #f472b6 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
-  display: flex !important;
-  align-items: center;
+.main-title-wrapper { 
+  margin-bottom: 20px; 
+  display: flex;
   justify-content: center;
-  border-bottom: none;
-  margin-bottom: 5px;
-  font-size: 2.2em;
-  font-weight: 800;
-  letter-spacing: -1px;
-  white-space: nowrap;
+  align-items: center;
 }
 
-.title-icon { width: 45px; height: 45px; margin-right: 15px; flex-shrink: 0; }
+/* 2. 主 Logo 样式 (替代了原有的 bi-color-title 和 title-icon) */
+.main-logo {
+  width: 350px; /* 请根据你实际 Logo 的比例调整这里的宽度 */
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 5px;
+  display: block;
+}
 
 /* 3. 副标题基础样式 */
 .sub-title {
@@ -61,7 +55,7 @@ title: E-Link Home
   text-align: center;
   margin-top: 0;
   line-height: 1.3;
-  /* 增加这一行：防止文字太靠边 */
+  /* 防止文字太靠边 */
   max-width: 90%; 
   margin-left: auto;
   margin-right: auto;
@@ -70,7 +64,12 @@ title: E-Link Home
 /* 4. 手机端优化 */
 @media (max-width: 600px) {
   .main-title-wrapper { margin-bottom: 10px; }
-  .title-icon { margin-right: 8px; width: 32px; height: 32px; }
+  
+  /* 在手机端缩小 Logo 尺寸 */
+  .main-logo {
+    width: 220px; /* 请根据需要微调 */
+  }
+
   .sub-title { 
     font-size: 1.1em; /* 稍微缩小字号 */
     padding: 0 10px; 
@@ -84,7 +83,7 @@ title: E-Link Home
   }
 }
 
-/* 5. 呼吸动画逻辑 */
+/* 5. 呼吸动画逻辑 (保留并直接作用于图片) */
 .header-sync-pulse {
   animation: sync-pulse 3s ease-in-out infinite;
   will-change: transform, filter;
@@ -95,32 +94,22 @@ title: E-Link Home
   0%, 100% { transform: scale(1); filter: drop-shadow(0 0 8px rgba(96, 165, 250, 0.3)); }
   50% { transform: scale(1.03); filter: drop-shadow(0 0 20px rgba(167, 139, 250, 0.55)); }
 }
-.header-sync-pulse svg { -webkit-text-fill-color: initial; filter: saturate(1.1); }
 </style>
 
-
 <div class="main-title-wrapper" align="center">
-  <h1 class="header-sync-pulse bi-color-title">
-    <svg class="title-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" stroke="url(#icon-gradient)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" stroke="url(#icon-gradient)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-      <defs>
-        <linearGradient id="icon-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="#60a5fa" />
-          <stop offset="50%" stop-color="#a78bfa" />
-          <stop offset="100%" stop-color="#f472b6" />
-        </linearGradient>
-      </defs>
-    </svg>
-    E-Link(256)
+  <h1 class="logo-container">
+    <img 
+      src="{{ '/Images/ELink Logo.png' | relative_url }}" 
+      alt="E-Link Logo" 
+      class="main-logo header-sync-pulse"
+    >
   </h1>
 </div>
   
- <h2 class="sub-title">
+<h2 class="sub-title">
   An Open-Source, Elastomer Interconnection-based 
   <span class="mobile-br"></span> Connector for Flexible Neural Interfaces
 </h2>
-
 
 <div align="center" style="margin-top: 15px;">
     <img src="https://img.shields.io/badge/Verified-256ch-FFA500?style=flat-square" alt="Verified" />
@@ -860,8 +849,8 @@ model-viewer::part(interaction-prompt), model-viewer::part(default-progress-bar)
   Separable "Sandwich" structure (Housing, Adapter PCB, Headstage). Allows independent replacement of damaged modules and supports on-demand chip soldering (e.g., populating 1, 2, or 4 Intan chips) to save research costs.
 
 * **🪶 Detachable Active Electronics for Unburdened Rest**<br>
-
-During non-recording periods, the heavy headstage and active electronics can be easily separated from the implanted pedestal. This leaves only a minimal, lightweight passive interface on the skull, significantly reducing the physical payload on the animal and promoting natural behavior between sessions.
+  During non-recording periods, the heavy headstage and active electronics can be easily separated from the implanted pedestal. This leaves only a minimal, lightweight passive interface on the skull, significantly 
+  reducing the physical payload on the animal and promoting natural behavior between sessions.
 
 * **🐭 Optimized for Chronic In-Vivo Research**<br>
   Ultra-lightweight core (2.8g without housing) and low-profile design. Fully compatible with commutators, ensuring natural behavior and cable management during long-term recording in freely moving animals.
