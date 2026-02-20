@@ -1008,7 +1008,7 @@ During non-recording periods, the heavy headstage and active electronics can be 
 
 ---
 
-## 👥 Developers
+## 👥 Developers and Lab
 
 * **Tianyu Bai** (Lead Designer) <a href="https://tianyu-bai.github.io/"><img src="https://img.shields.io/badge/Website-Tianyu%20Bai-0077B5?style=flat-square&logo=github&logoColor=white" alt="Website"></a>
 * **Gen Li, Ph.D.**
@@ -1679,7 +1679,7 @@ This project is open-source and available under the **MIT License**. Click the b
 
 ---
 
-## 👥 开发者
+## 👥 开发者与实验室
 
 * **白天宇** (主导研发及设计) <a href="https://tianyu-bai.github.io/"><img src="https://img.shields.io/badge/个人主页-Tianyu%20Bai-0077B5?style=flat-square&logo=github&logoColor=white" alt="Website"></a>
 * **李根**
