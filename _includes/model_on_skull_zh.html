@@ -1,0 +1,58 @@
+<div class="model-block" align="center" style="position: relative; max-width: 760px; margin: 0 auto; min-height: 460px;">
+  <model-viewer
+    class="custom-model-viewer"
+    src="{{ '/Videos/On skull_3.16MB.glb' | relative_url }}"
+    alt="E Link on Skull 3D Model"
+    loading="lazy"   reveal="manual"
+    poster="{{ '/Images/poster.webp' | relative_url }}"
+    camera-controls interpolation-decay="200" bounds="tight" field-of-view="30deg" auto-rotate  rotation-per-second="15deg"
+    interaction-prompt="none" environment-image="neutral" exposure="0.75" shadow-intensity="0" tone-mapping="commerce">
+
+    <div slot="poster" style="position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; width: 100%; background: radial-gradient(circle at center, #111827 0%, #020617 100%); font-family: 'JetBrains Mono', monospace; overflow: hidden; border-radius: 16px; cursor: pointer;">
+      <div style="position: absolute; inset: 0; background-image: linear-gradient(rgba(59, 130, 246, 0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(59, 130, 246, 0.08) 1px, transparent 1px); background-size: 25px 25px; z-index: 0;"></div>
+      <div class="scanline" style="z-index: 1;"></div>
+      <div class="hud-corner hud-tl" style="z-index: 1;"></div>
+      <div class="hud-corner hud-tr" style="z-index: 1;"></div>
+      <div class="hud-corner hud-bl" style="z-index: 1;"></div>
+      <div class="hud-corner hud-br" style="z-index: 1;"></div>
+      <div style="z-index: 2; display: flex; flex-direction: column; align-items: center;">
+        <div class="cyber-loader"></div>
+        <p style="margin-top: 25px; margin-bottom: 5px; font-size: 0.95rem; font-weight: 600; letter-spacing: 3px; color: #93c5fd; text-shadow: 0 0 10px rgba(96, 165, 250, 0.8); animation: text-blink 1.5s ease-in-out infinite;">正在初始化 3D 信号...</p>
+        <p class="click-to-load-glow" style="margin: 0; font-size: 0.65rem; color: #a78bfa; letter-spacing: 1px; font-weight: bold;">[ 滑动或点击接入引擎 ]</p>
+      </div>
+    </div>
+    
+    <div class="model-watermark-text">版权所有 © 2026 Tianyu Bai</div>
+    
+    <div class="gesture-hud">
+      <span>↺ 旋转：拖拽</span>
+  <span class="pc-only">缩放：Ctrl键 + 鼠标滚轮/触控板捏合</span>
+  <span class="mobile-only">缩放：双指捏合</span>
+</div>
+
+    <div class="gesture-overlay mode-drag">
+      <div class="icon-box"><div class="hand-icon">👆</div></div>
+      <div class="gesture-text">拖拽以旋转</div>
+    </div>
+
+    <div class="gesture-overlay mode-zoom">
+  <div class="icon-box">
+    <div class="hand-icon hand-left">👉</div>
+    <div class="hand-icon hand-right">👈</div>
+  </div>
+  <div class="gesture-text">
+    <span class="pc-tip">Ctrl键 + 鼠标滚轮以缩放</span>
+    <span class="mobile-tip">双指捏合屏幕以缩放</span>
+  </div>
+</div>
+    
+    <button class="reset-btn"
+  onclick="
+    const mv = this.closest('model-viewer');
+    mv.setAttribute('camera-orbit','45deg 55deg auto');
+    mv.setAttribute('field-of-view','30deg');
+  ">
+      ⟲ 重置视角
+    </button>
+  </model-viewer>
+</div>
