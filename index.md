@@ -1075,8 +1075,6 @@ This project is open-source and available under the **MIT License**. Click the b
  </a>
 </div>
 
-</div> 
-
 <div class="github-only">
   <br>
   <hr>
@@ -1757,8 +1755,6 @@ This project is open-source and available under the **MIT License**. Click the b
   <a href="https://github.com/tianyu-bai/E-Link/blob/main/LICENSE">
     <img src="https://img.shields.io/badge/开源协议-MIT-A31F34?style=flat-square&logo=opensourceinitiative&logoColor=white" alt="License">
   </a>
-</div>
-
 </div>
 
 <script>
