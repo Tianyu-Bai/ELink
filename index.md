@@ -811,18 +811,61 @@ model-viewer::part(interaction-prompt), model-viewer::part(default-progress-bar)
 }
 </style>
 
-* **⚡ 256-Channel High-Density & Scalable Interface**
-  Compact pedestal footprint supporting 256-ch acquisition. The elastomer-based design offers a clear scaling roadmap (up to 1024-ch) without increasing physical size or surgical overhead.
-* **🔌 Zero-Force "Soft" Interconnect**
-  By replacing rigid pins with Anisotropic Conductive Elastomer, the system shifts from "insertion" to "compression." This "Gentle yet Firm" philosophy eliminates common failure modes like **bent or broken pins** from the physical level.
-* **🎯 Self-Aligning & High Tolerance**
-  Features a high-precision mechanical guidance structure with "Structural Redundancy." It naturally forgives minor manual misalignments, ensuring reliable contact with simple rotation — no microscopic alignment required. 
-* **🛠️ Modular Maintenance & On-Demand Assembly**
-  Separable "Sandwich" structure (Housing, Adapter PCB, Headstage). Allows independent replacement of damaged modules and supports **on-demand chip soldering** (e.g., populating 1, 2, or 4 Intan chips) to save research costs.
-* **🐭 Optimized for Chronic In-Vivo Research**
-  Ultra-lightweight core (2.8g without housing) and low-profile design. Fully compatible with commutators, ensuring natural behavior and cable management during long-term recording in freely moving animals.
-* **🧪 Surgical-Grade Integration & Anatomical Adaptation**
-  Features textured sidewalls for superior adhesion with dental cement/UV resin. The base curvature can be customized to match the specific cranial profiles of different animals during 3D printing, ensuring a rock-solid isolation chamber that protects delicate probes from fluids and scratching.
+<style>
+/* 水印体特征列表专属样式 */
+.watermark-features {
+  color: rgba(148, 163, 184, 0.8); /* 柔和的蓝灰色 (Slate-400)，自带水印隐匿感 */
+  font-size: 0.95em;
+  line-height: 1.7;
+  font-weight: 400;
+  letter-spacing: 0.3px;
+}
+
+.watermark-features ul {
+  padding-left: 20px;
+}
+
+.watermark-features li {
+  margin-bottom: 20px;
+  opacity: 0.85; /* 整体降低透明度，压制 Emoji 的刺眼感 */
+  transition: all 0.3s ease;
+}
+
+/* 增加呼吸感：鼠标悬停时微微亮起 */
+.watermark-features li:hover {
+  opacity: 1;
+  color: rgba(241, 245, 249, 0.9);
+}
+
+/* 重新定义粗体的颜色，从“刺眼纯白”改为“低饱和浅蓝” */
+.watermark-features strong {
+  color: #93c5fd; /* 柔和的天蓝色 (Blue-300) */
+  font-weight: 600;
+  text-shadow: 0 0 8px rgba(147, 197, 253, 0.2); /* 微微的发光字效 */
+}
+</style>
+
+<div class="watermark-features" markdown="1">
+
+* **⚡ 256-Channel High-Density & Scalable Interface**<br>
+  Compact pedestal footprint supporting **256-ch acquisition**. The elastomer-based design offers a clear scaling roadmap (**up to 1024-ch**) without increasing physical size or surgical overhead.
+
+* **🔌 Zero-Force "Soft" Interconnect**<br>
+  By replacing rigid pins with **Anisotropic Conductive Elastomer**, the system shifts from "insertion" to "compression." This "Gentle yet Firm" philosophy eliminates common failure modes like **bent or broken pins** from the physical level.
+
+* **🎯 Self-Aligning & High Tolerance**<br>
+  Features a high-precision mechanical guidance structure with **"Structural Redundancy."** It naturally forgives minor manual misalignments, ensuring reliable contact with simple rotation — **no microscopic alignment required**.
+
+* **🛠️ Modular Maintenance & On-Demand Assembly**<br>
+  Separable **"Sandwich" structure** (Housing, Adapter PCB, Headstage). Allows independent replacement of damaged modules and supports **on-demand chip soldering** (e.g., populating 1, 2, or 4 Intan chips) to save research costs.
+
+* **🐭 Optimized for Chronic In-Vivo Research**<br>
+  Ultra-lightweight core (**2.8g** without housing) and low-profile design. Fully compatible with commutators, ensuring natural behavior and cable management during long-term recording in **freely moving animals**.
+
+* **🧪 Surgical-Grade Integration & Anatomical Adaptation**<br>
+  Features textured sidewalls for superior adhesion with dental cement/UV resin. The base curvature can be **customized to match the specific cranial profiles** of different animals during 3D printing, ensuring a rock-solid isolation chamber that protects delicate probes from fluids and scratching.
+
+</div>
 
 <div align="center">
 <img data-src="Videos/Animation%20repeat.gif" 
