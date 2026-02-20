@@ -106,16 +106,19 @@
 <span id="en-features"></span>
 ## ✨ Key Features
 
-* **⚡ 256-Channel High-Density Interface**
- Compact pedestal footprint supporting high-density acquisition without increasing surgical overhead.
-* **🔌 Solderless Elastomeric Interconnect**
- Uses anisotropic conductive elastomer for repeatable, alignment-tolerant electrical contact.
-* **🐭 Optimized for In-Vivo Research**
- Minimal Implant Footprint Core components weigh only 2.8g (with housing removed), reducing head-heavy behavior and improving animal welfare during long-term recording sessions.
-* **🛠️ Modular & Scalable**
- Separable housing, PCBs, and protective cap for rapid iteration and troubleshooting.
-* **🧪 Surgical-Grade Design**
- Textured sidewalls for superior adhesion with dental cement or UV-curable resin.
+* **⚡ 256-Channel High-Density & Scalable Interface**
+  Compact pedestal footprint supporting 256-ch acquisition. The elastomer-based design offers a clear scaling roadmap (up to 1024-ch) without increasing physical size or surgical overhead.
+* **🔌 Zero-Force "Soft" Interconnect (Anti-Failure)**
+  By replacing rigid pins with **Anisotropic Conductive Elastomer (ACE)**, the system shifts from "insertion" to "compression." This "Gentle yet Firm" philosophy eliminates common failure modes like **bent or broken pins** from the physical level.
+* **🎯 Self-Aligning & High Tolerance**
+  Features a high-precision mechanical guidance structure with "Structural Redundancy." It naturally forgives minor manual misalignments, ensuring reliable contact with simple rotation—**no microscopic alignment required.**
+* **🛠️ Modular Maintenance & On-Demand Assembly**
+  Separable "Sandwich" structure (Housing, Adapter PCB, Headstage). Allows **independent replacement** of damaged modules and supports **on-demand chip soldering** (e.g., populating 1, 2, or 4 Intan chips) to save research costs.
+* **🐭 Optimized for Chronic In-Vivo Research**
+  Ultra-lightweight core (2.8g without housing) and low-profile design. Fully compatible with **mechanical commutators**, ensuring natural behavior and cable management during long-term recording in freely moving animals.
+* **🧪 Surgical-Grade Integration & Anatomical Adaptation**
+  Features textured sidewalls for superior adhesion with dental cement/UV resin. The base curvature can be **customized to match the specific cranial profiles** of different animals during 3D printing, ensuring a rock-solid isolation chamber that protects delicate probes from fluids and scratching.
+  
 <div align="center">
  <img src="Videos/Animation%20repeat.gif" 
       alt="ELINK-256 Animation GIF" 
@@ -439,16 +442,19 @@ This project is open-source and available under the **MIT License**. Click the b
 <span id="cn-features"></span>
 ## ✨ 关键特性
 
-* **⚡ 256 通道高密度接口**
-  紧凑的基座占地面积，支持高密度采集，且不增加手术负担。
-* **🔌 免焊弹性体互连**
-  使用各向异性导电弹性体，实现可重复、允许对准误差的一站式电气接触。
-* **🐭 专为体内研究优化**
-  最小化植入所需面积。核心组件重量仅为 2.8g（移除上盖后可保证小鼠完全的自由活动），为动物最大限度减轻负担，在长期记录过程中保证动物福利。
-* **🛠️ 模块化与可扩展**
-  外壳、PCB 和保护盖均可分离，便于快速迭代和故障排查。
-* **🧪 手术级设计**
-  纹理化侧壁设计，增强了与牙科水泥或紫外光固化树脂的附着力。
+* **⚡ 256通道高密度与可扩展接口**
+  在极小的基座占地面积内实现256通道数据采集。得益于弹性体互连的高集成度，该系统提供了清晰的扩展路径（可达1024通道），且不会增加额外的手术复杂度。
+* **🔌 零插拔力“以柔克刚” **
+  利用**各向异性导电弹性体 (ACE)** 取代传统刚性插针。通过“旋紧结构”将扭矩转化为均匀压力，从物理层面彻底规避了高密度连接器常见的**断针、弯针**等失效模式，让连接不再成为系统可靠性的短板。
+* **🎯 自对准与高容错连接**
+  系统具备优异的机械限位与电气容错率。无需微米级精密对齐，只需简单旋紧即可实现稳定连接，极大降低了手动操作的难度和失败风险。
+* **🛠️ 模块化维护与按需组装**
+  采用“三明治”式分离结构（外壳、适配板、放大器板）。支持**损坏模块的单独更换**，并允许根据实验通道需求**灵活焊接单/多颗芯片**，显著降低了科研成本与维护门槛。
+* **🐭 专为自由活动动物实验优化**
+  核心组件仅重2.8g（移除上盖后）。低剖面设计完美**适配机械换向器 (Commutator)**，有效管理线缆并确保动物在长期慢性实验中的自然行为，提升动物福利。
+* **🧪 手术级一体化与解剖结构适配**
+  侧壁纹理设计极大增强了与牙科水泥或UV树脂的附着力。基座底部的打印弧度可**根据不同动物的头部曲线进行定制化调整**，从而实现与颅骨的完美贴合，构建出全封闭的防护舱，有效阻隔体液侵蚀并抵抗动物抓挠。
+  
 <div align="center">
   <img src="Videos/Animation%20repeat.gif" 
        alt="ELINK-256 动画演示 GIF" 
