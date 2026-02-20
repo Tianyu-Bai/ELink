@@ -34,18 +34,48 @@ title: E-Link Home
   align-items: center;
 }
 
-/* 2. 主 Logo 样式 (替代了原有的 bi-color-title 和 title-icon) */
+/* ✨ 新增：必须加上相对定位，用来框住后面的“打光”效果 ✨ */
+.logo-container {
+  position: relative;
+  display: inline-flex; 
+  align-items: center;
+  justify-content: center;
+}
+
+/* 2. 主 Logo 样式 */
 .main-logo {
-  width: 350px; /* 请根据你实际 Logo 的比例调整这里的宽度 */
+  width: 350px; 
   max-width: 100%;
   height: auto;
   margin-bottom: 5px;
   display: block;
 }
 
+/* ✨ 核心魔法：用 CSS 在 "Link" 区域上方打一束柔和的高光 ✨ */
+.logo-container::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: -2%; /* 靠右对齐，精准覆盖 "Link" 区域 */
+  transform: translateY(-50%);
+  width: 65%; /* 宽度覆盖图片的右半部分 */
+  height: 90%;
+  
+  /* 径向渐变模拟光源：中心最亮，向外渐变透明。这里的 rgba 颜色是浅紫和青蓝色系，和你的副标题呼应 */
+  background: radial-gradient(ellipse at center, rgba(167, 139, 250, 0.6) 0%, rgba(96, 165, 250, 0.2) 50%, transparent 70%);
+  
+  pointer-events: none; /* 确保光圈不会阻挡鼠标对图片的点击或保存 */
+  mix-blend-mode: screen; /* 滤色模式：能像现实中的光线一样，有效提亮底图的暗部黑字 */
+  z-index: 10;
+  
+  /* 让这束光跟着 Logo 的节奏一起呼吸闪烁，增加科技感 */
+  animation: sync-pulse 3s ease-in-out infinite;
+}
+
 /* 3. 副标题基础样式 */
 .sub-title {
-  background: linear-gradient(0deg, #60a5fa, #a78bfa);
+  /* 将 0deg 改为 90deg，实现从左到右的平滑过渡 */
+  background: linear-gradient(90deg, #60a5fa 0%, #818cf8 50%, #a78bfa 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   font-family: 'Inter', system-ui, sans-serif;
@@ -54,8 +84,7 @@ title: E-Link Home
   letter-spacing: -0.5px;
   text-align: center;
   margin-top: 0;
-  line-height: 1.3;
-  /* 防止文字太靠边 */
+  line-height: 1.4; /* 稍微增加一点行高，让多行阅读更舒适 */
   max-width: 90%; 
   margin-left: auto;
   margin-right: auto;
@@ -64,26 +93,19 @@ title: E-Link Home
 /* 4. 手机端优化 */
 @media (max-width: 600px) {
   .main-title-wrapper { margin-bottom: 10px; }
-  
-  /* 在手机端缩小 Logo 尺寸 */
-  .main-logo {
-    width: 220px; /* 请根据需要微调 */
-  }
-
+  .main-logo { width: 220px; }
   .sub-title { 
-    font-size: 1.1em; /* 稍微缩小字号 */
+    font-size: 1.1em; 
     padding: 0 10px; 
-    white-space: normal; /* 确保文字可以换行 */
+    white-space: normal; 
   }
-  
-  /* 关键：在手机端强制换行 */
   .mobile-br::before {
     content: "\A";
     white-space: pre;
   }
 }
 
-/* 5. 呼吸动画逻辑 (保留并直接作用于图片) */
+/* 5. 呼吸动画逻辑 */
 .header-sync-pulse {
   animation: sync-pulse 3s ease-in-out infinite;
   will-change: transform, filter;
