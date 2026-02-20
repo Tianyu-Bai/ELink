@@ -957,7 +957,7 @@ The hardware designs and visual assets in this repository correspond directly to
 * We welcome feedback and collaboration from the neuroengineering community!
 
 * **Inquiries**: Thinking about using E-Link in your lab? We know setting up a new system can be tricky. If you have questions about the PCB design or 3D printing, drop us an email or open an issue. We'd love to help you get started!
-    * **Support** ([<font color="#60a5fa">support@ephys.tech</font>](mailto:Tianyu.Bai.TH@Dartmouth.edu))
+  * **Email**: [<font color="#60a5fa">support@ephys.tech</font>](mailto:support@ephys.tech)
 
 ---
 
@@ -1609,7 +1609,7 @@ This project is open-source and available under the **MIT License**. Click the b
 * 🤝 **我们诚挚欢迎神经工程科研同行的反馈与合作！**
 
 * **技术咨询**：有意部署 E-Link易链？作为开发者深知从零搭建一套新系统往往伴随诸多挑战。无论您在 PCB 设计、3D 打印制造，还是系统组装方面遇到任何问题，都欢迎随时通过邮件与我们取得联系。将为您提供技术支持！
-    * **技术支持** ([<font color="#60a5fa">support@ephys.tech</font>](mailto:Tianyu.Bai.TH@Dartmouth.edu))
+    * **技术支持**: [<font color="#60a5fa">support@ephys.tech</font>](mailto:support@ephys.tech)
   
 ---
 
