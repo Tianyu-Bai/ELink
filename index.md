@@ -72,8 +72,8 @@ title: E-Link Home
   .main-logo { height: 45px; } 
 
   .sub-title { 
-    font-size: 1.1em; 
-    padding: 0 10px; 
+    font-size: 1.35em; 
+    padding: 0 5px; 
     white-space: normal; 
   }
   
