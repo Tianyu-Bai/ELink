@@ -6,36 +6,6 @@ title: E-Link Home
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-<div class="mirror-site-banner">
-  <span class="lang-en">🌐 Mirror Site: <a href="https://ephys.tech" target="_blank"><b>ephys.tech</b></a></span>
-  <span class="lang-zh">🌐 备用网址: <a href="https://ephys.tech" target="_blank"><b>ephys.tech</b></a></span>
-</div>
-
-<style>
-.mirror-site-banner {
-  width: 100%;
-  background: rgba(59, 130, 246, 0.1);
-  border-bottom: 1px solid rgba(59, 130, 246, 0.2);
-  padding: 8px 0;
-  text-align: center;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.85rem;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  margin-bottom: 15px;
-}
-.mirror-site-banner a {
-  color: #60a5fa;
-  text-decoration: none;
-  margin-left: 5px;
-  transition: all 0.3s;
-}
-.mirror-site-banner a:hover {
-  text-shadow: 0 0 8px rgba(96, 165, 250, 0.8);
-  color: #fff;
-}
-</style>
-
 <div class="lang-en" markdown="1">
 
 <div class="github-only">
@@ -44,36 +14,6 @@ title: E-Link Home
       🌐 Click here to view the interactive website
     </a>
   </p>
-</div>
-
-<div align="center" class="nav-badges">
-  <a href="#en-overview"><img src="https://img.shields.io/badge/📖_Overview-3b82f6?style=flat-square&logoColor=white" alt="Overview"></a>
-  <a href="#en-features"><img src="https://img.shields.io/badge/✨_Features-3b82f6?style=flat-square&logoColor=white" alt="Features"></a>
-  <a href="#en-specs"><img src="https://img.shields.io/badge/📊_Specs-3b82f6?style=flat-square&logoColor=white" alt="Specs"></a>
-  <a href="#en-components"><img src="https://img.shields.io/badge/🧩_Components-3b82f6?style=flat-square&logoColor=white" alt="Components"></a>
-  <a href="#en-bom"><img src="https://img.shields.io/badge/🛠_BOM-3b82f6?style=flat-square&logoColor=white" alt="BOM"></a>
-  <a href="#en-downloads"><img src="https://img.shields.io/badge/🔗_Downloads-3b82f6?style=flat-square&logoColor=white" alt="Downloads"></a>
-</div>
-  
-<div class="main-title-wrapper" align="center">
-  <h1 class="header-sync-pulse bi-color-title">
-    <svg class="title-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" stroke="url(#icon-gradient)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" stroke="url(#icon-gradient)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-      <defs>
-        <linearGradient id="icon-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="#60a5fa" />
-          <stop offset="50%" stop-color="#a78bfa" />
-          <stop offset="100%" stop-color="#f472b6" />
-        </linearGradient>
-      </defs>
-    </svg>
-    E-Link(256)
-  </h1>
-  
-  <h2 class="sub-title">
-    An Open-Source, Elastomer Interconnection-based<br class="pc-only-br">Connector for Flexible Neural Interfaces
-  </h2>
 </div>
 
 <style>
@@ -135,6 +75,37 @@ title: E-Link Home
 }
 .header-sync-pulse svg { -webkit-text-fill-color: initial; filter: saturate(1.1); }
 </style>
+
+<div class="main-title-wrapper" align="center">
+  <h1 class="header-sync-pulse bi-color-title">
+    <svg class="title-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" stroke="url(#icon-gradient)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" stroke="url(#icon-gradient)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <defs>
+        <linearGradient id="icon-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#60a5fa" />
+          <stop offset="50%" stop-color="#a78bfa" />
+          <stop offset="100%" stop-color="#f472b6" />
+        </linearGradient>
+      </defs>
+    </svg>
+    E-Link(256)
+  </h1>
+  
+  <h2 class="sub-title">
+    An Open-Source, Elastomer Interconnection-based<br class="pc-only-br">Connector for Flexible Neural Interfaces
+  </h2>
+</div>
+
+<div align="center" class="nav-badges">
+  <a href="#en-overview"><img src="https://img.shields.io/badge/📖_Overview-3b82f6?style=flat-square&logoColor=white" alt="Overview"></a>
+  <a href="#en-features"><img src="https://img.shields.io/badge/✨_Features-3b82f6?style=flat-square&logoColor=white" alt="Features"></a>
+  <a href="#en-specs"><img src="https://img.shields.io/badge/📊_Specs-3b82f6?style=flat-square&logoColor=white" alt="Specs"></a>
+  <a href="#en-components"><img src="https://img.shields.io/badge/🧩_Components-3b82f6?style=flat-square&logoColor=white" alt="Components"></a>
+  <a href="#en-bom"><img src="https://img.shields.io/badge/🛠_BOM-3b82f6?style=flat-square&logoColor=white" alt="BOM"></a>
+  <a href="#en-downloads"><img src="https://img.shields.io/badge/🔗_Downloads-3b82f6?style=flat-square&logoColor=white" alt="Downloads"></a>
+</div>
+
 
   <div align="center" style="margin-top: 15px;">
     <a href="https://sites.dartmouth.edu/fang-group/"><img src="https://img.shields.io/badge/Dartmouth-MINE--Lab-00693E?style=flat-square" alt="MINE Lab"></a>
@@ -1063,14 +1034,21 @@ This project is open-source and available under the **MIT License**. Click the b
   </p>
 </div>
 
-<div align="center" class="nav-badges">
-  <a href="#cn-overview"><img src="https://img.shields.io/badge/📖_概览-3b82f6?style=flat-square&logoColor=white" alt="Overview"></a>
-  <a href="#cn-features"><img src="https://img.shields.io/badge/✨_特性-3b82f6?style=flat-square&logoColor=white" alt="Features"></a>
-  <a href="#cn-specs"><img src="https://img.shields.io/badge/📊_规格-3b82f6?style=flat-square&logoColor=white" alt="Specs"></a>
-  <a href="#cn-components"><img src="https://img.shields.io/badge/🧩_组件-3b82f6?style=flat-square&logoColor=white" alt="Components"></a>
-  <a href="#cn-bom"><img src="https://img.shields.io/badge/🛠_物料清单-3b82f6?style=flat-square&logoColor=white" alt="BOM"></a>
-  <a href="#cn-downloads"><img src="https://img.shields.io/badge/🔗_下载-3b82f6?style=flat-square&logoColor=white" alt="Downloads"></a>
-</div>
+<style>
+.bi-color-title {
+  background: linear-gradient(90deg, #60a5fa 0%, #a78bfa 55%, #f472b6 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  display: flex !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transform: translateZ(0);
+}
+
+.header-sync-pulse svg { -webkit-text-fill-color: initial; filter: saturate(1.2) drop-shadow(0 0 2px rgba(167, 139, 250, 0.4)); }
+</style>
   
 <div align="center" style="margin-bottom: 20px;">
   <h1 class="header-sync-pulse bi-color-title" style="display: flex; align-items: center; justify-content: center; border-bottom: none; margin-bottom: 5px; font-size: 2.2em; font-weight: 800; letter-spacing: -1px; font-family: 'Inter', 'Noto Sans SC', sans-serif;">
@@ -1091,26 +1069,19 @@ This project is open-source and available under the **MIT License**. Click the b
   </h1>
 </div>
 
-<style>
-.bi-color-title {
-  background: linear-gradient(90deg, #60a5fa 0%, #a78bfa 55%, #f472b6 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
-  display: flex !important;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  transform: translateZ(0);
-}
-
-.header-sync-pulse svg { -webkit-text-fill-color: initial; filter: saturate(1.2) drop-shadow(0 0 2px rgba(167, 139, 250, 0.4)); }
-</style>
-
 <h2 class="sub-title">
   一种基于弹性导电体互连技术的<br class="mobile-only-br">高密度柔性神经接口连接器
 </h2>
-  
+
+
+<div align="center" class="nav-badges">
+  <a href="#cn-overview"><img src="https://img.shields.io/badge/📖_概览-3b82f6?style=flat-square&logoColor=white" alt="Overview"></a>
+  <a href="#cn-features"><img src="https://img.shields.io/badge/✨_特性-3b82f6?style=flat-square&logoColor=white" alt="Features"></a>
+  <a href="#cn-specs"><img src="https://img.shields.io/badge/📊_规格-3b82f6?style=flat-square&logoColor=white" alt="Specs"></a>
+  <a href="#cn-components"><img src="https://img.shields.io/badge/🧩_组件-3b82f6?style=flat-square&logoColor=white" alt="Components"></a>
+  <a href="#cn-bom"><img src="https://img.shields.io/badge/🛠_物料清单-3b82f6?style=flat-square&logoColor=white" alt="BOM"></a>
+  <a href="#cn-downloads"><img src="https://img.shields.io/badge/🔗_下载-3b82f6?style=flat-square&logoColor=white" alt="Downloads"></a>
+</div>
 
   <div align="center" style="margin-top: 15px;">
     <a href="https://sites.dartmouth.edu/fang-group/"><img src="https://img.shields.io/badge/达特茅斯学院-00693E?style=flat-square" alt="方辉组"></a>
