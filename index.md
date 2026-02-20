@@ -1821,10 +1821,22 @@ This project is open-source and available under the **MIT License**. Click the b
     let isScrolling = false;
     let scrollEndTimer = null;
 
-    // 弱网阻断逻辑
+    // 弱网阻断逻辑及交互隐藏逻辑
     models.forEach(viewer => {
         viewer.addEventListener('click', () => {
             if (viewer.dataset.loaded !== "true") activateViewer(viewer, true);
+        });
+
+        // 监听用户的拖拽/缩放操作，隐藏操作提示
+        viewer.addEventListener('camera-change', (event) => {
+            // 确保是用户的真实交互，而不是系统自动旋转
+            if (event.detail.source === 'user-interaction') {
+                viewer.querySelectorAll('.gesture-overlay, .gesture-hud').forEach(el => {
+                    el.classList.add('gesture-hidden');
+                });
+                // 打上标记，防止它后续再次弹出来
+                viewer.dataset.overlayDisabled = "true"; 
+            }
         });
     });
 
