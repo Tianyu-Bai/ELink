@@ -1687,99 +1687,75 @@ This project is open-source and available under the **MIT License**. Click the b
     return false; // 默认放行
   };
 
-  // ===================== E-Link 动态数据面板逻辑 =====================
+// ===================== E-Link 动态数据面板逻辑 (深度优化版) =====================
     const dashboardObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         const card = entry.target;
         const fgRing = card.querySelector('.fg-ring');
         const numberEl = card.querySelector('.count-up');
-        
         const targetValue = parseFloat(card.dataset.value);
         const isFloat = card.dataset.isFloat === "true";
         const circumference = 283; 
-        
+
         if (entry.isIntersecting) {
+          // 状态锁：防止重复启动动画
+          if (card.dataset.dashboardInView === "true") return;
           card.dataset.dashboardInView = "true";
+
           let startTimestamp = null;
-          
-          const cycleTime = 6000; 
-          const growTime = 2500;  
+          const duration = 2000; // 2秒完成
 
-          const step = (timestamp) => {
-            if (card.dataset.dashboardInView !== "true") return; 
-
+          const animate = (timestamp) => {
+            if (card.dataset.dashboardInView !== "true") return;
             if (!startTimestamp) startTimestamp = timestamp;
-            const elapsed = (timestamp - startTimestamp) % cycleTime;
             
-            let progress = 0;
+            const elapsed = timestamp - startTimestamp;
+            const progress = Math.min(elapsed / duration, 1);
             
-            if (elapsed < growTime) {
-              let p = elapsed / growTime;
-              progress = p === 1 ? 1 : 1 - Math.pow(2, -10 * p);
-            } else {
-              progress = 1;
-            }
+            // 使用 EaseOutExpo 缓动函数，动作更丝滑
+            const easeProgress = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+            const currentValue = easeProgress * targetValue;
 
-           const currentValue = isNaN(progress * targetValue) ? 0 : progress * targetValue;
-           
-            if (isFloat) {
-              numberEl.innerText = currentValue.toFixed(1);
-            } else {
-              if (targetValue > 100) {
-                if (progress > 0.99) {
-                    numberEl.innerText = targetValue;
-                } else {
-                    numberEl.innerText = Math.round(currentValue);
-                }
-              } else {
-                numberEl.innerText = Math.round(currentValue);
-              }
+            numberEl.innerText = isFloat ? currentValue.toFixed(1) : Math.round(currentValue);
+            fgRing.style.strokeDashoffset = circumference - (circumference * easeProgress);
+
+            if (progress < 1) {
+              card.dashboardAnimFrame = requestAnimationFrame(animate);
             }
-            fgRing.style.strokeDashoffset = circumference - (circumference * progress);
-            card.dashboardAnimFrame = window.requestAnimationFrame(step);
           };
-
-          card.dashboardAnimFrame = window.requestAnimationFrame(step);
+          // 确保清理旧帧后再开始新动画
+          cancelAnimationFrame(card.dashboardAnimFrame);
+          card.dashboardAnimFrame = requestAnimationFrame(animate);
           
         } else {
+          // 彻底离开视野时：清理动画并复位
           card.dataset.dashboardInView = "false";
-          if (card.dashboardAnimFrame) {
-            window.cancelAnimationFrame(card.dashboardAnimFrame);
-            card.dashboardAnimFrame = null;
-          }
+          cancelAnimationFrame(card.dashboardAnimFrame);
           fgRing.style.strokeDashoffset = circumference;
           numberEl.innerText = "0";
         }
       });
-    }, { threshold: 0.1 }); 
+    }, { threshold: 0.15 }); 
 
-    document.querySelectorAll('.metric-card').forEach(card => {
-      dashboardObserver.observe(card);
-    });
-    
-    // ===================== 3D 模型交互与弱网防闪退逻辑 =====================
+    document.querySelectorAll('.metric-card').forEach(card => dashboardObserver.observe(card));
+
+    // ===================== 3D 模型交互优化 (防止并发冲突) =====================
     const models = Array.from(document.querySelectorAll('model-viewer'));
     if (!models.length) return;
 
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-
     let isScrolling = false;
     let scrollEndTimer = null;
-    let initCheckTimer = null; 
 
-    // 新增：给每个模型添加点击事件，允许弱网时手动加载
+    // 弱网阻断逻辑
     models.forEach(viewer => {
         viewer.addEventListener('click', () => {
-             if (viewer.dataset.loaded !== "true") {
-                 activateViewer(viewer, true); // force=true 强制加载
-             }
+            if (viewer.dataset.loaded !== "true") activateViewer(viewer, true);
         });
     });
 
     const checkAndActivateBestModel = () => {
-        // 🚨核心阻断：如果是弱网，绝不自动加载，等待用户点击
         if (isSlowNetwork()) return;
-
         let bestModel = null;
         let minDistance = Infinity;
         const viewportCenter = window.innerHeight / 2;
@@ -1787,120 +1763,60 @@ This project is open-source and available under the **MIT License**. Click the b
         models.forEach(viewer => {
             if (viewer.dataset.inView === "true") {
                 const rect = viewer.getBoundingClientRect();
-                const modelCenter = rect.top + rect.height / 2;
-                const distance = Math.abs(modelCenter - viewportCenter);
-                
-                if (distance < minDistance) {
-                    minDistance = distance;
-                    bestModel = viewer;
-                }
+                const distance = Math.abs((rect.top + rect.height / 2) - viewportCenter);
+                if (distance < minDistance) { minDistance = distance; bestModel = viewer; }
             }
         });
-
-        if (bestModel) {
-            activateViewer(bestModel);
-        }
+        if (bestModel) activateViewer(bestModel);
     };
 
     window.addEventListener('scroll', () => {
         isScrolling = true;
         clearTimeout(scrollEndTimer);
-        scrollEndTimer = setTimeout(() => {
-            isScrolling = false;
-            checkAndActivateBestModel();
-        }, 120);
+        scrollEndTimer = setTimeout(() => { isScrolling = false; checkAndActivateBestModel(); }, 150);
     }, { passive: true });
 
     let isAnyModelLoading = false;
-
-    // 激活模型的专用函数 (加入 force 参数)
     const activateViewer = async (viewer, force = false) => {
-        if (isScrolling && !force) return; 
-
-        models.forEach(m => {
-            if (m !== viewer && !m.paused) {
-                m.pause();
-            }
-        });
+        if (isScrolling && !force) return;
+        models.forEach(m => { if (m !== viewer && !m.paused) m.pause(); });
 
         if (viewer.getAttribute('reveal') === 'manual' && viewer.dataset.loaded !== "true") {
-            if (isAnyModelLoading && !force) return; 
-            
+            if (isAnyModelLoading && !force) return;
             isAnyModelLoading = true;
-            try {
-                viewer.dismissPoster();
-                viewer.dataset.loaded = "true";
-                
-                await new Promise(resolve => {
-                    viewer.addEventListener('load', resolve, { once: true });
-                    setTimeout(resolve, 2500); 
-                });
-            } catch (e) {
-                console.warn("3D 模型加载被打断:", e);
-            } finally {
-                isAnyModelLoading = false;
-            }
+            viewer.dismissPoster();
+            viewer.dataset.loaded = "true";
+            // 增加加载监听
+            const loadHandler = () => { isAnyModelLoading = false; viewer.removeEventListener('load', loadHandler); };
+            viewer.addEventListener('load', loadHandler);
+            setTimeout(() => { isAnyModelLoading = false; }, 3000); 
         }
         
-        if (viewer.paused && !isAnyModelLoading) {
-            try { viewer.play(); } catch(e) {}
-        }
+        if (viewer.paused && !isAnyModelLoading) { try { viewer.play(); } catch(e) {} }
 
         if (viewer.dataset.overlayDisabled !== "true") {
             clearTimeout(viewer.hudTimer); 
             viewer.hudTimer = setTimeout(() => {
                 viewer.querySelectorAll('.gesture-overlay').forEach(el => el.classList.add('gesture-active'));
-            }, 600);
+            }, 500);
         }
     };
 
-    models.forEach((viewer) => {
-        viewer.setAttribute('auto-rotate', '');
-        viewer.minimumRenderScale = isMobile ? 0.5 : 1; 
-        viewer.autoRotateDelay = 1000;
-        
-        if (isMobile) {
-            viewer.setAttribute('interpolation-decay', '30'); 
-        }
-        
-        let hintsHidden = false; 
-        const hideHints = () => {
-            if (hintsHidden) return; 
-            hintsHidden = true;
-            viewer.querySelectorAll('.gesture-overlay, .gesture-hud').forEach(el => el.classList.add('gesture-hidden'));
-            viewer.dataset.overlayDisabled = "true";
-        };
-        
-        ['mousedown', 'wheel', 'touchstart'].forEach(evt => {
-            viewer.addEventListener(evt, hideHints, { passive: true });
-        });
-    });
-
-    const observer = new IntersectionObserver((entries) => {
+    const modelObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             const viewer = entry.target;
-
             if (entry.isIntersecting) {
                 viewer.dataset.inView = "true";
-                if (!isScrolling) {
-                    clearTimeout(initCheckTimer);
-                    initCheckTimer = setTimeout(() => {
-                        checkAndActivateBestModel();
-                    }, 50);
-                }
+                if (!isScrolling) checkAndActivateBestModel();
             } else {
                 viewer.dataset.inView = "false";
-                clearTimeout(viewer.hudTimer);
                 viewer.pause();
                 viewer.querySelectorAll('.gesture-overlay').forEach(el => el.classList.remove('gesture-active'));
             }
         });
-    }, {
-        threshold: 0.05, 
-        rootMargin: "50px 0px" 
-    });
+    }, { threshold: 0.1 });
 
-    models.forEach(model => observer.observe(model));
+    models.forEach(model => modelObserver.observe(model));
 
   // ===================== GIF 滚动到可见时才加载 =====================
   const gifObserver = new IntersectionObserver((entries, observer) => {
