@@ -6,6 +6,36 @@ title: E-Link Home
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
+<div class="mirror-site-banner">
+  <span class="lang-en">🌐 Mirror Site: <a href="https://ephys.tech" target="_blank"><b>ephys.tech</b></a></span>
+  <span class="lang-zh">🌐 备用网址: <a href="https://ephys.tech" target="_blank"><b>ephys.tech</b></a></span>
+</div>
+
+<style>
+.mirror-site-banner {
+  width: 100%;
+  background: rgba(59, 130, 246, 0.1);
+  border-bottom: 1px solid rgba(59, 130, 246, 0.2);
+  padding: 8px 0;
+  text-align: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  margin-bottom: 15px;
+}
+.mirror-site-banner a {
+  color: #60a5fa;
+  text-decoration: none;
+  margin-left: 5px;
+  transition: all 0.3s;
+}
+.mirror-site-banner a:hover {
+  text-shadow: 0 0 8px rgba(96, 165, 250, 0.8);
+  color: #fff;
+}
+</style>
+
 <div class="lang-en" markdown="1">
 
 <div class="github-only">
