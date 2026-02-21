@@ -82,20 +82,33 @@ title: E-Link Home
 }
 .bi-color-title-sweep {
   background: 
-    linear-gradient(105deg, transparent 20%, rgba(255, 255, 255, 0.9) 50%, transparent 80%),
+    /* 1. 把高光区域变宽：修改了 transparent 的比例，让中间的白色光晕范围更大、边缘更柔和 */
+    linear-gradient(105deg, transparent 0%, rgba(255, 255, 255, 0.5) 25%, rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 0.5) 75%, transparent 100%),
     linear-gradient(90deg, #60a5fa 0%, #a78bfa 55%, #f472b6 100%);
-  background-size: 200% auto, 100% auto; background-repeat: no-repeat;
-  -webkit-background-clip: text; background-clip: text;
-  -webkit-text-fill-color: transparent; color: transparent;
-  /* 👇 修改：总时间缩短为 5.8s 👇 */
-  animation: text-searchlight 5.8s ease-in-out infinite;
+  
+  /* 2. 扩大光束画布：从 200% 改为 250%，这会让整道光束在绝对尺寸上变得更宽 */
+  background-size: 250% auto, 100% auto; 
+  background-repeat: no-repeat;
+  -webkit-background-clip: text; 
+  background-clip: text;
+  -webkit-text-fill-color: transparent; 
+  color: transparent;
+  
+  /* 3. 动画设置：总时长 6秒，改用 linear (匀速) 让光缓慢滑过时更平滑，不会在文字中间忽快忽慢 */
+  animation: text-searchlight 6s linear infinite;
 }
+
 @keyframes text-searchlight {
-  0% { background-position: -150% center, 0 center; }
-  /* 👇 修改：92% 的时间扫过，剩下 8%停顿 👇 */
-  92% { background-position: 250% center, 0 center; }
-  100% { background-position: 250% center, 0 center; }
+  /* 起点收缩：不要设置成 -150% 那么远，-50% 确保网页一加载，光晕的边缘就已经搭在文字上了 */
+  0% { background-position: -50% center, 0 center; }
+  
+  /* 慢速扫过：用 65% 的时间（约 3.9秒）慢慢从左滑到右 */
+  65% { background-position: 150% center, 0 center; }
+  
+  /* 等待间隔：剩下的 35% 时间（约 2.1秒）光束停在右侧外面“休息” */
+  100% { background-position: 150% center, 0 center; }
 }
+
 
 /* 4. 通用副标题样式 */
 .sub-title {
