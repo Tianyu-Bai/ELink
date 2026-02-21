@@ -56,13 +56,13 @@ title: E-Link Home
   background-size: 200% auto, 100% auto; background-repeat: no-repeat;
   -webkit-background-clip: text; background-clip: text;
   -webkit-text-fill-color: transparent; color: transparent;
-  /* 👇 修改：总时间缩短为 2.6s 👇 */
-  animation: text-searchlight 2.6s ease-in-out infinite;
+  /* 👇 修改：总时间缩短为 3.8s 👇 */
+  animation: text-searchlight 3.8s ease-in-out infinite;
 }
 @keyframes text-searchlight {
   0% { background-position: -150% center, 0 center; }
-  /* 👇 修改：80% 的时间扫过，剩下 20%停顿 👇 */
-  80% { background-position: 250% center, 0 center; }
+  /* 👇 修改：90% 的时间扫过，剩下 10%停顿 👇 */
+  90% { background-position: 250% center, 0 center; }
   100% { background-position: 250% center, 0 center; }
 }
 
