@@ -30,14 +30,14 @@ title: E-Link Home
   content: ""; position: absolute; top: 0; left: 0; width: 60%; height: 100%;
   background: linear-gradient(to right, transparent 0%, rgba(96, 165, 250, 0.2) 20%, rgba(167, 139, 250, 0.9) 50%, rgba(96, 165, 250, 0.2) 80%, transparent 100%);
   mix-blend-mode: screen; pointer-events: none; 
-  /* 👇 修改：总时间缩短为 3.6s 👇 */
-  animation: searchlight-sweep 3.6s ease-in-out infinite;
+  /* 👇 修改：总时间缩短为 3.5s 👇 */
+  animation: searchlight-sweep 3.5s ease-in-out infinite;
 }
 @keyframes searchlight-sweep {
   0% { transform: translateX(-150%) skewX(-15deg); }
-  /* 👇 修改：95% 的时间扫过，剩下 5% 停顿 👇 */
-  95% { transform: translateX(250%) skewX(-15deg); } 
-  5% { transform: translateX(250%) skewX(-15deg); } 
+  /* 👇 修改：98% 的时间扫过，剩下 2% 停顿 👇 */
+  98% { transform: translateX(250%) skewX(-15deg); } 
+  2% { transform: translateX(250%) skewX(-15deg); } 
 }
 .main-logo {
   height: 100px !important; width: auto !important;  max-width: 100% !important;
