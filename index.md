@@ -49,11 +49,11 @@ title: E-Link Home
   50% { transform: scale(1.03); filter: drop-shadow(0 0 15px rgba(167, 139, 250, 0.5)); }
 }
 
-/* 3. 新增的独立遮罩层容器 (贴合图片并负责裁剪光束) */
+/* 3. 独立遮罩层容器 (贴合图片并负责裁剪光束) */
 .logo-mask-container {
   position: relative; 
   display: block; 
-  /* 👇 核心：遮罩放在内层，只裁剪光束，不影响外层阴影 👇 */
+  /* 👇遮罩放在内层，只裁剪光束，不影响外层阴影 👇 */
   -webkit-mask-image: var(--logo-url); 
   mask-image: var(--logo-url);
   -webkit-mask-size: contain;
@@ -85,12 +85,12 @@ title: E-Link Home
   animation: searchlight-sweep 4s ease-in-out infinite;
 }
 
-/* 👇 完美实现 1秒 停顿 👇 */
+/* 👇 实现 0.7秒 停顿 👇 */
 @keyframes searchlight-sweep {
   0% { transform: translateX(-150%) skewX(-15deg); }
-  /* 前 75% 的时间 (3秒) 执行从左到右扫光 */
-  75% { transform: translateX(250%) skewX(-15deg); } 
-  /* 后 25% 的时间 (1秒) 停在右侧视线外，形成完美间隙！ */
+  /* 前 82.5% 的时间 (3.3秒) 执行从左到右扫光 */
+  82.5% { transform: translateX(250%) skewX(-15deg); } 
+  /* 后 17.5% 的时间 (0.7秒) 停在右侧视线外，形成 0.7秒 的间隙！ */
   100% { transform: translateX(250%) skewX(-15deg); } 
 }
 
