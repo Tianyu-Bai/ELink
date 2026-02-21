@@ -71,9 +71,9 @@ title: E-Link Home
   100% { transform: translateX(250%) skewX(-15deg); }
 }
 
-/* 👇 3. 电脑端 Logo 图片样式 (大幅缩小) 👇 */
+/* 👇 3. 电脑端 Logo 图片样式 (放大 5 倍) 👇 */
 .main-logo {
-  height: 35px !important; /* 👈 原来是 60px，现在直接砍到 35px */
+  height: 175px !important; /* 👈 原来是 35px，5倍就是 175px */
   width: auto !important;  
   max-width: 100% !important;
   object-fit: contain;
@@ -98,20 +98,20 @@ title: E-Link Home
   margin-right: auto;
 }
 
-/* 👇 5. 手机端优化 (极致缩小与强制生效) 👇 */
+/* 👇 5. 手机端优化 (放大 5 倍) 👇 */
 @media (max-width: 768px) {
-  .main-title-wrapper { margin-bottom: 8px !important; }
+  .main-title-wrapper { margin-bottom: 15px !important; }
   
   /* 手机端 Logo 大小 */
   .main-logo { 
-    height: 20px !important; /* 👈 手机端比电脑端更小，仅为 20px */
+    height: 100px !important; /* 👈 原来是 20px，5倍就是 100px */
     width: auto !important;
-    max-width: 80vw !important; 
+    max-width: 90vw !important; 
   } 
 
   /* 手机端副标题 */
   .sub-title { 
-    font-size: 1.05em !important; 
+    font-size: 1.2em !important; 
     padding: 0 10px !important; 
     white-space: normal !important; 
   }
