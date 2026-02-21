@@ -85,7 +85,7 @@ title: E-Link Home
 
 /* 新增：Logo 图片样式 */
 .main-logo {
-  height: 60px; 
+  height: 40px; 
   width: auto;  
   object-fit: contain;
   display: block;
@@ -112,11 +112,11 @@ title: E-Link Home
 }
 
 /* 4. 手机端优化 */
-@media (max-width: 260px) {
+@media (max-width: 768px) {
   .main-title-wrapper { margin-bottom: 10px; }
   
-  /* 👇 图片整体在手机上显得太大，调小这个 height */
-  .main-logo { height: 20px; } 
+  /* 👇 手机端 Logo 大小，现在这行代码终于能生效了。如果还大，改成 20px */
+  .main-logo { height: 28px; } 
 
   /* 👇 副标题文字 */
   .sub-title { 
