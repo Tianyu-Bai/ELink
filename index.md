@@ -1145,23 +1145,58 @@ This project is open-source and available under the **MIT License**. Click the b
 </div>
 
 <style>
-.bi-color-title {
-  background: linear-gradient(90deg, #60a5fa 0%, #a78bfa 55%, #f472b6 100%);
+/* 1. 静态发光外层容器 (保持不弹跳的静态阴影) */
+.header-sync-pulse {
+  margin: 0;
+  display: inline-block;
+  border-radius: 4px;
+  filter: drop-shadow(0 0 8px rgba(96, 165, 250, 0.3)); 
+}
+
+/* 2. SVG 图标独立样式保持不变 */
+.header-sync-pulse svg { 
+  -webkit-text-fill-color: initial; 
+  filter: saturate(1.2) drop-shadow(0 0 2px rgba(167, 139, 250, 0.4)); 
+}
+
+/* ✨ 3. 中文标题的纯文本走马灯特效 ✨ */
+.bi-color-title-sweep {
+  /* 核心技巧：双层背景叠加！
+     上层是扫过的高光，下层是你原来的三色渐变底色 */
+  background: 
+    linear-gradient(
+      105deg,
+      transparent 20%, 
+      rgba(255, 255, 255, 0.9) 50%, /* 扫过的高光中心变亮 */
+      transparent 80%
+    ),
+    linear-gradient(90deg, #60a5fa 0%, #a78bfa 55%, #f472b6 100%);
+    
+  /* 上层光束放大以便移动，下层底色铺满不移动 */
+  background-size: 200% auto, 100% auto;
+  background-repeat: no-repeat;
+  
+  /* 把双层背景完美裁剪进文字轮廓内 */
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   color: transparent;
-  display: flex !important;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  transform: translateZ(0);
+  
+  /* 保持与图片版完全相同的动画节奏：总长 4s，包含 0.7s 停顿 */
+  animation: text-searchlight 4s ease-in-out infinite;
 }
 
-.header-sync-pulse svg { -webkit-text-fill-color: initial; filter: saturate(1.2) drop-shadow(0 0 2px rgba(167, 139, 250, 0.4)); }
+/* 👇 完美实现 3.3秒扫光 + 0.7秒停顿 👇 */
+@keyframes text-searchlight {
+  /* 移动上层的光束背景，下层底色保持在 0 center 不变 */
+  0% { background-position: -150% center, 0 center; }
+  82.5% { background-position: 250% center, 0 center; }
+  100% { background-position: 250% center, 0 center; }
+}
 </style>
-  
+
 <div align="center" style="margin-bottom: 20px;">
-  <h1 class="header-sync-pulse bi-color-title" style="display: flex; align-items: center; justify-content: center; border-bottom: none; margin-bottom: 5px; font-size: 2.2em; font-weight: 800; letter-spacing: -1px; font-family: 'Inter', 'Noto Sans SC', sans-serif;">
+  <h1 class="header-sync-pulse" style="display: flex; align-items: center; justify-content: center; border-bottom: none; margin-bottom: 5px; font-size: 2.2em; font-weight: 800; letter-spacing: -1px; font-family: 'Inter', 'Noto Sans SC', sans-serif;">
     
     <svg width="45" height="45" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 15px;">
       <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" stroke="url(#icon-gradient-zh)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1175,7 +1210,7 @@ This project is open-source and available under the **MIT License**. Click the b
       </defs>
     </svg>
 
-    E-Link(易链256)
+    <span class="bi-color-title-sweep">E-Link(易链256)</span>
   </h1>
 </div>
 
