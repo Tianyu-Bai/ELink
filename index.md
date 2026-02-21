@@ -33,56 +33,68 @@ title: E-Link Home
   justify-content: center;
 }
 
-/* 2. Logo 容器逻辑 */
-.logo-container {
-  position: relative; 
-  display: inline-block; 
-  /* ⚠️ 移除了 overflow: hidden，释放呼吸发光的阴影 ⚠️ */
+/* 2. 呼吸动画逻辑 (现在放在没有任何遮罩的外层 h1，彻底释放阴影发光) */
+.header-sync-pulse {
+  margin: 0;
+  display: inline-block;
+  border-radius: 4px;
   margin-bottom: 5px;
-  border-radius: 4px; 
+  /* 总时长 4s，与光束动画保持同频 */
+  animation: sync-pulse 4s ease-in-out infinite;
+  will-change: transform, filter;
 }
 
-/* ✨ 探照灯光束特效 (终极进化版) ✨ */
-.logo-container::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;  /* 必须填满容器 */
-  height: 100%;
-  
-  /* 将光束倾斜，并把背景放大以便移动 */
-  background: linear-gradient(
-    105deg, 
-    transparent 10%, 
-    rgba(96, 165, 250, 0.2) 30%,  
-    rgba(167, 139, 250, 0.9) 50%,  
-    rgba(96, 165, 250, 0.2) 70%,   
-    transparent 90%
-  );
-  background-size: 250% 100%; /* 背景放大 2.5 倍，留出跑马灯空间 */
-  
-  /* 👇 遮罩只作用于光束本身，不影响底下的图片发光 👇 */
+@keyframes sync-pulse {
+  0%, 100% { transform: scale(1); filter: drop-shadow(0 0 8px rgba(96, 165, 250, 0.3)); }
+  50% { transform: scale(1.03); filter: drop-shadow(0 0 15px rgba(167, 139, 250, 0.5)); }
+}
+
+/* 3. 新增的独立遮罩层容器 (贴合图片并负责裁剪光束) */
+.logo-mask-container {
+  position: relative; 
+  display: block; 
+  /* 👇 核心：遮罩放在内层，只裁剪光束，不影响外层阴影 👇 */
   -webkit-mask-image: var(--logo-url); 
   mask-image: var(--logo-url);
   -webkit-mask-size: contain;
   -webkit-mask-position: center;
   -webkit-mask-repeat: no-repeat;
-  /* 👆 结束遮罩 👆 */
+}
 
+/* ✨ 4. 探照灯光束特效 (恢复原汁原味的 transform 物理移动) ✨ */
+.logo-mask-container::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 60%; 
+  height: 100%;
+  
+  background: linear-gradient(
+    to right, 
+    transparent 0%, 
+    rgba(96, 165, 250, 0.2) 20%,  
+    rgba(167, 139, 250, 0.9) 50%,  
+    rgba(96, 165, 250, 0.2) 80%,   
+    transparent 100%
+  );
+  
   mix-blend-mode: screen; 
   pointer-events: none; 
-  /* 改用 linear 匀速动画，缩短时间，实现无间断连续循环 */
-  animation: searchlight-sweep 2.5s linear infinite;
+  /* 动画时长 4s */
+  animation: searchlight-sweep 4s ease-in-out infinite;
 }
 
-/* 通过移动背景实现丝滑无缝的走马灯 */
+/* 👇 完美实现 1秒 停顿 👇 */
 @keyframes searchlight-sweep {
-  0% { background-position: 250% 0; }
-  100% { background-position: -100% 0; }
+  0% { transform: translateX(-150%) skewX(-15deg); }
+  /* 前 75% 的时间 (3秒) 执行从左到右扫光 */
+  75% { transform: translateX(250%) skewX(-15deg); } 
+  /* 后 25% 的时间 (1秒) 停在右侧视线外，形成完美间隙！ */
+  100% { transform: translateX(250%) skewX(-15deg); } 
 }
 
-/* 👇 3. 电脑端 Logo 图片样式  👇 */
+/* 5. 电脑端 Logo 图片样式  */
 .main-logo {
   height: 135px !important; 
   width: auto !important;  
@@ -92,7 +104,7 @@ title: E-Link Home
   filter: brightness(0.95); 
 }
 
-/* 4. 副标题基础样式 */
+/* 6. 副标题基础样式 */
 .sub-title {
   background: linear-gradient(90deg, #60a5fa 0%, #818cf8 50%, #a78bfa 100%);
   -webkit-background-clip: text;
@@ -109,18 +121,16 @@ title: E-Link Home
   margin-right: auto;
 }
 
-/* 👇 5. 手机端优化 👇 */
+/* 7. 手机端优化 */
 @media (max-width: 768px) {
   .main-title-wrapper { margin-bottom: 15px !important; }
   
-  /* 手机端 Logo 大小 */
   .main-logo { 
     height: 80px !important; 
     width: auto !important;
     max-width: 90vw !important; 
   } 
 
-  /* 手机端副标题 */
   .sub-title { 
     font-size: 1.2em !important; 
     padding: 0 10px !important; 
@@ -132,26 +142,17 @@ title: E-Link Home
     white-space: pre;
   }
 }
-
-/* 6. 呼吸动画逻辑 (与走马灯同频：2.5秒) */
-.header-sync-pulse {
-  animation: sync-pulse 2.5s ease-in-out infinite;
-  will-change: transform, filter;
-}
-
-@keyframes sync-pulse {
-  0%, 100% { transform: scale(1); filter: drop-shadow(0 0 8px rgba(96, 165, 250, 0.4)); }
-  50% { transform: scale(1.03); filter: drop-shadow(0 0 18px rgba(167, 139, 250, 0.7)); }
-}
 </style>
 
 <div class="main-title-wrapper" align="center">
-  <h1 class="logo-container header-sync-pulse" style="--logo-url: url('{{ "/Images/ELink Logo color.png" | relative_url }}')">
-    <img 
-      src="{{ '/Images/ELink Logo color.png' | relative_url }}" 
-      alt="E-Link Logo color" 
-      class="main-logo"
-    >
+  <h1 class="header-sync-pulse">
+    <span class="logo-mask-container" style="--logo-url: url('{{ "/Images/ELink Logo color.png" | relative_url }}')">
+      <img 
+        src="{{ '/Images/ELink Logo color.png' | relative_url }}" 
+        alt="E-Link Logo color" 
+        class="main-logo"
+      >
+    </span>
   </h1>
 </div>
   
