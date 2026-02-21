@@ -996,5 +996,16 @@
     });
   });
 </script>
+   
+ <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+  // 初始化 AOS 动画，设置动画时长和缓动效果
+  AOS.init({
+    duration: 1000, // 动画持续 1 秒（1000毫秒），显得沉稳高级
+    easing: 'ease-out-cubic', // 类似苹果的丝滑减速效果
+    once: true // 设为 true 表示向下滚动出现后，往回滚不会消失
+  });
+</script>
+
 </body>
 </html>
