@@ -37,43 +37,54 @@ title: E-Link Home
 .logo-container {
   position: relative; 
   display: inline-block; 
-  overflow: hidden; 
+  /* ⚠️ 移除了 overflow: hidden，释放呼吸发光的阴影 ⚠️ */
   margin-bottom: 5px;
   border-radius: 4px; 
 }
 
-/* ✨ 探照灯光束特效 ✨ */
+/* ✨ 探照灯光束特效 (终极进化版) ✨ */
 .logo-container::after {
   content: "";
   position: absolute;
   top: 0;
   left: 0;
-  width: 60%; 
+  width: 100%;  /* 必须填满容器 */
   height: 100%;
   
+  /* 将光束倾斜，并把背景放大以便移动 */
   background: linear-gradient(
-    to right, 
-    transparent 0%, 
-    rgba(96, 165, 250, 0.2) 20%,  
+    105deg, 
+    transparent 10%, 
+    rgba(96, 165, 250, 0.2) 30%,  
     rgba(167, 139, 250, 0.9) 50%,  
-    rgba(96, 165, 250, 0.2) 80%,   
-    transparent 100%
+    rgba(96, 165, 250, 0.2) 70%,   
+    transparent 90%
   );
+  background-size: 250% 100%; /* 背景放大 2.5 倍，留出跑马灯空间 */
   
+  /* 👇 遮罩只作用于光束本身，不影响底下的图片发光 👇 */
+  -webkit-mask-image: var(--logo-url); 
+  mask-image: var(--logo-url);
+  -webkit-mask-size: contain;
+  -webkit-mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  /* 👆 结束遮罩 👆 */
+
   mix-blend-mode: screen; 
-  transform: translateX(-150%) skewX(-15deg); 
   pointer-events: none; 
-  animation: searchlight-sweep 4s ease-in-out infinite;
+  /* 改用 linear 匀速动画，缩短时间，实现无间断连续循环 */
+  animation: searchlight-sweep 2.5s linear infinite;
 }
 
+/* 通过移动背景实现丝滑无缝的走马灯 */
 @keyframes searchlight-sweep {
-  0% { transform: translateX(-150%) skewX(-15deg); }
-  100% { transform: translateX(250%) skewX(-15deg); }
+  0% { background-position: 250% 0; }
+  100% { background-position: -100% 0; }
 }
 
-/* 👇 3. 电脑端 Logo 图片样式 (放大 5 倍) 👇 */
+/* 👇 3. 电脑端 Logo 图片样式  👇 */
 .main-logo {
-  height: 175px !important; 
+  height: 135px !important; 
   width: auto !important;  
   max-width: 100% !important;
   object-fit: contain;
@@ -98,13 +109,13 @@ title: E-Link Home
   margin-right: auto;
 }
 
-/* 👇 5. 手机端优化 (放大 5 倍) 👇 */
+/* 👇 5. 手机端优化 👇 */
 @media (max-width: 768px) {
   .main-title-wrapper { margin-bottom: 15px !important; }
   
   /* 手机端 Logo 大小 */
   .main-logo { 
-    height: 100px !important; 
+    height: 80px !important; 
     width: auto !important;
     max-width: 90vw !important; 
   } 
@@ -122,21 +133,20 @@ title: E-Link Home
   }
 }
 
-/* 6. 呼吸动画逻辑 */
+/* 6. 呼吸动画逻辑 (与走马灯同频：2.5秒) */
 .header-sync-pulse {
-  animation: sync-pulse 3s ease-in-out infinite;
+  animation: sync-pulse 2.5s ease-in-out infinite;
   will-change: transform, filter;
 }
 
 @keyframes sync-pulse {
-  0%, 100% { transform: scale(1); filter: drop-shadow(0 0 8px rgba(96, 165, 250, 0.3)); }
-  50% { transform: scale(1.03); filter: drop-shadow(0 0 15px rgba(167, 139, 250, 0.5)); }
+  0%, 100% { transform: scale(1); filter: drop-shadow(0 0 8px rgba(96, 165, 250, 0.4)); }
+  50% { transform: scale(1.03); filter: drop-shadow(0 0 18px rgba(167, 139, 250, 0.7)); }
 }
 </style>
 
 <div class="main-title-wrapper" align="center">
-  <h1 class="logo-container header-sync-pulse" 
-      style="-webkit-mask-image: url('{{ "/Images/ELink Logo color.png" | relative_url }}'); mask-image: url('{{ "/Images/ELink Logo color.png" | relative_url }}'); -webkit-mask-size: 100% 100%; mask-size: 100% 100%;">
+  <h1 class="logo-container header-sync-pulse" style="--logo-url: url('{{ "/Images/ELink Logo color.png" | relative_url }}')">
     <img 
       src="{{ '/Images/ELink Logo color.png' | relative_url }}" 
       alt="E-Link Logo color" 
@@ -144,7 +154,7 @@ title: E-Link Home
     >
   </h1>
 </div>
-
+  
 <h2 class="sub-title">
   An Open-Source, Elastomer Interconnection-based 
   <span class="mobile-br"></span> Connector for Flexible Neural Interfaces
