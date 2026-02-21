@@ -60,6 +60,14 @@ title: E-Link Home
     transparent 100%
   );
   
+  /* 👇 新增：通过遮罩把长方形光束裁剪成文字轮廓 👇 */
+  -webkit-mask-image: var(--logo-url); 
+  mask-image: var(--logo-url);
+  -webkit-mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center; /* 设为 center 完美贴合下面的 object-fit: contain */
+  /* 👆 结束新增 👆 */
+
   mix-blend-mode: screen; 
   transform: translateX(-150%) skewX(-15deg); 
   pointer-events: none; 
@@ -135,7 +143,7 @@ title: E-Link Home
 </style>
 
 <div class="main-title-wrapper" align="center">
-  <h1 class="logo-container header-sync-pulse">
+  <h1 class="logo-container header-sync-pulse" style="--logo-url: url('{{ "/Images/ELink Logo color.png" | relative_url }}')">
     <img 
       src="{{ '/Images/ELink Logo color.png' | relative_url }}" 
       alt="E-Link Logo color" 
