@@ -39,14 +39,8 @@ title: E-Link Home
   display: inline-block;
   border-radius: 4px;
   margin-bottom: 5px;
-  /* 总时长 4s，与光束动画保持同频 */
-  animation: sync-pulse 4s ease-in-out infinite;
-  will-change: transform, filter;
-}
-
-@keyframes sync-pulse {
-  0%, 100% { transform: scale(1); filter: drop-shadow(0 0 8px rgba(96, 165, 250, 0.3)); }
-  50% { transform: scale(1.03); filter: drop-shadow(0 0 15px rgba(167, 139, 250, 0.5)); }
+  /* 直接给一个静态的阴影发光，不再放大跳动 */
+  filter: drop-shadow(0 0 8px rgba(96, 165, 250, 0.3)); 
 }
 
 /* 3. 独立遮罩层容器 (贴合图片并负责裁剪光束) */
